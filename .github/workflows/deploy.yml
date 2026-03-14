@@ -1,0 +1,35 @@
+name: Deploy Website to cPanel
+
+on:
+  push:
+    branches:
+      - develop
+      - main
+
+jobs:
+  web-deploy:
+    name: 🎉 Deploy
+    runs-on: ubuntu-latest
+    steps:
+    - name: 🚚 Get latest code
+      uses: actions/checkout@v4
+    
+    - name: 🚀 Help and instructions
+      run: |
+        echo "Starting deployment to cPanel..."
+        echo "Make sure you have set the following secrets in your GitHub repository:"
+        echo "FTP_SERVER, FTP_USERNAME, FTP_PASSWORD"
+
+    - name: 📂 Sync files
+      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+      with:
+        server: ${{ secrets.FTP_SERVER }}
+        username: ${{ secrets.FTP_USERNAME }}
+        password: ${{ secrets.FTP_PASSWORD }}
+        server-dir: ./ # Adjust this if you need to deploy to a specific folder like public_html/
+        exclude: |
+          **/.git*
+          **/.git*/**
+          **/node_modules/**
+          LICENSE
+          README.md
