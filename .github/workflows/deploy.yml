@@ -26,7 +26,7 @@ jobs:
         server: ${{ secrets.FTP_SERVER }}
         username: ${{ secrets.FTP_USERNAME }}
         password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: public_html/site # Adjust this if you need to deploy to a specific folder like public_html/
+        server-dir: public_html/site/ # Adjust this if you need to deploy to a specific folder like public_html/
         exclude: |
           **/.git*
           **/.git*/**
