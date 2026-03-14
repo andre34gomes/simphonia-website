@@ -3,1028 +3,487 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simphonia | Stay Connected, Wherever You Go</title>
-  
+  <title>Simphonia — Global eSIM for Modern Travelers</title>
+  <meta name="description" content="Get instant mobile data in 200+ countries. No roaming fees, no SIM swaps. Download Simphonia and stay connected wherever you travel.">
+  <meta name="theme-color" content="#0A0A0A">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Simphonia — Global eSIM for Modern Travelers">
+  <meta property="og:description" content="Instant eSIM activation for 200+ countries. Travel connected.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://simphonia.app">
+
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,300;400;500&family=Dancing+Script:wght@700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
-  
-  <style>
-    /* --- CSS VARIABLES --- */
-    :root {
-      --accent: #D4AF37;
-      --accent-variant: #FFD740;
-      --accent-glow: rgba(212, 175, 55, 0.4);
-      
-      --bg-dark: #121212;
-      --panel-dark: #1E1E1E;
-      
-      --text-primary: #FFFFFF;
-      --text-secondary: #D1CDC7;
-      --text-muted: #9E968D;
-      
-      --glass-fill: rgba(255, 255, 255, 0.05);
-      --glass-stroke: rgba(212, 175, 55, 0.3);
-      --glass-dark: rgba(0, 0, 0, 0.6);
-      
-      --font-display: 'Playfair Display', serif;
-      --font-script: 'Dancing Script', cursive;
-      --font-body: 'DM Sans', sans-serif;
-    }
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
-    /* --- RESET & BASE --- */
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/style.css">
 
-    body {
-      background-color: var(--bg-dark);
-      color: var(--text-primary);
-      font-family: var(--font-body);
-      overflow-x: hidden;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* Background Noise & Stars */
-    .bg-noise {
-      position: fixed;
-      top: 0; left: 0; width: 100vw; height: 100vh;
-      background: url('data:image/svg+xml;utf8,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noiseFilter"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.65" numOctaves="3" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noiseFilter)"/%3E%3C/svg%3E');
-      opacity: 0.03;
-      z-index: -2;
-      pointer-events: none;
-    }
-    
-    #stars-canvas {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw; height: 100vh;
-      z-index: -1;
-      pointer-events: none;
-    }
-
-    /* Typography */
-    h1, h2, h3 { font-family: var(--font-display); }
-    .script-text { font-family: var(--font-script); color: var(--accent); }
-    
-    a { text-decoration: none; color: inherit; }
-    ul { list-style: none; }
-
-    /* Custom Cursor */
-    .cursor {
-      position: fixed;
-      width: 20px;
-      height: 20px;
-      border: 2px solid var(--accent);
-      border-radius: 50%;
-      transform: translate(-50%, -50%);
-      pointer-events: none;
-      z-index: 9999;
-      transition: width 0.2s, height 0.2s, background-color 0.2s;
-    }
-    .cursor.hover {
-      width: 50px;
-      height: 50px;
-      background-color: rgba(212, 175, 55, 0.1);
-      backdrop-filter: blur(2px);
-    }
-
-    /* --- 1. NAVBAR --- */
-    nav {
-      position: fixed;
-      top: 0; width: 100%;
-      padding: 1.5rem 5%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 100;
-      transition: background 0.3s, backdrop-filter 0.3s;
-    }
-    nav.scrolled {
-      background: rgba(18, 18, 18, 0.8);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--glass-stroke);
-    }
-    .logo { font-size: 2.5rem; }
-    .nav-links { display: flex; gap: 2.5rem; }
-    .nav-links a {
-      font-size: 1rem;
-      position: relative;
-      transition: color 0.3s;
-    }
-    .nav-links a:hover { color: var(--accent); }
-    .nav-links a::after {
-      content: ''; position: absolute;
-      bottom: -5px; left: 50%; transform: translateX(-50%);
-      width: 0; height: 1px; background: var(--accent);
-      transition: width 0.3s;
-    }
-    .nav-links a:hover::after { width: 100%; }
-    
-    .btn {
-      padding: 0.8rem 1.5rem;
-      border-radius: 30px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-family: var(--font-body);
-    }
-    .btn-outline {
-      background: transparent;
-      border: 1px solid var(--accent);
-      color: var(--accent);
-    }
-    .btn-outline:hover {
-      background: var(--accent);
-      color: var(--bg-dark);
-      box-shadow: 0 0 20px var(--accent-glow);
-    }
-    .btn-solid {
-      background: var(--accent);
-      border: none;
-      color: var(--bg-dark);
-      box-shadow: 0 0 15px var(--accent-glow);
-    }
-    .btn-solid:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 5px 25px var(--accent-glow);
-    }
-
-    /* --- 2. HERO SECTION --- */
-    .hero {
-      height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      padding: 0 5%;
-      position: relative;
-    }
-    #globe-container {
-      position: absolute;
-      top: 0; right: -10%;
-      width: 70vw; height: 100vh;
-      z-index: 0;
-      pointer-events: none;
-    }
-    .hero-content {
-      position: relative;
-      z-index: 1;
-      max-width: 600px;
-    }
-    .badge {
-      display: inline-block;
-      padding: 0.4rem 1rem;
-      border: 1px solid var(--glass-stroke);
-      border-radius: 20px;
-      font-size: 0.85rem;
-      color: var(--text-secondary);
-      background: var(--glass-fill);
-      backdrop-filter: blur(5px);
-      margin-bottom: 1.5rem;
-    }
-    .hero h1 {
-      font-size: clamp(3rem, 5vw, 4.5rem);
-      line-height: 1.1;
-      margin-top: 0.5rem;
-      margin-bottom: 1.5rem;
-    }
-    .hero p {
-      font-size: 1.1rem;
-      color: var(--text-secondary);
-      margin-bottom: 2.5rem;
-      max-width: 400px;
-    }
-    .hero-ctas { display: flex; gap: 1rem; }
-    
-    .scroll-indicator {
-      position: absolute;
-      bottom: 2rem;
-      left: 5%;
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      color: var(--text-secondary);
-      font-size: 0.9rem;
-    }
-    .arrow-down {
-      width: 20px; height: 20px;
-      border-right: 2px solid var(--accent);
-      border-bottom: 2px solid var(--accent);
-      transform: rotate(45deg);
-      animation: bounce 2s infinite;
-    }
-    @keyframes bounce {
-      0%, 20%, 50%, 80%, 100% { transform: translateY(0) rotate(45deg); }
-      40% { transform: translateY(-10px) rotate(45deg); }
-      60% { transform: translateY(-5px) rotate(45deg); }
-    }
-
-    /* --- 3. TRUST BAR --- */
-    .trust-bar {
-      background: var(--panel-dark);
-      border-top: 1px solid var(--glass-stroke);
-      border-bottom: 1px solid var(--glass-stroke);
-      padding: 2rem 5%;
-      display: flex;
-      justify-content: space-around;
-      position: relative;
-      z-index: 2;
-    }
-    .stat { text-align: center; }
-    .stat h3 { font-size: 2.5rem; color: var(--accent); margin-bottom: 0.5rem; }
-    .stat p { font-size: 0.9rem; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 1px; }
-
-    /* --- 4. HOW IT WORKS --- */
-    .how-it-works {
-      padding: 8rem 5%;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .section-header { text-align: center; margin-bottom: 4rem; }
-    .section-header h2 { font-size: 3rem; margin-bottom: 1rem; }
-    
-    .steps-container {
-      display: flex;
-      justify-content: space-between;
-      position: relative;
-    }
-    .progress-line {
-      position: absolute;
-      top: 50px; left: 10%; right: 10%;
-      height: 2px;
-      background: rgba(255,255,255,0.1);
-      z-index: 0;
-    }
-    .progress-line-fill {
-      height: 100%; width: 0%;
-      background: var(--accent);
-      box-shadow: 0 0 10px var(--accent);
-    }
-    .step {
-      width: 30%;
-      text-align: center;
-      position: relative;
-      z-index: 1;
-      opacity: 0.3;
-      transition: opacity 0.5s;
-    }
-    .step.active { opacity: 1; }
-    .step-icon {
-      width: 100px; height: 100px;
-      background: var(--bg-dark);
-      border: 2px solid var(--glass-stroke);
-      border-radius: 50%;
-      margin: 0 auto 2rem;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 2.5rem;
-      transition: all 0.5s;
-    }
-    .step.active .step-icon {
-      border-color: var(--accent);
-      box-shadow: 0 0 30px var(--accent-glow);
-      transform: scale(1.1);
-    }
-    .step h3 { font-size: 1.5rem; margin-bottom: 1rem; }
-    .step p { color: var(--text-secondary); font-size: 0.95rem; }
-    
-    /* Phone Mockups for Steps */
-    .step-mockup {
-      width: 100%; max-width: 250px;
-      height: 500px;
-      margin: 2rem auto 0;
-      background: var(--panel-dark);
-      border-radius: 30px;
-      border: 8px solid #333;
-      overflow: hidden;
-      position: relative;
-      transform: perspective(1000px) rotateY(0deg);
-      transition: transform 0.5s;
-    }
-    .step.active .step-mockup { transform: perspective(1000px) translateY(-10px); }
-    .mockup-img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; }
-
-    /* --- 5. FEATURES --- */
-    .features { padding: 5rem 5%; }
-    .features-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2rem;
-    }
-    .feature-card {
-      background: var(--glass-fill);
-      backdrop-filter: blur(10px);
-      border: 1px solid var(--glass-stroke);
-      padding: 2.5rem;
-      border-radius: 20px;
-      transition: all 0.4s;
-    }
-    .feature-card:hover {
-      transform: translateY(-5px);
-      border-color: var(--accent);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.5), inset 0 0 20px var(--glass-fill);
-    }
-    .feature-icon { font-size: 2.5rem; margin-bottom: 1.5rem; }
-    .feature-card h3 { font-size: 1.3rem; margin-bottom: 1rem; }
-    .feature-card p { color: var(--text-secondary); font-size: 0.95rem; line-height: 1.6; }
-
-    /* --- 6. APP SHOWCASE --- */
-    .showcase {
-      padding: 10rem 0;
-      overflow: hidden;
-      position: relative;
-      background: radial-gradient(circle at center, rgba(212, 175, 55, 0.05) 0%, var(--bg-dark) 70%);
-    }
-    .showcase-text { text-align: center; margin-bottom: 5rem; position: relative; z-index: 2; }
-    .showcase-text h2 { font-size: 3.5rem; color: var(--accent); margin-bottom: 1rem; }
-    .testimonial { max-width: 500px; margin: 0 auto; font-style: italic; color: var(--text-secondary); }
-    
-    .phones-container {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      gap: -50px; /* Overlap */
-      perspective: 1200px;
-    }
-    .phone-3d {
-      width: 280px; height: 580px;
-      border-radius: 40px;
-      border: 12px solid #222;
-      background: #000;
-      overflow: hidden;
-      box-shadow: 0 20px 50px rgba(0,0,0,0.8);
-      position: relative;
-    }
-    .phone-left { transform: rotateY(25deg) rotateZ(-5deg) scale(0.9); left: 50px; z-index: 1; }
-    .phone-center { transform: translateZ(50px); z-index: 3; box-shadow: 0 30px 60px rgba(212,175,55,0.2); border-color: #444; }
-    .phone-right { transform: rotateY(-25deg) rotateZ(5deg) scale(0.9); right: 50px; z-index: 1; }
-    
-    .phone-screen { width: 100%; height: 100%; object-fit: cover; }
-    
-    /* Orbit rings */
-    .orbit {
-      position: absolute;
-      top: 50%; left: 50%;
-      transform: translate(-50%, -50%) rotateX(75deg);
-      border: 1px solid rgba(212, 175, 55, 0.2);
-      border-radius: 50%;
-      z-index: 0;
-    }
-    .orbit-1 { width: 800px; height: 800px; animation: spin 20s linear infinite; }
-    .orbit-2 { width: 1100px; height: 1100px; animation: spin 30s linear infinite reverse; }
-    @keyframes spin { 100% { transform: translate(-50%, -50%) rotateX(75deg) rotateZ(360deg); } }
-
-    /* --- 7. DESTINATIONS GRID --- */
-    .destinations { padding: 8rem 5%; }
-    .bento-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: repeat(2, 300px);
-      gap: 1.5rem;
-      margin-top: 3rem;
-    }
-    .bento-item {
-      position: relative;
-      border-radius: 20px;
-      overflow: hidden;
-      cursor: pointer;
-    }
-    /* Grid span assignments */
-    .bento-item:nth-child(1) { grid-column: span 2; grid-row: span 2; }
-    .bento-item:nth-child(2), .bento-item:nth-child(3) { grid-column: span 1; }
-    .bento-item:nth-child(4) { grid-column: span 2; }
-    
-    .bento-img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    }
-    .bento-overlay {
-      position: absolute;
-      inset: 0;
-      background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.2) 50%, transparent 100%);
-      padding: 2rem;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-end;
-      opacity: 0.8;
-      transition: opacity 0.3s;
-    }
-    .bento-item:hover .bento-img { transform: scale(1.08); }
-    .bento-item:hover .bento-overlay { opacity: 1; }
-    
-    .bento-content { transform: translateY(20px); transition: transform 0.4s; }
-    .bento-item:hover .bento-content { transform: translateY(0); }
-    
-    .bento-title { font-family: var(--font-display); font-size: 2rem; margin-bottom: 0.5rem; }
-    .bento-price { color: var(--accent); font-weight: 500; }
-    .pop-badge {
-      position: absolute; top: 1.5rem; right: 1.5rem;
-      background: var(--accent); color: #000;
-      padding: 0.3rem 0.8rem; border-radius: 12px; font-size: 0.8rem; font-weight: bold;
-    }
-    
-    .dest-cta { text-align: center; margin-top: 4rem; }
-    .dest-cta a { color: var(--accent); font-size: 1.2rem; display: inline-flex; align-items: center; gap: 10px; }
-    .dest-cta a:hover { text-decoration: underline; }
-
-    /* --- 8. PRICING / CTA --- */
-    .pricing-cta {
-      padding: 8rem 5%;
-      text-align: center;
-      position: relative;
-    }
-    .pricing-cards {
-      display: flex; justify-content: center; gap: 2rem; margin-top: 4rem; margin-bottom: 6rem;
-    }
-    .price-card {
-      background: var(--panel-dark);
-      border: 1px solid var(--glass-stroke);
-      border-radius: 20px;
-      padding: 2.5rem;
-      width: 300px;
-      text-align: left;
-    }
-    .price-card h3 { font-size: 1.5rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 10px; }
-    .price-details { color: var(--text-secondary); margin-bottom: 1.5rem; padding-bottom: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
-    .price-amount { font-size: 2.5rem; font-family: var(--font-display); color: var(--accent); }
-    
-    .final-cta h2 { font-size: 3.5rem; margin-bottom: 2rem; }
-    .store-buttons { display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 2rem; }
-    .store-btn {
-      display: flex; align-items: center; gap: 10px;
-      padding: 1rem 2rem;
-      background: var(--glass-fill); border: 1px solid var(--glass-stroke);
-      border-radius: 15px; font-size: 1.1rem;
-      transition: all 0.3s;
-    }
-    .store-btn:hover { background: var(--accent); color: #000; }
-    .store-btn svg { width: 24px; height: 24px; fill: currentColor; }
-
-    /* --- 9. FOOTER --- */
-    footer {
-      border-top: 1px solid var(--glass-stroke);
-      padding: 4rem 5% 2rem;
-      background: var(--bg-dark);
-    }
-    .footer-content { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 3rem; }
-    .footer-links { display: flex; gap: 4rem; }
-    .footer-col h4 { margin-bottom: 1.5rem; color: var(--text-primary); }
-    .footer-col ul { display: flex; flex-direction: column; gap: 0.8rem; color: var(--text-secondary); }
-    .footer-col a:hover { color: var(--accent); }
-    .footer-bottom {
-      display: flex; justify-content: space-between; align-items: center;
-      padding-top: 2rem; border-top: 1px solid rgba(255,255,255,0.05);
-      color: var(--text-muted); font-size: 0.9rem;
-    }
-    .socials { display: flex; gap: 1rem; }
-    .socials a { color: var(--text-secondary); }
-    .socials a:hover { color: var(--accent); }
-
-    /* --- RESPONSIVE --- */
-    @media (max-width: 1024px) {
-      .features-grid { grid-template-columns: repeat(2, 1fr); }
-      .bento-grid { grid-template-columns: repeat(2, 1fr); }
-      .bento-item:nth-child(1) { grid-column: span 2; }
-      .pricing-cards { flex-wrap: wrap; }
-    }
-    @media (max-width: 768px) {
-      nav { flex-direction: column; gap: 1rem; padding: 1rem; }
-      .nav-links { display: none; } /* Simplified for mobile */
-      
-      #globe-container { opacity: 0.3; width: 100vw; right: 0; }
-      .hero h1 { font-size: 2.5rem; }
-      
-      .trust-bar { flex-direction: column; gap: 2rem; }
-      
-      .steps-container { flex-direction: column; gap: 3rem; }
-      .progress-line { display: none; }
-      .step { width: 100%; opacity: 1; }
-      
-      .features-grid { grid-template-columns: 1fr; }
-      .bento-grid { grid-template-columns: 1fr; grid-template-rows: auto; }
-      .bento-item { grid-column: span 1 !important; height: 250px; }
-      
-      .phones-container { flex-direction: column; gap: 2rem; }
-      .phone-left, .phone-right { display: none; }
-      .phone-center { transform: none; }
-      
-      .footer-content { flex-direction: column; gap: 2rem; }
-    }
-  </style>
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Simphonia",
+    "url": "https://simphonia.app",
+    "description": "Global eSIM service for travelers"
+  }
+  </script>
 </head>
 <body>
 
+  <a href="#main-content" class="skip-link">Skip to main content</a>
   <div class="bg-noise"></div>
-  <canvas id="stars-canvas"></canvas>
+  <canvas id="stars-canvas" aria-hidden="true"></canvas>
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
 
-  <div class="cursor" id="cursor"></div>
+  <main id="main-content">
 
-  <nav id="navbar">
-    <div class="logo script-text">Simphonia</div>
-    <div class="nav-links">
-      <a href="#how-it-works" class="hoverable">How It Works</a>
-      <a href="#features" class="hoverable">Features</a>
-      <a href="#destinations" class="hoverable">Destinations</a>
-    </div>
-    <button class="btn btn-outline hoverable">Get Your eSIM</button>
-  </nav>
+    <!-- ═══════════════════ HERO ═══════════════════ -->
+    <section class="hero section--full">
+      <div class="hero__orb hero__orb--1"></div>
+      <div class="hero__orb hero__orb--2"></div>
+      <div id="globe-container" aria-hidden="true"></div>
 
-  <section class="hero" id="home">
-    <div id="globe-container"></div>
-    <div class="hero-content">
-      <div class="badge">200+ Countries · Instant Activation</div>
-      <div class="script-text" style="font-size: 2rem;">Simphonia</div>
-      <h1 class="hero-title">Stay Connected,<br>Wherever You Go</h1>
-      <p class="hero-sub">Get your eSIM in seconds. Travel without limits, swap without physical SIMs.</p>
-      <div class="hero-ctas">
-        <button class="btn btn-solid hoverable">Download Free</button>
-        <button class="btn btn-outline hoverable">Explore Destinations</button>
-      </div>
-    </div>
-    <div class="scroll-indicator">
-      <div class="arrow-down"></div>
-      Scroll to explore
-    </div>
-  </section>
-
-  <section class="trust-bar">
-    <div class="stat"><h3 class="counter" data-target="200">0</h3><p>Countries</p></div>
-    <div class="stat"><h3><span class="counter" data-target="1">0</span>M+</h3><p>Travelers</p></div>
-    <div class="stat"><h3 style="color:var(--text-primary)">⚡</h3><p>Instant Activation</p></div>
-    <div class="stat"><h3 style="color:var(--text-primary)">24/7</h3><p>Support</p></div>
-  </section>
-
-  <section class="how-it-works" id="how-it-works">
-    <div class="section-header">
-      <h2>3 Steps. One Journey.</h2>
-      <p style="color: var(--text-secondary)">Purchase anywhere, connect everywhere.</p>
-    </div>
-    
-    <div class="steps-container" id="steps-container">
-      <div class="progress-line"><div class="progress-line-fill" id="progress-fill"></div></div>
-      
-      <div class="step step-1 active">
-        <div class="step-icon">🔍</div>
-        <h3>Pick Your Destination</h3>
-        <p>Search across 200+ countries and regions. Local, regional, and global plans.</p>
-        <div class="step-mockup">
-          <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=400" alt="App Screen Map" class="mockup-img">
-        </div>
-      </div>
-      
-      <div class="step step-2">
-        <div class="step-icon">⚡</div>
-        <h3>Buy in Seconds</h3>
-        <p>Secure payment. You receive the eSIM QR Code instantly by email.</p>
-        <div class="step-mockup">
-          <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=400" alt="App Screen Checkout" class="mockup-img">
-        </div>
-      </div>
-      
-      <div class="step step-3">
-        <div class="step-icon">🌐</div>
-        <h3>Connect & Travel</h3>
-        <p>Install before departure. Connects automatically when you land.</p>
-        <div class="step-mockup">
-          <img src="https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?auto=format&fit=crop&q=80&w=400" alt="App Screen Active" class="mockup-img">
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <section class="features" id="features">
-    <div class="section-header">
-      <h2>Everything you need on a trip</h2>
-    </div>
-    <div class="features-grid">
-      <div class="feature-card hoverable">
-        <div class="feature-icon">⚡</div>
-        <h3>Instant Activation</h3>
-        <p>QR Code delivered by email. Online in minutes without waiting for physical delivery.</p>
-      </div>
-      <div class="feature-card hoverable">
-        <div class="feature-icon">🚫</div>
-        <h3>No Roaming Fees</h3>
-        <p>Forget absurd carrier charges. Connect to local plans at local prices.</p>
-      </div>
-      <div class="feature-card hoverable">
-        <div class="feature-icon">🌍</div>
-        <h3>200+ Countries</h3>
-        <p>True global coverage. From weekend city breaks to multi-continent backpacking.</p>
-      </div>
-      <div class="feature-card hoverable">
-        <div class="feature-icon">📶</div>
-        <h3>Flexible Plans</h3>
-        <p>Buy by days or by data amounts. Choose exactly what makes sense for your trip.</p>
-      </div>
-      <div class="feature-card hoverable">
-        <div class="feature-icon">📱</div>
-        <h3>Multi-Device</h3>
-        <p>Compatible with all modern eSIM-enabled iOS and Android smartphones.</p>
-      </div>
-      <div class="feature-card hoverable">
-        <div class="feature-icon">💬</div>
-        <h3>24/7 Support</h3>
-        <p>Our dedicated team is available at any hour, in any time zone you travel to.</p>
-      </div>
-    </div>
-  </section>
-
-  <section class="showcase">
-    <div class="orbit orbit-1"></div>
-    <div class="orbit orbit-2"></div>
-    
-    <div class="showcase-text">
-      <h2>The app that travelers love</h2>
-      <p class="testimonial">"I bought my Japan eSIM 5 minutes before boarding.<br>Worked perfectly when I landed." — Ana M., Lisbon</p>
-    </div>
-    
-    <div class="phones-container" id="phones-parallax">
-      <div class="phone-3d phone-left">
-        <img src="https://images.unsplash.com/photo-1601055903647-8f1929d18b45?auto=format&fit=crop&q=80&w=400" class="phone-screen" alt="Countries Grid">
-      </div>
-      <div class="phone-3d phone-center">
-        <img src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&q=80&w=400" class="phone-screen" alt="Home Screen">
-      </div>
-      <div class="phone-3d phone-right">
-        <img src="https://images.unsplash.com/photo-1616469829941-c7200edec809?auto=format&fit=crop&q=80&w=400" class="phone-screen" alt="eSIM List">
-      </div>
-    </div>
-  </section>
-
-  <section class="destinations" id="destinations">
-    <div class="section-header">
-      <h2>The World is within reach</h2>
-      <p style="color: var(--text-secondary)">Discover popular packages tailored for your next stop.</p>
-    </div>
-    
-    <div class="bento-grid">
-      <div class="bento-item hoverable">
-        <img src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&q=80&w=800" class="bento-img" alt="Japan">
-        <div class="pop-badge">POPULAR</div>
-        <div class="bento-overlay">
-          <div class="bento-content">
-            <div class="bento-title">Japan</div>
-            <div class="bento-price">Plans from $4.50</div>
+      <div class="container" style="position:relative;z-index:2;">
+        <div class="hero__content">
+          <div class="badge hero__badge">
+            <span class="badge__dot"></span>
+            200+ Countries · Instant Activation
+          </div>
+          <h1 class="hero__title">
+            <span>Stay Connected,</span>
+            <span class="text-gradient">Wherever You Go.</span>
+          </h1>
+          <p class="hero__subtitle">
+            Get your eSIM in seconds. Travel without limits, no roaming fees,
+            no SIM swaps — just seamless global connectivity.
+          </p>
+          <div class="hero__ctas">
+            <a href="#download" class="btn btn--primary btn--lg">Download Free</a>
+            <a href="pages/destinations.html" class="btn btn--outline btn--lg">Explore Destinations</a>
+          </div>
+          <div class="hero__stores">
+            <a href="#" class="store-badge" aria-label="Download on the App Store">
+              <svg class="store-badge__icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.09 2.31-.86 3.82-.76 1.45.1 2.58.68 3.32 1.77-2.92 1.76-2.45 5.58.37 6.78-.69 1.75-1.57 3.39-2.59 4.38zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+              </svg>
+              <div class="store-badge__text">
+                <span class="store-badge__label">Download on the</span>
+                <span class="store-badge__name">App Store</span>
+              </div>
+            </a>
+            <a href="#" class="store-badge" aria-label="Get it on Google Play">
+              <svg class="store-badge__icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3.609 1.814L13.792 12 3.61 22.186a1.986 1.986 0 0 1-.502-1.312V3.126c0-.528.18-1.018.501-1.312zm10.985 10.89l3.14-3.14-5.836-3.328 2.696 6.468zm.698.697l-2.696 6.468 5.836-3.328-3.14-3.14zm4.07-2.07l2.87-1.637a1.01 1.01 0 0 0 0-1.75l-2.87-1.637-3.41 3.41 3.41 3.41z" fill-rule="evenodd"/>
+              </svg>
+              <div class="store-badge__text">
+                <span class="store-badge__label">Get it on</span>
+                <span class="store-badge__name">Google Play</span>
+              </div>
+            </a>
           </div>
         </div>
       </div>
-      <div class="bento-item hoverable">
-        <img src="https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?auto=format&fit=crop&q=80&w=400" class="bento-img" alt="Portugal">
-        <div class="bento-overlay">
-          <div class="bento-content">
-            <div class="bento-title">Portugal</div>
-            <div class="bento-price">From $2.90</div>
+
+      <div class="hero__scroll" aria-hidden="true">
+        <div class="hero__scroll-line"></div>
+        <span>Scroll</span>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ TRUST BAR ═══════════════════ -->
+    <section class="trust-bar" aria-label="Trust metrics">
+      <div class="trust-bar__inner container--wide">
+        <div class="trust-bar__stat">
+          <div class="trust-bar__number" data-count="200" data-suffix="+">0</div>
+          <div class="trust-bar__label">Countries</div>
+        </div>
+        <div class="trust-bar__stat">
+          <div class="trust-bar__number" data-count="1.5" data-suffix="M+">0</div>
+          <div class="trust-bar__label">Travelers</div>
+        </div>
+        <div class="trust-bar__stat">
+          <div class="trust-bar__number">⚡</div>
+          <div class="trust-bar__label">Instant Activation</div>
+        </div>
+        <div class="trust-bar__stat">
+          <div class="trust-bar__number">24/7</div>
+          <div class="trust-bar__label">AI-Powered Support</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════ HOW IT WORKS ═══════════════════ -->
+    <section class="section" id="steps-section" aria-labelledby="steps-heading">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="label">How It Works</span>
+          <h2 id="steps-heading">Three Steps to Connectivity</h2>
+          <p>Purchase anywhere, connect everywhere. It takes less than 2 minutes.</p>
+        </div>
+
+        <div class="steps">
+          <div class="steps__track">
+            <div class="steps__line">
+              <div class="steps__line-fill" id="steps-line-fill"></div>
+            </div>
+
+            <div class="step step--active">
+              <div class="step__icon">
+                <span class="step__number">1</span>
+                🔍
+              </div>
+              <h3 class="step__title">Choose Destination</h3>
+              <p class="step__desc">Browse 200+ countries and regions. Filter by data, duration, or price.</p>
+              <div class="step__phone">
+                <div class="step__phone-notch"></div>
+                <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=400" alt="App destination selection screen" class="step__phone-screen" loading="lazy">
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step__icon">
+                <span class="step__number">2</span>
+                ⚡
+              </div>
+              <h3 class="step__title">Buy in Seconds</h3>
+              <p class="step__desc">Secure checkout. Receive your eSIM QR code instantly — no waiting.</p>
+              <div class="step__phone">
+                <div class="step__phone-notch"></div>
+                <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=400" alt="App checkout screen" class="step__phone-screen" loading="lazy">
+              </div>
+            </div>
+
+            <div class="step">
+              <div class="step__icon">
+                <span class="step__number">3</span>
+                🌐
+              </div>
+              <h3 class="step__title">Connect & Travel</h3>
+              <p class="step__desc">Scan the QR code before departure. Connects automatically when you land.</p>
+              <div class="step__phone">
+                <div class="step__phone-notch"></div>
+                <img src="https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?auto=format&fit=crop&q=80&w=400" alt="App connected screen" class="step__phone-screen" loading="lazy">
+              </div>
+            </div>
           </div>
         </div>
       </div>
-      <div class="bento-item hoverable">
-        <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=400" class="bento-img" alt="Dubai">
-        <div class="bento-overlay">
-          <div class="bento-content">
-            <div class="bento-title">Dubai</div>
-            <div class="bento-price">From $5.00</div>
+    </section>
+
+    <!-- ═══════════════════ FEATURES ═══════════════════ -->
+    <section class="section" id="features" aria-labelledby="features-heading">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="label">Features</span>
+          <h2 id="features-heading">Everything You Need to Travel Smart</h2>
+          <p>Built for modern travelers who want reliable connectivity without the hassle.</p>
+        </div>
+
+        <div class="features-grid">
+          <div class="feature-card glass-card">
+            <div class="feature-card__icon">⚡</div>
+            <h3 class="feature-card__title">Instant Activation</h3>
+            <p class="feature-card__desc">QR code delivered to your app instantly. Get online in minutes, not days.</p>
+          </div>
+          <div class="feature-card glass-card">
+            <div class="feature-card__icon">🚫</div>
+            <h3 class="feature-card__title">Zero Roaming Fees</h3>
+            <p class="feature-card__desc">Connect to local networks at local prices, saving up to 90% on data costs.</p>
+          </div>
+          <div class="feature-card glass-card">
+            <div class="feature-card__icon">🌍</div>
+            <h3 class="feature-card__title">200+ Countries</h3>
+            <p class="feature-card__desc">True global coverage. Weekend city breaks to multi-continent backpacking.</p>
+          </div>
+          <div class="feature-card glass-card">
+            <div class="feature-card__icon">📊</div>
+            <h3 class="feature-card__title">Flexible Plans</h3>
+            <p class="feature-card__desc">Choose by data amount or duration. 1GB for a weekend or unlimited for a month.</p>
+          </div>
+          <div class="feature-card glass-card">
+            <div class="feature-card__icon">🤖</div>
+            <h3 class="feature-card__title">AI Support Chat</h3>
+            <p class="feature-card__desc">Instant help 24/7. Real agents available when you need a human touch.</p>
+          </div>
+          <div class="feature-card glass-card">
+            <div class="feature-card__icon">📱</div>
+            <h3 class="feature-card__title">Multi-Device</h3>
+            <p class="feature-card__desc">Compatible with all modern eSIM-enabled iPhones and Android devices.</p>
           </div>
         </div>
       </div>
-      <div class="bento-item hoverable">
-        <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&q=80&w=800" class="bento-img" alt="Europe Regional">
-        <div class="pop-badge">30 COUNTRIES</div>
-        <div class="bento-overlay">
-          <div class="bento-content">
-            <div class="bento-title">Europe Regional</div>
-            <div class="bento-price">From $14.99</div>
+    </section>
+
+    <!-- ═══════════════════ APP SHOWCASE ═══════════════════ -->
+    <section class="section showcase" aria-labelledby="showcase-heading">
+      <div class="showcase__orbit showcase__orbit--1" aria-hidden="true"></div>
+      <div class="showcase__orbit showcase__orbit--2" aria-hidden="true"></div>
+
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="label">App Preview</span>
+          <h2 id="showcase-heading" class="text-gradient">Designed for Travelers</h2>
+          <p>Beautiful, intuitive, and blazing fast. Everything you need in one app.</p>
+        </div>
+
+        <div class="showcase__phones">
+          <div class="phone-3d phone-3d--left">
+            <div class="phone-3d__notch"></div>
+            <img src="https://images.unsplash.com/photo-1601055903647-8f1929d18b45?auto=format&fit=crop&q=80&w=400" class="phone-3d__screen" alt="App destinations grid" loading="lazy">
+          </div>
+          <div class="phone-3d phone-3d--center">
+            <div class="phone-3d__notch"></div>
+            <img src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&q=80&w=400" class="phone-3d__screen" alt="App home screen" loading="lazy">
+          </div>
+          <div class="phone-3d phone-3d--right">
+            <div class="phone-3d__notch"></div>
+            <img src="https://images.unsplash.com/photo-1616469829941-c7200edec809?auto=format&fit=crop&q=80&w=400" class="phone-3d__screen" alt="App eSIM management" loading="lazy">
           </div>
         </div>
       </div>
-    </div>
-    
-    <div class="dest-cta">
-      <a href="#" class="hoverable">Explore all 200+ destinations →</a>
-    </div>
-  </section>
+    </section>
 
-  <section class="pricing-cta">
-    <div class="pricing-cards">
-      <div class="price-card">
-        <h3>🇵🇹 Portugal</h3>
-        <div class="price-details">1GB • 7 Days</div>
-        <div class="price-amount">$2.90</div>
-      </div>
-      <div class="price-card" style="border-color: var(--accent); transform: scale(1.05);">
-        <h3>🇯🇵 Japan</h3>
-        <div class="price-details">3GB • 15 Days</div>
-        <div class="price-amount">$8.50</div>
-      </div>
-      <div class="price-card">
-        <h3>🌍 Europe</h3>
-        <div class="price-details">5GB • 30 Days</div>
-        <div class="price-amount">$14.99</div>
-      </div>
-    </div>
-    
-    <div class="final-cta">
-      <h2>Ready for your next adventure?</h2>
-      <p style="color: var(--text-secondary); margin-bottom: 2rem;">No contracts. Cancel anytime. Support available 24/7.</p>
-      <div class="store-buttons">
-        <button class="store-btn hoverable">
-          <svg viewBox="0 0 24 24"><path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.09 2.31-.86 3.82-.76 1.45.1 2.58.68 3.32 1.77-2.92 1.76-2.45 5.58.37 6.78-.69 1.75-1.57 3.39-2.59 4.38zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/></svg>
-          App Store
-        </button>
-        <button class="store-btn hoverable">
-          <svg viewBox="0 0 24 24"><path d="M3.609 1.814L13.792 12 3.61 22.186a1.986 1.986 0 0 1-.502-1.312V3.126c0-.528.18-1.018.501-1.312zm10.985 10.89l3.14-3.14-5.836-3.328 2.696 6.468zm.698.697l-2.696 6.468 5.836-3.328-3.14-3.14zm4.07-2.07l2.87-1.637a1.01 1.01 0 0 0 0-1.75l-2.87-1.637-3.41 3.41 3.41 3.41z" fill-rule="evenodd"/></svg>
-          Google Play
-        </button>
-      </div>
-    </div>
-  </section>
+    <!-- ═══════════════════ DESTINATIONS BENTO ═══════════════════ -->
+    <section class="section" id="destinations" aria-labelledby="dest-heading">
+      <div class="container container--wide">
+        <div class="section-header reveal">
+          <span class="label">Popular Destinations</span>
+          <h2 id="dest-heading">The World Is Within Reach</h2>
+          <p>Discover popular packages tailored for your next destination.</p>
+        </div>
 
-  <footer>
-    <div class="footer-content">
-      <div class="footer-brand">
-        <div class="logo script-text" style="font-size: 2rem; margin-bottom: 1rem;">Simphonia</div>
-        <p style="color: var(--text-muted); max-width: 250px;">Stay Connected, Wherever You Go.</p>
-      </div>
-      <div class="footer-links">
-        <div class="footer-col">
-          <h4>Company</h4>
-          <ul>
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">Destinations</a></li>
-            <li><a href="#">Careers</a></li>
-          </ul>
+        <div class="bento-grid">
+          <div class="bento-item">
+            <img src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&q=80&w=800" class="bento-item__img" alt="Japan landscape" loading="lazy">
+            <span class="bento-item__badge">Popular</span>
+            <div class="bento-item__overlay">
+              <div class="bento-item__content">
+                <div class="bento-item__title">Japan</div>
+                <div class="bento-item__price">Plans from $4.50</div>
+              </div>
+            </div>
+          </div>
+          <div class="bento-item">
+            <img src="https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?auto=format&fit=crop&q=80&w=400" class="bento-item__img" alt="Portugal coastline" loading="lazy">
+            <div class="bento-item__overlay">
+              <div class="bento-item__content">
+                <div class="bento-item__title">Portugal</div>
+                <div class="bento-item__price">From $2.90</div>
+              </div>
+            </div>
+          </div>
+          <div class="bento-item">
+            <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=400" class="bento-item__img" alt="Dubai skyline" loading="lazy">
+            <div class="bento-item__overlay">
+              <div class="bento-item__content">
+                <div class="bento-item__title">Dubai</div>
+                <div class="bento-item__price">From $5.00</div>
+              </div>
+            </div>
+          </div>
+          <div class="bento-item">
+            <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&q=80&w=800" class="bento-item__img" alt="European road trip" loading="lazy">
+            <span class="bento-item__badge">30 Countries</span>
+            <div class="bento-item__overlay">
+              <div class="bento-item__content">
+                <div class="bento-item__title">Europe Regional</div>
+                <div class="bento-item__price">From $14.99</div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="footer-col">
-          <h4>Help</h4>
-          <ul>
-            <li><a href="#">Support 24/7</a></li>
-            <li><a href="#">FAQ</a></li>
-            <li><a href="#">Contact</a></li>
-          </ul>
-        </div>
-        <div class="footer-col">
-          <h4>Legal</h4>
-          <ul>
-            <li><a href="#">Terms of Service</a></li>
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Refund Policy</a></li>
-          </ul>
+
+        <div class="dest-cta reveal">
+          <a href="pages/destinations.html">Explore all 200+ destinations <span aria-hidden="true">→</span></a>
         </div>
       </div>
-    </div>
-    <div class="footer-bottom">
-      <p>&copy; 2026 Simphonia. All Rights Reserved.</p>
-      <div class="socials">
-        <a href="#" aria-label="Instagram"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg></a>
-        <a href="#" aria-label="LinkedIn"><svg width="20" height="20" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg></a>
+    </section>
+
+    <!-- ═══════════════════ TESTIMONIALS ═══════════════════ -->
+    <section class="section" aria-labelledby="testimonials-heading">
+      <div class="container container--wide">
+        <div class="section-header reveal">
+          <span class="label">Testimonials</span>
+          <h2 id="testimonials-heading">Loved by Travelers Worldwide</h2>
+        </div>
+
+        <div class="testimonials-track">
+          <div class="testimonial-card glass-card">
+            <div class="testimonial-card__stars">★★★★★</div>
+            <p class="testimonial-card__quote">"I bought my Japan eSIM 5 minutes before boarding. Worked perfectly when I landed. Absolute game changer."</p>
+            <div class="testimonial-card__author">
+              <div class="testimonial-card__avatar">AM</div>
+              <div>
+                <div class="testimonial-card__name">Ana M.</div>
+                <div class="testimonial-card__role">Lisbon, Portugal</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card glass-card">
+            <div class="testimonial-card__stars">★★★★★</div>
+            <p class="testimonial-card__quote">"Saved over $200 on my Europe trip. The regional plan covered 30 countries seamlessly. No more hunting for local SIMs."</p>
+            <div class="testimonial-card__author">
+              <div class="testimonial-card__avatar">JK</div>
+              <div>
+                <div class="testimonial-card__name">James K.</div>
+                <div class="testimonial-card__role">London, UK</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card glass-card">
+            <div class="testimonial-card__stars">★★★★★</div>
+            <p class="testimonial-card__quote">"The AI support is incredible. Had a question at 3am in Tokyo and got an instant, helpful response."</p>
+            <div class="testimonial-card__author">
+              <div class="testimonial-card__avatar">SK</div>
+              <div>
+                <div class="testimonial-card__name">Sarah K.</div>
+                <div class="testimonial-card__role">New York, USA</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card glass-card">
+            <div class="testimonial-card__stars">★★★★★</div>
+            <p class="testimonial-card__quote">"Setup was ridiculously easy. Scanned the QR code, landed in Dubai, and my phone connected instantly."</p>
+            <div class="testimonial-card__author">
+              <div class="testimonial-card__avatar">MR</div>
+              <div>
+                <div class="testimonial-card__name">Marco R.</div>
+                <div class="testimonial-card__role">Milan, Italy</div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
-  </footer>
+    </section>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+    <!-- ═══════════════════ PRICING PREVIEW ═══════════════════ -->
+    <section class="section" id="pricing" aria-labelledby="pricing-heading">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="label">Pricing</span>
+          <h2 id="pricing-heading">Transparent, Fair Pricing</h2>
+          <p>No contracts. No hidden fees. Pay only for what you need.</p>
+        </div>
 
-  <script>
-    // --- 1. CUSTOM CURSOR & NAVBAR ---
-    const cursor = document.getElementById('cursor');
-    const hoverables = document.querySelectorAll('.hoverable, .btn, a, .bento-item');
-    
-    document.addEventListener('mousemove', (e) => {
-      cursor.style.left = e.clientX + 'px';
-      cursor.style.top = e.clientY + 'px';
-    });
-    
-    hoverables.forEach(el => {
-      el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
-      el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
-    });
+        <div class="pricing-cards">
+          <div class="price-card">
+            <div class="price-card__flag">🇵🇹</div>
+            <div class="price-card__name">Portugal</div>
+            <div class="price-card__details">1 GB · 7 Days</div>
+            <div class="price-card__price">$2.90</div>
+            <div class="price-card__features">
+              <div class="price-card__feature">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                4G/LTE speeds
+              </div>
+              <div class="price-card__feature">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Instant activation
+              </div>
+              <div class="price-card__feature">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                No registration needed
+              </div>
+            </div>
+            <a href="#download" class="btn btn--outline" style="width:100%;">Get Started</a>
+          </div>
 
-    const navbar = document.getElementById('navbar');
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 50) navbar.classList.add('scrolled');
-      else navbar.classList.remove('scrolled');
-    });
+          <div class="price-card price-card--featured">
+            <div class="price-card__flag">🇯🇵</div>
+            <div class="price-card__name">Japan</div>
+            <div class="price-card__details">3 GB · 15 Days</div>
+            <div class="price-card__price">$8.50</div>
+            <div class="price-card__features">
+              <div class="price-card__feature">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                5G where available
+              </div>
+              <div class="price-card__feature">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Hotspot sharing
+              </div>
+              <div class="price-card__feature">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                24/7 AI support
+              </div>
+            </div>
+            <a href="#download" class="btn btn--primary" style="width:100%;">Get Started</a>
+          </div>
 
-    // --- 2. BACKGROUND STARS CANVAS ---
-    const canvas = document.getElementById('stars-canvas');
-    const ctx = canvas.getContext('2d');
-    let width, height;
-    let stars = [];
+          <div class="price-card">
+            <div class="price-card__flag">🌍</div>
+            <div class="price-card__name">Europe</div>
+            <div class="price-card__details">5 GB · 30 Days</div>
+            <div class="price-card__price">$14.99</div>
+            <div class="price-card__features">
+              <div class="price-card__feature">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                30 countries covered
+              </div>
+              <div class="price-card__feature">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Seamless roaming
+              </div>
+              <div class="price-card__feature">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                Top-up available
+              </div>
+            </div>
+            <a href="#download" class="btn btn--outline" style="width:100%;">Get Started</a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    function initStars() {
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-      stars = [];
-      for (let i = 0; i < 200; i++) {
-        stars.push({
-          x: Math.random() * width,
-          y: Math.random() * height,
-          radius: Math.random() * 1.5,
-          vx: Math.random() * 0.2 - 0.1,
-          vy: Math.random() * 0.2 - 0.1
-        });
-      }
-    }
+    <!-- ═══════════════════ DOWNLOAD CTA ═══════════════════ -->
+    <section class="section cta-section" id="download" aria-labelledby="cta-heading">
+      <div class="cta-section__bg" aria-hidden="true"></div>
+      <div class="container" style="position:relative;z-index:1;">
+        <div class="reveal">
+          <h2 id="cta-heading">Ready for Your Next Adventure?</h2>
+          <p>Download Simphonia for free. No contracts. Cancel anytime.</p>
+          <div class="flex flex-center gap-lg" style="flex-wrap:wrap;margin-top:var(--space-xl);">
+            <a href="#" class="store-badge" aria-label="Download on the App Store">
+              <svg class="store-badge__icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.09 2.31-.86 3.82-.76 1.45.1 2.58.68 3.32 1.77-2.92 1.76-2.45 5.58.37 6.78-.69 1.75-1.57 3.39-2.59 4.38zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+              </svg>
+              <div class="store-badge__text">
+                <span class="store-badge__label">Download on the</span>
+                <span class="store-badge__name">App Store</span>
+              </div>
+            </a>
+            <a href="#" class="store-badge" aria-label="Get it on Google Play">
+              <svg class="store-badge__icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M3.609 1.814L13.792 12 3.61 22.186a1.986 1.986 0 0 1-.502-1.312V3.126c0-.528.18-1.018.501-1.312zm10.985 10.89l3.14-3.14-5.836-3.328 2.696 6.468zm.698.697l-2.696 6.468 5.836-3.328-3.14-3.14zm4.07-2.07l2.87-1.637a1.01 1.01 0 0 0 0-1.75l-2.87-1.637-3.41 3.41 3.41 3.41z" fill-rule="evenodd"/>
+              </svg>
+              <div class="store-badge__text">
+                <span class="store-badge__label">Get it on</span>
+                <span class="store-badge__name">Google Play</span>
+              </div>
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
 
-    function animateStars() {
-      ctx.clearRect(0, 0, width, height);
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-      
-      stars.forEach(star => {
-        star.x += star.vx;
-        star.y += star.vy - (window.scrollY * 0.0005); // slight scroll parallax
-        
-        if (star.x < 0) star.x = width;
-        if (star.x > width) star.x = 0;
-        if (star.y < 0) star.y = height;
-        if (star.y > height) star.y = 0;
-        
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
-        ctx.fill();
-      });
-      requestAnimationFrame(animateStars);
-    }
-    
-    window.addEventListener('resize', initStars);
-    initStars();
-    animateStars();
+  </main>
 
-    // --- 3. THREE.JS GLOBE ---
-    if (window.innerWidth > 768) {
-      const container = document.getElementById('globe-container');
-      const scene = new THREE.Scene();
-      const camera = new THREE.PerspectiveCamera(45, container.clientWidth / container.clientHeight, 0.1, 1000);
-      const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
-      
-      renderer.setSize(container.clientWidth, container.clientHeight);
-      container.appendChild(renderer.domElement);
-      
-      // Wireframe Globe
-      const geometry = new THREE.SphereGeometry(4, 32, 32);
-      const material = new THREE.MeshBasicMaterial({ 
-        color: 0xC9972A, 
-        wireframe: true,
-        transparent: true,
-        opacity: 0.15
-      });
-      const globe = new THREE.Mesh(geometry, material);
-      scene.add(globe);
-      
-      // Glowing dots (Cities)
-      const cities = [
-        { lat: 38.7, lon: -9.1 }, // Lisbon
-        { lat: 48.8, lon: 2.3 },  // Paris
-        { lat: 35.6, lon: 139.6 },// Tokyo
-        { lat: 40.7, lon: -74.0 },// NY
-        { lat: 25.2, lon: 55.2 }, // Dubai
-      ];
-      
-      const dotGeometry = new THREE.BufferGeometry();
-      const dotVertices = [];
-      
-      cities.forEach(city => {
-        const phi = (90 - city.lat) * (Math.PI / 180);
-        const theta = (city.lon + 180) * (Math.PI / 180);
-        const r = 4.05; // slightly above surface
-        
-        const x = -(r * Math.sin(phi) * Math.cos(theta));
-        const z = (r * Math.sin(phi) * Math.sin(theta));
-        const y = (r * Math.cos(phi));
-        dotVertices.push(x, y, z);
-      });
-      
-      dotGeometry.setAttribute('position', new THREE.Float32BufferAttribute(dotVertices, 3));
-      const dotMaterial = new THREE.PointsMaterial({ 
-        color: 0xFFD740, 
-        size: 0.15,
-        transparent: true,
-        opacity: 0.8
-      });
-      const points = new THREE.Points(dotGeometry, dotMaterial);
-      globe.add(points);
+  <!-- Scripts -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script type="module" src="js/main.js"></script>
 
-      // Mouse Parallax interaction
-      let mouseX = 0; let mouseY = 0;
-      let targetX = 0; let targetY = 0;
-      
-      document.addEventListener('mousemove', (event) => {
-        mouseX = (event.clientX - window.innerWidth / 2);
-        mouseY = (event.clientY - window.innerHeight / 2);
-      });
-      
-      camera.position.z = 10;
-      camera.position.x = 3; // Shift right
-      
-      function animateGlobe() {
-        requestAnimationFrame(animateGlobe);
-        
-        targetX = mouseX * 0.001;
-        targetY = mouseY * 0.001;
-        
-        globe.rotation.y += 0.002;
-        globe.rotation.x += 0.05 * (targetY - globe.rotation.x);
-        globe.rotation.y += 0.05 * (targetX - globe.rotation.y);
-        
-        renderer.render(scene, camera);
-      }
-      animateGlobe();
-    }
-
-    // --- 4. GSAP ANIMATIONS ---
-    gsap.registerPlugin(ScrollTrigger);
-
-    // Hero Entrance
-    gsap.from(".hero-title", { y: 50, opacity: 0, duration: 1, delay: 0.2 });
-    gsap.from(".hero-sub", { y: 30, opacity: 0, duration: 1, delay: 0.4 });
-    gsap.from(".badge", { y: -20, opacity: 0, duration: 0.8, delay: 0.1 });
-    gsap.from(".hero-ctas", { y: 30, opacity: 0, duration: 1, delay: 0.6 });
-
-    // Trust Bar Count Up
-    const counters = document.querySelectorAll('.counter');
-    ScrollTrigger.create({
-      trigger: ".trust-bar",
-      start: "top 80%",
-      onEnter: () => {
-        counters.forEach(counter => {
-          const target = +counter.getAttribute('data-target');
-          gsap.to(counter, {
-            innerHTML: target,
-            duration: 2,
-            snap: { innerHTML: 1 },
-            ease: "power1.out"
-          });
-        });
-      }
-    });
-
-    // How It Works - Horizontal/Pin Scroll
-    if(window.innerWidth > 768) {
-      const stepsTimeline = gsap.timeline({
-        scrollTrigger: {
-          trigger: "#how-it-works",
-          start: "center center",
-          end: "+=150%",
-          pin: true,
-          scrub: 1
-        }
-      });
-      
-      // Step 2
-      stepsTimeline.to("#progress-fill", { width: "50%", duration: 1 })
-                   .to(".step-1", { opacity: 0.3 }, "<")
-                   .to(".step-2", { opacity: 1 }, "<")
-      // Step 3
-                   .to("#progress-fill", { width: "100%", duration: 1 })
-                   .to(".step-2", { opacity: 0.3 }, "<")
-                   .to(".step-3", { opacity: 1 }, "<");
-    }
-
-    // Features Stagger
-    gsap.from(".feature-card", {
-      scrollTrigger: {
-        trigger: ".features",
-        start: "top 70%"
-      },
-      y: 50,
-      opacity: 0,
-      duration: 0.8,
-      stagger: 0.15
-    });
-
-    // Phones Parallax
-    if(window.innerWidth > 768) {
-      gsap.to(".phone-left", {
-        y: -100,
-        scrollTrigger: { trigger: ".showcase", start: "top bottom", end: "bottom top", scrub: 1 }
-      });
-      gsap.to(".phone-right", {
-        y: 100,
-        scrollTrigger: { trigger: ".showcase", start: "top bottom", end: "bottom top", scrub: 1 }
-      });
-      gsap.from(".phone-center", {
-        y: 150, opacity: 0, duration: 1,
-        scrollTrigger: { trigger: ".showcase", start: "top 60%" }
-      });
-    }
-
-    // Destinations Stagger
-    gsap.from(".bento-item", {
-      scrollTrigger: {
-        trigger: ".destinations",
-        start: "top 70%"
-      },
-      scale: 0.9,
-      opacity: 0,
-      duration: 0.6,
-      stagger: 0.1
-    });
-
-  </script>
+  <noscript>
+    <style>
+      .reveal, .reveal--left, .reveal--right, .reveal--scale { opacity: 1; transform: none; }
+      #globe-container, #stars-canvas, .cursor { display: none; }
+    </style>
+  </noscript>
 </body>
 </html>
+
