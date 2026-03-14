@@ -27,8 +27,8 @@ export function initAnimations() {
   // --- Generic Reveal ---
   initReveals();
 
-  // --- Hero ---
-  if (document.querySelector('.hero')) initHero();
+  // --- Hero v1 & v2 ---
+  if (document.querySelector('.hero, .hero--v2')) initHero();
 
   // --- Trust Bar Counters ---
   if (document.querySelector('.trust-bar')) initCounters();
@@ -36,8 +36,11 @@ export function initAnimations() {
   // --- How It Works Steps ---
   if (document.getElementById('steps-section')) initSteps();
 
-  // --- Features Stagger ---
-  if (document.querySelector('.features-grid')) initFeatures();
+  // --- Features Stagger (old + new) ---
+  if (document.querySelector('.features-grid, .feature-grid--new')) initFeatures();
+
+  // --- Step Cards ---
+  if (document.querySelector('.steps--cards')) initStepCards();
 
   // --- Showcase Phones ---
   if (document.querySelector('.showcase')) initShowcase();
@@ -107,17 +110,30 @@ function initReveals() {
   });
 }
 
-// ── Hero Entrance ────────────────────────────────────────
-
 function initHero() {
   const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
 
-  tl.from('.hero__badge', { y: -20, opacity: 0, duration: 0.6, delay: 0.2 })
-    .from('.hero__title', { y: 40, opacity: 0, duration: 0.8 }, '-=0.3')
-    .from('.hero__subtitle', { y: 30, opacity: 0, duration: 0.7 }, '-=0.5')
-    .from('.hero__ctas', { y: 30, opacity: 0, duration: 0.7 }, '-=0.4')
-    .from('.hero__stores', { y: 20, opacity: 0, duration: 0.6 }, '-=0.3')
-    .from('.hero__scroll', { opacity: 0, duration: 0.5 }, '-=0.2');
+  // v2 hero (homepage redesign)
+  if (document.querySelector('.hero__eyebrow')) {
+    tl.from('.hero__eyebrow', { y: -20, opacity: 0, duration: 0.6, delay: 0.1 })
+      .from('.hero__h1 .line-1', { y: 50, opacity: 0, duration: 0.8 }, '-=0.2')
+      .from('.hero__h1 .line-2', { y: 50, opacity: 0, duration: 0.8 }, '-=0.5')
+      .from('.hero__desc', { y: 30, opacity: 0, duration: 0.7 }, '-=0.4')
+      .from('.hero__actions', { y: 30, opacity: 0, duration: 0.6 }, '-=0.4')
+      .from('.hero__stores-row', { y: 20, opacity: 0, duration: 0.5 }, '-=0.3')
+      .from('.hero__proof', { opacity: 0, duration: 0.5 }, '-=0.2')
+      .from('.hero-phone', { x: 60, opacity: 0, duration: 1, ease: 'power2.out' }, 0.3)
+      .from('.hero-phone__badge--1', { x: 40, opacity: 0, duration: 0.5 }, 0.8)
+      .from('.hero-phone__badge--2', { x: 40, opacity: 0, duration: 0.5 }, 1.0)
+      .from('.hero-phone__badge--3', { x: -40, opacity: 0, duration: 0.5 }, 0.9);
+    return;
+  }
+
+  // v1 hero fallback
+  tl.from('.hero-title', { y: 50, opacity: 0, duration: 1, delay: 0.2 })
+    .from('.hero-sub', { y: 30, opacity: 0, duration: 1 }, '-=0.5')
+    .from('.badge', { y: -20, opacity: 0, duration: 0.8 }, '-=0.8')
+    .from('.hero-ctas', { y: 30, opacity: 0, duration: 1 }, '-=0.4');
 }
 
 // ── Trust Bar Counter Animation ──────────────────────────
@@ -176,14 +192,31 @@ function initSteps() {
 // ── Features Stagger ─────────────────────────────────────
 
 function initFeatures() {
-  gsap.from('.feature-card', {
+  gsap.from('.feature-card, .feat-card', {
     y: 40,
     opacity: 0,
     duration: 0.7,
     stagger: 0.12,
     ease: 'power3.out',
     scrollTrigger: {
-      trigger: '.features-grid',
+      trigger: '.features-grid, .feature-grid--new',
+      start: 'top 75%',
+      once: true,
+    },
+  });
+}
+
+// ── Step Cards ───────────────────────────────────────────
+
+function initStepCards() {
+  gsap.from('.step-card', {
+    y: 50,
+    opacity: 0,
+    duration: 0.7,
+    stagger: 0.15,
+    ease: 'power3.out',
+    scrollTrigger: {
+      trigger: '.steps--cards',
       start: 'top 75%',
       once: true,
     },
@@ -291,4 +324,8 @@ function initFaq() {
     },
   });
 }
+
+
+
+
 

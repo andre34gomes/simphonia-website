@@ -2,23 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Simphonia — Global eSIM for Modern Travelers</title>
-  <meta name="description" content="Get instant mobile data in 200+ countries. No roaming fees, no SIM swaps. Download Simphonia and stay connected wherever you travel.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Simphonia — Global eSIM. Travel Without Limits.</title>
+  <meta name="description" content="Instant eSIM activation for 200+ countries from $2.90. No roaming fees, no SIM swaps, no contracts. Download Simphonia and stay connected wherever you go.">
   <meta name="theme-color" content="#0A0A0A">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Simphonia — Global eSIM for Modern Travelers">
-  <meta property="og:description" content="Instant eSIM activation for 200+ countries. Travel connected.">
+  <meta property="og:title" content="Simphonia — Travel Without Limits">
+  <meta property="og:description" content="Instant eSIM. 200+ countries. From $2.90. No roaming fees.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://simphonia.app">
 
-  <!-- Fonts -->
+  <!-- Preconnects -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <!-- Styles -->
   <link rel="stylesheet" href="css/style.css">
 
   <!-- Structured Data -->
@@ -28,237 +27,530 @@
     "@type": "Organization",
     "name": "Simphonia",
     "url": "https://simphonia.app",
-    "description": "Global eSIM service for travelers"
+    "description": "Global eSIM service for travelers in 200+ countries",
+    "offers": { "@type": "AggregateOffer", "lowPrice": "2.90", "priceCurrency": "USD" }
   }
   </script>
 </head>
-<body>
+<body class="show-mobile-cta">
 
   <a href="#main-content" class="skip-link">Skip to main content</a>
-  <div class="bg-noise"></div>
+  <div class="bg-noise" aria-hidden="true"></div>
   <canvas id="stars-canvas" aria-hidden="true"></canvas>
   <div class="cursor" id="cursor" aria-hidden="true"></div>
 
+  <!-- Mobile Sticky Download Bar -->
+  <div class="mobile-cta-bar" id="mobile-cta-bar" aria-label="Download Simphonia">
+    <a href="#" class="store-badge" aria-label="Download on the App Store">
+      <svg class="store-badge__icon" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.09 2.31-.86 3.82-.76 1.45.1 2.58.68 3.32 1.77-2.92 1.76-2.45 5.58.37 6.78-.69 1.75-1.57 3.39-2.59 4.38zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+      </svg>
+      <div class="store-badge__text">
+        <span class="store-badge__label">Download on the</span>
+        <span class="store-badge__name">App Store</span>
+      </div>
+    </a>
+    <a href="#" class="store-badge" aria-label="Get it on Google Play">
+      <svg class="store-badge__icon" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M3.609 1.814L13.792 12 3.61 22.186a1.986 1.986 0 0 1-.502-1.312V3.126c0-.528.18-1.018.501-1.312zm10.985 10.89l3.14-3.14-5.836-3.328 2.696 6.468zm.698.697l-2.696 6.468 5.836-3.328-3.14-3.14zm4.07-2.07l2.87-1.637a1.01 1.01 0 0 0 0-1.75l-2.87-1.637-3.41 3.41 3.41 3.41z" fill-rule="evenodd"/>
+      </svg>
+      <div class="store-badge__text">
+        <span class="store-badge__label">Get it on</span>
+        <span class="store-badge__name">Google Play</span>
+      </div>
+    </a>
+  </div>
+
   <main id="main-content">
 
-    <!-- ═══════════════════ HERO ═══════════════════ -->
-    <section class="hero section--full">
-      <div class="hero__orb hero__orb--1"></div>
-      <div class="hero__orb hero__orb--2"></div>
-      <div id="globe-container" aria-hidden="true"></div>
+    <!-- ════════════════════════════════════════
+         HERO — Split layout: text left, phone right
+         ════════════════════════════════════════ -->
+    <section class="hero--v2" id="home" aria-labelledby="hero-heading">
+      <!-- Background glow orbs -->
+      <div class="hero__orb" style="width:700px;height:700px;background:rgba(212,175,55,0.06);top:-10%;left:-15%;filter:blur(140px);position:absolute;pointer-events:none;z-index:0;border-radius:50%;"></div>
+      <div class="hero__orb" style="width:500px;height:500px;background:rgba(80,50,200,0.04);bottom:5%;right:5%;filter:blur(120px);position:absolute;pointer-events:none;z-index:0;border-radius:50%;"></div>
+      <!-- Globe behind the phone -->
+      <div id="globe-container" aria-hidden="true" style="position:absolute;top:0;right:0;width:55vw;height:100%;z-index:1;pointer-events:none;opacity:0.35;"></div>
 
-      <div class="container" style="position:relative;z-index:2;">
-        <div class="hero__content">
-          <div class="badge hero__badge">
-            <span class="badge__dot"></span>
-            200+ Countries · Instant Activation
-          </div>
-          <h1 class="hero__title">
-            <span>Stay Connected,</span>
-            <span class="text-gradient">Wherever You Go.</span>
-          </h1>
-          <p class="hero__subtitle">
-            Get your eSIM in seconds. Travel without limits, no roaming fees,
-            no SIM swaps — just seamless global connectivity.
-          </p>
-          <div class="hero__ctas">
-            <a href="#download" class="btn btn--primary btn--lg">Download Free</a>
-            <a href="pages/destinations.html" class="btn btn--outline btn--lg">Explore Destinations</a>
-          </div>
-          <div class="hero__stores">
-            <a href="#" class="store-badge" aria-label="Download on the App Store">
-              <svg class="store-badge__icon" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.09 2.31-.86 3.82-.76 1.45.1 2.58.68 3.32 1.77-2.92 1.76-2.45 5.58.37 6.78-.69 1.75-1.57 3.39-2.59 4.38zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
-              </svg>
-              <div class="store-badge__text">
-                <span class="store-badge__label">Download on the</span>
-                <span class="store-badge__name">App Store</span>
+      <div class="container">
+        <div class="hero__split">
+
+          <!-- LEFT: Text content -->
+          <div class="hero__text">
+
+            <!-- Eyebrow -->
+            <div class="hero__eyebrow">
+              <div class="badge" style="font-size:0.75rem;">
+                <span class="badge__dot"></span>
+                Available in 200+ Countries
               </div>
-            </a>
-            <a href="#" class="store-badge" aria-label="Get it on Google Play">
-              <svg class="store-badge__icon" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M3.609 1.814L13.792 12 3.61 22.186a1.986 1.986 0 0 1-.502-1.312V3.126c0-.528.18-1.018.501-1.312zm10.985 10.89l3.14-3.14-5.836-3.328 2.696 6.468zm.698.697l-2.696 6.468 5.836-3.328-3.14-3.14zm4.07-2.07l2.87-1.637a1.01 1.01 0 0 0 0-1.75l-2.87-1.637-3.41 3.41 3.41 3.41z" fill-rule="evenodd"/>
-              </svg>
-              <div class="store-badge__text">
-                <span class="store-badge__label">Get it on</span>
-                <span class="store-badge__name">Google Play</span>
+              <div class="hero__rating">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+                4.8 · 1.5M+ Reviews
               </div>
-            </a>
+            </div>
+
+            <!-- Headline -->
+            <h1 class="hero__h1" id="hero-heading">
+              <span class="line-1">Travel Without</span>
+              <span class="line-2 text-gradient">Limits.</span>
+            </h1>
+
+            <!-- Description -->
+            <p class="hero__desc">
+              Instant eSIM activation for 200+ countries. No roaming fees, no SIM swaps,
+              no contracts. Stay connected from <strong style="color:var(--accent);font-weight:700;">$2.90</strong>.
+            </p>
+
+            <!-- Primary CTA buttons -->
+            <div class="hero__actions">
+              <a href="#download" class="btn btn--primary btn--lg">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+                Download Free
+              </a>
+              <a href="pages/how-it-works.html" class="btn btn--outline btn--lg">
+                See How It Works
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+              </a>
+            </div>
+
+            <!-- App Store Badges -->
+            <div class="hero__stores-row">
+              <a href="#" class="store-badge" aria-label="Download on the App Store">
+                <svg class="store-badge__icon" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.09 2.31-.86 3.82-.76 1.45.1 2.58.68 3.32 1.77-2.92 1.76-2.45 5.58.37 6.78-.69 1.75-1.57 3.39-2.59 4.38zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
+                </svg>
+                <div class="store-badge__text">
+                  <span class="store-badge__label">Download on the</span>
+                  <span class="store-badge__name">App Store</span>
+                </div>
+              </a>
+              <a href="#" class="store-badge" aria-label="Get it on Google Play">
+                <svg class="store-badge__icon" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M3.609 1.814L13.792 12 3.61 22.186a1.986 1.986 0 0 1-.502-1.312V3.126c0-.528.18-1.018.501-1.312zm10.985 10.89l3.14-3.14-5.836-3.328 2.696 6.468zm.698.697l-2.696 6.468 5.836-3.328-3.14-3.14zm4.07-2.07l2.87-1.637a1.01 1.01 0 0 0 0-1.75l-2.87-1.637-3.41 3.41 3.41 3.41z" fill-rule="evenodd"/>
+                </svg>
+                <div class="store-badge__text">
+                  <span class="store-badge__label">Get it on</span>
+                  <span class="store-badge__name">Google Play</span>
+                </div>
+              </a>
+            </div>
+
+            <!-- Trust proof row -->
+            <div class="hero__proof">
+              <div class="hero__proof-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Free to download
+              </div>
+              <div class="hero__proof-sep" aria-hidden="true"></div>
+              <div class="hero__proof-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                No contracts
+              </div>
+              <div class="hero__proof-sep" aria-hidden="true"></div>
+              <div class="hero__proof-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                Instant activation
+              </div>
+            </div>
           </div>
+
+          <!-- RIGHT: Phone mockup with CSS app UI -->
+          <div class="hero__visual" aria-hidden="true">
+            <div class="hero-phone">
+
+              <!-- Floating badges -->
+              <div class="hero-phone__badge hero-phone__badge--1">
+                <span class="hero-phone__badge-icon">✅</span>
+                Instant Activation
+              </div>
+              <div class="hero-phone__badge hero-phone__badge--2">
+                <span class="hero-phone__badge-icon">📶</span>
+                5G Ready
+              </div>
+              <div class="hero-phone__badge hero-phone__badge--3">
+                <span class="hero-phone__badge-icon">🌍</span>
+                200+ Countries
+              </div>
+
+              <!-- Phone frame -->
+              <div class="hero-phone__frame">
+                <div class="hero-phone__notch"></div>
+                <div class="hero-phone__screen">
+
+                  <!-- Simulated App UI -->
+                  <div class="app-ui">
+
+                    <!-- Status Bar -->
+                    <div class="app-ui__status">
+                      <span class="app-ui__time">9:41</span>
+                      <div class="app-ui__icons">
+                        <span>▲▲▲</span>
+                        <span>WiFi</span>
+                        <span>🔋</span>
+                      </div>
+                    </div>
+
+                    <!-- Greeting -->
+                    <div class="app-ui__greeting">Good morning ✈️</div>
+                    <div class="app-ui__title">Where to next?</div>
+
+                    <!-- Search -->
+                    <div class="app-ui__search">
+                      <span class="app-ui__search-icon">🔍</span>
+                      Search destinations...
+                    </div>
+
+                    <!-- Popular destinations -->
+                    <div class="app-ui__label">Popular</div>
+                    <div class="app-ui__cards">
+                      <div class="app-ui__card">
+                        <div class="app-ui__card-flag">🇯🇵</div>
+                        <div class="app-ui__card-name">Japan</div>
+                        <div class="app-ui__card-price">From $4.50</div>
+                      </div>
+                      <div class="app-ui__card">
+                        <div class="app-ui__card-flag">🇺🇸</div>
+                        <div class="app-ui__card-name">USA</div>
+                        <div class="app-ui__card-price">From $5.00</div>
+                      </div>
+                      <div class="app-ui__card">
+                        <div class="app-ui__card-flag">🇪🇺</div>
+                        <div class="app-ui__card-name">Europe</div>
+                        <div class="app-ui__card-price">From $14.99</div>
+                      </div>
+                    </div>
+
+                    <!-- Active eSIM -->
+                    <div class="app-ui__active">
+                      <div class="app-ui__active-status">
+                        <div class="app-ui__active-dot"></div>
+                        <span class="app-ui__active-label">Active eSIM</span>
+                      </div>
+                      <div class="app-ui__active-plan">🇵🇹 Portugal · 7 Days</div>
+                      <div class="app-ui__data-row">
+                        <div class="app-ui__data-bar">
+                          <div class="app-ui__data-fill"></div>
+                        </div>
+                        <span class="app-ui__data-text">3.4 GB left</span>
+                      </div>
+                    </div>
+
+                    <!-- Nav bar -->
+                    <div class="app-ui__nav">
+                      <div class="app-ui__nav-item app-ui__nav-item--active">
+                        <span class="app-ui__nav-icon">🏠</span>
+                        Home
+                      </div>
+                      <div class="app-ui__nav-item">
+                        <span class="app-ui__nav-icon">🔍</span>
+                        Browse
+                      </div>
+                      <div class="app-ui__nav-item">
+                        <span class="app-ui__nav-icon">📱</span>
+                        My eSIMs
+                      </div>
+                      <div class="app-ui__nav-item">
+                        <span class="app-ui__nav-icon">👤</span>
+                        Profile
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
 
+      <!-- Scroll indicator -->
       <div class="hero__scroll" aria-hidden="true">
         <div class="hero__scroll-line"></div>
         <span>Scroll</span>
       </div>
     </section>
 
-    <!-- ═══════════════════ TRUST BAR ═══════════════════ -->
-    <section class="trust-bar" aria-label="Trust metrics">
-      <div class="trust-bar__inner container--wide">
-        <div class="trust-bar__stat">
-          <div class="trust-bar__number" data-count="200" data-suffix="+">0</div>
-          <div class="trust-bar__label">Countries</div>
-        </div>
-        <div class="trust-bar__stat">
-          <div class="trust-bar__number" data-count="1.5" data-suffix="M+">0</div>
-          <div class="trust-bar__label">Travelers</div>
-        </div>
-        <div class="trust-bar__stat">
-          <div class="trust-bar__number">⚡</div>
-          <div class="trust-bar__label">Instant Activation</div>
-        </div>
-        <div class="trust-bar__stat">
-          <div class="trust-bar__number">24/7</div>
-          <div class="trust-bar__label">AI-Powered Support</div>
-        </div>
+    <!-- ════════════════════════════════════════
+         MARQUEE — Countries scrolling ticker
+         ════════════════════════════════════════ -->
+    <div class="marquee-strip" aria-hidden="true">
+      <div class="marquee-track">
+        <!-- First list (original) -->
+        <ul class="marquee-list">
+          <li class="marquee-item"><span class="marquee-item__flag">🇯🇵</span>Japan</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇺🇸</span>United States</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇬🇧</span>United Kingdom</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇫🇷</span>France</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇩🇪</span>Germany</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇮🇹</span>Italy</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇪🇸</span>Spain</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇵🇹</span>Portugal</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇦🇪</span>Dubai</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇦🇺</span>Australia</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇧🇷</span>Brazil</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇰🇷</span>South Korea</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇸🇬</span>Singapore</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇹🇭</span>Thailand</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇨🇦</span>Canada</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇮🇳</span>India</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇲🇽</span>Mexico</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇿🇦</span>South Africa</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇳🇿</span>New Zealand</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🌍</span>+190 More</li>
+        </ul>
+        <!-- Duplicate list for seamless loop -->
+        <ul class="marquee-list" aria-hidden="true">
+          <li class="marquee-item"><span class="marquee-item__flag">🇯🇵</span>Japan</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇺🇸</span>United States</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇬🇧</span>United Kingdom</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇫🇷</span>France</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇩🇪</span>Germany</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇮🇹</span>Italy</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇪🇸</span>Spain</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇵🇹</span>Portugal</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇦🇪</span>Dubai</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇦🇺</span>Australia</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇧🇷</span>Brazil</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇰🇷</span>South Korea</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇸🇬</span>Singapore</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇹🇭</span>Thailand</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇨🇦</span>Canada</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇮🇳</span>India</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇲🇽</span>Mexico</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇿🇦</span>South Africa</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🇳🇿</span>New Zealand</li>
+          <li class="marquee-item"><span class="marquee-item__flag">🌍</span>+190 More</li>
+        </ul>
       </div>
-    </section>
+    </div>
 
-    <!-- ═══════════════════ HOW IT WORKS ═══════════════════ -->
-    <section class="section" id="steps-section" aria-labelledby="steps-heading">
+    <!-- ════════════════════════════════════════
+         METRICS — Key numbers
+         ════════════════════════════════════════ -->
+    <section class="metrics-strip" aria-labelledby="metrics-heading">
       <div class="container">
-        <div class="section-header reveal">
-          <span class="label">How It Works</span>
-          <h2 id="steps-heading">Three Steps to Connectivity</h2>
-          <p>Purchase anywhere, connect everywhere. It takes less than 2 minutes.</p>
-        </div>
-
-        <div class="steps">
-          <div class="steps__track">
-            <div class="steps__line">
-              <div class="steps__line-fill" id="steps-line-fill"></div>
-            </div>
-
-            <div class="step step--active">
-              <div class="step__icon">
-                <span class="step__number">1</span>
-                🔍
-              </div>
-              <h3 class="step__title">Choose Destination</h3>
-              <p class="step__desc">Browse 200+ countries and regions. Filter by data, duration, or price.</p>
-              <div class="step__phone">
-                <div class="step__phone-notch"></div>
-                <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=400" alt="App destination selection screen" class="step__phone-screen" loading="lazy">
-              </div>
-            </div>
-
-            <div class="step">
-              <div class="step__icon">
-                <span class="step__number">2</span>
-                ⚡
-              </div>
-              <h3 class="step__title">Buy in Seconds</h3>
-              <p class="step__desc">Secure checkout. Receive your eSIM QR code instantly — no waiting.</p>
-              <div class="step__phone">
-                <div class="step__phone-notch"></div>
-                <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=400" alt="App checkout screen" class="step__phone-screen" loading="lazy">
-              </div>
-            </div>
-
-            <div class="step">
-              <div class="step__icon">
-                <span class="step__number">3</span>
-                🌐
-              </div>
-              <h3 class="step__title">Connect & Travel</h3>
-              <p class="step__desc">Scan the QR code before departure. Connects automatically when you land.</p>
-              <div class="step__phone">
-                <div class="step__phone-notch"></div>
-                <img src="https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?auto=format&fit=crop&q=80&w=400" alt="App connected screen" class="step__phone-screen" loading="lazy">
-              </div>
-            </div>
+        <h2 id="metrics-heading" class="sr-only">Key metrics</h2>
+        <div class="metrics-strip__grid">
+          <div class="metric-card reveal--scale">
+            <div class="metric-card__value" data-count="200" data-suffix="+">0</div>
+            <div class="metric-card__label">Countries Covered</div>
+          </div>
+          <div class="metric-card reveal--scale">
+            <div class="metric-card__value" data-count="1.5" data-suffix="M+">0</div>
+            <div class="metric-card__label">Travelers Served</div>
+          </div>
+          <div class="metric-card reveal--scale">
+            <div class="metric-card__value">4.8<span style="color:var(--accent);font-size:2rem;">★</span></div>
+            <div class="metric-card__label">App Store Rating</div>
+          </div>
+          <div class="metric-card reveal--scale">
+            <div class="metric-card__value">&lt; 2<span style="color:var(--accent-dark);font-size:2rem;font-weight:600;">min</span></div>
+            <div class="metric-card__label">To Get Connected</div>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ═══════════════════ FEATURES ═══════════════════ -->
-    <section class="section" id="features" aria-labelledby="features-heading">
+    <!-- ════════════════════════════════════════
+         HOW IT WORKS — 3 card steps
+         ════════════════════════════════════════ -->
+    <section class="section section--alt" id="how-it-works" aria-labelledby="steps-heading">
+      <div class="container">
+        <div class="section-header reveal">
+          <span class="label">How It Works</span>
+          <h2 id="steps-heading">Connected in Under 2 Minutes</h2>
+          <p>No store visits, no waiting, no physical SIM. Three steps to global connectivity.</p>
+        </div>
+
+        <div class="steps--cards">
+          <div class="step-card reveal" data-step="1">
+            <div class="step-card__icon">🔍</div>
+            <div class="step-card__number">Step 1</div>
+            <h3 class="step-card__title">Choose Your Plan</h3>
+            <p class="step-card__desc">
+              Search 200+ countries and regions. Compare plans by data, duration, and price.
+              Filter by destination or browse curated picks for popular travel spots.
+            </p>
+          </div>
+          <div class="step-card reveal" data-step="2">
+            <div class="step-card__icon">⚡</div>
+            <div class="step-card__number">Step 2</div>
+            <h3 class="step-card__title">Buy in Seconds</h3>
+            <p class="step-card__desc">
+              Secure checkout in seconds. Your eSIM QR code is generated instantly
+              in the app — no email, no waiting, no physical delivery needed.
+            </p>
+          </div>
+          <div class="step-card reveal" data-step="3">
+            <div class="step-card__icon">🌐</div>
+            <div class="step-card__number">Step 3</div>
+            <h3 class="step-card__title">Travel Connected</h3>
+            <p class="step-card__desc">
+              Scan the QR code before departure. Your eSIM activates automatically
+              when you land. Keep your number, drop the roaming fees.
+            </p>
+          </div>
+        </div>
+
+        <div style="text-align:center;margin-top:var(--space-3xl);">
+          <a href="pages/how-it-works.html" class="btn btn--outline btn--lg">
+            Learn More
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════
+         FEATURES — 6 glass cards with SVG icons
+         ════════════════════════════════════════ -->
+    <section class="section section--gradient" id="features" aria-labelledby="features-heading">
       <div class="container">
         <div class="section-header reveal">
           <span class="label">Features</span>
           <h2 id="features-heading">Everything You Need to Travel Smart</h2>
-          <p>Built for modern travelers who want reliable connectivity without the hassle.</p>
+          <p>Built for the way modern travelers actually travel.</p>
         </div>
 
-        <div class="features-grid">
-          <div class="feature-card glass-card">
-            <div class="feature-card__icon">⚡</div>
-            <h3 class="feature-card__title">Instant Activation</h3>
-            <p class="feature-card__desc">QR code delivered to your app instantly. Get online in minutes, not days.</p>
+        <div class="feature-grid--new">
+          <div class="feat-card reveal">
+            <div class="feat-card__icon">
+              <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            </div>
+            <h3 class="feat-card__title">Instant Activation</h3>
+            <p class="feat-card__desc">QR code delivered instantly in-app. Go from purchase to online in under 60 seconds, no physical delivery required.</p>
           </div>
-          <div class="feature-card glass-card">
-            <div class="feature-card__icon">🚫</div>
-            <h3 class="feature-card__title">Zero Roaming Fees</h3>
-            <p class="feature-card__desc">Connect to local networks at local prices, saving up to 90% on data costs.</p>
-          </div>
-          <div class="feature-card glass-card">
-            <div class="feature-card__icon">🌍</div>
-            <h3 class="feature-card__title">200+ Countries</h3>
-            <p class="feature-card__desc">True global coverage. Weekend city breaks to multi-continent backpacking.</p>
-          </div>
-          <div class="feature-card glass-card">
-            <div class="feature-card__icon">📊</div>
-            <h3 class="feature-card__title">Flexible Plans</h3>
-            <p class="feature-card__desc">Choose by data amount or duration. 1GB for a weekend or unlimited for a month.</p>
-          </div>
-          <div class="feature-card glass-card">
-            <div class="feature-card__icon">🤖</div>
-            <h3 class="feature-card__title">AI Support Chat</h3>
-            <p class="feature-card__desc">Instant help 24/7. Real agents available when you need a human touch.</p>
-          </div>
-          <div class="feature-card glass-card">
-            <div class="feature-card__icon">📱</div>
-            <h3 class="feature-card__title">Multi-Device</h3>
-            <p class="feature-card__desc">Compatible with all modern eSIM-enabled iPhones and Android devices.</p>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- ═══════════════════ APP SHOWCASE ═══════════════════ -->
-    <section class="section showcase" aria-labelledby="showcase-heading">
-      <div class="showcase__orbit showcase__orbit--1" aria-hidden="true"></div>
-      <div class="showcase__orbit showcase__orbit--2" aria-hidden="true"></div>
-
-      <div class="container">
-        <div class="section-header reveal">
-          <span class="label">App Preview</span>
-          <h2 id="showcase-heading" class="text-gradient">Designed for Travelers</h2>
-          <p>Beautiful, intuitive, and blazing fast. Everything you need in one app.</p>
-        </div>
-
-        <div class="showcase__phones">
-          <div class="phone-3d phone-3d--left">
-            <div class="phone-3d__notch"></div>
-            <img src="https://images.unsplash.com/photo-1601055903647-8f1929d18b45?auto=format&fit=crop&q=80&w=400" class="phone-3d__screen" alt="App destinations grid" loading="lazy">
+          <div class="feat-card reveal">
+            <div class="feat-card__icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+            </div>
+            <h3 class="feat-card__title">Zero Roaming Fees</h3>
+            <p class="feat-card__desc">Connect to local networks at local prices. Save up to 90% compared to traditional carrier roaming charges.</p>
           </div>
-          <div class="phone-3d phone-3d--center">
-            <div class="phone-3d__notch"></div>
-            <img src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&q=80&w=400" class="phone-3d__screen" alt="App home screen" loading="lazy">
+
+          <div class="feat-card reveal">
+            <div class="feat-card__icon">
+              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+            </div>
+            <h3 class="feat-card__title">200+ Countries</h3>
+            <p class="feat-card__desc">Global coverage that actually works. Local, regional, and worldwide plans for every type of trip.</p>
           </div>
-          <div class="phone-3d phone-3d--right">
-            <div class="phone-3d__notch"></div>
-            <img src="https://images.unsplash.com/photo-1616469829941-c7200edec809?auto=format&fit=crop&q=80&w=400" class="phone-3d__screen" alt="App eSIM management" loading="lazy">
+
+          <div class="feat-card reveal">
+            <div class="feat-card__icon">
+              <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            </div>
+            <h3 class="feat-card__title">Flexible Plans</h3>
+            <p class="feat-card__desc">1 GB for a weekend getaway or unlimited data for a month-long expedition. Buy exactly what you need.</p>
+          </div>
+
+          <div class="feat-card reveal">
+            <div class="feat-card__icon">
+              <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+            </div>
+            <h3 class="feat-card__title">AI Support 24/7</h3>
+            <p class="feat-card__desc">Instant help from our AI assistant at any hour, in any timezone. Real human agents available when needed.</p>
+          </div>
+
+          <div class="feat-card reveal">
+            <div class="feat-card__icon">
+              <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+            </div>
+            <h3 class="feat-card__title">All Modern Devices</h3>
+            <p class="feat-card__desc">Compatible with all eSIM-enabled iPhones, Samsung Galaxy, Google Pixel, and more. <a href="pages/compatibility.html" style="color:var(--accent);">Check yours →</a></p>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- ═══════════════════ DESTINATIONS BENTO ═══════════════════ -->
-    <section class="section" id="destinations" aria-labelledby="dest-heading">
+    <!-- ════════════════════════════════════════
+         APP SHOWCASE — Phone stack with features list
+         ════════════════════════════════════════ -->
+    <section class="showcase--new" id="app-preview" aria-labelledby="showcase-heading">
+      <div class="container container--wide">
+        <div class="showcase__content">
+
+          <!-- Left: Features list -->
+          <div class="showcase__text reveal--left">
+            <span class="label">App Preview</span>
+            <h2 id="showcase-heading">The app travelers<br>actually love.</h2>
+            <p>
+              Simphonia is designed to work exactly when you need it —
+              fast, simple, and always online. Here's what's inside.
+            </p>
+            <div class="showcase__feat-list">
+              <div class="showcase__feat">
+                <div class="showcase__feat-icon">🗺️</div>
+                <div class="showcase__feat-text">
+                  <h4>Destination Explorer</h4>
+                  <p>Search and compare plans across 200+ countries with live filtering.</p>
+                </div>
+              </div>
+              <div class="showcase__feat">
+                <div class="showcase__feat-icon">💳</div>
+                <div class="showcase__feat-text">
+                  <h4>One-Tap Checkout</h4>
+                  <p>Secure payment and instant QR code delivery in under 30 seconds.</p>
+                </div>
+              </div>
+              <div class="showcase__feat">
+                <div class="showcase__feat-icon">📊</div>
+                <div class="showcase__feat-text">
+                  <h4>Real-Time Data Tracker</h4>
+                  <p>Monitor your data usage and remaining days from one clean dashboard.</p>
+                </div>
+              </div>
+              <div class="showcase__feat">
+                <div class="showcase__feat-icon">🤖</div>
+                <div class="showcase__feat-text">
+                  <h4>AI Chat Support</h4>
+                  <p>Instant answers to any question, 24/7, powered by AI.</p>
+                </div>
+              </div>
+            </div>
+            <div style="margin-top:var(--space-2xl);">
+              <a href="#download" class="btn btn--primary btn--lg">Download for Free</a>
+            </div>
+          </div>
+
+          <!-- Right: 3D phone stack -->
+          <div class="showcase__phones-stack reveal--right">
+            <div class="phone-3d phone-3d--left">
+              <div class="phone-3d__notch"></div>
+              <img src="https://images.unsplash.com/photo-1601055903647-8f1929d18b45?auto=format&fit=crop&q=80&w=400" class="phone-3d__screen" alt="App destinations grid" loading="lazy">
+            </div>
+            <div class="phone-3d phone-3d--center">
+              <div class="phone-3d__notch"></div>
+              <img src="https://images.unsplash.com/photo-1512428559087-560fa5ceab42?auto=format&fit=crop&q=80&w=400" class="phone-3d__screen" alt="App home screen" loading="lazy">
+            </div>
+            <div class="phone-3d phone-3d--right">
+              <div class="phone-3d__notch"></div>
+              <img src="https://images.unsplash.com/photo-1616469829941-c7200edec809?auto=format&fit=crop&q=80&w=400" class="phone-3d__screen" alt="App eSIM management" loading="lazy">
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════
+         DESTINATIONS — Bento grid
+         ════════════════════════════════════════ -->
+    <section class="section section--alt" id="destinations" aria-labelledby="dest-heading">
       <div class="container container--wide">
         <div class="section-header reveal">
           <span class="label">Popular Destinations</span>
           <h2 id="dest-heading">The World Is Within Reach</h2>
-          <p>Discover popular packages tailored for your next destination.</p>
+          <p>Tailored eSIM plans for the world's most popular travel destinations.</p>
         </div>
 
         <div class="bento-grid">
           <div class="bento-item">
-            <img src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&q=80&w=800" class="bento-item__img" alt="Japan landscape" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&q=80&w=800" class="bento-item__img" alt="Mount Fuji, Japan" loading="lazy">
             <span class="bento-item__badge">Popular</span>
             <div class="bento-item__overlay">
               <div class="bento-item__content">
@@ -277,7 +569,7 @@
             </div>
           </div>
           <div class="bento-item">
-            <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=400" class="bento-item__img" alt="Dubai skyline" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=400" class="bento-item__img" alt="Dubai skyline at night" loading="lazy">
             <div class="bento-item__overlay">
               <div class="bento-item__content">
                 <div class="bento-item__title">Dubai</div>
@@ -286,7 +578,7 @@
             </div>
           </div>
           <div class="bento-item">
-            <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&q=80&w=800" class="bento-item__img" alt="European road trip" loading="lazy">
+            <img src="https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?auto=format&fit=crop&q=80&w=800" class="bento-item__img" alt="Europe road trip" loading="lazy">
             <span class="bento-item__badge">30 Countries</span>
             <div class="bento-item__overlay">
               <div class="bento-item__content">
@@ -298,61 +590,167 @@
         </div>
 
         <div class="dest-cta reveal">
-          <a href="pages/destinations.html">Explore all 200+ destinations <span aria-hidden="true">→</span></a>
+          <a href="pages/destinations.html">
+            Explore all 200+ destinations
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+          </a>
         </div>
       </div>
     </section>
 
-    <!-- ═══════════════════ TESTIMONIALS ═══════════════════ -->
-    <section class="section" aria-labelledby="testimonials-heading">
+    <!-- ════════════════════════════════════════
+         TESTIMONIALS — Auto-scrolling carousel
+         ════════════════════════════════════════ -->
+    <section class="section" aria-labelledby="reviews-heading">
       <div class="container container--wide">
         <div class="section-header reveal">
-          <span class="label">Testimonials</span>
-          <h2 id="testimonials-heading">Loved by Travelers Worldwide</h2>
+          <span class="label">Reviews</span>
+          <h2 id="reviews-heading">Loved by 1.5M+ Travelers</h2>
+          <p>Don't take our word for it.</p>
         </div>
+      </div>
 
-        <div class="testimonials-track">
-          <div class="testimonial-card glass-card">
-            <div class="testimonial-card__stars">★★★★★</div>
-            <p class="testimonial-card__quote">"I bought my Japan eSIM 5 minutes before boarding. Worked perfectly when I landed. Absolute game changer."</p>
-            <div class="testimonial-card__author">
-              <div class="testimonial-card__avatar">AM</div>
+      <div class="testimonials-fade">
+        <div class="testimonials-row">
+          <!-- Card 1 -->
+          <div class="testimonial-card--v2 glass-card">
+            <div class="tc-stars">
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <p class="tc-quote">"Bought my Japan eSIM 5 minutes before boarding. Worked perfectly when I landed. This is the future of travel."</p>
+            <div class="tc-author">
+              <div class="tc-avatar">AM</div>
               <div>
-                <div class="testimonial-card__name">Ana M.</div>
-                <div class="testimonial-card__role">Lisbon, Portugal</div>
+                <div class="tc-name">Ana M.</div>
+                <div class="tc-dest">🇵🇹 Lisbon → 🇯🇵 Tokyo</div>
               </div>
             </div>
           </div>
-          <div class="testimonial-card glass-card">
-            <div class="testimonial-card__stars">★★★★★</div>
-            <p class="testimonial-card__quote">"Saved over $200 on my Europe trip. The regional plan covered 30 countries seamlessly. No more hunting for local SIMs."</p>
-            <div class="testimonial-card__author">
-              <div class="testimonial-card__avatar">JK</div>
+          <!-- Card 2 -->
+          <div class="testimonial-card--v2 glass-card">
+            <div class="tc-stars">
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <p class="tc-quote">"Saved over $200 on my Europe trip. The regional plan worked across 30 countries without a single hiccup. Incredible."</p>
+            <div class="tc-author">
+              <div class="tc-avatar">JK</div>
               <div>
-                <div class="testimonial-card__name">James K.</div>
-                <div class="testimonial-card__role">London, UK</div>
+                <div class="tc-name">James K.</div>
+                <div class="tc-dest">🇬🇧 London → 🇪🇺 Europe Tour</div>
               </div>
             </div>
           </div>
-          <div class="testimonial-card glass-card">
-            <div class="testimonial-card__stars">★★★★★</div>
-            <p class="testimonial-card__quote">"The AI support is incredible. Had a question at 3am in Tokyo and got an instant, helpful response."</p>
-            <div class="testimonial-card__author">
-              <div class="testimonial-card__avatar">SK</div>
+          <!-- Card 3 -->
+          <div class="testimonial-card--v2 glass-card">
+            <div class="tc-stars">
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <p class="tc-quote">"The AI support is genuinely helpful. Had a connectivity question at 3am in Tokyo and got an instant, accurate response."</p>
+            <div class="tc-author">
+              <div class="tc-avatar">SK</div>
               <div>
-                <div class="testimonial-card__name">Sarah K.</div>
-                <div class="testimonial-card__role">New York, USA</div>
+                <div class="tc-name">Sarah K.</div>
+                <div class="tc-dest">🇺🇸 New York → 🇯🇵 Tokyo</div>
               </div>
             </div>
           </div>
-          <div class="testimonial-card glass-card">
-            <div class="testimonial-card__stars">★★★★★</div>
-            <p class="testimonial-card__quote">"Setup was ridiculously easy. Scanned the QR code, landed in Dubai, and my phone connected instantly."</p>
-            <div class="testimonial-card__author">
-              <div class="testimonial-card__avatar">MR</div>
+          <!-- Card 4 -->
+          <div class="testimonial-card--v2 glass-card">
+            <div class="tc-stars">
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <p class="tc-quote">"Setup took literally 2 minutes. Landed in Dubai and my phone connected automatically. No SIM card hunting at the airport."</p>
+            <div class="tc-author">
+              <div class="tc-avatar">MR</div>
               <div>
-                <div class="testimonial-card__name">Marco R.</div>
-                <div class="testimonial-card__role">Milan, Italy</div>
+                <div class="tc-name">Marco R.</div>
+                <div class="tc-dest">🇮🇹 Milan → 🇦🇪 Dubai</div>
+              </div>
+            </div>
+          </div>
+          <!-- Card 5 -->
+          <div class="testimonial-card--v2 glass-card">
+            <div class="tc-stars">
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <p class="tc-quote">"I travel for work constantly. Simphonia has replaced everything — no more carrier apps, no more searching for SIM vendors. Just works."</p>
+            <div class="tc-author">
+              <div class="tc-avatar">TC</div>
+              <div>
+                <div class="tc-name">Tom C.</div>
+                <div class="tc-dest">🌍 Frequent Business Traveler</div>
+              </div>
+            </div>
+          </div>
+          <!-- Duplicate set for seamless loop -->
+          <div class="testimonial-card--v2 glass-card">
+            <div class="tc-stars">
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <p class="tc-quote">"Bought my Japan eSIM 5 minutes before boarding. Worked perfectly when I landed. This is the future of travel."</p>
+            <div class="tc-author">
+              <div class="tc-avatar">AM</div>
+              <div>
+                <div class="tc-name">Ana M.</div>
+                <div class="tc-dest">🇵🇹 Lisbon → 🇯🇵 Tokyo</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card--v2 glass-card">
+            <div class="tc-stars">
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <p class="tc-quote">"Saved over $200 on my Europe trip. The regional plan worked across 30 countries without a single hiccup. Incredible."</p>
+            <div class="tc-author">
+              <div class="tc-avatar">JK</div>
+              <div>
+                <div class="tc-name">James K.</div>
+                <div class="tc-dest">🇬🇧 London → 🇪🇺 Europe Tour</div>
+              </div>
+            </div>
+          </div>
+          <div class="testimonial-card--v2 glass-card">
+            <div class="tc-stars">
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              <svg viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <p class="tc-quote">"The AI support is genuinely helpful. Had a connectivity question at 3am in Tokyo and got an instant, accurate response."</p>
+            <div class="tc-author">
+              <div class="tc-avatar">SK</div>
+              <div>
+                <div class="tc-name">Sarah K.</div>
+                <div class="tc-dest">🇺🇸 New York → 🇯🇵 Tokyo</div>
               </div>
             </div>
           </div>
@@ -360,93 +758,114 @@
       </div>
     </section>
 
-    <!-- ═══════════════════ PRICING PREVIEW ═══════════════════ -->
-    <section class="section" id="pricing" aria-labelledby="pricing-heading">
+    <!-- ════════════════════════════════════════
+         PRICING — 3 sample plans
+         ════════════════════════════════════════ -->
+    <section class="section section--alt" id="pricing" aria-labelledby="pricing-heading">
       <div class="container">
         <div class="section-header reveal">
           <span class="label">Pricing</span>
-          <h2 id="pricing-heading">Transparent, Fair Pricing</h2>
-          <p>No contracts. No hidden fees. Pay only for what you need.</p>
+          <h2 id="pricing-heading">Fair, Transparent Pricing</h2>
+          <p>No hidden fees. No contracts. Pay only for what you need.</p>
         </div>
 
         <div class="pricing-cards">
-          <div class="price-card">
+          <div class="price-card reveal">
             <div class="price-card__flag">🇵🇹</div>
             <div class="price-card__name">Portugal</div>
             <div class="price-card__details">1 GB · 7 Days</div>
             <div class="price-card__price">$2.90</div>
-            <div class="price-card__features">
-              <div class="price-card__feature">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                4G/LTE speeds
-              </div>
-              <div class="price-card__feature">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            <ul class="price-card__features">
+              <li class="price-card__feature">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                4G LTE speeds
+              </li>
+              <li class="price-card__feature">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                 Instant activation
-              </div>
-              <div class="price-card__feature">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                No registration needed
-              </div>
-            </div>
+              </li>
+              <li class="price-card__feature">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                No registration
+              </li>
+            </ul>
             <a href="#download" class="btn btn--outline" style="width:100%;">Get Started</a>
           </div>
 
-          <div class="price-card price-card--featured">
+          <div class="price-card price-card--featured reveal">
             <div class="price-card__flag">🇯🇵</div>
             <div class="price-card__name">Japan</div>
             <div class="price-card__details">3 GB · 15 Days</div>
             <div class="price-card__price">$8.50</div>
-            <div class="price-card__features">
-              <div class="price-card__feature">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            <ul class="price-card__features">
+              <li class="price-card__feature">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                 5G where available
-              </div>
-              <div class="price-card__feature">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              </li>
+              <li class="price-card__feature">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                 Hotspot sharing
-              </div>
-              <div class="price-card__feature">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-                24/7 AI support
-              </div>
-            </div>
+              </li>
+              <li class="price-card__feature">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                AI support 24/7
+              </li>
+            </ul>
             <a href="#download" class="btn btn--primary" style="width:100%;">Get Started</a>
           </div>
 
-          <div class="price-card">
+          <div class="price-card reveal">
             <div class="price-card__flag">🌍</div>
-            <div class="price-card__name">Europe</div>
+            <div class="price-card__name">Europe Regional</div>
             <div class="price-card__details">5 GB · 30 Days</div>
             <div class="price-card__price">$14.99</div>
-            <div class="price-card__features">
-              <div class="price-card__feature">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+            <ul class="price-card__features">
+              <li class="price-card__feature">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                 30 countries covered
-              </div>
-              <div class="price-card__feature">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              </li>
+              <li class="price-card__feature">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                 Seamless roaming
-              </div>
-              <div class="price-card__feature">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              </li>
+              <li class="price-card__feature">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
                 Top-up available
-              </div>
-            </div>
+              </li>
+            </ul>
             <a href="#download" class="btn btn--outline" style="width:100%;">Get Started</a>
           </div>
         </div>
+
+        <p style="text-align:center;margin-top:var(--space-xl);font-size:0.9375rem;color:var(--text-tertiary);">
+          Hundreds more plans available in the app.
+          <a href="pages/destinations.html" style="color:var(--accent);font-weight:600;"> Browse all destinations →</a>
+        </p>
       </div>
     </section>
 
-    <!-- ═══════════════════ DOWNLOAD CTA ═══════════════════ -->
-    <section class="section cta-section" id="download" aria-labelledby="cta-heading">
-      <div class="cta-section__bg" aria-hidden="true"></div>
+    <!-- ════════════════════════════════════════
+         FINAL DOWNLOAD CTA
+         ════════════════════════════════════════ -->
+    <section class="final-cta" id="download" aria-labelledby="cta-heading">
+      <div class="final-cta__bg" aria-hidden="true"></div>
+
       <div class="container" style="position:relative;z-index:1;">
         <div class="reveal">
-          <h2 id="cta-heading">Ready for Your Next Adventure?</h2>
-          <p>Download Simphonia for free. No contracts. Cancel anytime.</p>
-          <div class="flex flex-center gap-lg" style="flex-wrap:wrap;margin-top:var(--space-xl);">
+          <div class="final-cta__tag">
+            <div class="badge">
+              <span class="badge__dot"></span>
+              Free to Download
+            </div>
+          </div>
+
+          <h2 id="cta-heading">
+            Your Next Adventure<br>
+            <span class="text-gradient">Starts Here.</span>
+          </h2>
+          <p>Join 1.5 million travelers already using Simphonia. Download now and get connected in minutes.</p>
+
+          <div class="final-cta__stores">
             <a href="#" class="store-badge" aria-label="Download on the App Store">
               <svg class="store-badge__icon" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M17.05 20.28c-.98.95-2.05.8-3.08.35-1.09-.46-2.09-.48-3.24 0-1.44.62-2.2.44-3.06-.35C2.79 15.25 3.51 7.59 9.05 7.31c1.35.07 2.29.74 3.08.8 1.18-.09 2.31-.86 3.82-.76 1.45.1 2.58.68 3.32 1.77-2.92 1.76-2.45 5.58.37 6.78-.69 1.75-1.57 3.39-2.59 4.38zM12.03 7.25c-.15-2.23 1.66-4.07 3.74-4.25.29 2.58-2.34 4.5-3.74 4.25z"/>
@@ -466,22 +885,77 @@
               </div>
             </a>
           </div>
+
+          <div class="final-cta__note">
+            <span>✓ Free to download</span>
+            <span>✓ No contract</span>
+            <span>✓ Cancel anytime</span>
+            <span>✓ 24/7 Support</span>
+          </div>
         </div>
       </div>
     </section>
 
   </main>
 
-  <!-- Scripts -->
+  <!-- Scripts — Three.js and GSAP via CDN, deferred -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
   <script type="module" src="js/main.js"></script>
 
+  <!-- Mobile CTA bar hide-on-download-section -->
+  <script>
+    (function () {
+      var bar = document.getElementById('mobile-cta-bar');
+      var download = document.getElementById('download');
+      if (!bar || !download || !('IntersectionObserver' in window)) return;
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          bar.classList.toggle('mobile-cta-bar--hidden', e.isIntersecting);
+        });
+      }, { threshold: 0.1 });
+      io.observe(download);
+    })();
+  </script>
+
+  <!-- Update animations.js to handle new counter data-count attributes -->
+  <script>
+    // Wait for GSAP to load, then initialize counters for metrics-strip
+    window.addEventListener('load', function () {
+      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
+      gsap.registerPlugin(ScrollTrigger);
+      var counters = document.querySelectorAll('[data-count]');
+      if (!counters.length) return;
+      ScrollTrigger.create({
+        trigger: '.metrics-strip',
+        start: 'top 80%',
+        once: true,
+        onEnter: function () {
+          counters.forEach(function (el) {
+            var target = parseFloat(el.dataset.count);
+            var suffix = el.dataset.suffix || '';
+            var isDecimal = target % 1 !== 0;
+            var obj = { val: 0 };
+            gsap.to(obj, {
+              val: target,
+              duration: 2.5,
+              ease: 'power2.out',
+              onUpdate: function () {
+                el.textContent = (isDecimal ? obj.val.toFixed(1) : Math.round(obj.val)) + suffix;
+              }
+            });
+          });
+        }
+      });
+    });
+  </script>
+
   <noscript>
     <style>
-      .reveal, .reveal--left, .reveal--right, .reveal--scale { opacity: 1; transform: none; }
-      #globe-container, #stars-canvas, .cursor { display: none; }
+      .reveal,.reveal--left,.reveal--right,.reveal--scale{opacity:1;transform:none}
+      #globe-container,#stars-canvas,.cursor{display:none}
+      .mobile-cta-bar{display:none}
     </style>
   </noscript>
 </body>
