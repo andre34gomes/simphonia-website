@@ -1,0 +1,99 @@
+/* ============================================================
+   SIMPHONIA — Destinations Page Stylesheet
+   ============================================================
+   Styles exclusive to pages/destinations.html.
+   ============================================================ */
+
+/* Hero */
+.destinations-hero {
+  padding-top: calc(var(--nav-height) + var(--space-4xl));
+  padding-bottom: var(--space-3xl);
+  text-align: center;
+}
+
+/* Filter Tabs */
+.filter-tabs {
+  display: flex;
+  justify-content: center;
+  gap: var(--space-sm);
+  margin-top: var(--space-xl);
+}
+
+.filter-tab {
+  padding: 0.625rem 1.25rem;
+  border-radius: var(--radius-full);
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: all var(--duration-normal);
+}
+
+.filter-tab:hover {
+  border-color: var(--border-default);
+  color: var(--text-primary);
+}
+
+.filter-tab--active {
+  background: var(--accent);
+  color: var(--text-inverse);
+  border-color: var(--accent);
+}
+
+/* Destinations Grid */
+.dest-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: var(--space-lg);
+}
+
+.dest-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: all var(--duration-normal) var(--ease-out);
+}
+
+.dest-card:hover {
+  border-color: var(--border-accent);
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-glow);
+}
+
+.dest-card__img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+}
+
+.dest-card__body {
+  padding: var(--space-lg);
+}
+
+.dest-card__name {
+  font-size: 1.0625rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.dest-card__plans {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-bottom: var(--space-md);
+}
+
+.dest-card__price {
+  font-weight: 700;
+  color: var(--accent);
+}
+
+/* ==============================================
+   RESPONSIVE — Destinations Page
+   ============================================== */
+@media (max-width: 480px) {
+  .filter-tabs { flex-wrap: wrap; }
+}
+

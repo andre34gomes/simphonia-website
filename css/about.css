@@ -1,0 +1,79 @@
+/* ============================================================
+   SIMPHONIA — About Page Stylesheet
+   ============================================================
+   Styles exclusive to pages/about.html.
+   Shared components (about-hero, about-story) are in base.css.
+   ============================================================ */
+
+/* Values */
+.values-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--space-lg);
+}
+
+.value-card {
+  padding: var(--space-2xl);
+}
+
+.value-card__icon {
+  font-size: 2rem;
+  margin-bottom: var(--space-md);
+}
+
+.value-card h3 {
+  margin-bottom: var(--space-sm);
+}
+
+/* Team */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--space-lg);
+}
+
+.team-card {
+  text-align: center;
+  padding: var(--space-xl);
+}
+
+.team-card__avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--accent-subtle);
+  margin: 0 auto var(--space-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--accent);
+}
+
+.team-card__name {
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.team-card__role {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+}
+
+/* ==============================================
+   RESPONSIVE — About Page
+   ============================================== */
+@media (max-width: 1024px) {
+  .team-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .team-grid { grid-template-columns: repeat(2, 1fr); }
+  .values-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .team-grid { grid-template-columns: 1fr; }
+}
+

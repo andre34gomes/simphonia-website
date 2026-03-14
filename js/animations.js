@@ -1,331 +1,368 @@
 /**
- * GSAP / ScrollTrigger Animations
+ * Simphonia — GSAP Scroll Animations v3
  *
- * Feature-detects which sections exist in the DOM,
- * then registers the appropriate scroll-driven animations.
+ * Design principles:
+ *   1. Each DOM element is animated by exactly ONE function — no double-targeting
+ *   2. gsap.fromTo() everywhere — explicit from/to, no reliance on CSS state
+ *   3. autoAlpha (opacity + visibility) instead of bare opacity — avoids FOUC
+ *   4. overwrite: 'auto' as safety net for any accidental overlaps
+ *   5. Retry loop if GSAP CDN hasn't loaded yet
+ *   6. ScrollTrigger.batch() for grid items — efficient + correct stagger
+ *   7. Reduced-motion: skip everything, reveal immediately
  */
 
+// Elements handled by section-specific animations.
+// The generic reveal handler MUST skip these to prevent double-animation / flicker.
+const SECTION_SPECIFIC_SEL =
+  '.feat-card, .step-card, .metric-card, .price-card, .bento-item, ' +
+  '.faq-item, .team-card, .value-card, .compat-brand-card, .dest-card, .feature-card';
+
 export function initAnimations() {
+  // ── Retry if CDN scripts have not executed yet ─────────
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-    console.warn('[Animations] GSAP/ScrollTrigger not loaded');
+    setTimeout(initAnimations, 150);
     return;
   }
 
-  // Respect prefers-reduced-motion
+  // ── Respect prefers-reduced-motion ────────────────────
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    // Remove reveal classes so content is visible
-    document.querySelectorAll('.reveal, .reveal--left, .reveal--right, .reveal--scale')
-      .forEach(el => {
-        el.style.opacity = '1';
-        el.style.transform = 'none';
-      });
+    document.querySelectorAll(
+      '.reveal, .reveal--left, .reveal--right, .reveal--scale'
+    ).forEach(el => {
+      el.style.opacity  = '1';
+      el.style.transform = 'none';
+    });
     return;
   }
 
   gsap.registerPlugin(ScrollTrigger);
+  ScrollTrigger.config({ limitCallbacks: true });
 
-  // --- Generic Reveal ---
-  initReveals();
-
-  // --- Hero v1 & v2 ---
-  if (document.querySelector('.hero, .hero--v2')) initHero();
-
-  // --- Trust Bar Counters ---
-  if (document.querySelector('.trust-bar')) initCounters();
-
-  // --- How It Works Steps ---
-  if (document.getElementById('steps-section')) initSteps();
-
-  // --- Features Stagger (old + new) ---
-  if (document.querySelector('.features-grid, .feature-grid--new')) initFeatures();
-
-  // --- Step Cards ---
-  if (document.querySelector('.steps--cards')) initStepCards();
-
-  // --- Showcase Phones ---
-  if (document.querySelector('.showcase')) initShowcase();
-
-  // --- Bento Grid ---
-  if (document.querySelector('.bento-grid')) initBento();
-
-  // --- Testimonials ---
-  if (document.querySelector('.testimonials-track')) initTestimonials();
-
-  // --- Pricing Cards ---
-  if (document.querySelector('.pricing-cards')) initPricing();
-
-  // --- FAQ Items ---
-  if (document.querySelector('.faq-list')) initFaq();
+  _hero();
+  _genericReveals();
+  _metricCards();
+  _stepCards();
+  _featureCards();
+  _showcase();
+  _bentoGrid();
+  _pricingCards();
+  _testimonials();
+  _faqItems();
+  _counters();
 }
 
-// ── Generic Reveals ──────────────────────────────────────
+// ─────────────────────────────────────────────────────────
+// Helpers
+// ─────────────────────────────────────────────────────────
 
-function initReveals() {
-  // Fade-up
-  gsap.utils.toArray('.reveal').forEach(el => {
-    gsap.to(el, {
-      opacity: 1,
-      y: 0,
-      duration: 0.8,
-      ease: 'power3.out',
-      scrollTrigger: {
-        trigger: el,
-        start: 'top 85%',
-        once: true,
-      },
-    });
-  });
+/** Returns true if el matches any section-specific selector */
+function _isSpecific(el) {
+  try { return el.matches(SECTION_SPECIFIC_SEL); } catch (_) { return false; }
+}
 
-  // Fade-left
-  gsap.utils.toArray('.reveal--left').forEach(el => {
-    gsap.to(el, {
-      opacity: 1,
-      x: 0,
-      duration: 0.8,
-      ease: 'power3.out',
-      scrollTrigger: { trigger: el, start: 'top 85%', once: true },
-    });
-  });
+/** Shared ScrollTrigger config object */
+function _st(trigger, startPct = '88%') {
+  return { trigger, start: `top ${startPct}`, once: true };
+}
 
-  // Fade-right
-  gsap.utils.toArray('.reveal--right').forEach(el => {
-    gsap.to(el, {
-      opacity: 1,
-      x: 0,
-      duration: 0.8,
-      ease: 'power3.out',
-      scrollTrigger: { trigger: el, start: 'top 85%', once: true },
-    });
-  });
-
-  // Scale
-  gsap.utils.toArray('.reveal--scale').forEach(el => {
-    gsap.to(el, {
-      opacity: 1,
-      scale: 1,
-      duration: 0.8,
-      ease: 'power3.out',
-      scrollTrigger: { trigger: el, start: 'top 85%', once: true },
-    });
+/**
+ * Animate a batch of grid/card elements as they enter the viewport.
+ * Uses ScrollTrigger.batch() for efficiency and correct stagger behavior.
+ */
+function _batchReveal(selector, fromVars, tweenVars, batchMax = 4) {
+  if (!document.querySelector(selector)) return;
+  ScrollTrigger.batch(selector, {
+    batchMax,
+    onEnter: (batch) =>
+      gsap.fromTo(
+        batch,
+        { autoAlpha: 0, ...fromVars },
+        { autoAlpha: 1, ...tweenVars, overwrite: 'auto' }
+      ),
+    start: 'top 88%',
+    once: true,
   });
 }
 
-function initHero() {
-  const tl = gsap.timeline({ defaults: { ease: 'power3.out' } });
+// ─────────────────────────────────────────────────────────
+// 1. HERO — immediate entrance, no ScrollTrigger needed
+// ─────────────────────────────────────────────────────────
+function _hero() {
 
-  // v2 hero (homepage redesign)
+  // ── v2 split-layout hero (homepage) ───────────────────
   if (document.querySelector('.hero__eyebrow')) {
-    tl.from('.hero__eyebrow', { y: -20, opacity: 0, duration: 0.6, delay: 0.1 })
-      .from('.hero__h1 .line-1', { y: 50, opacity: 0, duration: 0.8 }, '-=0.2')
-      .from('.hero__h1 .line-2', { y: 50, opacity: 0, duration: 0.8 }, '-=0.5')
-      .from('.hero__desc', { y: 30, opacity: 0, duration: 0.7 }, '-=0.4')
-      .from('.hero__actions', { y: 30, opacity: 0, duration: 0.6 }, '-=0.4')
-      .from('.hero__stores-row', { y: 20, opacity: 0, duration: 0.5 }, '-=0.3')
-      .from('.hero__proof', { opacity: 0, duration: 0.5 }, '-=0.2')
-      .from('.hero-phone', { x: 60, opacity: 0, duration: 1, ease: 'power2.out' }, 0.3)
-      .from('.hero-phone__badge--1', { x: 40, opacity: 0, duration: 0.5 }, 0.8)
-      .from('.hero-phone__badge--2', { x: 40, opacity: 0, duration: 0.5 }, 1.0)
-      .from('.hero-phone__badge--3', { x: -40, opacity: 0, duration: 0.5 }, 0.9);
+    // Pre-set initial hidden state via GSAP so there is zero FOUC
+    gsap.set([
+      '.hero__eyebrow',
+      '.hero__h1 .line-1',
+      '.hero__h1 .line-2',
+      '.hero__desc',
+      '.hero__actions',
+      '.hero__stores-row',
+      '.hero__proof',
+    ], { autoAlpha: 0 });
+
+    gsap.set('.hero-phone',          { autoAlpha: 0, x: 70 });
+    gsap.set('.hero-phone__badge--1', { autoAlpha: 0, x: 30 });
+    gsap.set('.hero-phone__badge--2', { autoAlpha: 0, x: 30 });
+    gsap.set('.hero-phone__badge--3', { autoAlpha: 0, x: -30 });
+
+    const tl = gsap.timeline({ defaults: { ease: 'power3.out', overwrite: 'auto' } });
+
+    tl
+      .to('.hero__eyebrow',      { autoAlpha: 1, duration: 0.5 }, 0.15)
+      .fromTo('.hero__h1 .line-1', { y: 50 }, { autoAlpha: 1, y: 0, duration: 0.75 }, 0.2)
+      .fromTo('.hero__h1 .line-2', { y: 50 }, { autoAlpha: 1, y: 0, duration: 0.75 }, 0.38)
+      .fromTo('.hero__desc',       { y: 22 }, { autoAlpha: 1, y: 0, duration: 0.65 }, 0.52)
+      .fromTo('.hero__actions',    { y: 18 }, { autoAlpha: 1, y: 0, duration: 0.6  }, 0.62)
+      .fromTo('.hero__stores-row', { y: 14 }, { autoAlpha: 1, y: 0, duration: 0.5  }, 0.72)
+      .to('.hero__proof',          { autoAlpha: 1, duration: 0.5 }, 0.78)
+      // Phone slides in from the right — starts at 0.2 s in parallel
+      .to('.hero-phone',           { autoAlpha: 1, x: 0, duration: 1.1, ease: 'power2.out' }, 0.2)
+      .to('.hero-phone__badge--1', { autoAlpha: 1, x: 0, duration: 0.45, ease: 'back.out(1.4)' }, 0.8)
+      .to('.hero-phone__badge--3', { autoAlpha: 1, x: 0, duration: 0.45, ease: 'back.out(1.4)' }, 0.9)
+      .to('.hero-phone__badge--2', { autoAlpha: 1, x: 0, duration: 0.45, ease: 'back.out(1.4)' }, 1.0);
+
     return;
   }
 
-  // v1 hero fallback
-  tl.from('.hero-title', { y: 50, opacity: 0, duration: 1, delay: 0.2 })
-    .from('.hero-sub', { y: 30, opacity: 0, duration: 1 }, '-=0.5')
-    .from('.badge', { y: -20, opacity: 0, duration: 0.8 }, '-=0.8')
-    .from('.hero-ctas', { y: 30, opacity: 0, duration: 1 }, '-=0.4');
+  // ── Fallback for sub-pages with a plain heading ────────
+  const h1 = document.querySelector('h1');
+  if (h1) {
+    gsap.fromTo(h1,
+      { autoAlpha: 0, y: 36 },
+      { autoAlpha: 1, y: 0, duration: 0.9, delay: 0.1, ease: 'power3.out' }
+    );
+  }
 }
 
-// ── Trust Bar Counter Animation ──────────────────────────
+// ─────────────────────────────────────────────────────────
+// 2. GENERIC REVEALS
+//    .reveal / .reveal--left / .reveal--right / .reveal--scale
+//    Skips any element that is handled by a section-specific function.
+// ─────────────────────────────────────────────────────────
+function _genericReveals() {
 
-function initCounters() {
-  const counters = document.querySelectorAll('[data-count]');
-  if (!counters.length) return;
+  document.querySelectorAll('.reveal').forEach(el => {
+    if (_isSpecific(el)) return;
+    gsap.fromTo(el,
+      { autoAlpha: 0, y: 28 },
+      { autoAlpha: 1, y: 0, duration: 0.75, ease: 'power3.out',
+        overwrite: 'auto', scrollTrigger: _st(el) }
+    );
+  });
+
+  document.querySelectorAll('.reveal--left').forEach(el => {
+    if (_isSpecific(el)) return;
+    gsap.fromTo(el,
+      { autoAlpha: 0, x: -32 },
+      { autoAlpha: 1, x: 0, duration: 0.8, ease: 'power3.out',
+        overwrite: 'auto', scrollTrigger: _st(el, '85%') }
+    );
+  });
+
+  document.querySelectorAll('.reveal--right').forEach(el => {
+    if (_isSpecific(el)) return;
+    gsap.fromTo(el,
+      { autoAlpha: 0, x: 32 },
+      { autoAlpha: 1, x: 0, duration: 0.8, ease: 'power3.out',
+        overwrite: 'auto', scrollTrigger: _st(el, '85%') }
+    );
+  });
+
+  document.querySelectorAll('.reveal--scale').forEach(el => {
+    if (_isSpecific(el)) return;
+    gsap.fromTo(el,
+      { autoAlpha: 0, scale: 0.93 },
+      { autoAlpha: 1, scale: 1, duration: 0.75, ease: 'power3.out',
+        overwrite: 'auto', scrollTrigger: _st(el) }
+    );
+  });
+}
+
+// ─────────────────────────────────────────────────────────
+// 3. METRIC CARDS  (.metric-card)
+// ─────────────────────────────────────────────────────────
+function _metricCards() {
+  _batchReveal('.metric-card',
+    { scale: 0.92, y: 18 },
+    { scale: 1, y: 0, duration: 0.7, ease: 'back.out(1.3)', stagger: 0.1 }
+  );
+}
+
+// ─────────────────────────────────────────────────────────
+// 4. STEP CARDS  (.step-card)
+// ─────────────────────────────────────────────────────────
+function _stepCards() {
+  _batchReveal('.step-card',
+    { y: 50 },
+    { y: 0, duration: 0.75, ease: 'power3.out', stagger: 0.15 },
+    3
+  );
+}
+
+// ─────────────────────────────────────────────────────────
+// 5. FEATURE CARDS  (.feat-card  +  legacy .feature-card)
+// ─────────────────────────────────────────────────────────
+function _featureCards() {
+  _batchReveal('.feat-card',
+    { y: 40 },
+    { y: 0, duration: 0.7, ease: 'power3.out', stagger: 0.1 },
+    3
+  );
+  _batchReveal('.feature-card',
+    { y: 40 },
+    { y: 0, duration: 0.7, ease: 'power3.out', stagger: 0.12 },
+    3
+  );
+}
+
+// ─────────────────────────────────────────────────────────
+// 6. APP SHOWCASE PHONES  (.showcase--new  +  legacy .showcase)
+// ─────────────────────────────────────────────────────────
+function _showcase() {
+  const section = document.querySelector('.showcase--new, .showcase');
+  if (!section || window.innerWidth < 768) return;
+
+  const center = section.querySelector('.phone-3d--center');
+  const left   = section.querySelector('.phone-3d--left');
+  const right  = section.querySelector('.phone-3d--right');
+
+  if (center) {
+    gsap.fromTo(center,
+      { autoAlpha: 0, y: 80 },
+      { autoAlpha: 1, y: 0, duration: 1, ease: 'power3.out',
+        scrollTrigger: { trigger: section, start: 'top 65%', once: true } }
+    );
+  }
+
+  if (left) {
+    gsap.fromTo(left,
+      { autoAlpha: 0, x: -50 },
+      { autoAlpha: 0.65, x: 0, duration: 0.8, delay: 0.15, ease: 'power2.out',
+        scrollTrigger: { trigger: section, start: 'top 65%', once: true } }
+    );
+    gsap.to(left, {
+      y: -60,
+      ease: 'none',
+      scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: 1.5 },
+    });
+  }
+
+  if (right) {
+    gsap.fromTo(right,
+      { autoAlpha: 0, x: 50 },
+      { autoAlpha: 0.65, x: 0, duration: 0.8, delay: 0.15, ease: 'power2.out',
+        scrollTrigger: { trigger: section, start: 'top 65%', once: true } }
+    );
+    gsap.to(right, {
+      y: 60,
+      ease: 'none',
+      scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: 1.5 },
+    });
+  }
+}
+
+// ─────────────────────────────────────────────────────────
+// 7. BENTO GRID  (.bento-item)
+// ─────────────────────────────────────────────────────────
+function _bentoGrid() {
+  _batchReveal('.bento-item',
+    { scale: 0.94 },
+    { scale: 1, duration: 0.65, ease: 'power2.out', stagger: 0.1 },
+    4
+  );
+}
+
+// ─────────────────────────────────────────────────────────
+// 8. PRICING CARDS  (.price-card)
+// ─────────────────────────────────────────────────────────
+function _pricingCards() {
+  _batchReveal('.price-card',
+    { y: 40 },
+    { y: 0, duration: 0.7, ease: 'power3.out', stagger: 0.15 },
+    3
+  );
+}
+
+// ─────────────────────────────────────────────────────────
+// 9. TESTIMONIALS
+//    • .testimonials-row  → CSS infinite-scroll (homepage). No GSAP needed.
+//    • .testimonials-track → Manual-scroll track on sub-pages. GSAP stagger.
+// ─────────────────────────────────────────────────────────
+function _testimonials() {
+  if (document.querySelector('.testimonials-row')) return; // CSS handles it
+
+  const track = document.querySelector('.testimonials-track');
+  if (!track) return;
+
+  gsap.fromTo(
+    track.querySelectorAll('.testimonial-card'),
+    { autoAlpha: 0, x: 50 },
+    {
+      autoAlpha: 1, x: 0, duration: 0.7, stagger: 0.12,
+      ease: 'power3.out', overwrite: 'auto',
+      scrollTrigger: { trigger: track, start: 'top 82%', once: true },
+    }
+  );
+}
+
+// ─────────────────────────────────────────────────────────
+// 10. FAQ ITEMS  (.faq-item)
+// ─────────────────────────────────────────────────────────
+function _faqItems() {
+  const list = document.querySelector('.faq-list');
+  if (!list) return;
+
+  gsap.fromTo(
+    list.querySelectorAll('.faq-item'),
+    { autoAlpha: 0, y: 18 },
+    {
+      autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.08,
+      ease: 'power3.out', overwrite: 'auto',
+      scrollTrigger: { trigger: list, start: 'top 82%', once: true },
+    }
+  );
+}
+
+// ─────────────────────────────────────────────────────────
+// 11. ANIMATED COUNTERS  (data-count attribute)
+//     Works for both .metrics-strip (v2 homepage) and .trust-bar (older pages)
+// ─────────────────────────────────────────────────────────
+function _counters() {
+  const counterEls = document.querySelectorAll('[data-count]');
+  if (!counterEls.length) return;
+
+  // Use the closest meaningful container as the ScrollTrigger
+  const triggerEl =
+    counterEls[0].closest('.metrics-strip, .trust-bar, section') ||
+    counterEls[0].parentElement;
 
   ScrollTrigger.create({
-    trigger: '.trust-bar',
-    start: 'top 80%',
+    trigger: triggerEl,
+    start: 'top 82%',
     once: true,
-    onEnter: () => {
-      counters.forEach(el => {
-        const target = parseFloat(el.dataset.count);
-        const suffix = el.dataset.suffix || '';
-        const isDecimal = target % 1 !== 0;
+    onEnter() {
+      counterEls.forEach(el => {
+        const target   = parseFloat(el.dataset.count);
+        const suffix   = el.dataset.suffix || '';
+        const decimals = target % 1 !== 0 ? 1 : 0;
+        const obj      = { val: 0 };
 
-        gsap.to(el, {
-          innerText: target,
-          duration: 2,
-          snap: isDecimal ? { innerText: 0.1 } : { innerText: 1 },
-          ease: 'power1.out',
+        gsap.to(obj, {
+          val:      target,
+          duration: 2.2,
+          ease:     'power2.out',
           onUpdate() {
-            el.textContent = (isDecimal ? parseFloat(el.innerText).toFixed(1) : el.innerText) + suffix;
+            el.textContent = obj.val.toFixed(decimals) + suffix;
+          },
+          onComplete() {
+            // Ensure we end on the exact target value
+            el.textContent = target.toFixed(decimals) + suffix;
           },
         });
       });
     },
   });
 }
-
-// ── Steps (Pin + Scrub) ──────────────────────────────────
-
-function initSteps() {
-  if (window.innerWidth < 768) return;
-
-  const tl = gsap.timeline({
-    scrollTrigger: {
-      trigger: '#steps-section',
-      start: 'center center',
-      end: '+=200%',
-      pin: true,
-      scrub: 1,
-    },
-  });
-
-  tl.to('#steps-line-fill', { width: '50%', duration: 1 })
-    .to('.step:nth-child(1)', { opacity: 0.35 }, '<')
-    .to('.step:nth-child(2)', { opacity: 1, className: '+=step--active' }, '<')
-    .to('#steps-line-fill', { width: '100%', duration: 1 })
-    .to('.step:nth-child(2)', { opacity: 0.35 }, '<')
-    .to('.step:nth-child(3)', { opacity: 1, className: '+=step--active' }, '<');
-}
-
-// ── Features Stagger ─────────────────────────────────────
-
-function initFeatures() {
-  gsap.from('.feature-card, .feat-card', {
-    y: 40,
-    opacity: 0,
-    duration: 0.7,
-    stagger: 0.12,
-    ease: 'power3.out',
-    scrollTrigger: {
-      trigger: '.features-grid, .feature-grid--new',
-      start: 'top 75%',
-      once: true,
-    },
-  });
-}
-
-// ── Step Cards ───────────────────────────────────────────
-
-function initStepCards() {
-  gsap.from('.step-card', {
-    y: 50,
-    opacity: 0,
-    duration: 0.7,
-    stagger: 0.15,
-    ease: 'power3.out',
-    scrollTrigger: {
-      trigger: '.steps--cards',
-      start: 'top 75%',
-      once: true,
-    },
-  });
-}
-
-// ── Showcase Phones ──────────────────────────────────────
-
-function initShowcase() {
-  if (window.innerWidth < 768) return;
-
-  gsap.from('.phone-3d--center', {
-    y: 120,
-    opacity: 0,
-    duration: 1,
-    ease: 'power3.out',
-    scrollTrigger: { trigger: '.showcase', start: 'top 60%', once: true },
-  });
-
-  gsap.to('.phone-3d--left', {
-    y: -80,
-    scrollTrigger: {
-      trigger: '.showcase',
-      start: 'top bottom',
-      end: 'bottom top',
-      scrub: 1,
-    },
-  });
-
-  gsap.to('.phone-3d--right', {
-    y: 80,
-    scrollTrigger: {
-      trigger: '.showcase',
-      start: 'top bottom',
-      end: 'bottom top',
-      scrub: 1,
-    },
-  });
-}
-
-// ── Bento Grid ───────────────────────────────────────────
-
-function initBento() {
-  gsap.from('.bento-item', {
-    scale: 0.92,
-    opacity: 0,
-    duration: 0.6,
-    stagger: 0.1,
-    ease: 'power3.out',
-    scrollTrigger: {
-      trigger: '.bento-grid',
-      start: 'top 75%',
-      once: true,
-    },
-  });
-}
-
-// ── Testimonials ─────────────────────────────────────────
-
-function initTestimonials() {
-  gsap.from('.testimonial-card', {
-    x: 60,
-    opacity: 0,
-    duration: 0.7,
-    stagger: 0.15,
-    ease: 'power3.out',
-    scrollTrigger: {
-      trigger: '.testimonials-track',
-      start: 'top 80%',
-      once: true,
-    },
-  });
-}
-
-// ── Pricing Cards ────────────────────────────────────────
-
-function initPricing() {
-  gsap.from('.price-card', {
-    y: 40,
-    opacity: 0,
-    duration: 0.7,
-    stagger: 0.12,
-    ease: 'power3.out',
-    scrollTrigger: {
-      trigger: '.pricing-cards',
-      start: 'top 75%',
-      once: true,
-    },
-  });
-}
-
-// ── FAQ Accordion ────────────────────────────────────────
-
-function initFaq() {
-  gsap.from('.faq-item', {
-    y: 20,
-    opacity: 0,
-    duration: 0.5,
-    stagger: 0.08,
-    ease: 'power3.out',
-    scrollTrigger: {
-      trigger: '.faq-list',
-      start: 'top 80%',
-      once: true,
-    },
-  });
-}
-
-
-
-
 

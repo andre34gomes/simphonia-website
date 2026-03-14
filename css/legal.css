@@ -1,0 +1,57 @@
+/* ============================================================
+   SIMPHONIA — Legal Pages Stylesheet
+   ============================================================
+   Styles for pages/privacy.html and pages/terms.html.
+   ============================================================ */
+
+/* Legal Hero */
+.legal-hero {
+  padding-top: calc(var(--nav-height) + var(--space-4xl));
+  padding-bottom: var(--space-2xl);
+  text-align: center;
+}
+
+.legal-hero p {
+  color: var(--text-tertiary);
+  font-size: 0.9375rem;
+  margin-top: var(--space-md);
+}
+
+/* Legal Prose */
+.legal-prose {
+  max-width: 720px;
+  margin: 0 auto;
+  padding-bottom: var(--space-5xl);
+}
+
+.legal-prose h2 {
+  font-size: 1.5rem;
+  margin-top: var(--space-3xl);
+  margin-bottom: var(--space-lg);
+}
+
+.legal-prose h3 {
+  font-size: 1.125rem;
+  margin-top: var(--space-xl);
+  margin-bottom: var(--space-md);
+}
+
+.legal-prose p {
+  margin-bottom: var(--space-md);
+  font-size: 0.9375rem;
+  line-height: 1.8;
+}
+
+.legal-prose ul {
+  margin-bottom: var(--space-md);
+  padding-left: var(--space-xl);
+  list-style: disc;
+}
+
+.legal-prose ul li {
+  color: var(--text-secondary);
+  font-size: 0.9375rem;
+  line-height: 1.8;
+  margin-bottom: var(--space-xs);
+}
+

@@ -1977,6 +1977,20 @@ textarea.form-input {
   transform: scale(0.95);
 }
 
+/*
+ * Inside the hero, GSAP calls gsap.set() to handle initial hidden state.
+ * Prevent the CSS .reveal rule from double-hiding those elements and
+ * causing a brief invisible flash before the module script executes.
+ */
+.hero--v2 .reveal,
+.hero--v2 .reveal--left,
+.hero--v2 .reveal--right,
+.hero--v2 .reveal--scale {
+  opacity: 1;
+  transform: none;
+  /* GSAP will immediately override these via gsap.set() */
+}
+
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -3178,4 +3192,5 @@ textarea.form-input {
   .hero-phone__badge { display: none !important; }
   .final-cta h2 { font-size: 2.25rem; }
 }
+
 

@@ -18,7 +18,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/home.css">
 
   <!-- Structured Data -->
   <script type="application/ld+json">
@@ -919,37 +920,7 @@
     })();
   </script>
 
-  <!-- Update animations.js to handle new counter data-count attributes -->
-  <script>
-    // Wait for GSAP to load, then initialize counters for metrics-strip
-    window.addEventListener('load', function () {
-      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-      gsap.registerPlugin(ScrollTrigger);
-      var counters = document.querySelectorAll('[data-count]');
-      if (!counters.length) return;
-      ScrollTrigger.create({
-        trigger: '.metrics-strip',
-        start: 'top 80%',
-        once: true,
-        onEnter: function () {
-          counters.forEach(function (el) {
-            var target = parseFloat(el.dataset.count);
-            var suffix = el.dataset.suffix || '';
-            var isDecimal = target % 1 !== 0;
-            var obj = { val: 0 };
-            gsap.to(obj, {
-              val: target,
-              duration: 2.5,
-              ease: 'power2.out',
-              onUpdate: function () {
-                el.textContent = (isDecimal ? obj.val.toFixed(1) : Math.round(obj.val)) + suffix;
-              }
-            });
-          });
-        }
-      });
-    });
-  </script>
+  <!-- Counter animation is handled by js/animations.js _counters() -->
 
   <noscript>
     <style>
@@ -960,4 +931,5 @@
   </noscript>
 </body>
 </html>
+
 
