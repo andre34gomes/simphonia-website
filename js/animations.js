@@ -17,23 +17,26 @@ const SECTION_SPECIFIC_SEL =
   '.feat-card, .step-card, .metric-card, .price-card, .bento-item, ' +
   '.faq-item, .team-card, .value-card, .compat-brand-card, .dest-card, .feature-card';
 
+var _animStartTime = Date.now();
+
 function initAnimations() {
-  // ── Retry if CDN scripts have not executed yet ─────────
+  // ── Retry if CDN scripts have not executed yet (give up after 4 s) ──
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
-    setTimeout(initAnimations, 150);
+    if (Date.now() - _animStartTime < 4000) {
+      setTimeout(initAnimations, 200);
+    }
+    // If timed out, content stays visible (opacity: 1 default) — no action needed.
     return;
   }
 
   // ── Respect prefers-reduced-motion ────────────────────
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    document.querySelectorAll(
-      '.reveal, .reveal--left, .reveal--right, .reveal--scale'
-    ).forEach(el => {
-      el.style.opacity  = '1';
-      el.style.transform = 'none';
-    });
+    // Content is already visible by default; nothing to do.
     return;
   }
+
+  // ── GSAP is ready — hide elements so we can animate them in ──
+  document.documentElement.classList.add('gsap-ready');
 
   gsap.registerPlugin(ScrollTrigger);
   ScrollTrigger.config({ limitCallbacks: true });

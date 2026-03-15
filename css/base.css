@@ -1118,23 +1118,34 @@ body.theme-transition *::after {
   100% { background-position: 200% 0; }
 }
 
-/* Reveal classes (used by GSAP on all pages) */
-.reveal {
+/* Reveal classes — VISIBLE by default so content always shows.
+   When GSAP loads, animations.js adds html.gsap-ready which hides
+   them so GSAP can animate them in via ScrollTrigger. */
+.reveal,
+.reveal--left,
+.reveal--right,
+.reveal--scale {
+  opacity: 1;
+  transform: none;
+}
+
+/* Only hide elements when GSAP is confirmed available */
+html.gsap-ready .reveal {
   opacity: 0;
   transform: translateY(30px);
 }
 
-.reveal--left {
+html.gsap-ready .reveal--left {
   opacity: 0;
   transform: translateX(-30px);
 }
 
-.reveal--right {
+html.gsap-ready .reveal--right {
   opacity: 0;
   transform: translateX(30px);
 }
 
-.reveal--scale {
+html.gsap-ready .reveal--scale {
   opacity: 0;
   transform: scale(0.95);
 }

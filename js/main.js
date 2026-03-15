@@ -31,7 +31,17 @@ if (document.getElementById('globe-container')) initGlobe('globe-container');
 // 7. GSAP scroll animations — has internal retry loop for CDN timing safety
 initAnimations();
 
-// 8. Smooth anchor scroll
+// 8. Safety net — if GSAP still hasn't loaded after 5 s, ensure everything visible
+setTimeout(function () {
+  if (!document.documentElement.classList.contains('gsap-ready')) {
+    // GSAP never loaded — content is already visible via CSS defaults.
+    // Remove any leftover hidden state just in case.
+    document.querySelectorAll('.reveal,.reveal--left,.reveal--right,.reveal--scale')
+      .forEach(function (el) { el.style.opacity = '1'; el.style.transform = 'none'; });
+  }
+}, 5000);
+
+// 9. Smooth anchor scroll
 initSmoothScroll();
 
 // ============================================================

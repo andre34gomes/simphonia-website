@@ -787,16 +787,9 @@
 }
 
 /*
- * Inside the hero, GSAP calls gsap.set() to handle initial hidden state.
- * Prevent the CSS .reveal rule from double-hiding those elements.
+ * Hero reveals are now handled by the base .reveal defaults (opacity: 1).
+ * GSAP's gsap.set() handles the initial hidden state when animations run.
  */
-.hero--v2 .reveal,
-.hero--v2 .reveal--left,
-.hero--v2 .reveal--right,
-.hero--v2 .reveal--scale {
-  opacity: 1;
-  transform: none;
-}
 
 /* ==============================================
    PHONE MOCKUP & CSS APP UI
