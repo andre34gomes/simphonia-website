@@ -125,17 +125,26 @@ export function injectNoscript() {
 }
 
 /**
- * Returns the path prefix depending on whether we're on
- * the root index.html or inside /pages/.
+ * Returns the path prefix to reach the site root.
+ * Root (/ or /index.html) → './'
+ * Any inner page (/about/, /destinations/, etc.) → '../'
  */
 function getBasePath() {
   const path = window.location.pathname;
-  return path.includes('/pages/') ? '../' : './';
+  // Root page
+  if (path === '/' || path === '/index.html' || path.endsWith('/simphonia-website/')
+      || path.endsWith('/simphonia-website/index.html')) {
+    return './';
+  }
+  return '../';
 }
 
-function getPagePath() {
-  const path = window.location.pathname;
-  return path.includes('/pages/') ? './' : './pages/';
+/**
+ * Returns the prefix to link to a sibling page slug.
+ * From root → './slug/'   From inner page → '../slug/'
+ */
+function pagePath(slug) {
+  return getBasePath() + slug + '/';
 }
 
 function brandMarkup(base) {
@@ -152,19 +161,20 @@ function brandMarkup(base) {
 }
 
 /**
- * Returns 'nav__link--active' if href matches the current page.
+ * Returns 'nav__link--active' if the slug matches the current page path.
  */
-function activeClass(href) {
+function activeClass(slug) {
   const current = window.location.pathname;
-  if (href === 'index.html' || href === '') {
-    return (current.endsWith('/') || current.endsWith('index.html')) ? 'nav__link--active' : '';
+  if (slug === '') {
+    return (current === '/' || current.endsWith('/index.html')
+      || current.endsWith('/simphonia-website/')
+      || current.endsWith('/simphonia-website/index.html')) ? 'nav__link--active' : '';
   }
-  return current.includes(href.replace('.html', '')) ? 'nav__link--active' : '';
+  return current.includes('/' + slug + '/') ? 'nav__link--active' : '';
 }
 
 export function injectNav() {
   const base = getBasePath();
-  const page = getPagePath();
   const nav = document.createElement('nav');
   nav.className = 'nav';
   nav.id = 'navbar';
@@ -173,20 +183,20 @@ export function injectNav() {
 
   nav.innerHTML = `
     <div class="nav__inner">
-      <a href="${base}index.html" class="nav__logo" aria-label="Simphonia Home">
+      <a href="${base}" class="nav__logo" aria-label="Simphonia Home">
         ${brandMarkup(base)}
       </a>
 
       <div class="nav__links">
-        <a href="${page}destinations.html" class="nav__link ${activeClass('destinations')}">Destinations</a>
-        <a href="${page}how-it-works.html" class="nav__link ${activeClass('how-it-works')}">How It Works</a>
-        <a href="${page}compatibility.html" class="nav__link ${activeClass('compatibility')}">Compatibility</a>
-        <a href="${page}support.html" class="nav__link ${activeClass('support')}">Support</a>
-        <a href="${page}about.html" class="nav__link ${activeClass('about')}">About</a>
+        <a href="${pagePath('destinations')}" class="nav__link ${activeClass('destinations')}">Destinations</a>
+        <a href="${pagePath('how-it-works')}" class="nav__link ${activeClass('how-it-works')}">How It Works</a>
+        <a href="${pagePath('compatibility')}" class="nav__link ${activeClass('compatibility')}">Compatibility</a>
+        <a href="${pagePath('support')}" class="nav__link ${activeClass('support')}">Support</a>
+        <a href="${pagePath('about')}" class="nav__link ${activeClass('about')}">About</a>
       </div>
 
       <div class="nav__actions">
-        <a href="${base}index.html#download" class="btn btn--primary btn--sm">Download App</a>
+        <a href="${base}#download" class="btn btn--primary btn--sm">Download App</a>
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">
           <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
           <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 0 1 11.21 3 7 7 0 1 0 21 12.79z"/></svg>
@@ -200,12 +210,12 @@ export function injectNav() {
     </div>
 
     <div class="nav__mobile" id="mobile-menu" role="dialog" aria-label="Mobile menu">
-      <a href="${page}destinations.html">Destinations</a>
-      <a href="${page}how-it-works.html">How It Works</a>
-      <a href="${page}compatibility.html">Compatibility</a>
-      <a href="${page}support.html">Support</a>
-      <a href="${page}about.html">About</a>
-      <a href="${base}index.html#download" class="btn btn--primary" style="margin-top:1rem;">Download App</a>
+      <a href="${pagePath('destinations')}">Destinations</a>
+      <a href="${pagePath('how-it-works')}">How It Works</a>
+      <a href="${pagePath('compatibility')}">Compatibility</a>
+      <a href="${pagePath('support')}">Support</a>
+      <a href="${pagePath('about')}">About</a>
+      <a href="${base}#download" class="btn btn--primary" style="margin-top:1rem;">Download App</a>
     </div>
   `;
 
@@ -254,7 +264,6 @@ function initNavBehavior() {
 
 export function injectFooter() {
   const base = getBasePath();
-  const page = getPagePath();
   const footer = document.createElement('footer');
   footer.className = 'footer';
   footer.setAttribute('role', 'contentinfo');
@@ -263,7 +272,7 @@ export function injectFooter() {
     <div class="container">
       <div class="footer__grid">
         <div class="footer__brand">
-          <a href="${base}index.html" class="nav__logo" style="font-size:1.5rem;">
+          <a href="${base}" class="nav__logo" style="font-size:1.5rem;">
             ${brandMarkup(base)}
           </a>
           <p>Stay connected, wherever you go. Global eSIM coverage for modern travelers.</p>
@@ -272,26 +281,26 @@ export function injectFooter() {
         <div class="footer__col">
           <h4>Product</h4>
           <ul>
-            <li><a href="${page}destinations.html">Destinations</a></li>
-            <li><a href="${page}how-it-works.html">How It Works</a></li>
-            <li><a href="${page}compatibility.html">Compatibility</a></li>
+            <li><a href="${pagePath('destinations')}">Destinations</a></li>
+            <li><a href="${pagePath('how-it-works')}">How It Works</a></li>
+            <li><a href="${pagePath('compatibility')}">Compatibility</a></li>
           </ul>
         </div>
 
         <div class="footer__col">
           <h4>Company</h4>
           <ul>
-            <li><a href="${page}about.html">About Us</a></li>
-            <li><a href="${page}support.html">Support</a></li>
-            <li><a href="${page}support.html#contact">Contact</a></li>
+            <li><a href="${pagePath('about')}">About Us</a></li>
+            <li><a href="${pagePath('support')}">Support</a></li>
+            <li><a href="${pagePath('support')}#contact">Contact</a></li>
           </ul>
         </div>
 
         <div class="footer__col">
           <h4>Legal</h4>
           <ul>
-            <li><a href="${page}privacy.html">Privacy Policy</a></li>
-            <li><a href="${page}terms.html">Terms of Service</a></li>
+            <li><a href="${pagePath('privacy')}">Privacy Policy</a></li>
+            <li><a href="${pagePath('terms')}">Terms of Service</a></li>
           </ul>
         </div>
       </div>

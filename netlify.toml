@@ -1,0 +1,35 @@
+[[redirects]]
+  from = "/pages/destinations.html"
+  to = "/destinations/"
+  status = 301
+
+[[redirects]]
+  from = "/pages/how-it-works.html"
+  to = "/how-it-works/"
+  status = 301
+
+[[redirects]]
+  from = "/pages/compatibility.html"
+  to = "/compatibility/"
+  status = 301
+
+[[redirects]]
+  from = "/pages/support.html"
+  to = "/support/"
+  status = 301
+
+[[redirects]]
+  from = "/pages/about.html"
+  to = "/about/"
+  status = 301
+
+[[redirects]]
+  from = "/pages/privacy.html"
+  to = "/privacy/"
+  status = 301
+
+[[redirects]]
+  from = "/pages/terms.html"
+  to = "/terms/"
+  status = 301
+

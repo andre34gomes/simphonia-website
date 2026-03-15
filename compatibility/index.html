@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <title>Device Compatibility — Simphonia eSIM</title>
+  <meta name="description" content="Check if your phone supports eSIM. View the full list of compatible devices for Simphonia eSIM.">
+  <meta name="theme-color" content="#121212">
+  <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+  <link rel="shortcut icon" href="../assets/favicon.svg">
+  <link rel="mask-icon" href="../assets/favicon.svg" color="#D4AF37">
+  <script>!function(){var t;try{t=localStorage.getItem("simphonia-theme")}catch(e){}if(!t)t=matchMedia("(prefers-color-scheme:light)").matches?"light":"dark";document.documentElement.dataset.theme=t;if(t==="light"){var m=document.querySelector("meta[name=theme-color]");if(m)m.content="#FFF5F1";document.querySelectorAll("link[rel*=icon]").forEach(function(l){if(l.href.indexOf("favicon")>-1)l.href=l.href.replace("favicon.svg","favicon-light.svg")})}}()</script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../css/compatibility.css">
+</head>
+<body>
+
+
+  <main id="main-content">
+
+    <!-- Hero -->
+    <section class="compat-hero">
+      <div class="container">
+        <span class="label reveal">Compatibility</span>
+        <h1 class="reveal" style="margin-top:var(--space-md);">Is Your Device<br><span class="text-gradient">eSIM Ready?</span></h1>
+        <p class="reveal" style="font-size:1.125rem;max-width:520px;margin:var(--space-lg) auto 0;">
+          Search for your device below to check eSIM compatibility instantly.
+        </p>
+      </div>
+    </section>
+
+    <!-- Checker -->
+    <section class="section" style="padding-top:0;">
+      <div class="container">
+        <div class="compat-checker reveal">
+          <div class="search-bar">
+            <svg class="search-bar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+            </svg>
+            <input type="text" class="search-bar__input" id="compat-search" placeholder="Search your device (e.g. iPhone 15, Galaxy S24...)" aria-label="Search device compatibility" autocomplete="off">
+          </div>
+
+          <!-- Autocomplete dropdown -->
+          <div id="compat-dropdown" style="display:none;max-height:280px;overflow-y:auto;margin-top:var(--space-sm);background:var(--bg-elevated);border:1px solid var(--border-default);border-radius:var(--radius-md);">
+          </div>
+
+          <!-- Result -->
+          <div id="compat-result" class="compat-result">
+            <div class="compat-result__icon" id="result-icon"></div>
+            <h3 class="compat-result__title" id="result-title"></h3>
+            <p id="result-desc" style="color:var(--text-secondary);font-size:0.9375rem;"></p>
+          </div>
+        </div>
+
+        <!-- Brands Grid -->
+        <div style="margin-top:var(--space-5xl);">
+          <div class="section-header reveal">
+            <h2>Supported Brands</h2>
+            <p>Click on a brand to see all compatible devices.</p>
+          </div>
+
+          <div class="compat-brands" id="brands-grid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Full Device List -->
+        <div style="margin-top:var(--space-4xl);">
+          <div class="section-header reveal">
+            <h2>All Compatible Devices</h2>
+          </div>
+          <div class="dest-grid" id="devices-grid" style="grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- Not Found CTA -->
+    <section class="section cta-section">
+      <div class="cta-section__bg" aria-hidden="true"></div>
+      <div class="container" style="position:relative;z-index:1;">
+        <div class="reveal">
+          <h2>Don't See Your Device?</h2>
+          <p>New eSIM-compatible devices are released regularly. Contact us for the latest information.</p>
+          <div class="flex flex-center gap-md" style="margin-top:var(--space-xl);">
+            <a href="../support/" class="btn btn--primary btn--lg">Contact Support</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
+  <script type="module" src="../js/main.js?v=2"></script>
+
+  <script type="module">
+    const devices = [
+      // Apple
+      { name: 'iPhone 16 Pro Max', brand: 'Apple', compatible: true },
+      { name: 'iPhone 16 Pro', brand: 'Apple', compatible: true },
+      { name: 'iPhone 16', brand: 'Apple', compatible: true },
+      { name: 'iPhone 16 Plus', brand: 'Apple', compatible: true },
+      { name: 'iPhone 15 Pro Max', brand: 'Apple', compatible: true },
+      { name: 'iPhone 15 Pro', brand: 'Apple', compatible: true },
+      { name: 'iPhone 15', brand: 'Apple', compatible: true },
+      { name: 'iPhone 15 Plus', brand: 'Apple', compatible: true },
+      { name: 'iPhone 14 Pro Max', brand: 'Apple', compatible: true },
+      { name: 'iPhone 14 Pro', brand: 'Apple', compatible: true },
+      { name: 'iPhone 14', brand: 'Apple', compatible: true },
+      { name: 'iPhone 14 Plus', brand: 'Apple', compatible: true },
+      { name: 'iPhone 13 Pro Max', brand: 'Apple', compatible: true },
+      { name: 'iPhone 13 Pro', brand: 'Apple', compatible: true },
+      { name: 'iPhone 13', brand: 'Apple', compatible: true },
+      { name: 'iPhone 13 Mini', brand: 'Apple', compatible: true },
+      { name: 'iPhone 12 Pro Max', brand: 'Apple', compatible: true },
+      { name: 'iPhone 12 Pro', brand: 'Apple', compatible: true },
+      { name: 'iPhone 12', brand: 'Apple', compatible: true },
+      { name: 'iPhone 12 Mini', brand: 'Apple', compatible: true },
+      { name: 'iPhone 11 Pro Max', brand: 'Apple', compatible: true },
+      { name: 'iPhone 11 Pro', brand: 'Apple', compatible: true },
+      { name: 'iPhone 11', brand: 'Apple', compatible: true },
+      { name: 'iPhone XS Max', brand: 'Apple', compatible: true },
+      { name: 'iPhone XS', brand: 'Apple', compatible: true },
+      { name: 'iPhone XR', brand: 'Apple', compatible: true },
+      { name: 'iPhone SE (3rd gen)', brand: 'Apple', compatible: true },
+      { name: 'iPhone SE (2nd gen)', brand: 'Apple', compatible: true },
+      { name: 'iPad Pro (2018+)', brand: 'Apple', compatible: true },
+      { name: 'iPad Air (3rd gen+)', brand: 'Apple', compatible: true },
+      // Samsung
+      { name: 'Galaxy S25 Ultra', brand: 'Samsung', compatible: true },
+      { name: 'Galaxy S25+', brand: 'Samsung', compatible: true },
+      { name: 'Galaxy S25', brand: 'Samsung', compatible: true },
+      { name: 'Galaxy S24 Ultra', brand: 'Samsung', compatible: true },
+      { name: 'Galaxy S24+', brand: 'Samsung', compatible: true },
+      { name: 'Galaxy S24', brand: 'Samsung', compatible: true },
+      { name: 'Galaxy S23 Ultra', brand: 'Samsung', compatible: true },
+      { name: 'Galaxy S23+', brand: 'Samsung', compatible: true },
+      { name: 'Galaxy S23', brand: 'Samsung', compatible: true },
+      { name: 'Galaxy S22 Ultra', brand: 'Samsung', compatible: true },
+      { name: 'Galaxy S22+', brand: 'Samsung', compatible: true },
+      { name: 'Galaxy S22', brand: 'Samsung', compatible: true },
+      { name: 'Galaxy S21 Ultra', brand: 'Samsung', compatible: true },
+      { name: 'Galaxy S21+', brand: 'Samsung', compatible: true },
+      { name: 'Galaxy S21', brand: 'Samsung', compatible: true },
+      { name: 'Galaxy S20 Ultra', brand: 'Samsung', compatible: true },
+      { name: 'Galaxy S20+', brand: 'Samsung', compatible: true },
+      { name: 'Galaxy S20', brand: 'Samsung', compatible: true },
+      { name: 'Galaxy Z Fold 6', brand: 'Samsung', compatible: true },
+      { name: 'Galaxy Z Fold 5', brand: 'Samsung', compatible: true },
+      { name: 'Galaxy Z Flip 6', brand: 'Samsung', compatible: true },
+      { name: 'Galaxy Z Flip 5', brand: 'Samsung', compatible: true },
+      { name: 'Galaxy Note 20 Ultra', brand: 'Samsung', compatible: true },
+      { name: 'Galaxy Note 20', brand: 'Samsung', compatible: true },
+      // Google
+      { name: 'Pixel 9 Pro XL', brand: 'Google', compatible: true },
+      { name: 'Pixel 9 Pro', brand: 'Google', compatible: true },
+      { name: 'Pixel 9', brand: 'Google', compatible: true },
+      { name: 'Pixel 8 Pro', brand: 'Google', compatible: true },
+      { name: 'Pixel 8', brand: 'Google', compatible: true },
+      { name: 'Pixel 8a', brand: 'Google', compatible: true },
+      { name: 'Pixel 7 Pro', brand: 'Google', compatible: true },
+      { name: 'Pixel 7', brand: 'Google', compatible: true },
+      { name: 'Pixel 7a', brand: 'Google', compatible: true },
+      { name: 'Pixel 6 Pro', brand: 'Google', compatible: true },
+      { name: 'Pixel 6', brand: 'Google', compatible: true },
+      { name: 'Pixel 6a', brand: 'Google', compatible: true },
+      { name: 'Pixel 5', brand: 'Google', compatible: true },
+      { name: 'Pixel 4a 5G', brand: 'Google', compatible: true },
+      { name: 'Pixel 4 XL', brand: 'Google', compatible: true },
+      { name: 'Pixel 4', brand: 'Google', compatible: true },
+      { name: 'Pixel 3 XL', brand: 'Google', compatible: true },
+      { name: 'Pixel 3', brand: 'Google', compatible: true },
+      // Others
+      { name: 'Huawei P40 Pro', brand: 'Huawei', compatible: true },
+      { name: 'Huawei P40', brand: 'Huawei', compatible: true },
+      { name: 'Huawei Mate 40 Pro', brand: 'Huawei', compatible: true },
+      { name: 'Motorola Razr (2023)', brand: 'Motorola', compatible: true },
+      { name: 'Motorola Razr+', brand: 'Motorola', compatible: true },
+      { name: 'Motorola Edge 40 Pro', brand: 'Motorola', compatible: true },
+      { name: 'Oppo Find X3 Pro', brand: 'Oppo', compatible: true },
+      { name: 'Oppo Find X5 Pro', brand: 'Oppo', compatible: true },
+      { name: 'OnePlus 12', brand: 'OnePlus', compatible: true },
+      { name: 'OnePlus 11', brand: 'OnePlus', compatible: true },
+      { name: 'Xiaomi 14', brand: 'Xiaomi', compatible: true },
+      { name: 'Xiaomi 13 Pro', brand: 'Xiaomi', compatible: true },
+      { name: 'Sony Xperia 1 V', brand: 'Sony', compatible: true },
+      { name: 'Sony Xperia 5 V', brand: 'Sony', compatible: true },
+    ];
+
+    const brandIcons = {
+      Apple: '🍎', Samsung: '📱', Google: '🔍', Huawei: '📶',
+      Motorola: '📲', Oppo: '✨', OnePlus: '⚡', Xiaomi: '🔋', Sony: '🎵'
+    };
+
+    // Build brands grid
+    const brandsGrid = document.getElementById('brands-grid');
+    const brandCounts = {};
+    devices.forEach(d => { brandCounts[d.brand] = (brandCounts[d.brand] || 0) + 1; });
+
+    Object.entries(brandCounts).forEach(([brand, count]) => {
+      const card = document.createElement('div');
+      card.className = 'compat-brand-card glass-card reveal';
+      card.style.cursor = 'pointer';
+      card.innerHTML = `
+        <div class="compat-brand-card__icon">${brandIcons[brand] || '📱'}</div>
+        <div class="compat-brand-card__name">${brand}</div>
+        <div class="compat-brand-card__count">${count} devices</div>
+      `;
+      card.addEventListener('click', () => {
+        document.getElementById('compat-search').value = brand;
+        filterDevices(brand.toLowerCase());
+        document.getElementById('devices-grid').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      brandsGrid.appendChild(card);
+    });
+
+    // Build full device list
+    function renderDevices(list) {
+      const grid = document.getElementById('devices-grid');
+      grid.innerHTML = '';
+      list.forEach(d => {
+        const card = document.createElement('div');
+        card.className = 'glass-card';
+        card.style.cssText = 'padding:var(--space-lg);display:flex;align-items:center;gap:var(--space-md);';
+        card.innerHTML = `
+          <span style="color:${d.compatible ? 'var(--accent)' : '#f87171'};font-size:1.25rem;">${d.compatible ? '✓' : '✗'}</span>
+          <div>
+            <div style="font-weight:600;font-size:0.9375rem;">${d.name}</div>
+            <div style="font-size:0.75rem;color:var(--text-tertiary);">${d.brand}</div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function filterDevices(query) {
+      if (!query) { renderDevices(devices); return; }
+      const filtered = devices.filter(d =>
+        d.name.toLowerCase().includes(query) || d.brand.toLowerCase().includes(query)
+      );
+      renderDevices(filtered);
+    }
+
+    renderDevices(devices);
+
+    // Search + autocomplete
+    const searchInput = document.getElementById('compat-search');
+    const dropdown = document.getElementById('compat-dropdown');
+    const resultDiv = document.getElementById('compat-result');
+    const resultIcon = document.getElementById('result-icon');
+    const resultTitle = document.getElementById('result-title');
+    const resultDesc = document.getElementById('result-desc');
+
+    searchInput.addEventListener('input', () => {
+      const query = searchInput.value.toLowerCase().trim();
+      filterDevices(query);
+
+      if (query.length < 2) {
+        dropdown.style.display = 'none';
+        resultDiv.className = 'compat-result';
+        return;
+      }
+
+      const matches = devices.filter(d =>
+        d.name.toLowerCase().includes(query) || d.brand.toLowerCase().includes(query)
+      ).slice(0, 8);
+
+      if (matches.length === 0) {
+        dropdown.style.display = 'none';
+        resultDiv.className = 'compat-result compat-result--show compat-result--no';
+        resultIcon.textContent = '❌';
+        resultTitle.textContent = 'Device Not Found';
+        resultDesc.textContent = 'This device may not support eSIM, or it\'s not in our database yet. Contact support for help.';
+        return;
+      }
+
+      dropdown.style.display = 'block';
+      dropdown.innerHTML = matches.map(d => `
+        <div style="padding:0.75rem 1.25rem;cursor:pointer;border-bottom:1px solid var(--border-subtle);display:flex;justify-content:space-between;align-items:center;transition:background 0.15s;"
+             onmouseenter="this.style.background='var(--glass-hover)'"
+             onmouseleave="this.style.background='transparent'"
+             data-name="${d.name}" data-compatible="${d.compatible}">
+          <span style="font-size:0.9375rem;">${d.name}</span>
+          <span style="font-size:0.75rem;color:${d.compatible ? 'var(--accent)' : '#f87171'};">${d.compatible ? 'Compatible' : 'Not Compatible'}</span>
+        </div>
+      `).join('');
+
+      dropdown.querySelectorAll('[data-name]').forEach(el => {
+        el.addEventListener('click', () => {
+          const name = el.dataset.name;
+          const compatible = el.dataset.compatible === 'true';
+          searchInput.value = name;
+          dropdown.style.display = 'none';
+
+          resultDiv.className = `compat-result compat-result--show ${compatible ? 'compat-result--yes' : 'compat-result--no'}`;
+          resultIcon.textContent = compatible ? '✅' : '❌';
+          resultTitle.textContent = compatible ? `${name} is eSIM Compatible!` : `${name} is Not Compatible`;
+          resultDesc.textContent = compatible
+            ? 'Great news! You can use Simphonia eSIM on this device. Download the app to get started.'
+            : 'Unfortunately, this device doesn\'t support eSIM. Consider upgrading to a newer model.';
+        });
+      });
+    });
+
+    // Close dropdown on outside click
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.compat-checker')) {
+        dropdown.style.display = 'none';
+      }
+    });
+  </script>
+
+</body>
+</html>
+
