@@ -17,7 +17,7 @@ const SECTION_SPECIFIC_SEL =
   '.feat-card, .step-card, .metric-card, .price-card, .bento-item, ' +
   '.faq-item, .team-card, .value-card, .compat-brand-card, .dest-card, .feature-card';
 
-export function initAnimations() {
+function initAnimations() {
   // ── Retry if CDN scripts have not executed yet ─────────
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
     setTimeout(initAnimations, 150);

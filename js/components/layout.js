@@ -53,7 +53,7 @@ function applyTheme(theme) {
 }
 
 /** Toggle between light / dark. */
-export function toggleTheme() {
+function toggleTheme() {
   // Enable smooth transition class
   document.body.classList.add('theme-transition');
   applyTheme(currentTheme() === 'dark' ? 'light' : 'dark');
@@ -62,7 +62,7 @@ export function toggleTheme() {
 }
 
 /** Call once, early — before DOM paint when possible. */
-export function initTheme() {
+function initTheme() {
   applyTheme(getStoredTheme());
   // Listen for system-preference changes if user hasn't manually toggled
   window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
@@ -77,7 +77,7 @@ export function initTheme() {
  * skip-link, bg-noise, stars-canvas, and custom cursor.
  * Call this BEFORE injectNav so that the nav prepends after these.
  */
-export function injectShell() {
+function injectShell() {
   const frag = document.createDocumentFragment();
 
   // Skip link
@@ -113,7 +113,7 @@ export function injectShell() {
 /**
  * Injects the shared <noscript> fallback styles at the end of <body>.
  */
-export function injectNoscript() {
+function injectNoscript() {
   const ns = document.createElement('noscript');
   const style = document.createElement('style');
   style.textContent =
@@ -196,7 +196,7 @@ function activeClass(slug) {
   return path.includes('/' + slug) ? 'nav__link--active' : '';
 }
 
-export function injectNav() {
+function injectNav() {
   const base = getBasePath();
   const nav = document.createElement('nav');
   nav.className = 'nav';
@@ -285,7 +285,7 @@ function initNavBehavior() {
   }
 }
 
-export function injectFooter() {
+function injectFooter() {
   const base = getBasePath();
   const footer = document.createElement('footer');
   footer.className = 'footer';

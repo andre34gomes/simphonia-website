@@ -1,18 +1,10 @@
 /**
  * Simphonia Website — Main Entry Point
  *
- * Loaded as <script type="module"> which is implicitly deferred.
- * By the time this module executes, the DOM is fully parsed AND all prior
- * <script defer> CDN tags (Three.js, GSAP, ScrollTrigger) have already run.
- * No DOMContentLoaded wrapper is needed.
+ * Loaded as <script defer>. By the time this executes, the DOM is fully
+ * parsed AND all prior <script defer> (CDN libs + layout.js + animations.js
+ * + globe.js) have already run.
  */
-
-import { injectShell, injectNav, injectFooter, injectNoscript, initTheme } from './components/layout.js';
-import { initGlobe }               from './globe.js';
-import { initAnimations }          from './animations.js';
-
-// Signal to the fallback script that the module loaded
-window.__simphoniaModuleLoaded = true;
 
 // 0. Apply theme immediately (prevents flash)
 initTheme();

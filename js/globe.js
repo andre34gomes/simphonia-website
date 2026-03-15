@@ -5,7 +5,7 @@
  * animated connection arcs. Mouse-parallax + auto-rotation.
  */
 
-export function initGlobe(containerId = 'globe-container') {
+function initGlobe(containerId = 'globe-container') {
   const container = document.getElementById(containerId);
   if (!container || window.innerWidth < 768) return;
 

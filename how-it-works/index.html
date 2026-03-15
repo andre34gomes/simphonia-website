@@ -196,33 +196,10 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-  <script type="module" src="../js/main.js?v=3"></script>
-  <!-- Safety net: if ES module fails (e.g. file:// CORS), reveal content + inject basic nav -->
-  <script>
-    window.__simphoniaModuleLoaded = false;
-    setTimeout(function(){
-      if (window.__simphoniaModuleLoaded) return;
-      var s = document.createElement('style');
-      s.textContent = '.reveal,.reveal--left,.reveal--right,.reveal--scale{opacity:1!important;transform:none!important}';
-      document.head.appendChild(s);
-      if (!document.getElementById('navbar')) {
-        var nav = document.createElement('nav');
-        nav.id = 'navbar';
-        nav.style.cssText = 'position:fixed;top:0;left:0;right:0;height:72px;display:flex;align-items:center;padding:0 clamp(1.25rem,4vw,3rem);z-index:1000;background:rgba(18,18,18,0.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,0.06)';
-        nav.innerHTML = '<div style="width:100%;max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between">'
-          + '<a href="../" style="font-family:Pacifico,cursive;font-size:1.5rem;color:#fff;text-decoration:none">Simphonia</a>'
-          + '<div style="display:flex;gap:2rem;align-items:center">'
-          + '<a href="../destinations/" style="color:#D1CDC7;font-size:.875rem;text-decoration:none">Destinations</a>'
-          + '<a href="../how-it-works/" style="color:#D1CDC7;font-size:.875rem;text-decoration:none">How It Works</a>'
-          + '<a href="../compatibility/" style="color:#D1CDC7;font-size:.875rem;text-decoration:none">Compatibility</a>'
-          + '<a href="../support/" style="color:#D1CDC7;font-size:.875rem;text-decoration:none">Support</a>'
-          + '<a href="../about/" style="color:#D1CDC7;font-size:.875rem;text-decoration:none">About</a>'
-          + '<a href="../#download" style="background:#D4AF37;color:#1A1816;padding:.625rem 1.25rem;border-radius:9999px;font-size:.8125rem;font-weight:600;text-decoration:none">Download App</a>'
-          + '</div></div>';
-        document.body.prepend(nav);
-      }
-    }, 1500);
-  </script>
+  <script defer src="../js/components/layout.js"></script>
+  <script defer src="../js/animations.js"></script>
+  <script defer src="../js/globe.js"></script>
+  <script defer src="../js/main.js"></script>
 
 </body>
 </html>
