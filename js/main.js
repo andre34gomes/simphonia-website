@@ -7,9 +7,12 @@
  * No DOMContentLoaded wrapper is needed.
  */
 
-import { injectShell, injectNav, injectFooter, injectNoscript } from './components/layout.js';
+import { injectShell, injectNav, injectFooter, injectNoscript, initTheme } from './components/layout.js';
 import { initGlobe }               from './globe.js';
 import { initAnimations }          from './animations.js';
+
+// 0. Apply theme immediately (prevents flash)
+initTheme();
 
 // 1. Inject shared shell (skip-link, bg-noise, stars, cursor)
 injectShell();
@@ -104,6 +107,7 @@ function initStars() {
 
   function draw() {
     ctx.clearRect(0, 0, w, h);
+    const starRgb = getComputedStyle(document.documentElement).getPropertyValue('--star-color').trim() || '255,255,255';
     for (const s of stars) {
       s.x += s.vx;
       s.y += s.vy;
@@ -111,7 +115,7 @@ function initStars() {
       if (s.y < 0) s.y = h; else if (s.y > h) s.y = 0;
       ctx.beginPath();
       ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-      ctx.fillStyle = 'rgba(255,255,255,' + s.a + ')';
+      ctx.fillStyle = 'rgba(' + starRgb + ',' + s.a + ')';
       ctx.fill();
     }
     requestAnimationFrame(draw);

@@ -4,6 +4,73 @@
  */
 
 const CURRENT_YEAR = new Date().getFullYear();
+const THEME_KEY = 'simphonia-theme';
+
+// ────────────────────────────────────────
+// Theme helpers
+// ────────────────────────────────────────
+
+/** Read the persisted theme or fall back to system preference (default: dark). */
+function getStoredTheme() {
+  try {
+    const stored = localStorage.getItem(THEME_KEY);
+    if (stored === 'light' || stored === 'dark') return stored;
+  } catch (_) { /* private browsing */ }
+  return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+}
+
+function currentTheme() {
+  return document.documentElement.dataset.theme || 'dark';
+}
+
+/** Apply theme to <html>, swap logos & favicons, persist choice. */
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+
+  // Swap logo images
+  document.querySelectorAll('.nav__logo-icon-image').forEach(img => {
+    const base = img.dataset.base || '';
+    img.src = theme === 'light'
+      ? base + 'assets/logo-mark-light.svg'
+      : base + 'assets/logo-mark.svg';
+  });
+
+  // Swap favicons
+  document.querySelectorAll('link[rel*="icon"]').forEach(link => {
+    const href = link.getAttribute('href');
+    if (!href || !href.includes('favicon')) return;
+    const prefix = href.includes('../') ? '../assets/' : 'assets/';
+    link.href = theme === 'light'
+      ? prefix + 'favicon-light.svg'
+      : prefix + 'favicon.svg';
+  });
+
+  // Update meta theme-color
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (meta) meta.content = theme === 'light' ? '#FFF5F1' : '#121212';
+
+  try { localStorage.setItem(THEME_KEY, theme); } catch (_) {}
+}
+
+/** Toggle between light / dark. */
+export function toggleTheme() {
+  // Enable smooth transition class
+  document.body.classList.add('theme-transition');
+  applyTheme(currentTheme() === 'dark' ? 'light' : 'dark');
+  // Remove transition class after animation completes
+  setTimeout(() => document.body.classList.remove('theme-transition'), 400);
+}
+
+/** Call once, early — before DOM paint when possible. */
+export function initTheme() {
+  applyTheme(getStoredTheme());
+  // Listen for system-preference changes if user hasn't manually toggled
+  window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', (e) => {
+    if (!localStorage.getItem(THEME_KEY)) {
+      applyTheme(e.matches ? 'light' : 'dark');
+    }
+  });
+}
 
 /**
  * Injects the shared body shell elements that every page needs:
@@ -72,9 +139,13 @@ function getPagePath() {
 }
 
 function brandMarkup(base) {
+  const theme = currentTheme();
+  const markSrc = theme === 'light'
+    ? base + 'assets/logo-mark-light.svg'
+    : base + 'assets/logo-mark.svg';
   return `
     <span class="nav__logo-icon" aria-hidden="true">
-      <img src="${base}assets/logo-mark.svg" class="nav__logo-icon-image" alt="" width="40" height="40">
+      <img src="${markSrc}" data-base="${base}" class="nav__logo-icon-image" alt="" width="40" height="40">
     </span>
     <span class="nav__logo-wordmark">Simphonia</span>
   `;
@@ -116,6 +187,10 @@ export function injectNav() {
 
       <div class="nav__actions">
         <a href="${base}index.html#download" class="btn btn--primary btn--sm">Download App</a>
+        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">
+          <svg class="icon-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 0 1 11.21 3 7 7 0 1 0 21 12.79z"/></svg>
+        </button>
         <button class="nav__hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
           <span></span>
           <span></span>
@@ -142,6 +217,7 @@ function initNavBehavior() {
   const navbar = document.getElementById('navbar');
   const hamburger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobile-menu');
+  const themeBtn = document.getElementById('theme-toggle');
 
   // Scroll effect
   const onScroll = () => {
@@ -149,6 +225,11 @@ function initNavBehavior() {
   };
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+
+  // Theme toggle
+  if (themeBtn) {
+    themeBtn.addEventListener('click', () => toggleTheme());
+  }
 
   // Mobile menu toggle
   if (hamburger && mobileMenu) {

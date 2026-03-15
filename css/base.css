@@ -83,24 +83,24 @@ input, textarea, select {
    2. TOKENS (CSS Custom Properties)
    ============================================== */
 :root {
-  /* Brand */
+  /* Brand — shared across themes */
   --accent: #D4AF37;
   --accent-light: #F0D060;
   --accent-dark: #B8941F;
   --accent-glow: rgba(212, 175, 55, 0.35);
   --accent-subtle: rgba(212, 175, 55, 0.08);
 
-  /* Backgrounds */
-  --bg-primary: #0A0A0A;
-  --bg-secondary: #111111;
-  --bg-tertiary: #1A1A1A;
+  /* Backgrounds — dark (default) mapped from AppColorsDark */
+  --bg-primary: #121212;
+  --bg-secondary: #1A1A1A;
+  --bg-tertiary: #1E1E1E;
   --bg-elevated: #1E1E1E;
 
-  /* Text */
+  /* Text — dark (default) mapped from AppColorsDark */
   --text-primary: #FFFFFF;
-  --text-secondary: #B0ACA5;
-  --text-tertiary: #706C66;
-  --text-inverse: #0A0A0A;
+  --text-secondary: #D1CDC7;
+  --text-tertiary: #7D756D;
+  --text-inverse: #1A1816;
 
   /* Glass */
   --glass-bg: rgba(255, 255, 255, 0.04);
@@ -118,6 +118,15 @@ input, textarea, select {
   --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 16px 64px rgba(0, 0, 0, 0.5);
   --shadow-glow: 0 0 40px rgba(212, 175, 55, 0.15);
+
+  /* Nav / overlay (themeable) */
+  --nav-scrolled-bg: rgba(18, 18, 18, 0.85);
+  --mobile-overlay-bg: rgba(18, 18, 18, 0.98);
+  --wordmark-color: #FFFFFF;
+  --wordmark-shadow: 0 2px 4px rgba(0,0,0,0.45), 0 0 16px rgba(212,175,55,0.12);
+
+  /* Star canvas */
+  --star-color: 255, 255, 255;
 
   /* Radius */
   --radius-sm: 8px;
@@ -154,6 +163,43 @@ input, textarea, select {
   --container-max: 1200px;
   --container-wide: 1400px;
   --section-padding: clamp(4rem, 10vw, 8rem);
+}
+
+/* ----- Light theme — mapped from AppColorsLight ----- */
+[data-theme="light"] {
+  --bg-primary: #FFF5F1;
+  --bg-secondary: #FFFFFF;
+  --bg-tertiary: #F2F0ED;
+  --bg-elevated: #FFFFFF;
+
+  --text-primary: #1A1816;
+  --text-secondary: #7D756D;
+  --text-tertiary: #9E968D;
+  --text-inverse: #FFFFFF;
+
+  --glass-bg: rgba(0, 0, 0, 0.03);
+  --glass-border: rgba(0, 0, 0, 0.07);
+  --glass-hover: rgba(0, 0, 0, 0.05);
+  --glass-accent: rgba(212, 175, 55, 0.1);
+
+  --border-subtle: rgba(0, 0, 0, 0.06);
+  --border-default: rgba(0, 0, 0, 0.1);
+  --border-accent: rgba(212, 175, 55, 0.25);
+
+  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
+  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.08);
+  --shadow-lg: 0 16px 64px rgba(0, 0, 0, 0.12);
+  --shadow-glow: 0 0 40px rgba(212, 175, 55, 0.12);
+
+  --accent-glow: rgba(212, 175, 55, 0.25);
+  --accent-subtle: rgba(212, 175, 55, 0.06);
+
+  --nav-scrolled-bg: rgba(255, 245, 241, 0.88);
+  --mobile-overlay-bg: rgba(255, 245, 241, 0.98);
+  --wordmark-color: #1A1816;
+  --wordmark-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 0 12px rgba(212,175,55,0.08);
+
+  --star-color: 26, 24, 22;
 }
 
 /* ==============================================
@@ -495,6 +541,69 @@ p {
   z-index: 0;
 }
 
+[data-theme="light"] .bg-noise { opacity: 0.015; }
+
+/* --- Theme Toggle --- */
+.theme-toggle {
+  position: relative;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+  border: 1px solid var(--border-default);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all var(--duration-normal) var(--ease-out);
+  flex-shrink: 0;
+}
+
+.theme-toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  background: var(--accent-subtle);
+}
+
+.theme-toggle svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  transition: transform var(--duration-normal) var(--ease-out);
+}
+
+.theme-toggle:hover svg {
+  transform: rotate(25deg);
+}
+
+/* Hide the icon that doesn't match the current theme */
+.theme-toggle .icon-sun  { display: none; }
+.theme-toggle .icon-moon { display: block; }
+
+[data-theme="light"] .theme-toggle .icon-sun  { display: block; }
+[data-theme="light"] .theme-toggle .icon-moon { display: none; }
+
+/* Smooth theme transition */
+body,
+body * {
+  transition-property: background-color, color, border-color, box-shadow, fill, stroke;
+  transition-duration: 0s;
+}
+
+body.theme-transition,
+body.theme-transition * {
+  transition-duration: 0.35s !important;
+  transition-timing-function: var(--ease-out) !important;
+}
+
+/* Hide stars canvas in light mode (looks odd on bright background) */
+[data-theme="light"] #stars-canvas { opacity: 0.35; }
+
 .bg-gradient-radial {
   position: absolute;
   width: 600px;
@@ -698,7 +807,7 @@ p {
 }
 
 .nav--scrolled {
-  background: rgba(10, 10, 10, 0.85);
+  background: var(--nav-scrolled-bg);
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid var(--border-subtle);
@@ -748,10 +857,9 @@ p {
   font-weight: 400;
   letter-spacing: 0.01em;
   line-height: 1;
-  color: #FFFFFF;
-  text-shadow:
-    0 2px 4px rgba(0, 0, 0, 0.45),
-    0 0 16px rgba(212, 175, 55, 0.12);
+  color: var(--wordmark-color);
+  text-shadow: var(--wordmark-shadow);
+  transition: color var(--duration-normal), text-shadow var(--duration-normal);
 }
 
 .nav__logo:hover .nav__logo-icon {
@@ -838,7 +946,7 @@ p {
 .nav__mobile {
   position: fixed;
   inset: 0;
-  background: rgba(10, 10, 10, 0.98);
+  background: var(--mobile-overlay-bg);
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
   display: flex;
@@ -1045,6 +1153,8 @@ p {
   .nav__links { display: none; }
   .nav__actions .btn { display: none; }
   .nav__hamburger { display: flex; }
+  .theme-toggle { width: 36px; height: 36px; }
+  .theme-toggle svg { width: 16px; height: 16px; }
 
   /* Footer */
   .footer__grid {
