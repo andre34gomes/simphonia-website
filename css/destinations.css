@@ -1,3 +1,5 @@
+@import 'base.css';
+
 /* ============================================================
    SIMPHONIA — Destinations Page Stylesheet
    ============================================================
@@ -96,4 +98,3 @@
 @media (max-width: 480px) {
   .filter-tabs { flex-wrap: wrap; }
 }
-

@@ -1,9 +1,61 @@
 /**
- * Shared layout components — Nav & Footer
+ * Shared layout components — Shell, Nav & Footer
  * Injected via JS to keep all pages DRY.
  */
 
 const CURRENT_YEAR = new Date().getFullYear();
+
+/**
+ * Injects the shared body shell elements that every page needs:
+ * skip-link, bg-noise, stars-canvas, and custom cursor.
+ * Call this BEFORE injectNav so that the nav prepends after these.
+ */
+export function injectShell() {
+  const frag = document.createDocumentFragment();
+
+  // Skip link
+  const skip = document.createElement('a');
+  skip.href = '#main-content';
+  skip.className = 'skip-link';
+  skip.textContent = 'Skip to main content';
+  frag.appendChild(skip);
+
+  // Background noise
+  const noise = document.createElement('div');
+  noise.className = 'bg-noise';
+  noise.setAttribute('aria-hidden', 'true');
+  frag.appendChild(noise);
+
+  // Animated star canvas
+  const canvas = document.createElement('canvas');
+  canvas.id = 'stars-canvas';
+  canvas.setAttribute('aria-hidden', 'true');
+  frag.appendChild(canvas);
+
+  // Custom cursor
+  const cursor = document.createElement('div');
+  cursor.className = 'cursor';
+  cursor.id = 'cursor';
+  cursor.setAttribute('aria-hidden', 'true');
+  frag.appendChild(cursor);
+
+  // Insert all at the very beginning of <body>, before any existing content
+  document.body.insertBefore(frag, document.body.firstChild);
+}
+
+/**
+ * Injects the shared <noscript> fallback styles at the end of <body>.
+ */
+export function injectNoscript() {
+  const ns = document.createElement('noscript');
+  const style = document.createElement('style');
+  style.textContent =
+    '.reveal,.reveal--left,.reveal--right,.reveal--scale{opacity:1;transform:none}' +
+    '#globe-container,#stars-canvas,.cursor{display:none}' +
+    '.mobile-cta-bar{display:none}';
+  ns.appendChild(style);
+  document.body.appendChild(ns);
+}
 
 /**
  * Returns the path prefix depending on whether we're on
@@ -17,6 +69,15 @@ function getBasePath() {
 function getPagePath() {
   const path = window.location.pathname;
   return path.includes('/pages/') ? './' : './pages/';
+}
+
+function brandMarkup(base) {
+  return `
+    <span class="nav__logo-icon" aria-hidden="true">
+      <img src="${base}assets/logo-mark.svg" class="nav__logo-icon-image" alt="" width="40" height="40">
+    </span>
+    <span class="nav__logo-wordmark">Simphonia</span>
+  `;
 }
 
 /**
@@ -42,14 +103,7 @@ export function injectNav() {
   nav.innerHTML = `
     <div class="nav__inner">
       <a href="${base}index.html" class="nav__logo" aria-label="Simphonia Home">
-        <div class="nav__logo-icon">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-            <path d="M2 17l10 5 10-5"/>
-            <path d="M2 12l10 5 10-5"/>
-          </svg>
-        </div>
-        Simphonia
+        ${brandMarkup(base)}
       </a>
 
       <div class="nav__links">
@@ -129,14 +183,7 @@ export function injectFooter() {
       <div class="footer__grid">
         <div class="footer__brand">
           <a href="${base}index.html" class="nav__logo" style="font-size:1.5rem;">
-            <div class="nav__logo-icon">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M12 2L2 7l10 5 10-5-10-5z"/>
-                <path d="M2 17l10 5 10-5"/>
-                <path d="M2 12l10 5 10-5"/>
-              </svg>
-            </div>
-            Simphonia
+            ${brandMarkup(base)}
           </a>
           <p>Stay connected, wherever you go. Global eSIM coverage for modern travelers.</p>
         </div>

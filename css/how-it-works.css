@@ -1,0 +1,10 @@
+@import 'base.css';
+
+/* ============================================================
+   SIMPHONIA — How It Works Page Stylesheet
+   ============================================================
+   This page reuses shared components from base.css:
+   about-hero, about-story, badge, faq, cta-section,
+   price-card__feature. Add page-specific overrides below.
+   ============================================================ */
+

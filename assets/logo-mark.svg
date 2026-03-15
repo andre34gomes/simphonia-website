@@ -1,0 +1,58 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="12" y1="8" x2="118" y2="122" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#151720"/>
+      <stop offset="55%" stop-color="#0B0C12"/>
+      <stop offset="100%" stop-color="#06070B"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="64" cy="64" r="52" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#D4AF37" stop-opacity="0.14"/>
+      <stop offset="100%" stop-color="#D4AF37" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="w1" x1="14" y1="0" x2="114" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#F8E9A0" stop-opacity="0"/>
+      <stop offset="20%" stop-color="#F8E9A0"/>
+      <stop offset="80%" stop-color="#F8E9A0"/>
+      <stop offset="100%" stop-color="#F8E9A0" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="w2" x1="14" y1="0" x2="114" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#D4AF37" stop-opacity="0"/>
+      <stop offset="15%" stop-color="#E7C85E"/>
+      <stop offset="50%" stop-color="#F0D060"/>
+      <stop offset="85%" stop-color="#E7C85E"/>
+      <stop offset="100%" stop-color="#D4AF37" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="w3" x1="14" y1="0" x2="114" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0%" stop-color="#B8941F" stop-opacity="0"/>
+      <stop offset="20%" stop-color="#D4AF37"/>
+      <stop offset="80%" stop-color="#D4AF37"/>
+      <stop offset="100%" stop-color="#B8941F" stop-opacity="0"/>
+    </linearGradient>
+    <clipPath id="globe">
+      <circle cx="64" cy="64" r="44"/>
+    </clipPath>
+  </defs>
+
+  <!-- Background -->
+  <rect width="128" height="128" rx="28" fill="url(#bg)"/>
+  <rect width="128" height="128" rx="28" fill="url(#glow)"/>
+
+  <!-- Globe ring -->
+  <circle cx="64" cy="64" r="44" stroke="#D4AF37" stroke-opacity="0.2" stroke-width="1.5" fill="none"/>
+
+  <!-- Three harmonic waves clipped to globe -->
+  <g clip-path="url(#globe)">
+    <!-- Wave 1 — top, lightest -->
+    <path d="M 14 42 Q 30 22, 46 42 Q 64 62, 82 42 Q 98 22, 114 42"
+      stroke="url(#w1)" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+    <!-- Wave 2 — center, boldest -->
+    <path d="M 14 64 Q 30 40, 46 64 Q 64 88, 82 64 Q 98 40, 114 64"
+      stroke="url(#w2)" stroke-width="6.5" stroke-linecap="round" fill="none"/>
+    <!-- Wave 3 — bottom, warm -->
+    <path d="M 14 86 Q 30 66, 46 86 Q 64 106, 82 86 Q 98 66, 114 86"
+      stroke="url(#w3)" stroke-width="3.5" stroke-linecap="round" fill="none"/>
+  </g>
+
+  <!-- Border -->
+  <rect x="1" y="1" width="126" height="126" rx="27" stroke="#D4AF37" stroke-opacity="0.18" stroke-width="1.2" fill="none"/>
+</svg>

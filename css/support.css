@@ -1,3 +1,5 @@
+@import 'base.css';
+
 /* ============================================================
    SIMPHONIA — Support Page Stylesheet
    ============================================================
@@ -52,4 +54,3 @@ textarea.form-input {
   min-height: 120px;
   resize: vertical;
 }
-

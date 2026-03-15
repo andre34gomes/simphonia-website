@@ -7,27 +7,33 @@
  * No DOMContentLoaded wrapper is needed.
  */
 
-import { injectNav, injectFooter } from './components/layout.js';
+import { injectShell, injectNav, injectFooter, injectNoscript } from './components/layout.js';
 import { initGlobe }               from './globe.js';
 import { initAnimations }          from './animations.js';
 
-// 1. Inject shared nav + footer
+// 1. Inject shared shell (skip-link, bg-noise, stars, cursor)
+injectShell();
+
+// 2. Inject shared nav + footer
 injectNav();
 injectFooter();
 
-// 2. Custom cursor
+// 3. Inject noscript fallback
+injectNoscript();
+
+// 4. Custom cursor
 initCursor();
 
-// 3. Star background canvas
+// 5. Star background canvas
 if (document.getElementById('stars-canvas')) initStars();
 
-// 4. Three.js globe (hero page only)
+// 6. Three.js globe (hero page only)
 if (document.getElementById('globe-container')) initGlobe('globe-container');
 
-// 5. GSAP scroll animations — has internal retry loop for CDN timing safety
+// 7. GSAP scroll animations — has internal retry loop for CDN timing safety
 initAnimations();
 
-// 6. Smooth anchor scroll
+// 8. Smooth anchor scroll
 initSmoothScroll();
 
 // ============================================================
