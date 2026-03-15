@@ -1196,12 +1196,16 @@ html.gsap-ready .reveal--scale {
     --nav-height: 64px;
   }
 
-  /* Nav */
+  /* Nav — compact for mobile */
+  .nav { padding: 0 0.875rem; }
   .nav__links { display: none; }
   .nav__actions .btn { display: none; }
+  .nav__actions { gap: 0.5rem; }
   .nav__hamburger { display: flex; }
-  .theme-toggle { width: 38px; height: 38px; }
-  .theme-toggle .icon-sun, .theme-toggle .icon-moon { width: 18px; height: 18px; }
+  .nav__logo-wordmark { font-size: 1.25rem; }
+  .nav__logo-icon { width: 30px; height: 30px; }
+  .theme-toggle { width: 34px; height: 34px; }
+  .theme-toggle .icon-sun, .theme-toggle .icon-moon { width: 16px; height: 16px; }
 
   /* Footer */
   .footer__grid {
@@ -1229,6 +1233,16 @@ html.gsap-ready .reveal--scale {
   .store-badge { padding: 0.75rem 1rem; }
   .store-badge__icon { width: 24px; height: 24px; }
   .store-badge__name { font-size: 0.9375rem; }
+
+  /* Even tighter nav on small phones */
+  .nav { padding: 0 0.75rem; }
+  .nav__logo { gap: 0.5rem; }
+  .nav__logo-wordmark { font-size: 1.125rem; }
+  .nav__logo-icon { width: 28px; height: 28px; border-radius: 8px; }
+  .theme-toggle { width: 32px; height: 32px; }
+  .theme-toggle .icon-sun, .theme-toggle .icon-moon { width: 15px; height: 15px; }
+  .nav__hamburger { padding: 6px; }
+  .nav__hamburger span { width: 20px; }
 }
 
 /* Cursor only on pointer devices */
