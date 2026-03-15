@@ -1744,28 +1744,27 @@
     padding: 1.5rem 0 1rem;
   }
 
-  /* Text stays first on mobile — no order change on visual */
+  /* Phone visual — use CSS scale to shrink proportionally.
+     The wrapper has a fixed height + overflow:hidden to clip the
+     extra layout space that transform:scale leaves behind. */
   .hero__visual {
-    padding: 1.5rem 0 0.5rem;
+    padding: 0;
+    height: 370px;
+    overflow: hidden;
+    align-items: flex-start;
   }
 
-  /* Glow behind phone — smaller on mobile */
-  .hero__visual::before {
-    width: 250px;
-    height: 250px;
+  .hero-phone {
+    animation: none;
+    transform: scale(0.58);
+    transform-origin: center top;
+    flex-shrink: 0;
   }
-
-  .hero__eyebrow { flex-wrap: wrap; }
-
-  /* Disable float animation on mobile for perf */
-  .hero-phone { animation: none; }
-
-  .hero-phone__frame { width: 200px; height: 400px; border-radius: 38px; padding: 10px; }
-  .hero-phone__notch { width: 80px; height: 22px; border-radius: 0 0 14px 14px; }
-  .hero-phone__screen { border-radius: 30px; padding: 28px 12px 0; }
 
   /* Hide ALL phone badges on mobile — they clip/overflow */
   .hero-phone__badge { display: none; }
+
+  .hero__eyebrow { flex-wrap: wrap; }
 
   .hero__h1 { font-size: clamp(2.25rem, 8vw, 3.5rem); }
   .hero__desc { max-width: 100%; font-size: 1rem; margin-bottom: var(--space-xl); }
@@ -1829,28 +1828,9 @@
   .hero__ctas .btn { width: 100%; }
   .trust-bar__stat { flex: 1 1 100%; }
 
-  /* Smaller phone on tiny screens */
-  .hero-phone__frame { width: 160px; height: 320px; border-radius: 30px; padding: 8px; }
-  .hero-phone__notch { width: 65px; height: 18px; border-radius: 0 0 12px 12px; }
-  .hero-phone__screen { border-radius: 24px; padding: 24px 10px 0; }
-
-  /* Scale down app-UI internals */
-  .app-ui { padding: 28px 10px 0; }
-  .app-ui__title { font-size: 0.875rem; margin-bottom: 10px; }
-  .app-ui__greeting { font-size: 0.5625rem; }
-  .app-ui__search { font-size: 0.625rem; padding: 7px 10px; margin-bottom: 12px; }
-  .app-ui__cards { gap: 4px; margin-bottom: 10px; }
-  .app-ui__card { padding: 8px 6px; border-radius: 10px; }
-  .app-ui__card-flag { font-size: 1rem; margin-bottom: 2px; }
-  .app-ui__card-name { font-size: 0.5625rem; }
-  .app-ui__card-price { font-size: 0.5rem; }
-  .app-ui__label { font-size: 0.5rem; margin-bottom: 6px; }
-  .app-ui__active { padding: 8px; margin-bottom: 6px; border-radius: 10px; }
-  .app-ui__active-plan { font-size: 0.6875rem; margin-bottom: 6px; }
-  .app-ui__active-label { font-size: 0.5rem; }
-  .app-ui__nav { padding: 6px 2px; }
-  .app-ui__nav-item { font-size: 0.4375rem; }
-  .app-ui__nav-icon { font-size: 0.75rem; }
+  /* Scale phone down further on small screens */
+  .hero__visual { height: 280px; }
+  .hero-phone { transform: scale(0.44); }
 
   /* Metrics */
   .metrics-strip__grid { grid-template-columns: repeat(2, 1fr); }
