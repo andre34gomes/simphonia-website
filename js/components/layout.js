@@ -5,6 +5,7 @@
 
 const CURRENT_YEAR = new Date().getFullYear();
 const THEME_KEY = 'simphonia-theme';
+const NAV_COLLAPSE_WIDTH = 960;
 
 // ────────────────────────────────────────
 // Theme helpers
@@ -201,32 +202,73 @@ function injectNav() {
       <div class="nav__actions">
         <a href="${base}#download" class="btn btn--primary btn--sm">Download App</a>
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">
-          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-          <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 0 1 11.21 3 7 7 0 1 0 21 12.79z"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="4.5"/>
+            <line x1="12" y1="2"   x2="12" y2="4.5"/>
+            <line x1="12" y1="19.5" x2="12" y2="22"/>
+            <line x1="2"  y1="12"  x2="4.5" y2="12"/>
+            <line x1="19.5" y1="12" x2="22" y2="12"/>
+            <line x1="5.05" y1="5.05" x2="6.82" y2="6.82"/>
+            <line x1="17.18" y1="17.18" x2="18.95" y2="18.95"/>
+            <line x1="5.05" y1="18.95" x2="6.82" y2="17.18"/>
+            <line x1="17.18" y1="6.82" x2="18.95" y2="5.05"/>
+          </svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
+          </svg>
         </button>
-        <button class="nav__hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+        <button class="nav__hamburger" id="hamburger" aria-label="Toggle menu" aria-controls="mobile-menu" aria-expanded="false">
           <span></span>
           <span></span>
           <span></span>
         </button>
       </div>
     </div>
+  `;
 
-    <div class="nav__mobile" id="mobile-menu" role="dialog" aria-label="Mobile menu">
-      <a href="${pagePath('destinations')}">Destinations</a>
-      <a href="${pagePath('how-it-works')}">How It Works</a>
-      <a href="${pagePath('compatibility')}">Compatibility</a>
-      <a href="${pagePath('support')}">Support</a>
-      <a href="${pagePath('about')}">About</a>
-      <a href="${base}#download" class="btn btn--primary" style="margin-top:1rem;">Download App</a>
-      <button class="theme-toggle theme-toggle--mobile" id="theme-toggle-mobile" aria-label="Toggle light/dark mode" style="margin-top:0.5rem;">
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor"><path d="M21 12.79A9 9 0 0 1 11.21 3 7 7 0 1 0 21 12.79z"/></svg>
-      </button>
+  /* ── Mobile menu overlay ──
+     Created as a DIRECT child of <body> (NOT inside .nav) so that
+     .nav--scrolled's backdrop-filter cannot create a new containing
+     block that traps position:fixed descendants.  This guarantees
+     the overlay always covers the full viewport regardless of
+     scroll position. */
+  const mobileMenu = document.createElement('div');
+  mobileMenu.className = 'nav__mobile';
+  mobileMenu.id = 'mobile-menu';
+  mobileMenu.setAttribute('role', 'dialog');
+  mobileMenu.setAttribute('aria-modal', 'true');
+  mobileMenu.setAttribute('aria-label', 'Mobile menu');
+
+  mobileMenu.innerHTML = `
+    <div class="nav__mobile-drawer">
+
+      <div class="nav__mobile-header">
+        <a href="${base}" class="nav__logo nav__mobile-logo" aria-label="Simphonia Home" tabindex="-1">
+          ${brandMarkup(base)}
+        </a>
+        <button class="nav__mobile-close" id="mobile-menu-close" aria-label="Close menu">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+        </button>
+      </div>
+
+      <nav class="nav__mobile-links" aria-label="Site pages">
+        <a href="${pagePath('destinations')}" class="nav__mobile-link${activeClass('destinations') ? ' nav__mobile-link--active' : ''}">Destinations</a>
+        <a href="${pagePath('how-it-works')}" class="nav__mobile-link${activeClass('how-it-works') ? ' nav__mobile-link--active' : ''}">How It Works</a>
+        <a href="${pagePath('compatibility')}" class="nav__mobile-link${activeClass('compatibility') ? ' nav__mobile-link--active' : ''}">Compatibility</a>
+        <a href="${pagePath('support')}" class="nav__mobile-link${activeClass('support') ? ' nav__mobile-link--active' : ''}">Support</a>
+        <a href="${pagePath('about')}" class="nav__mobile-link${activeClass('about') ? ' nav__mobile-link--active' : ''}">About</a>
+      </nav>
+
+      <div class="nav__mobile-footer">
+        <a href="${base}#download" class="btn btn--primary nav__mobile-cta">Download App</a>
+      </div>
+
     </div>
   `;
 
   document.body.prepend(nav);
+  // Append mobile menu as a sibling of nav, direct child of body
+  document.body.appendChild(mobileMenu);
   initNavBehavior();
 }
 
@@ -235,28 +277,67 @@ function initNavBehavior() {
   const hamburger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobile-menu');
   const themeBtn = document.getElementById('theme-toggle');
+
+  /* ── Scroll-lock ──
+     Uses position:fixed on <body> so that iOS Safari (which ignores
+     overflow:hidden on <html>) also stops scrolling.  The current
+     scrollY is saved and applied as a negative top offset so the
+     visible page doesn't jump.  On unlock we restore scroll. */
+  let savedScrollY = 0;
+  let isScrollLocked = false;
+
+  const lockScroll = () => {
+    if (isScrollLocked) return;
+    isScrollLocked = true;
+    savedScrollY = window.scrollY;
+    document.body.style.position = 'fixed';
+    document.body.style.top = `-${savedScrollY}px`;
+    document.body.style.left = '0';
+    document.body.style.right = '0';
+    document.body.style.overflow = 'hidden';
+  };
+
+  const unlockScroll = () => {
+    if (!isScrollLocked) return;
+    isScrollLocked = false;
+    document.body.style.position = '';
+    document.body.style.top = '';
+    document.body.style.left = '';
+    document.body.style.right = '';
+    document.body.style.overflow = '';
+    // Use 'instant' to override CSS scroll-behavior:smooth on <html>,
+    // otherwise the browser animates from 0 → savedScrollY and
+    // GSAP ScrollTrigger re-fires animations along the way.
+    window.scrollTo({ top: savedScrollY, left: 0, behavior: 'instant' });
+    // Recalculate GSAP ScrollTrigger positions after body layout change
+    if (typeof ScrollTrigger !== 'undefined') {
+      ScrollTrigger.refresh();
+    }
+  };
+
   const closeMenu = () => {
     if (!hamburger || !mobileMenu) return;
     mobileMenu.classList.remove('nav__mobile--open');
     hamburger.classList.remove('nav__hamburger--open');
     hamburger.setAttribute('aria-expanded', 'false');
-    document.body.style.overflow = '';
+    hamburger.style.opacity = '';
+    hamburger.style.pointerEvents = '';
+    unlockScroll();
   };
 
-  // Scroll effect
+  // Scroll effect — skip while scroll-locked because window.scrollY
+  // reads as 0 when body is position:fixed, which would wrongly
+  // remove the nav background.
   const onScroll = () => {
+    if (isScrollLocked) return;
     navbar.classList.toggle('nav--scrolled', window.scrollY > 40);
   };
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
 
-  // Theme toggle (both header and mobile menu)
+  // Theme toggle
   if (themeBtn) {
     themeBtn.addEventListener('click', () => toggleTheme());
-  }
-  const themeBtnMobile = document.getElementById('theme-toggle-mobile');
-  if (themeBtnMobile) {
-    themeBtnMobile.addEventListener('click', () => toggleTheme());
   }
 
   // Mobile menu toggle
@@ -265,16 +346,29 @@ function initNavBehavior() {
       const isOpen = mobileMenu.classList.toggle('nav__mobile--open');
       hamburger.classList.toggle('nav__hamburger--open', isOpen);
       hamburger.setAttribute('aria-expanded', isOpen);
-      document.body.style.overflow = isOpen ? 'hidden' : '';
+      hamburger.style.opacity = isOpen ? '0' : '';
+      hamburger.style.pointerEvents = isOpen ? 'none' : '';
+      isOpen ? lockScroll() : unlockScroll();
     });
+
+    const closeBtnInPanel = document.getElementById('mobile-menu-close');
+    if (closeBtnInPanel) closeBtnInPanel.addEventListener('click', closeMenu);
 
     // Close on link click
     mobileMenu.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', closeMenu);
     });
 
+    mobileMenu.addEventListener('click', (event) => {
+      if (event.target === mobileMenu) closeMenu();
+    });
+
+    document.addEventListener('keydown', (event) => {
+      if (event.key === 'Escape') closeMenu();
+    });
+
     window.addEventListener('resize', () => {
-      if (window.innerWidth > 768) closeMenu();
+      if (window.innerWidth > NAV_COLLAPSE_WIDTH) closeMenu();
     }, { passive: true });
   }
 }
