@@ -552,21 +552,22 @@ p {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(212, 175, 55, 0.10);
-  border: 1.5px solid rgba(212, 175, 55, 0.30);
+  background: rgba(212, 175, 55, 0.18);
+  border: 1.5px solid rgba(212, 175, 55, 0.50);
   color: var(--accent);
   cursor: pointer;
   transition: all var(--duration-normal) var(--ease-out);
   flex-shrink: 0;
   z-index: 10;
+  box-shadow: 0 0 12px rgba(212, 175, 55, 0.12);
 }
 
 .theme-toggle:hover {
   color: var(--accent-light);
   border-color: var(--accent);
-  background: rgba(212, 175, 55, 0.18);
+  background: rgba(212, 175, 55, 0.25);
   transform: scale(1.08);
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.25);
+  box-shadow: 0 0 24px rgba(212, 175, 55, 0.30);
 }
 
 /* Sun icon — stroked (circle + rays) */
@@ -605,16 +606,17 @@ p {
 [data-theme="light"] .theme-toggle .icon-moon { display: block; }
 
 [data-theme="light"] .theme-toggle {
-  background: rgba(212, 175, 55, 0.08);
-  border-color: rgba(184, 148, 31, 0.30);
+  background: rgba(212, 175, 55, 0.12);
+  border-color: rgba(184, 148, 31, 0.45);
   color: #9B7412;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.10);
 }
 
 [data-theme="light"] .theme-toggle:hover {
   color: var(--accent-dark);
   border-color: var(--accent);
-  background: rgba(212, 175, 55, 0.15);
-  box-shadow: 0 0 20px rgba(212, 175, 55, 0.18);
+  background: rgba(212, 175, 55, 0.20);
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.20);
 }
 
 /* Smooth theme transition — only applied temporarily via JS */
