@@ -552,18 +552,21 @@ p {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: transparent;
-  border: 1px solid var(--border-default);
-  color: var(--text-secondary);
+  background: var(--glass-bg);
+  border: 1.5px solid var(--border-default);
+  color: var(--accent);
   cursor: pointer;
   transition: all var(--duration-normal) var(--ease-out);
   flex-shrink: 0;
+  z-index: 10;
 }
 
 .theme-toggle:hover {
-  color: var(--accent);
+  color: var(--accent-light);
   border-color: var(--accent);
   background: var(--accent-subtle);
+  transform: scale(1.08);
+  box-shadow: 0 0 16px rgba(212, 175, 55, 0.2);
 }
 
 .theme-toggle svg {
@@ -588,17 +591,29 @@ p {
 [data-theme="light"] .theme-toggle .icon-sun  { display: block; }
 [data-theme="light"] .theme-toggle .icon-moon { display: none; }
 
-/* Smooth theme transition */
-body,
-body * {
-  transition-property: background-color, color, border-color, box-shadow, fill, stroke;
-  transition-duration: 0s;
+[data-theme="light"] .theme-toggle {
+  background: rgba(212, 175, 55, 0.06);
+  border-color: rgba(0, 0, 0, 0.12);
+  color: #B8941F;
 }
 
+[data-theme="light"] .theme-toggle:hover {
+  color: var(--accent-dark);
+  border-color: var(--accent);
+  background: rgba(212, 175, 55, 0.12);
+}
+
+/* Smooth theme transition — only applied temporarily via JS */
 body.theme-transition,
-body.theme-transition * {
-  transition-duration: 0.35s !important;
-  transition-timing-function: var(--ease-out) !important;
+body.theme-transition *,
+body.theme-transition *::before,
+body.theme-transition *::after {
+  transition: background-color 0.35s var(--ease-out),
+              color 0.35s var(--ease-out),
+              border-color 0.35s var(--ease-out),
+              box-shadow 0.35s var(--ease-out),
+              fill 0.35s var(--ease-out),
+              stroke 0.35s var(--ease-out) !important;
 }
 
 /* Hide stars canvas in light mode (looks odd on bright background) */
