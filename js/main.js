@@ -11,6 +11,9 @@ import { injectShell, injectNav, injectFooter, injectNoscript, initTheme } from 
 import { initGlobe }               from './globe.js';
 import { initAnimations }          from './animations.js';
 
+// Signal to the fallback script that the module loaded
+window.__simphoniaModuleLoaded = true;
+
 // 0. Apply theme immediately (prevents flash)
 initTheme();
 
