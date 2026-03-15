@@ -19,6 +19,7 @@
   justify-content: center;
   gap: var(--space-sm);
   margin-top: var(--space-xl);
+  flex-wrap: wrap;
 }
 
 .filter-tab {
@@ -47,7 +48,7 @@
 /* Destinations Grid */
 .dest-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(260px, 100%), 1fr));
   gap: var(--space-lg);
 }
 
@@ -96,5 +97,5 @@
    RESPONSIVE — Destinations Page
    ============================================== */
 @media (max-width: 480px) {
-  .filter-tabs { flex-wrap: wrap; }
+  .filter-tab { width: 100%; }
 }

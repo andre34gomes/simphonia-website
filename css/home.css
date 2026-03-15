@@ -164,7 +164,7 @@
 
 .steps__track {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-2xl);
   position: relative;
 }
@@ -287,7 +287,7 @@
    ============================================== */
 .features-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-lg);
 }
 
@@ -429,7 +429,7 @@
    ============================================== */
 .bento-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   grid-template-rows: 320px 320px;
   gap: var(--space-lg);
 }
@@ -598,7 +598,7 @@
    ============================================== */
 .pricing-cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-lg);
   align-items: start;
 }
@@ -692,7 +692,7 @@
 
 .hero__split {
   display: grid;
-  grid-template-columns: 55% 45%;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr);
   gap: 2rem;
   align-items: center;
   padding: 2rem 0 4rem;
@@ -700,11 +700,16 @@
   z-index: 2;
 }
 
+.hero__split > * {
+  min-width: 0;
+}
+
 .hero__eyebrow {
   display: flex;
   align-items: center;
   gap: 0.75rem;
   margin-bottom: var(--space-lg);
+  flex-wrap: wrap;
 }
 
 .hero__rating {
@@ -718,6 +723,7 @@
   font-size: 0.8125rem;
   font-weight: 600;
   color: #FFD700;
+  max-width: 100%;
 }
 
 .hero__h1 {
@@ -800,6 +806,7 @@
   position: relative;
   z-index: 2;
   padding: 2rem 0;
+  min-width: 0;
 }
 
 /* Glow behind phone */
@@ -817,6 +824,7 @@
   position: relative;
   animation: float 5s ease-in-out infinite;
   z-index: 3;
+  max-width: 100%;
 }
 
 .hero-phone__frame {
@@ -1139,6 +1147,7 @@
   gap: 0;
   width: max-content;
   animation: marquee-scroll 45s linear infinite;
+  max-width: none;
 }
 
 .marquee-track:hover { animation-play-state: paused; }
@@ -1182,7 +1191,7 @@
 
 .metrics-strip__grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: var(--space-xl);
   max-width: var(--container-max);
   margin: 0 auto;
@@ -1267,7 +1276,7 @@
 /* How-it-works on homepage - horizontal card style */
 .steps--cards {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-lg);
 }
 
@@ -1337,7 +1346,7 @@
 /* Feature cards - improved */
 .feature-grid--new {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: var(--space-md);
 }
 
@@ -1426,9 +1435,13 @@
 
 .showcase__content {
   display: grid;
-  grid-template-columns: 1fr 1.4fr;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
   gap: 5rem;
   align-items: center;
+}
+
+.showcase__content > * {
+  min-width: 0;
 }
 
 .showcase__text .label { margin-bottom: var(--space-md); display: block; }
@@ -1467,10 +1480,11 @@
   display: flex;
   justify-content: center;
   align-items: flex-end;
-  gap: -24px;
+  gap: 0;
   perspective: 1400px;
   padding: 2rem 3rem;
   position: relative;
+  min-width: 0;
 }
 
 .showcase__phones-stack .phone-3d--left {
@@ -1501,6 +1515,7 @@
   gap: var(--space-xl);
   animation: testimonials-scroll 35s linear infinite;
   width: max-content;
+  max-width: none;
 }
 
 .testimonials-row:hover { animation-play-state: paused; }
@@ -1510,6 +1525,7 @@
   max-width: 360px;
   padding: var(--space-2xl);
   flex-shrink: 0;
+  min-height: 0;
 }
 
 .testimonial-card--v2 .tc-stars {
@@ -1573,6 +1589,8 @@
 /* Testimonials gradient fade */
 .testimonials-fade {
   position: relative;
+  overflow: hidden;
+  max-width: 100%;
 }
 
 .testimonials-fade::before,
@@ -1659,23 +1677,23 @@
    RESPONSIVE — Home Page
    ============================================== */
 @media (max-width: 1100px) {
-  .hero__split { grid-template-columns: 55% 45%; }
+  .hero__split { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); }
   .hero-phone__badge--2 { display: none; }
   .hero-phone__badge--1 { right: -90px; }
   .hero-phone__badge--3 { left: -90px; }
-  .showcase__content { grid-template-columns: 1fr 1.2fr; gap: 3rem; }
+  .showcase__content { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 3rem; }
 }
 
 @media (max-width: 1024px) {
-  .features-grid { grid-template-columns: repeat(2, 1fr); }
+  .features-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .feature-card--large { grid-column: span 2; }
-  .bento-grid { grid-template-columns: repeat(2, 1fr); grid-template-rows: auto; }
+  .bento-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto; }
   .bento-item:nth-child(1) { grid-column: span 2; }
   .bento-item:nth-child(4) { grid-column: span 2; }
-  .pricing-cards { grid-template-columns: repeat(2, 1fr); }
-  .steps--cards { grid-template-columns: repeat(2, 1fr); }
-  .feature-grid--new { grid-template-columns: repeat(2, 1fr); }
-  .metrics-strip__grid { grid-template-columns: repeat(2, 1fr); }
+  .pricing-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .steps--cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .feature-grid--new { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .metrics-strip__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .showcase__content { grid-template-columns: 1fr; }
   .showcase__phones-stack { display: flex; }
 }
@@ -1772,6 +1790,7 @@
   .hero__actions .btn { width: 100%; justify-content: center; }
   .hero__stores-row { flex-direction: column; }
   .hero__stores-row .store-badge { width: 100%; justify-content: center; }
+  .hero__rating { width: fit-content; }
 
   /* Proof row — hide separators when items wrap */
   .hero__proof { gap: 0.75rem; }
@@ -1786,7 +1805,7 @@
 
   /* Metrics */
   .metrics-strip { padding: 2.5rem 0; }
-  .metrics-strip__grid { grid-template-columns: repeat(2, 1fr); gap: var(--space-md); }
+  .metrics-strip__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-md); }
 
   /* Steps Cards */
   .steps--cards { grid-template-columns: 1fr; }
@@ -1807,7 +1826,11 @@
   /* Testimonials v2 */
   .testimonials-fade::before,
   .testimonials-fade::after { width: 40px; }
-  .testimonial-card--v2 { min-width: 280px; max-width: 280px; padding: var(--space-xl); }
+  .testimonial-card--v2 {
+    min-width: min(280px, calc(100vw - 4rem));
+    max-width: min(280px, calc(100vw - 4rem));
+    padding: var(--space-xl);
+  }
 
   /* Final CTA */
   .final-cta { padding: 4rem 0; }
@@ -1833,7 +1856,7 @@
   .hero-phone { transform: scale(0.44); }
 
   /* Metrics */
-  .metrics-strip__grid { grid-template-columns: repeat(2, 1fr); }
+  .metrics-strip__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .metric-card { padding: var(--space-lg); }
   .metric-card__value { font-size: clamp(1.75rem, 6vw, 2.5rem); }
   .metric-card__label { font-size: 0.75rem; }
@@ -1855,8 +1878,8 @@
 
   /* Testimonials — viewport-aware sizing */
   .testimonial-card--v2 {
-    min-width: min(280px, 85vw);
-    max-width: min(280px, 85vw);
+    min-width: min(260px, calc(100vw - 2.5rem));
+    max-width: min(260px, calc(100vw - 2.5rem));
   }
 }
 
@@ -1869,8 +1892,8 @@
   .hero__visual { display: none; }
 
   .testimonial-card--v2 {
-    min-width: min(260px, 90vw);
-    max-width: min(260px, 90vw);
+    min-width: min(240px, calc(100vw - 2rem));
+    max-width: min(240px, calc(100vw - 2rem));
   }
 
   .metric-card__value { font-size: 1.5rem; }

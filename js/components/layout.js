@@ -27,23 +27,6 @@ function currentTheme() {
 function applyTheme(theme) {
   document.documentElement.dataset.theme = theme;
 
-  // Swap logo images
-  document.querySelectorAll('.nav__logo-icon-image').forEach(img => {
-    const base = img.dataset.base || '';
-    img.src = theme === 'light'
-      ? base + 'assets/logo-mark-light.svg'
-      : base + 'assets/logo-mark.svg';
-  });
-
-  // Swap favicons
-  document.querySelectorAll('link[rel*="icon"]').forEach(link => {
-    const href = link.getAttribute('href');
-    if (!href || !href.includes('favicon')) return;
-    const prefix = href.includes('../') ? '../assets/' : 'assets/';
-    link.href = theme === 'light'
-      ? prefix + 'favicon-light.svg'
-      : prefix + 'favicon.svg';
-  });
 
   // Update meta theme-color
   const meta = document.querySelector('meta[name="theme-color"]');
@@ -169,13 +152,10 @@ function pagePath(slug) {
 }
 
 function brandMarkup(base) {
-  const theme = currentTheme();
-  const markSrc = theme === 'light'
-    ? base + 'assets/logo-mark-light.svg'
-    : base + 'assets/logo-mark.svg';
+  const markSrc = base + 'assets/logo-mark.svg';
   return `
     <span class="nav__logo-icon" aria-hidden="true">
-      <img src="${markSrc}" data-base="${base}" class="nav__logo-icon-image" alt="" width="40" height="40">
+      <img src="${markSrc}" class="nav__logo-icon-image" alt="" width="40" height="40">
     </span>
     <span class="nav__logo-wordmark">Simphonia</span>
   `;
@@ -255,6 +235,13 @@ function initNavBehavior() {
   const hamburger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobile-menu');
   const themeBtn = document.getElementById('theme-toggle');
+  const closeMenu = () => {
+    if (!hamburger || !mobileMenu) return;
+    mobileMenu.classList.remove('nav__mobile--open');
+    hamburger.classList.remove('nav__hamburger--open');
+    hamburger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  };
 
   // Scroll effect
   const onScroll = () => {
@@ -283,13 +270,12 @@ function initNavBehavior() {
 
     // Close on link click
     mobileMenu.querySelectorAll('a').forEach(link => {
-      link.addEventListener('click', () => {
-        mobileMenu.classList.remove('nav__mobile--open');
-        hamburger.classList.remove('nav__hamburger--open');
-        hamburger.setAttribute('aria-expanded', 'false');
-        document.body.style.overflow = '';
-      });
+      link.addEventListener('click', closeMenu);
     });
+
+    window.addEventListener('resize', () => {
+      if (window.innerWidth > 768) closeMenu();
+    }, { passive: true });
   }
 }
 
