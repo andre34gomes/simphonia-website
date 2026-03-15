@@ -128,15 +128,36 @@ export function injectNoscript() {
  * Returns the path prefix to reach the site root.
  * Root (/ or /index.html) → './'
  * Any inner page (/about/, /destinations/, etc.) → '../'
+ *
+ * Works for:  file:// protocol, localhost, any deployed host,
+ *             and paths like /subfolder/simphonia-website/about/
  */
 function getBasePath() {
   const path = window.location.pathname;
-  // Root page
-  if (path === '/' || path === '/index.html' || path.endsWith('/simphonia-website/')
-      || path.endsWith('/simphonia-website/index.html')) {
-    return './';
-  }
-  return '../';
+
+  // If the current HTML file is the root index.html we return './'
+  // For inner pages (/about/index.html) we return '../'
+
+  // Strategy: the root index.html's path either ends with /index.html directly
+  // inside the project folder, or is just '/'.  Inner pages always have one
+  // extra directory segment (e.g. /about/ or /about/index.html).
+
+  // Quick checks for common cases
+  if (path === '/' || path === '/index.html') return './';
+
+  // Detect if we're inside one of the known page directories
+  const pagePattern = /\/(destinations|how-it-works|compatibility|support|about|privacy|terms)(\/|\/index\.html)?$/;
+  if (pagePattern.test(path)) return '../';
+
+  // Fallback: if path ends with /index.html or just /, count depth
+  // by checking if the second-to-last segment is a known page slug
+  const segments = path.replace(/\/index\.html$/, '').replace(/\/$/, '').split('/');
+  const last = segments[segments.length - 1];
+  const knownPages = ['destinations', 'how-it-works', 'compatibility', 'support', 'about', 'privacy', 'terms'];
+  if (knownPages.includes(last)) return '../';
+
+  // Default: assume we're at root level
+  return './';
 }
 
 /**
@@ -164,13 +185,15 @@ function brandMarkup(base) {
  * Returns 'nav__link--active' if the slug matches the current page path.
  */
 function activeClass(slug) {
-  const current = window.location.pathname;
+  const path = window.location.pathname;
   if (slug === '') {
-    return (current === '/' || current.endsWith('/index.html')
-      || current.endsWith('/simphonia-website/')
-      || current.endsWith('/simphonia-website/index.html')) ? 'nav__link--active' : '';
+    // Home: path is root, or ends with index.html at the root level
+    const segments = path.replace(/\/index\.html$/, '').replace(/\/$/, '').split('/');
+    const last = segments[segments.length - 1];
+    const knownPages = ['destinations', 'how-it-works', 'compatibility', 'support', 'about', 'privacy', 'terms'];
+    return knownPages.includes(last) ? '' : 'nav__link--active';
   }
-  return current.includes('/' + slug + '/') ? 'nav__link--active' : '';
+  return path.includes('/' + slug) ? 'nav__link--active' : '';
 }
 
 export function injectNav() {
