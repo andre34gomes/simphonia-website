@@ -1238,7 +1238,7 @@
   left: 0;
   right: 0;
   z-index: 900;
-  background: rgba(8, 8, 8, 0.97);
+  background: var(--mobile-overlay-bg);
   backdrop-filter: blur(24px);
   -webkit-backdrop-filter: blur(24px);
   border-top: 1px solid var(--border-subtle);
@@ -1676,6 +1676,8 @@
 /* ==============================================
    RESPONSIVE — Home Page
    ============================================== */
+
+/* ── Large desktops / narrow desktops ── */
 @media (max-width: 1100px) {
   .hero__split { grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr); }
   .hero-phone__badge--2 { display: none; }
@@ -1684,20 +1686,86 @@
   .showcase__content { grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 3rem; }
 }
 
+/* ── Tablets / small laptops ── */
 @media (max-width: 1024px) {
   .features-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .feature-card--large { grid-column: span 2; }
   .bento-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-rows: auto; }
   .bento-item:nth-child(1) { grid-column: span 2; }
   .bento-item:nth-child(4) { grid-column: span 2; }
-  .pricing-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .steps--cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .pricing-cards { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-md); }
+  .price-card { padding: var(--space-xl); }
+  .price-card__price { font-size: 2rem; }
+  .steps--cards { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-md); }
+  .step-card { padding: var(--space-xl); }
   .feature-grid--new { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .metrics-strip__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .metrics-strip__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-md); }
+  .metric-card { padding: var(--space-xl) var(--space-md); }
   .showcase__content { grid-template-columns: 1fr; }
   .showcase__phones-stack { display: flex; }
 }
 
+/* ── Tablet portrait (768–960px) ── */
+@media (max-width: 960px) {
+  /* Hero — tablet uses centered single-column with larger phone */
+  .hero--v2 { min-height: auto; }
+
+  .hero__split {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+    padding: 2rem 0 1.5rem;
+    text-align: center;
+  }
+
+  .hero__text {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .hero__eyebrow { justify-content: center; }
+  .hero__h1 { font-size: clamp(2.5rem, 6vw, 4rem); }
+  .hero__desc { max-width: 520px; text-align: center; }
+  .hero__actions { justify-content: center; }
+  .hero__stores-row { justify-content: center; }
+  .hero__proof { justify-content: center; }
+
+  /* Phone — proportionally scaled for tablets */
+  .hero__visual {
+    padding: 0;
+    height: 420px;
+    overflow: hidden;
+    align-items: flex-start;
+  }
+
+  .hero-phone {
+    animation: none;
+    transform: scale(0.65);
+    transform-origin: center top;
+    flex-shrink: 0;
+  }
+
+  .hero-phone__badge { display: none; }
+  .hero__scroll { display: none; }
+
+  /* Pricing — 2 col on tablet */
+  .pricing-cards { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  /* Steps — 3 col still fits on wide tablet, fall to 1 on narrow */
+  .steps--cards { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+  /* Metrics — 2 × 2 */
+  .metrics-strip__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  /* Showcase — hide side phones, keep center */
+  .showcase--new { padding: 4rem 0; }
+  .showcase__phones-stack .phone-3d--left,
+  .showcase__phones-stack .phone-3d--right { display: none; }
+  .showcase__phones-stack .phone-3d--center { transform: none; box-shadow: var(--shadow-lg); }
+  .showcase__phones-stack { padding: 1.5rem; }
+}
+
+/* ── Phones / small tablets ── */
 @media (max-width: 768px) {
   /* Hero v1 legacy */
   #globe-container { opacity: 0.15; width: 100vw; right: 0; }
@@ -1731,13 +1799,17 @@
   .bento-grid {
     grid-template-columns: 1fr;
     grid-template-rows: auto;
+    gap: var(--space-md);
   }
   .bento-item,
   .bento-item:nth-child(1),
   .bento-item:nth-child(4) {
     grid-column: span 1;
     grid-row: span 1;
-    height: 220px;
+    height: 240px;
+  }
+  .bento-item:nth-child(1) {
+    height: 280px;
   }
 
   /* Phones */
@@ -1746,58 +1818,26 @@
   .phone-3d--right { display: none; }
   .phone-3d--center { transform: none; }
 
-  /* Pricing */
-  .pricing-cards { grid-template-columns: 1fr; }
+  /* Pricing — single column, stacked */
+  .pricing-cards { grid-template-columns: 1fr; max-width: 400px; margin: 0 auto; }
 
   /* Testimonials v1 */
   .testimonial-card { min-width: 280px; }
 
-  /* ── Hero V2 — Text first on mobile, compact phone below ── */
-  .hero--v2 { min-height: auto; }
-
-  .hero__split {
-    grid-template-columns: 1fr;
-    gap: 0;
-    min-height: auto;
-    padding: 1.5rem 0 1rem;
-  }
-
-  /* Phone visual — use CSS scale to shrink proportionally.
-     The wrapper has a fixed height + overflow:hidden to clip the
-     extra layout space that transform:scale leaves behind. */
-  .hero__visual {
-    padding: 0;
-    height: 370px;
-    overflow: hidden;
-    align-items: flex-start;
-  }
-
-  .hero-phone {
-    animation: none;
-    transform: scale(0.58);
-    transform-origin: center top;
-    flex-shrink: 0;
-  }
-
-  /* Hide ALL phone badges on mobile — they clip/overflow */
-  .hero-phone__badge { display: none; }
-
-  .hero__eyebrow { flex-wrap: wrap; }
-
+  /* ── Hero V2 — Phone scaled smaller on phones ── */
+  .hero__visual { height: 370px; }
+  .hero-phone { transform: scale(0.58); }
   .hero__h1 { font-size: clamp(2.25rem, 8vw, 3.5rem); }
   .hero__desc { max-width: 100%; font-size: 1rem; margin-bottom: var(--space-xl); }
-  .hero__actions { flex-direction: column; }
+  .hero__actions { flex-direction: column; width: 100%; }
   .hero__actions .btn { width: 100%; justify-content: center; }
-  .hero__stores-row { flex-direction: column; }
+  .hero__stores-row { flex-direction: column; width: 100%; }
   .hero__stores-row .store-badge { width: 100%; justify-content: center; }
   .hero__rating { width: fit-content; }
 
   /* Proof row — hide separators when items wrap */
   .hero__proof { gap: 0.75rem; }
   .hero__proof-sep { display: none; }
-
-  /* Scroll indicator — hide on mobile */
-  .hero__scroll { display: none; }
 
   /* Marquee */
   .marquee-item { padding: 0 1.25rem; font-size: 0.8125rem; }
@@ -1807,28 +1847,18 @@
   .metrics-strip { padding: 2.5rem 0; }
   .metrics-strip__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-md); }
 
-  /* Steps Cards */
-  .steps--cards { grid-template-columns: 1fr; }
+  /* Steps Cards — single column */
+  .steps--cards { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
 
   /* Features New */
   .feature-grid--new { grid-template-columns: 1fr; }
-
-  /* Section header spacing — tighter on mobile */
-  .section-header { margin-bottom: var(--space-2xl); }
-
-  /* Showcase */
-  .showcase--new { padding: 4rem 0; }
-  .showcase__phones-stack .phone-3d--left,
-  .showcase__phones-stack .phone-3d--right { display: none; }
-  .showcase__phones-stack .phone-3d--center { transform: none; box-shadow: var(--shadow-lg); }
-  .showcase__phones-stack { padding: 1rem; }
 
   /* Testimonials v2 */
   .testimonials-fade::before,
   .testimonials-fade::after { width: 40px; }
   .testimonial-card--v2 {
-    min-width: min(280px, calc(100vw - 4rem));
-    max-width: min(280px, calc(100vw - 4rem));
+    min-width: min(300px, calc(100vw - 3rem));
+    max-width: min(300px, calc(100vw - 3rem));
     padding: var(--space-xl);
   }
 
@@ -1838,7 +1868,7 @@
   .final-cta__stores .store-badge { width: 100%; max-width: 280px; justify-content: center; }
   .final-cta__note { gap: 0.75rem; }
 
-  /* Mobile sticky bar */
+  /* Mobile sticky bar — theme-aware */
   .mobile-cta-bar { display: flex; }
   body.show-mobile-cta { padding-bottom: 72px; }
   .mobile-cta-bar .store-badge { padding: 0.625rem 1rem; }
@@ -1846,14 +1876,15 @@
   .mobile-cta-bar .store-badge__name { font-size: 0.875rem; }
 }
 
+/* ── Small phones ── */
 @media (max-width: 480px) {
   .hero__ctas { flex-direction: column; }
   .hero__ctas .btn { width: 100%; }
   .trust-bar__stat { flex: 1 1 100%; }
 
-  /* Scale phone down further on small screens */
-  .hero__visual { height: 280px; }
-  .hero-phone { transform: scale(0.44); }
+  /* Scale phone down further */
+  .hero__visual { height: 300px; }
+  .hero-phone { transform: scale(0.48); }
 
   /* Metrics */
   .metrics-strip__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
@@ -1861,11 +1892,13 @@
   .metric-card__value { font-size: clamp(1.75rem, 6vw, 2.5rem); }
   .metric-card__label { font-size: 0.75rem; }
 
-  /* Bento items shorter */
+  /* Bento items — shorter */
   .bento-item,
-  .bento-item:nth-child(1),
   .bento-item:nth-child(4) {
     height: 200px;
+  }
+  .bento-item:nth-child(1) {
+    height: 240px;
   }
 
   /* Final CTA */
@@ -1873,17 +1906,17 @@
   .final-cta p { font-size: 1rem; }
   .final-cta__note { flex-direction: column; align-items: center; gap: 0.5rem; }
 
-  /* Section headers */
-  .section-header p { font-size: 1rem; }
-
-  /* Testimonials — viewport-aware sizing */
+  /* Testimonials — tighter */
   .testimonial-card--v2 {
-    min-width: min(260px, calc(100vw - 2.5rem));
-    max-width: min(260px, calc(100vw - 2.5rem));
+    min-width: min(270px, calc(100vw - 2.5rem));
+    max-width: min(270px, calc(100vw - 2.5rem));
   }
+
+  /* Step cards — full bleed */
+  .steps--cards { max-width: 100%; }
 }
 
-/* Very small screens (SE, Galaxy S, etc.) */
+/* ── Very small screens (SE, Galaxy S, etc.) ── */
 @media (max-width: 360px) {
   .hero__h1 { font-size: 2rem; }
   .hero__rating { font-size: 0.6875rem; padding: 0.3rem 0.625rem; }

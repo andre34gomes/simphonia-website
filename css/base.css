@@ -1003,12 +1003,16 @@ body.theme-transition *::after {
 .nav__mobile {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.55);
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
   z-index: 1100;
   -webkit-overflow-scrolling: touch;
+}
+
+[data-theme="light"] .nav__mobile {
+  background: rgba(0, 0, 0, 0.35);
 }
 
 .nav__mobile--open {
@@ -1025,6 +1029,7 @@ body.theme-transition *::after {
   width: min(320px, 85vw);
   background: var(--bg-primary);
   border-left: 1px solid var(--border-subtle);
+  box-shadow: -8px 0 40px rgba(0, 0, 0, 0.25);
   display: flex;
   flex-direction: column;
   transform: translateX(100%);
@@ -1358,10 +1363,14 @@ html.gsap-ready .reveal--scale {
   .grid--3 { grid-template-columns: 1fr; }
   .grid--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 
-  /* Footer */
+  /* Footer — 2 × 2 grid on tablet instead of single column */
   .footer__grid {
-    grid-template-columns: 1fr;
+    grid-template-columns: 1fr 1fr;
     gap: var(--space-2xl);
+  }
+
+  .footer__brand {
+    grid-column: 1 / -1;
   }
 
   .footer__bottom {
@@ -1371,14 +1380,109 @@ html.gsap-ready .reveal--scale {
     text-align: center;
   }
 
-  /* About Story (shared) */
-  .about-story { grid-template-columns: 1fr; }
+  /* About Story — tighter gap on tablet */
+  .about-story {
+    gap: var(--space-2xl);
+  }
+
+  /* About Hero — reduce padding on tablet */
+  .about-hero {
+    padding-top: calc(var(--nav-height) + var(--space-4xl));
+    padding-bottom: var(--space-3xl);
+  }
+
+  /* CTA section — reduce padding on tablet */
+  .cta-section {
+    padding: var(--space-4xl) 0;
+  }
+
+  /* Glass card — disable hover lift on touch to prevent sticky hover */
+  .glass-card:hover {
+    transform: none;
+  }
 }
 
 @media (max-width: 768px) {
   :root {
     --section-padding: clamp(3rem, 8vw, 5rem);
     --nav-height: 64px;
+  }
+
+  /* Footer — single column on phones */
+  .footer__grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+
+  .footer__brand {
+    grid-column: auto;
+  }
+
+  /* Section header — tighter on phones */
+  .section-header {
+    margin-bottom: var(--space-2xl);
+  }
+  .section-header p { font-size: 1rem; }
+
+  /* About Story — single column on phones */
+  .about-story {
+    grid-template-columns: 1fr;
+    gap: var(--space-xl);
+  }
+
+  .about-story__img {
+    aspect-ratio: 16/9;
+  }
+
+  /* About Hero — compact on phones */
+  .about-hero {
+    padding-top: calc(var(--nav-height) + var(--space-2xl));
+    padding-bottom: var(--space-xl);
+  }
+
+  .about-hero p {
+    font-size: 1.0625rem;
+  }
+
+  /* CTA section — compact on phones */
+  .cta-section {
+    padding: var(--space-3xl) 0;
+  }
+
+  .cta-section h2 {
+    font-size: 1.75rem;
+  }
+
+  .cta-section p {
+    font-size: 1rem;
+  }
+
+  /* CTA buttons — stack on mobile */
+  .cta-section .flex {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cta-section .flex .btn {
+    width: 100%;
+    max-width: 320px;
+    justify-content: center;
+  }
+
+  /* FAQ — tighter padding on phones */
+  .faq-item summary {
+    padding: var(--space-md) var(--space-lg);
+    font-size: 0.9375rem;
+  }
+
+  .faq-item__answer {
+    padding: 0 var(--space-lg) var(--space-md);
+    font-size: 0.875rem;
+  }
+
+  /* Search bar — smaller on phones */
+  .search-bar__input {
+    font-size: 0.9375rem;
   }
 }
 

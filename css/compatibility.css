@@ -86,3 +86,16 @@
   font-size: 0.8125rem;
   color: var(--text-tertiary);
 }
+
+/* ==============================================
+   RESPONSIVE — Compatibility Page
+   ============================================== */
+@media (max-width: 768px) {
+  .compat-hero {
+    padding-top: calc(var(--nav-height) + var(--space-2xl));
+    padding-bottom: var(--space-xl);
+  }
+  .compat-brands { gap: var(--space-sm); }
+  .compat-brand-card { padding: var(--space-md); }
+}
+

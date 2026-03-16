@@ -56,3 +56,23 @@
   line-height: 1.8;
   margin-bottom: var(--space-xs);
 }
+
+/* ==============================================
+   RESPONSIVE — Legal Pages
+   ============================================== */
+@media (max-width: 768px) {
+  .legal-hero {
+    padding-top: calc(var(--nav-height) + var(--space-2xl));
+    padding-bottom: var(--space-lg);
+  }
+
+  .legal-prose {
+    padding-bottom: var(--space-3xl);
+  }
+
+  .legal-prose h2 {
+    font-size: 1.25rem;
+    margin-top: var(--space-2xl);
+  }
+}
+

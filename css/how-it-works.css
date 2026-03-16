@@ -8,3 +8,13 @@
    price-card__feature. Add page-specific overrides below.
    ============================================================ */
 
+/* ==============================================
+   RESPONSIVE — How It Works Page
+   ============================================== */
+@media (max-width: 768px) {
+  /* Reduce large bottom margins on step blocks (inline style uses --space-5xl) */
+  .about-story[style*="margin-bottom"] {
+    margin-bottom: var(--space-3xl) !important;
+  }
+}
+

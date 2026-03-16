@@ -96,6 +96,24 @@
 /* ==============================================
    RESPONSIVE — Destinations Page
    ============================================== */
+@media (max-width: 960px) {
+  .dest-card:hover {
+    transform: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .destinations-hero {
+    padding-top: calc(var(--nav-height) + var(--space-2xl));
+    padding-bottom: var(--space-xl);
+  }
+  .filter-tabs { gap: 0.375rem; }
+  .filter-tab { padding: 0.5rem 1rem; font-size: 0.8125rem; }
+  .dest-grid { gap: var(--space-md); }
+  .dest-card__img { height: 140px; }
+  .dest-card__body { padding: var(--space-md); }
+}
+
 @media (max-width: 480px) {
   .filter-tab { width: 100%; }
 }

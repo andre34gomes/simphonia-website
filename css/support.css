@@ -54,3 +54,23 @@ textarea.form-input {
   min-height: 120px;
   resize: vertical;
 }
+
+/* ==============================================
+   RESPONSIVE — Support Page
+   ============================================== */
+@media (max-width: 768px) {
+  .support-hero {
+    padding-top: calc(var(--nav-height) + var(--space-2xl));
+    padding-bottom: var(--space-xl);
+  }
+
+  .contact-form {
+    gap: var(--space-md);
+  }
+
+  .form-input {
+    padding: 0.75rem 1rem;
+    font-size: 0.9375rem;
+  }
+}
+
