@@ -1,41 +1,36 @@
 /**
- * Simphonia — GSAP Scroll Animations v3
+ * Simphonia — GSAP Scroll Animations v4
  *
- * Design principles:
- *   1. Each DOM element is animated by exactly ONE function — no double-targeting
- *   2. gsap.fromTo() everywhere — explicit from/to, no reliance on CSS state
- *   3. autoAlpha (opacity + visibility) instead of bare opacity — avoids FOUC
- *   4. overwrite: 'auto' as safety net for any accidental overlaps
- *   5. Retry loop if GSAP CDN hasn't loaded yet
- *   6. ScrollTrigger.batch() for grid items — efficient + correct stagger
- *   7. Reduced-motion: skip everything, reveal immediately
+ * Apple-style scroll animations:
+ *   1. Text reveal — word-by-word opacity on scroll
+ *   2. Sticky showcase — phone pins while panels swap
+ *   3. Hero parallax — text and phone move at different speeds
+ *   4. 3D phone rotation — perspective-driven rotateY/rotateX via scrub
+ *   5. All original reveal animations preserved
  */
 
-// Elements handled by section-specific animations.
-// The generic reveal handler MUST skip these to prevent double-animation / flicker.
 const SECTION_SPECIFIC_SEL =
-  '.feat-card, .step-card, .metric-card, .price-card, .bento-item, ' +
+  '.feat-card, .step-card, .metric-card, .bento-item, ' +
   '.faq-item, .team-card, .value-card, .compat-brand-card, .dest-card, .feature-card';
 
 var _animStartTime = Date.now();
 
 function initAnimations() {
-  // ── Retry if CDN scripts have not executed yet (give up after 4 s) ──
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
     if (Date.now() - _animStartTime < 4000) {
       setTimeout(initAnimations, 200);
     }
-    // If timed out, content stays visible (opacity: 1 default) — no action needed.
     return;
   }
 
-  // ── Respect prefers-reduced-motion ────────────────────
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    // Content is already visible by default; nothing to do.
+    // Ensure text reveal words are visible
+    document.querySelectorAll('.text-reveal__heading').forEach(function(h) {
+      h.querySelectorAll('.word').forEach(function(w) { w.style.opacity = '1'; });
+    });
     return;
   }
 
-  // ── GSAP is ready — hide elements so we can animate them in ──
   document.documentElement.classList.add('gsap-ready');
 
   gsap.registerPlugin(ScrollTrigger);
@@ -46,32 +41,36 @@ function initAnimations() {
   _metricCards();
   _stepCards();
   _featureCards();
-  _showcase();
-  _bentoGrid();
-  _pricingCards();
-  _testimonials();
+  _textReveal();
+  _stickyShowcase();
+  _heroParallax();
   _faqItems();
   _counters();
+
+  // --- Apple-style sub-page animations ---
+  _subpageHeroParallax();
+  _aboutStorySlideIn();
+  _valueCards3D();
+  _teamCardsStagger();
+  _destCardsHover3D();
+  _ctaSectionReveal();
+  _compatBrandCards();
+  _sectionDividers();
+  _numberCountUp();
 }
 
 // ─────────────────────────────────────────────────────────
 // Helpers
 // ─────────────────────────────────────────────────────────
 
-/** Returns true if el matches any section-specific selector */
 function _isSpecific(el) {
   try { return el.matches(SECTION_SPECIFIC_SEL); } catch (_) { return false; }
 }
 
-/** Shared ScrollTrigger config object */
 function _st(trigger, startPct = '88%') {
   return { trigger, start: `top ${startPct}`, once: true };
 }
 
-/**
- * Animate a batch of grid/card elements as they enter the viewport.
- * Uses ScrollTrigger.batch() for efficiency and correct stagger behavior.
- */
 function _batchReveal(selector, fromVars, tweenVars, batchMax = 4) {
   if (!document.querySelector(selector)) return;
   ScrollTrigger.batch(selector, {
@@ -88,20 +87,15 @@ function _batchReveal(selector, fromVars, tweenVars, batchMax = 4) {
 }
 
 // ─────────────────────────────────────────────────────────
-// 1. HERO — immediate entrance, no ScrollTrigger needed
+// 1. HERO
 // ─────────────────────────────────────────────────────────
 function _hero() {
-
-  // ── v2 split-layout hero (homepage) ───────────────────
-  if (document.querySelector('.hero__eyebrow')) {
-    // Pre-set initial hidden state via GSAP so there is zero FOUC
+  if (document.querySelector('.hero--v2')) {
     gsap.set([
-      '.hero__eyebrow',
       '.hero__h1 .line-1',
       '.hero__h1 .line-2',
       '.hero__desc',
       '.hero__actions',
-      '.hero__stores-row',
       '.hero__proof',
     ], { autoAlpha: 0 });
 
@@ -113,23 +107,51 @@ function _hero() {
     const tl = gsap.timeline({ defaults: { ease: 'power3.out', overwrite: 'auto' } });
 
     tl
-      .to('.hero__eyebrow',      { autoAlpha: 1, duration: 0.5 }, 0.15)
-      .fromTo('.hero__h1 .line-1', { y: 50 }, { autoAlpha: 1, y: 0, duration: 0.75 }, 0.2)
-      .fromTo('.hero__h1 .line-2', { y: 50 }, { autoAlpha: 1, y: 0, duration: 0.75 }, 0.38)
-      .fromTo('.hero__desc',       { y: 22 }, { autoAlpha: 1, y: 0, duration: 0.65 }, 0.52)
-      .fromTo('.hero__actions',    { y: 18 }, { autoAlpha: 1, y: 0, duration: 0.6  }, 0.62)
-      .fromTo('.hero__stores-row', { y: 14 }, { autoAlpha: 1, y: 0, duration: 0.5  }, 0.72)
-      .to('.hero__proof',          { autoAlpha: 1, duration: 0.5 }, 0.78)
-      // Phone slides in from the right — starts at 0.2 s in parallel
-      .to('.hero-phone',           { autoAlpha: 1, x: 0, duration: 1.1, ease: 'power2.out' }, 0.2)
-      .to('.hero-phone__badge--1', { autoAlpha: 1, x: 0, duration: 0.45, ease: 'back.out(1.4)' }, 0.8)
-      .to('.hero-phone__badge--3', { autoAlpha: 1, x: 0, duration: 0.45, ease: 'back.out(1.4)' }, 0.9)
-      .to('.hero-phone__badge--2', { autoAlpha: 1, x: 0, duration: 0.45, ease: 'back.out(1.4)' }, 1.0);
+      .fromTo('.hero__h1 .line-1', { y: 50 }, { autoAlpha: 1, y: 0, duration: 0.75 }, 0.15)
+      .fromTo('.hero__h1 .line-2', { y: 50 }, { autoAlpha: 1, y: 0, duration: 0.75 }, 0.33)
+      .fromTo('.hero__desc',       { y: 22 }, { autoAlpha: 1, y: 0, duration: 0.65 }, 0.47)
+      .fromTo('.hero__actions',    { y: 18 }, { autoAlpha: 1, y: 0, duration: 0.6  }, 0.57)
+      .to('.hero__proof',          { autoAlpha: 1, duration: 0.5 }, 0.67)
+      .to('.hero-phone',           { autoAlpha: 1, x: 0, duration: 1.1, ease: 'power2.out' }, 0.15)
+      .to('.hero-phone__badge--1', { autoAlpha: 1, x: 0, duration: 0.45, ease: 'back.out(1.4)' }, 0.75)
+      .to('.hero-phone__badge--3', { autoAlpha: 1, x: 0, duration: 0.45, ease: 'back.out(1.4)' }, 0.85)
+      .to('.hero-phone__badge--2', { autoAlpha: 1, x: 0, duration: 0.45, ease: 'back.out(1.4)' }, 0.95);
+
+    // ── Mousemove 3D tilt on the hero phone ──
+    var heroVisual = document.querySelector('.hero__visual');
+    var heroFrame  = document.querySelector('.hero-phone__frame');
+    if (heroVisual && heroFrame) {
+      heroVisual.addEventListener('mousemove', function(e) {
+        var rect = heroVisual.getBoundingClientRect();
+        var x = (e.clientX - rect.left) / rect.width  - 0.5;  // -0.5 to 0.5
+        var y = (e.clientY - rect.top)  / rect.height - 0.5;
+        gsap.to(heroFrame, {
+          rotateY:  x * 18,
+          rotateX: -y * 14,
+          duration: 0.5,
+          ease: 'power2.out',
+          overwrite: 'auto',
+        });
+      });
+      heroVisual.addEventListener('mouseleave', function() {
+        gsap.to(heroFrame, {
+          rotateY: 0,
+          rotateX: 0,
+          duration: 0.8,
+          ease: 'power3.out',
+          overwrite: 'auto',
+        });
+      });
+    }
 
     return;
   }
 
-  // ── Fallback for sub-pages with a plain heading ────────
+  // Skip fallback for sub-pages that have their own hero animation handler
+  if (document.querySelector('.about-hero, .destinations-hero, .compat-hero, .support-hero, .legal-hero')) {
+    return;
+  }
+
   const h1 = document.querySelector('h1');
   if (h1) {
     gsap.fromTo(h1,
@@ -141,11 +163,8 @@ function _hero() {
 
 // ─────────────────────────────────────────────────────────
 // 2. GENERIC REVEALS
-//    .reveal / .reveal--left / .reveal--right / .reveal--scale
-//    Skips any element that is handled by a section-specific function.
 // ─────────────────────────────────────────────────────────
 function _genericReveals() {
-
   document.querySelectorAll('.reveal').forEach(el => {
     if (_isSpecific(el)) return;
     gsap.fromTo(el,
@@ -184,7 +203,7 @@ function _genericReveals() {
 }
 
 // ─────────────────────────────────────────────────────────
-// 3. METRIC CARDS  (.metric-card)
+// 3. METRIC CARDS
 // ─────────────────────────────────────────────────────────
 function _metricCards() {
   _batchReveal('.metric-card',
@@ -194,7 +213,7 @@ function _metricCards() {
 }
 
 // ─────────────────────────────────────────────────────────
-// 4. STEP CARDS  (.step-card)
+// 4. STEP CARDS
 // ─────────────────────────────────────────────────────────
 function _stepCards() {
   _batchReveal('.step-card',
@@ -205,7 +224,7 @@ function _stepCards() {
 }
 
 // ─────────────────────────────────────────────────────────
-// 5. FEATURE CARDS  (.feat-card  +  legacy .feature-card)
+// 5. FEATURE CARDS
 // ─────────────────────────────────────────────────────────
 function _featureCards() {
   _batchReveal('.feat-card',
@@ -221,97 +240,159 @@ function _featureCards() {
 }
 
 // ─────────────────────────────────────────────────────────
-// 6. APP SHOWCASE PHONES  (.showcase--new  +  legacy .showcase)
+// 6. TEXT REVEAL — Apple-style word-by-word on scroll
 // ─────────────────────────────────────────────────────────
-function _showcase() {
-  const section = document.querySelector('.showcase--new, .showcase');
-  if (!section || window.innerWidth < 768) return;
+function _textReveal() {
+  const section = document.querySelector('.text-reveal-section');
+  if (!section) return;
 
-  const center = section.querySelector('.phone-3d--center');
-  const left   = section.querySelector('.phone-3d--left');
-  const right  = section.querySelector('.phone-3d--right');
+  const heading = section.querySelector('.text-reveal__heading');
+  if (!heading) return;
 
-  if (center) {
-    gsap.fromTo(center,
-      { autoAlpha: 0, y: 80 },
-      { autoAlpha: 1, y: 0, duration: 1, ease: 'power3.out',
-        scrollTrigger: { trigger: section, start: 'top 65%', once: true } }
-    );
-  }
+  // Split text into word spans
+  const text = heading.textContent.trim();
+  heading.innerHTML = text.split(/\s+/).map(function(word) {
+    return '<span class="word">' + word + '</span>';
+  }).join(' ');
 
-  if (left) {
-    gsap.fromTo(left,
-      { autoAlpha: 0, x: -50 },
-      { autoAlpha: 0.65, x: 0, duration: 0.8, delay: 0.15, ease: 'power2.out',
-        scrollTrigger: { trigger: section, start: 'top 65%', once: true } }
-    );
-    gsap.to(left, {
-      y: -60,
-      ease: 'none',
-      scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: 1.5 },
-    });
-  }
+  const words = heading.querySelectorAll('.word');
 
-  if (right) {
-    gsap.fromTo(right,
-      { autoAlpha: 0, x: 50 },
-      { autoAlpha: 0.65, x: 0, duration: 0.8, delay: 0.15, ease: 'power2.out',
-        scrollTrigger: { trigger: section, start: 'top 65%', once: true } }
-    );
-    gsap.to(right, {
-      y: 60,
-      ease: 'none',
-      scrollTrigger: { trigger: section, start: 'top bottom', end: 'bottom top', scrub: 1.5 },
-    });
-  }
-}
-
-// ─────────────────────────────────────────────────────────
-// 7. BENTO GRID  (.bento-item)
-// ─────────────────────────────────────────────────────────
-function _bentoGrid() {
-  _batchReveal('.bento-item',
-    { scale: 0.94 },
-    { scale: 1, duration: 0.65, ease: 'power2.out', stagger: 0.1 },
-    4
-  );
-}
-
-// ─────────────────────────────────────────────────────────
-// 8. PRICING CARDS  (.price-card)
-// ─────────────────────────────────────────────────────────
-function _pricingCards() {
-  _batchReveal('.price-card',
-    { y: 40 },
-    { y: 0, duration: 0.7, ease: 'power3.out', stagger: 0.15 },
-    3
-  );
-}
-
-// ─────────────────────────────────────────────────────────
-// 9. TESTIMONIALS
-//    • .testimonials-row  → CSS infinite-scroll (homepage). No GSAP needed.
-//    • .testimonials-track → Manual-scroll track on sub-pages. GSAP stagger.
-// ─────────────────────────────────────────────────────────
-function _testimonials() {
-  if (document.querySelector('.testimonials-row')) return; // CSS handles it
-
-  const track = document.querySelector('.testimonials-track');
-  if (!track) return;
-
-  gsap.fromTo(
-    track.querySelectorAll('.testimonial-card'),
-    { autoAlpha: 0, x: 50 },
+  // Animate each word's opacity from 0.12 to 1 as user scrolls
+  gsap.fromTo(words,
+    { opacity: 0.12 },
     {
-      autoAlpha: 1, x: 0, duration: 0.7, stagger: 0.12,
-      ease: 'power3.out', overwrite: 'auto',
-      scrollTrigger: { trigger: track, start: 'top 82%', once: true },
+      opacity: 1,
+      stagger: 0.04,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: section,
+        start: 'top top',
+        end: 'bottom bottom',
+        scrub: 0.8,
+        pin: false, // sticky CSS handles pinning
+      },
     }
   );
 }
 
 // ─────────────────────────────────────────────────────────
-// 10. FAQ ITEMS  (.faq-item)
+// 7. STICKY SHOWCASE — phone pins, panels activate on scroll
+// ─────────────────────────────────────────────────────────
+function _stickyShowcase() {
+  const section = document.querySelector('.showcase-sticky');
+  if (!section || window.innerWidth < 1024) return;
+
+  const panels = section.querySelectorAll('.showcase-sticky__panel');
+  const phone = section.querySelector('.showcase-sticky__phone .phone-3d--center');
+  if (!panels.length) return;
+
+  // Activate panels based on scroll position
+  panels.forEach(function(panel, i) {
+    ScrollTrigger.create({
+      trigger: panel,
+      start: 'top 60%',
+      end: 'bottom 40%',
+      onEnter: function() {
+        panels.forEach(function(p) { p.classList.remove('is-active'); });
+        panel.classList.add('is-active');
+        // Rotate phone slightly for each panel
+        if (phone) {
+          var rotations = [
+            'rotateY(-8deg) rotateX(4deg)',
+            'rotateY(-3deg) rotateX(2deg)',
+            'rotateY(3deg) rotateX(-2deg)',
+            'rotateY(8deg) rotateX(-4deg)',
+          ];
+          phone.style.transform = rotations[i] || rotations[0];
+        }
+      },
+      onEnterBack: function() {
+        panels.forEach(function(p) { p.classList.remove('is-active'); });
+        panel.classList.add('is-active');
+        if (phone) {
+          var rotations = [
+            'rotateY(-8deg) rotateX(4deg)',
+            'rotateY(-3deg) rotateX(2deg)',
+            'rotateY(3deg) rotateX(-2deg)',
+            'rotateY(8deg) rotateX(-4deg)',
+          ];
+          phone.style.transform = rotations[i] || rotations[0];
+        }
+      },
+    });
+  });
+
+  // Activate first panel by default
+  if (panels[0]) panels[0].classList.add('is-active');
+}
+
+// ─────────────────────────────────────────────────────────
+// 8. HERO PARALLAX + 3D PHONE — perspective-driven rotation
+//    Text moves at different speeds, phone rotates in 3D space
+// ─────────────────────────────────────────────────────────
+function _heroParallax() {
+  const hero = document.querySelector('.hero--v2');
+  if (!hero || window.innerWidth < 768) return;
+
+  const h1 = hero.querySelector('.hero__h1');
+  const desc = hero.querySelector('.hero__desc');
+  const phone = hero.querySelector('.hero-phone__frame');
+
+  // Parallax: text rises faster than scroll
+  if (h1) {
+    gsap.to(h1, {
+      y: -80,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: hero,
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 1.5,
+      },
+    });
+  }
+
+  if (desc) {
+    gsap.to(desc, {
+      y: -50,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: hero,
+        start: 'top top',
+        end: 'bottom top',
+        scrub: 1.5,
+      },
+    });
+  }
+
+  // 3D phone rotation:  starts slightly rotated, straightens on scroll,
+  // then tilts the other way as user continues scrolling past the hero.
+  // CSS perspective: 1200px on .hero__visual enables the 3D depth.
+  if (phone) {
+    gsap.fromTo(phone,
+      {
+        rotateY: -12,
+        rotateX: 5,
+        scale: 0.92,
+      },
+      {
+        rotateY: 8,
+        rotateX: -3,
+        scale: 1,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: hero,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1,
+        },
+      }
+    );
+  }
+}
+
+// ─────────────────────────────────────────────────────────
+// 10. FAQ ITEMS
 // ─────────────────────────────────────────────────────────
 function _faqItems() {
   const list = document.querySelector('.faq-list');
@@ -329,15 +410,13 @@ function _faqItems() {
 }
 
 // ─────────────────────────────────────────────────────────
-// 11. ANIMATED COUNTERS  (data-count attribute)
-//     Works for both .metrics-strip (v2 homepage) and .trust-bar (older pages)
+// 11. ANIMATED COUNTERS
 // ─────────────────────────────────────────────────────────
 function _counters() {
-  const counterEls = document.querySelectorAll('[data-count]');
+  var counterEls = document.querySelectorAll('[data-count]');
   if (!counterEls.length) return;
 
-  // Use the closest meaningful container as the ScrollTrigger
-  const triggerEl =
+  var triggerEl =
     counterEls[0].closest('.metrics-strip, .trust-bar, section') ||
     counterEls[0].parentElement;
 
@@ -345,27 +424,324 @@ function _counters() {
     trigger: triggerEl,
     start: 'top 82%',
     once: true,
-    onEnter() {
-      counterEls.forEach(el => {
-        const target   = parseFloat(el.dataset.count);
-        const suffix   = el.dataset.suffix || '';
-        const decimals = target % 1 !== 0 ? 1 : 0;
-        const obj      = { val: 0 };
+    onEnter: function() {
+      counterEls.forEach(function(el) {
+        var target   = parseFloat(el.dataset.count);
+        var suffix   = el.dataset.suffix || '';
+        var decimals = target % 1 !== 0 ? 1 : 0;
+        var obj      = { val: 0 };
 
         gsap.to(obj, {
           val:      target,
           duration: 2.2,
           ease:     'power2.out',
-          onUpdate() {
+          onUpdate: function() {
             el.textContent = obj.val.toFixed(decimals) + suffix;
           },
-          onComplete() {
-            // Ensure we end on the exact target value
+          onComplete: function() {
             el.textContent = target.toFixed(decimals) + suffix;
           },
         });
       });
     },
+  });
+}
+
+// ─────────────────────────────────────────────────────────
+// 12. SUB-PAGE HERO PARALLAX — parallax depth on about/compat/dest/support heroes
+// ─────────────────────────────────────────────────────────
+function _subpageHeroParallax() {
+  var heroes = document.querySelectorAll('.about-hero, .destinations-hero, .compat-hero, .support-hero, .legal-hero');
+  heroes.forEach(function(hero) {
+    var h1 = hero.querySelector('h1');
+    var p = hero.querySelector('p');
+    var label = hero.querySelector('.label');
+
+    // Fade in + rise on load
+    if (label) {
+      gsap.fromTo(label,
+        { autoAlpha: 0, y: 30 },
+        { autoAlpha: 1, y: 0, duration: 0.7, delay: 0.1, ease: 'power3.out' }
+      );
+    }
+    if (h1) {
+      gsap.fromTo(h1,
+        { autoAlpha: 0, y: 50 },
+        { autoAlpha: 1, y: 0, duration: 0.9, delay: 0.2, ease: 'power3.out' }
+      );
+      // Parallax on scroll
+      gsap.to(h1, {
+        y: -60,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: hero,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1.5,
+        },
+      });
+    }
+    if (p) {
+      gsap.fromTo(p,
+        { autoAlpha: 0, y: 30 },
+        { autoAlpha: 1, y: 0, duration: 0.7, delay: 0.35, ease: 'power3.out' }
+      );
+      gsap.to(p, {
+        y: -35,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: hero,
+          start: 'top top',
+          end: 'bottom top',
+          scrub: 1.5,
+        },
+      });
+    }
+  });
+}
+
+// ─────────────────────────────────────────────────────────
+// 13. ABOUT STORY SLIDE-IN — alternate left/right slide with 3D rotation
+// ─────────────────────────────────────────────────────────
+function _aboutStorySlideIn() {
+  var stories = document.querySelectorAll('.about-story');
+  if (!stories.length) return;
+
+  stories.forEach(function(story, i) {
+    var img = story.querySelector('.about-story__img');
+    var textBlock = story.children[1] || story.querySelector('div:not(.about-story__img)');
+    var isEven = i % 2 === 0;
+
+    if (img) {
+      gsap.fromTo(img,
+        { autoAlpha: 0, x: isEven ? -80 : 80, rotateY: isEven ? -8 : 8, scale: 0.92 },
+        {
+          autoAlpha: 1, x: 0, rotateY: 0, scale: 1,
+          duration: 1.1, ease: 'power3.out', overwrite: 'auto',
+          scrollTrigger: { trigger: story, start: 'top 80%', once: true },
+        }
+      );
+    }
+    if (textBlock && textBlock !== img) {
+      gsap.fromTo(textBlock,
+        { autoAlpha: 0, x: isEven ? 60 : -60, y: 20 },
+        {
+          autoAlpha: 1, x: 0, y: 0,
+          duration: 1, ease: 'power3.out', delay: 0.15, overwrite: 'auto',
+          scrollTrigger: { trigger: story, start: 'top 80%', once: true },
+        }
+      );
+    }
+
+    // Parallax on scroll after reveal
+    if (img) {
+      gsap.to(img, {
+        y: -30,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: story,
+          start: 'top bottom',
+          end: 'bottom top',
+          scrub: 2,
+        },
+      });
+    }
+  });
+}
+
+// ─────────────────────────────────────────────────────────
+// 14. VALUE CARDS — 3D tilt + staggered scale-up reveal
+// ─────────────────────────────────────────────────────────
+function _valueCards3D() {
+  var cards = document.querySelectorAll('.value-card');
+  if (!cards.length) return;
+
+  ScrollTrigger.batch(cards, {
+    batchMax: 4,
+    onEnter: function(batch) {
+      gsap.fromTo(batch,
+        { autoAlpha: 0, y: 60, scale: 0.88, rotateX: 8 },
+        {
+          autoAlpha: 1, y: 0, scale: 1, rotateX: 0,
+          duration: 0.85, stagger: 0.12,
+          ease: 'back.out(1.4)', overwrite: 'auto',
+        }
+      );
+    },
+    start: 'top 85%',
+    once: true,
+  });
+
+  // Interactive 3D tilt on hover
+  cards.forEach(function(card) {
+    card.style.transformStyle = 'preserve-3d';
+    card.style.perspective = '800px';
+
+    card.addEventListener('mouseenter', function() {
+      gsap.to(card, { scale: 1.04, duration: 0.3, ease: 'power2.out' });
+    });
+    card.addEventListener('mouseleave', function() {
+      gsap.to(card, { scale: 1, rotateX: 0, rotateY: 0, duration: 0.4, ease: 'power2.out' });
+    });
+    card.addEventListener('mousemove', function(e) {
+      var rect = card.getBoundingClientRect();
+      var x = (e.clientX - rect.left) / rect.width - 0.5;
+      var y = (e.clientY - rect.top) / rect.height - 0.5;
+      gsap.to(card, {
+        rotateY: x * 12,
+        rotateX: -y * 12,
+        duration: 0.3,
+        ease: 'power2.out',
+      });
+    });
+  });
+}
+
+// ─────────────────────────────────────────────────────────
+// 15. TEAM CARDS — cascade stagger from center outward
+// ─────────────────────────────────────────────────────────
+function _teamCardsStagger() {
+  var cards = document.querySelectorAll('.team-card');
+  if (!cards.length) return;
+
+  ScrollTrigger.batch(cards, {
+    batchMax: 4,
+    onEnter: function(batch) {
+      gsap.fromTo(batch,
+        { autoAlpha: 0, y: 50, scale: 0.85, rotateY: -15 },
+        {
+          autoAlpha: 1, y: 0, scale: 1, rotateY: 0,
+          duration: 0.8, stagger: 0.1,
+          ease: 'back.out(1.6)', overwrite: 'auto',
+        }
+      );
+    },
+    start: 'top 85%',
+    once: true,
+  });
+}
+
+// ─────────────────────────────────────────────────────────
+// 16. DESTINATION CARDS — 3D perspective reveal on scroll
+// ─────────────────────────────────────────────────────────
+function _destCardsHover3D() {
+  var cards = document.querySelectorAll('.dest-card, .dest-grid-card');
+  if (!cards.length) return;
+
+  cards.forEach(function(card) {
+    card.style.transformStyle = 'preserve-3d';
+
+    card.addEventListener('mouseenter', function() {
+      gsap.to(card, { scale: 1.03, y: -6, duration: 0.35, ease: 'power2.out' });
+    });
+    card.addEventListener('mouseleave', function() {
+      gsap.to(card, { scale: 1, y: 0, rotateX: 0, rotateY: 0, duration: 0.4, ease: 'power2.out' });
+    });
+    card.addEventListener('mousemove', function(e) {
+      var rect = card.getBoundingClientRect();
+      var x = (e.clientX - rect.left) / rect.width - 0.5;
+      var y = (e.clientY - rect.top) / rect.height - 0.5;
+      gsap.to(card, {
+        rotateY: x * 10,
+        rotateX: -y * 8,
+        duration: 0.3,
+        ease: 'power2.out',
+      });
+    });
+  });
+}
+
+// ─────────────────────────────────────────────────────────
+// 17. CTA SECTION — dramatic scale-up reveal with glow pulse
+// ─────────────────────────────────────────────────────────
+function _ctaSectionReveal() {
+  var ctas = document.querySelectorAll('.cta-section');
+  ctas.forEach(function(cta) {
+    var inner = cta.querySelector('.reveal, .container');
+    if (!inner) return;
+
+    gsap.fromTo(inner,
+      { autoAlpha: 0, scale: 0.9, y: 40 },
+      {
+        autoAlpha: 1, scale: 1, y: 0,
+        duration: 1, ease: 'power3.out', overwrite: 'auto',
+        scrollTrigger: { trigger: cta, start: 'top 82%', once: true },
+      }
+    );
+  });
+}
+
+// ─────────────────────────────────────────────────────────
+// 18. COMPAT BRAND CARDS — cascade in with rotation
+// ─────────────────────────────────────────────────────────
+function _compatBrandCards() {
+  var cards = document.querySelectorAll('.compat-brand-card');
+  if (!cards.length) return;
+
+  ScrollTrigger.batch(cards, {
+    batchMax: 6,
+    onEnter: function(batch) {
+      gsap.fromTo(batch,
+        { autoAlpha: 0, y: 40, scale: 0.85, rotateZ: -3 },
+        {
+          autoAlpha: 1, y: 0, scale: 1, rotateZ: 0,
+          duration: 0.7, stagger: 0.06,
+          ease: 'back.out(1.5)', overwrite: 'auto',
+        }
+      );
+    },
+    start: 'top 88%',
+    once: true,
+  });
+}
+
+// ─────────────────────────────────────────────────────────
+// 19. SECTION DIVIDERS — horizontal line grow animation
+// ─────────────────────────────────────────────────────────
+function _sectionDividers() {
+  var dividers = document.querySelectorAll('.section-divider');
+  dividers.forEach(function(d) {
+    gsap.fromTo(d,
+      { scaleX: 0 },
+      {
+        scaleX: 1, duration: 1.2, ease: 'power3.inOut',
+        scrollTrigger: { trigger: d, start: 'top 90%', once: true },
+      }
+    );
+  });
+}
+
+// ─────────────────────────────────────────────────────────
+// 20. NUMBER COUNT UP — for about page impact numbers
+// ─────────────────────────────────────────────────────────
+function _numberCountUp() {
+  var numEls = document.querySelectorAll('[data-count-up]');
+  if (!numEls.length) return;
+
+  numEls.forEach(function(el) {
+    var target = parseFloat(el.dataset.countUp);
+    var suffix = el.dataset.suffix || '';
+    var decimals = target % 1 !== 0 ? 1 : 0;
+
+    ScrollTrigger.create({
+      trigger: el,
+      start: 'top 85%',
+      once: true,
+      onEnter: function() {
+        var obj = { val: 0 };
+        gsap.to(obj, {
+          val: target,
+          duration: 2,
+          ease: 'power2.out',
+          onUpdate: function() {
+            el.textContent = obj.val.toFixed(decimals) + suffix;
+          },
+          onComplete: function() {
+            el.textContent = target.toFixed(decimals) + suffix;
+          },
+        });
+      },
+    });
   });
 }
 

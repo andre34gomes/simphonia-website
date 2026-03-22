@@ -1,12 +1,47 @@
 @import 'base.css';
 
+/* Global overflow hardening */
+html, body { overflow-x: hidden !important; max-width: 100vw; }
+
 /* ============================================================
    SIMPHONIA — How It Works Page Stylesheet
    ============================================================
    This page reuses shared components from base.css:
    about-hero, about-story, badge, faq, cta-section,
-   price-card__feature. Add page-specific overrides below.
+   check-item. Add page-specific overrides below.
    ============================================================ */
+
+/* Step badge — floating animation */
+.about-story .badge {
+  animation: float-slow 5s ease-in-out infinite;
+}
+
+.about-story:nth-child(2) .badge { animation-delay: -1.5s; }
+.about-story:nth-child(3) .badge { animation-delay: -3s; }
+
+/* Checklist items — animated reveal */
+.about-story ul {
+  counter-reset: none;
+}
+
+.about-story ul li.check-item {
+  transition: transform 0.3s ease, opacity 0.3s ease;
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.about-story ul li.check-item:last-child {
+  border-bottom: none;
+}
+
+.about-story ul li.check-item:hover {
+  color: var(--text-primary);
+}
+
+/* FAQ item hover glow */
+.faq-item:hover {
+  box-shadow: 0 4px 30px rgba(212, 175, 55, 0.08);
+}
 
 /* ==============================================
    RESPONSIVE — How It Works Page
@@ -17,4 +52,3 @@
     margin-bottom: var(--space-3xl) !important;
   }
 }
-

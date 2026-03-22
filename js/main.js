@@ -34,10 +34,11 @@ initAnimations();
 // 8. Safety net — if GSAP still hasn't loaded after 5 s, ensure everything visible
 setTimeout(function () {
   if (!document.documentElement.classList.contains('gsap-ready')) {
-    // GSAP never loaded — content is already visible via CSS defaults.
-    // Remove any leftover hidden state just in case.
     document.querySelectorAll('.reveal,.reveal--left,.reveal--right,.reveal--scale')
       .forEach(function (el) { el.style.opacity = '1'; el.style.transform = 'none'; });
+    // Ensure text reveal words are also visible
+    document.querySelectorAll('.text-reveal__heading .word')
+      .forEach(function (w) { w.style.opacity = '1'; });
   }
 }, 5000);
 
@@ -69,7 +70,7 @@ function initCursor() {
 
   const SEL = [
     'a', 'button', '.glass-card', '.feat-card', '.bento-item', '.dest-card',
-    '.feature-card', '.price-card', '.step-card', '.metric-card', '.store-badge',
+    '.dest-grid-card', '.feature-card', '.step-card', '.metric-card',
     '.filter-tab', '.faq-item summary', '.compat-brand-card', '.team-card',
     'input', 'textarea', 'select',
   ].join(',');

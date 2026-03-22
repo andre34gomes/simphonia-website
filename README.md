@@ -22,12 +22,11 @@ Apple-inspired design with 3D elements, glassmorphism, and scroll-driven animati
 
 | Page | Path | Description |
 |------|------|-------------|
-| **Home** | `index.html` | Hero with 3D globe, trust bar, how-it-works, features, app showcase, destinations bento, testimonials, pricing, download CTA |
+| **Home** | `index.html` | Hero with 3D globe, trust bar, how-it-works, features, app showcase, destinations bento, testimonials, pricing |
 | **Destinations** | `pages/destinations.html` | Searchable/filterable grid of 200+ countries with plans |
 | **How It Works** | `pages/how-it-works.html` | Detailed 3-step guide with imagery and FAQ |
 | **About** | `pages/about.html` | Company story, mission, values, team |
 | **Support** | `pages/support.html` | Searchable FAQ accordion + contact form |
-| **Compatibility** | `pages/compatibility.html` | Device compatibility checker with autocomplete |
 | **Privacy Policy** | `pages/privacy.html` | Full privacy policy |
 | **Terms of Service** | `pages/terms.html` | Full terms of service |
 
@@ -49,7 +48,6 @@ simphonia-website/
 │   ├── how-it-works.html
 │   ├── about.html
 │   ├── support.html
-│   ├── compatibility.html
 │   ├── privacy.html
 │   └── terms.html
 └── assets/                     # Static assets (SVGs, images)
@@ -73,7 +71,6 @@ simphonia-website/
 - **Glass Card** — Backdrop blur + subtle border + hover glow
 - **Buttons** — Primary (solid gold), Outline, Ghost variants
 - **Badge** — Pill-shaped status indicators with pulse dot
-- **Store Badge** — App Store / Google Play download buttons
 - **Section Header** — Label + H2 + description pattern
 
 ## Development

@@ -130,14 +130,14 @@ function getBasePath() {
   if (path === '/' || path === '/index.html') return './';
 
   // Detect if we're inside one of the known page directories
-  const pagePattern = /\/(destinations|how-it-works|compatibility|support|about|privacy|terms)(\/|\/index\.html)?$/;
+  const pagePattern = /\/(destinations|how-it-works|support|about|compatibility|privacy|terms)(\/|\/index\.html)?$/;
   if (pagePattern.test(path)) return '../';
 
   // Fallback: if path ends with /index.html or just /, count depth
   // by checking if the second-to-last segment is a known page slug
   const segments = path.replace(/\/index\.html$/, '').replace(/\/$/, '').split('/');
   const last = segments[segments.length - 1];
-  const knownPages = ['destinations', 'how-it-works', 'compatibility', 'support', 'about', 'privacy', 'terms'];
+  const knownPages = ['destinations', 'how-it-works', 'support', 'about', 'compatibility', 'privacy', 'terms'];
   if (knownPages.includes(last)) return '../';
 
   // Default: assume we're at root level
@@ -171,7 +171,7 @@ function activeClass(slug) {
     // Home: path is root, or ends with index.html at the root level
     const segments = path.replace(/\/index\.html$/, '').replace(/\/$/, '').split('/');
     const last = segments[segments.length - 1];
-    const knownPages = ['destinations', 'how-it-works', 'compatibility', 'support', 'about', 'privacy', 'terms'];
+    const knownPages = ['destinations', 'how-it-works', 'support', 'about', 'compatibility', 'privacy', 'terms'];
     return knownPages.includes(last) ? '' : 'nav__link--active';
   }
   return path.includes('/' + slug) ? 'nav__link--active' : '';
@@ -200,7 +200,6 @@ function injectNav() {
       </div>
 
       <div class="nav__actions">
-        <a href="${base}#download" class="btn btn--primary btn--sm">Download App</a>
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">
           <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="4.5"/>
@@ -259,9 +258,6 @@ function injectNav() {
         <a href="${pagePath('about')}" class="nav__mobile-link${activeClass('about') ? ' nav__mobile-link--active' : ''}">About</a>
       </nav>
 
-      <div class="nav__mobile-footer">
-        <a href="${base}#download" class="btn btn--primary nav__mobile-cta">Download App</a>
-      </div>
 
     </div>
   `;

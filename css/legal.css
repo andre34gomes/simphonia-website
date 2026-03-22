@@ -1,5 +1,8 @@
 @import 'base.css';
 
+/* Global overflow hardening */
+html, body { overflow-x: hidden !important; max-width: 100vw; }
+
 /* ============================================================
    SIMPHONIA — Legal Pages Stylesheet
    ============================================================
@@ -75,4 +78,3 @@
     margin-top: var(--space-2xl);
   }
 }
-

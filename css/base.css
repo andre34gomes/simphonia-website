@@ -96,7 +96,7 @@ input, textarea, select {
   --accent: #D4AF37;
   --accent-light: #F0D060;
   --accent-dark: #B8941F;
-  --accent-glow: rgba(212, 175, 55, 0.35);
+  --accent-glow: rgba(212, 175, 55, 0.45);
   --accent-subtle: rgba(212, 175, 55, 0.08);
 
   /* Backgrounds — dark (default) mapped from AppColorsDark */
@@ -126,7 +126,7 @@ input, textarea, select {
   --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
   --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.4);
   --shadow-lg: 0 16px 64px rgba(0, 0, 0, 0.5);
-  --shadow-glow: 0 0 40px rgba(212, 175, 55, 0.15);
+  --shadow-glow: 0 0 50px rgba(212, 175, 55, 0.2), 0 8px 30px rgba(0,0,0,0.3);
 
   /* Nav / overlay (themeable) */
   --nav-scrolled-bg: rgba(18, 18, 18, 0.85);
@@ -220,6 +220,8 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.1;
   letter-spacing: -0.02em;
   color: var(--text-primary);
+  text-wrap: balance;
+  font-optical-sizing: auto;
 }
 
 h1 {
@@ -249,10 +251,17 @@ p {
 }
 
 .text-gradient {
-  background: linear-gradient(135deg, var(--accent-light) 0%, var(--accent) 50%, var(--accent-dark) 100%);
+  background: linear-gradient(135deg, var(--accent-light) 0%, var(--accent) 45%, var(--accent-dark) 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  background-size: 200% 200%;
+  animation: gradient-shift 6s ease-in-out infinite;
+}
+
+@keyframes gradient-shift {
+  0%, 100% { background-position: 0% 50%; }
+  50%       { background-position: 100% 50%; }
 }
 
 .text-accent { color: var(--accent); }
@@ -292,6 +301,16 @@ p {
   display: flex;
   flex-direction: column;
   justify-content: center;
+}
+
+.section--alt {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-subtle);
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.section--gradient {
+  background: radial-gradient(ellipse 120% 60% at 50% 0%, rgba(212,175,55,0.07) 0%, transparent 65%);
 }
 
 .grid {
@@ -472,52 +491,6 @@ p {
 
 .section-header p {
   font-size: 1.125rem;
-}
-
-/* --- Store Buttons --- */
-.store-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.875rem 1.5rem;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-md);
-  transition: all var(--duration-normal) var(--ease-out);
-  color: var(--text-primary);
-  max-width: 100%;
-  min-width: 0;
-}
-
-.store-badge:hover {
-  border-color: var(--accent);
-  background: var(--glass-accent);
-  transform: translateY(-2px);
-  box-shadow: var(--shadow-glow);
-}
-
-.store-badge__icon {
-  width: 28px;
-  height: 28px;
-  flex-shrink: 0;
-}
-
-.store-badge__text {
-  display: flex;
-  flex-direction: column;
-  line-height: 1.2;
-  min-width: 0;
-}
-
-.store-badge__label {
-  font-size: 0.6875rem;
-  color: var(--text-tertiary);
-  font-weight: 400;
-}
-
-.store-badge__name {
-  font-size: 1.0625rem;
-  font-weight: 600;
 }
 
 /* --- Custom Cursor --- */
@@ -716,25 +689,47 @@ body.theme-transition *::after {
   text-align: center;
   padding: var(--space-5xl) 0;
   position: relative;
+  overflow: hidden;
 }
 
 .cta-section__bg {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at center bottom, rgba(212, 175, 55, 0.08) 0%, transparent 60%);
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 100%, rgba(212, 175, 55, 0.12) 0%, transparent 65%),
+    radial-gradient(ellipse 50% 40% at 10% 50%, rgba(212, 175, 55, 0.05) 0%, transparent 55%);
   pointer-events: none;
+}
+
+/* Dot matrix pattern for depth */
+.cta-section::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(circle, rgba(212, 175, 55, 0.07) 1px, transparent 1px);
+  background-size: 28px 28px;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 80%);
+  -webkit-mask-image: radial-gradient(ellipse 70% 70% at 50% 50%, black 30%, transparent 80%);
 }
 
 .cta-section h2 {
   margin-bottom: var(--space-lg);
+  position: relative;
+  z-index: 1;
 }
 
 .cta-section p {
   font-size: 1.125rem;
   margin-bottom: var(--space-2xl);
+  position: relative;
+  z-index: 1;
 }
 
-/* --- Price Card Feature (shared checklist item) --- */
+.cta-section .container { position: relative; z-index: 2; }
+
+/* --- Checklist item (shared) --- */
+.check-item,
 .price-card__feature {
   display: flex;
   align-items: center;
@@ -743,6 +738,7 @@ body.theme-transition *::after {
   color: var(--text-secondary);
 }
 
+.check-item svg,
 .price-card__feature svg {
   width: 16px;
   height: 16px;
@@ -755,6 +751,20 @@ body.theme-transition *::after {
   padding-top: calc(var(--nav-height) + var(--space-5xl));
   padding-bottom: var(--space-4xl);
   text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Background glow for about-hero */
+.about-hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 400px;
+  background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.07) 0%, transparent 70%);
+  pointer-events: none;
 }
 
 .about-hero p {
@@ -767,21 +777,39 @@ body.theme-transition *::after {
 .about-story {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: var(--space-4xl);
+  gap: var(--space-3xl);
   align-items: center;
 }
 
 .about-story__img {
-  border-radius: var(--radius-lg);
+  border-radius: var(--radius-xl);
   overflow: hidden;
   aspect-ratio: 4/3;
   background: var(--bg-elevated);
+  position: relative;
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.35),
+    0 0 0 1px var(--border-accent);
+  transition: box-shadow 0.5s var(--ease-out), transform 0.5s var(--ease-out);
+}
+
+.about-story__img:hover {
+  box-shadow:
+    0 40px 100px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(212, 175, 55, 0.5),
+    0 0 60px rgba(212, 175, 55, 0.08);
+  transform: scale(1.01);
 }
 
 .about-story__img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  transition: transform 0.8s var(--ease-out);
+}
+
+.about-story__img:hover img {
+  transform: scale(1.04);
 }
 
 /* --- FAQ (shared: support, how-it-works) --- */
@@ -1494,10 +1522,6 @@ html.gsap-ready .reveal--scale {
 
   .container { padding: 0 1rem; }
 
-  .store-badge { padding: 0.75rem 1rem; }
-  .store-badge__icon { width: 24px; height: 24px; }
-  .store-badge__name { font-size: 0.9375rem; }
-
   /* Tighter nav padding on small phones */
   .nav { padding: 0 0.75rem; }
   .theme-toggle { width: 32px; height: 32px; }
@@ -1523,3 +1547,153 @@ html.gsap-ready .reveal--scale {
   .cursor { display: none; }
 }
 
+/* ============================================================
+   APPLE-STYLE ANIMATION ENHANCEMENTS
+   ============================================================ */
+
+/* 3D perspective context for cards */
+.values-grid,
+.team-grid,
+.dest-grid,
+.compat-brands,
+.steps--cards,
+.feature-grid--new {
+  perspective: 1200px;
+}
+
+/* About-story blocks — 3D perspective for slide-in */
+.about-story {
+  perspective: 1000px;
+}
+
+.about-story__img {
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* Section divider — horizontal grow line */
+.section-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border-default), transparent);
+  transform-origin: center;
+  margin: 0;
+}
+
+/* Smooth scroll-linked transitions for cards */
+.value-card,
+.team-card,
+.feat-card,
+.step-card,
+.dest-card,
+.dest-grid-card,
+.compat-brand-card {
+  will-change: transform, opacity;
+  transition: box-shadow var(--duration-normal) var(--ease-out);
+}
+
+/* Glow effect on glass cards when hovered (enhanced) */
+.glass-card:hover,
+.value-card:hover,
+.team-card:hover {
+  box-shadow: 0 8px 40px rgba(212, 175, 55, 0.12),
+              0 0 0 1px var(--border-accent);
+}
+
+/* CTA section entrance — smooth scale container */
+.cta-section .container {
+  will-change: transform, opacity;
+}
+
+/* Sub-page hero elements — smooth transitions */
+.about-hero h1,
+.about-hero p,
+.about-hero .label,
+.destinations-hero h1,
+.destinations-hero p,
+.destinations-hero .label,
+.compat-hero h1,
+.compat-hero p,
+.compat-hero .label,
+.support-hero h1,
+.support-hero p,
+.support-hero .label {
+  will-change: transform, opacity;
+}
+
+/* Floating animation for hero decorative elements */
+@keyframes float-gentle {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px) rotate(0deg); }
+  50% { transform: translateY(-8px) rotate(2deg); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.1); }
+  50% { box-shadow: 0 0 40px rgba(212, 175, 55, 0.25); }
+}
+
+/* Animated gradient border for CTA sections */
+.cta-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  animation: shimmer-line 3s ease-in-out infinite;
+}
+
+@keyframes shimmer-line {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+
+/* Parallax depth layers */
+[data-parallax-speed] {
+  will-change: transform;
+}
+
+/* Enhanced card hover lift */
+.feat-card:hover,
+.step-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 20px 60px rgba(0,0,0,0.15),
+              0 0 0 1px var(--border-accent);
+}
+
+/* Destination grid card overlay — smooth reveal */
+.dest-grid-card__overlay {
+  transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.dest-grid-card:hover .dest-grid-card__overlay {
+  transform: translateY(-4px);
+}
+
+/* Search bar — focus glow ring */
+.search-bar__input:focus {
+  box-shadow: 0 0 0 3px var(--accent-subtle),
+              0 0 20px rgba(212, 175, 55, 0.1);
+}
+
+/* Badge pulse animation */
+.badge__dot {
+  animation: badge-pulse 2s ease-in-out infinite;
+}
+
+@keyframes badge-pulse {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.6); opacity: 0.5; }
+}
+
+/* Stagger visibility for GSAP — hidden before animation */
+.gsap-ready .value-card,
+.gsap-ready .team-card,
+.gsap-ready .compat-brand-card {
+  visibility: visible;
+}

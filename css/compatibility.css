@@ -1,5 +1,8 @@
 @import 'base.css';
 
+/* Global overflow hardening */
+html, body { overflow-x: hidden !important; max-width: 100vw; }
+
 /* ============================================================
    SIMPHONIA — Compatibility Page Stylesheet
    ============================================================
@@ -26,6 +29,12 @@
   border-radius: var(--radius-md);
   text-align: center;
   display: none;
+  animation: result-pop 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes result-pop {
+  0% { opacity: 0; transform: scale(0.92) translateY(10px); }
+  100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 
 .compat-result--show {
@@ -65,25 +74,41 @@
   grid-template-columns: repeat(auto-fill, minmax(min(160px, 100%), 1fr));
   gap: var(--space-md);
   margin-top: var(--space-3xl);
+  perspective: 1200px;
 }
 
 .compat-brand-card {
   padding: var(--space-lg);
   text-align: center;
+  transform-style: preserve-3d;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.compat-brand-card:hover {
+  transform: translateY(-6px) scale(1.04);
+  box-shadow: 0 16px 40px rgba(212, 175, 55, 0.1),
+              0 0 0 1px var(--border-accent);
 }
 
 .compat-brand-card__icon {
-  font-size: 2rem;
+  font-size: 2.5rem;
   margin-bottom: var(--space-sm);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.compat-brand-card:hover .compat-brand-card__icon {
+  transform: scale(1.15);
 }
 
 .compat-brand-card__name {
-  font-weight: 600;
   font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.125rem;
 }
 
 .compat-brand-card__count {
-  font-size: 0.8125rem;
+  font-size: 0.75rem;
   color: var(--text-tertiary);
 }
 
