@@ -84,32 +84,46 @@
   <script defer src="../js/globe.js"></script>
   <script defer src="../js/main.js"></script>
   <script type="module">
-    // Destination data
     const destinations = [
-      { name: 'Japan', flag: '🇯🇵', region: 'asia', img: 'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&q=80&w=400', popular: true },
-      { name: 'Portugal', flag: '🇵🇹', region: 'europe', img: 'https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?auto=format&fit=crop&q=80&w=400', popular: true },
-      { name: 'United States', flag: '🇺🇸', region: 'americas', img: 'https://images.unsplash.com/photo-1485738422979-f5c462d49f04?auto=format&fit=crop&q=80&w=400', popular: true },
-      { name: 'United Kingdom', flag: '🇬🇧', region: 'europe', img: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=400', popular: true },
-      { name: 'Thailand', flag: '🇹🇭', region: 'asia', img: 'https://images.unsplash.com/photo-1528181304800-259b08848526?auto=format&fit=crop&q=80&w=400', popular: true },
-      { name: 'France', flag: '🇫🇷', region: 'europe', img: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&q=80&w=400', popular: true },
-      { name: 'Dubai (UAE)', flag: '🇦🇪', region: 'asia', img: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=400', popular: true },
-      { name: 'South Korea', flag: '🇰🇷', region: 'asia', img: 'https://images.unsplash.com/photo-1538485399081-7191377e8241?auto=format&fit=crop&q=80&w=400', popular: true },
-      { name: 'Italy', flag: '🇮🇹', region: 'europe', img: 'https://images.unsplash.com/photo-1515859005217-8a1f08870f59?auto=format&fit=crop&q=80&w=400' },
-      { name: 'Spain', flag: '🇪🇸', region: 'europe', img: 'https://images.unsplash.com/photo-1543783207-ec64e4d95325?auto=format&fit=crop&q=80&w=400' },
-      { name: 'Germany', flag: '🇩🇪', region: 'europe', img: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&q=80&w=400' },
-      { name: 'Australia', flag: '🇦🇺', region: 'oceania', img: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?auto=format&fit=crop&q=80&w=400', popular: true },
-      { name: 'Brazil', flag: '🇧🇷', region: 'americas', img: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&q=80&w=400' },
-      { name: 'Mexico', flag: '🇲🇽', region: 'americas', img: 'https://images.unsplash.com/photo-1518638150340-f706e86654de?auto=format&fit=crop&q=80&w=400' },
-      { name: 'Canada', flag: '🇨🇦', region: 'americas', img: 'https://images.unsplash.com/photo-1517935706615-2717063c2225?auto=format&fit=crop&q=80&w=400' },
-      { name: 'Singapore', flag: '🇸🇬', region: 'asia', img: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&q=80&w=400' },
-      { name: 'Indonesia', flag: '🇮🇩', region: 'asia', img: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&q=80&w=400' },
-      { name: 'Turkey', flag: '🇹🇷', region: 'europe', img: 'https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?auto=format&fit=crop&q=80&w=400' },
-      { name: 'Egypt', flag: '🇪🇬', region: 'africa', img: 'https://images.unsplash.com/photo-1539768942893-daf53e736b68?auto=format&fit=crop&q=80&w=400' },
-      { name: 'South Africa', flag: '🇿🇦', region: 'africa', img: 'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&q=80&w=400' },
-      { name: 'New Zealand', flag: '🇳🇿', region: 'oceania', img: 'https://images.unsplash.com/photo-1469521669194-babb45599def?auto=format&fit=crop&q=80&w=400' },
-      { name: 'Morocco', flag: '🇲🇦', region: 'africa', img: 'https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?auto=format&fit=crop&q=80&w=400' },
-      { name: 'India', flag: '🇮🇳', region: 'asia', img: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=400' },
-      { name: 'Colombia', flag: '🇨🇴', region: 'americas', img: 'https://images.unsplash.com/photo-1535730037448-9e6b7e932fc8?auto=format&fit=crop&q=80&w=400' },
+      { name: 'Japan', flag: '🇯🇵', region: 'asia', img: 'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&q=80&w=400', popular: true, plans: 6, price: 9 },
+      { name: 'Portugal', flag: '🇵🇹', region: 'europe', img: 'https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?auto=format&fit=crop&q=80&w=400', popular: true, plans: 5, price: 6 },
+      { name: 'United States', flag: '🇺🇸', region: 'americas', img: 'https://images.unsplash.com/photo-1485738422979-f5c462d49f04?auto=format&fit=crop&q=80&w=400', popular: true, plans: 8, price: 10 },
+      { name: 'United Kingdom', flag: '🇬🇧', region: 'europe', img: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=400', popular: true, plans: 5, price: 8 },
+      { name: 'Thailand', flag: '🇹🇭', region: 'asia', img: 'https://images.unsplash.com/photo-1528181304800-259b08848526?auto=format&fit=crop&q=80&w=400', popular: true, plans: 7, price: 7 },
+      { name: 'France', flag: '🇫🇷', region: 'europe', img: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&q=80&w=400', popular: true, plans: 5, price: 7 },
+      { name: 'Dubai (UAE)', flag: '🇦🇪', region: 'asia', img: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=400', popular: true, plans: 6, price: 8 },
+      { name: 'South Korea', flag: '🇰🇷', region: 'asia', img: 'https://images.unsplash.com/photo-1538485399081-7191377e8241?auto=format&fit=crop&q=80&w=400', popular: true, plans: 6, price: 8 },
+      { name: 'Australia', flag: '🇦🇺', region: 'oceania', img: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?auto=format&fit=crop&q=80&w=400', popular: true, plans: 5, price: 11 },
+      { name: 'Italy', flag: '🇮🇹', region: 'europe', img: 'https://images.unsplash.com/photo-1515859005217-8a1f08870f59?auto=format&fit=crop&q=80&w=400', plans: 5, price: 7 },
+      { name: 'Spain', flag: '🇪🇸', region: 'europe', img: 'https://images.unsplash.com/photo-1543783207-ec64e4d95325?auto=format&fit=crop&q=80&w=400', plans: 5, price: 7 },
+      { name: 'Germany', flag: '🇩🇪', region: 'europe', img: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&q=80&w=400', plans: 4, price: 7 },
+      { name: 'Turkey', flag: '🇹🇷', region: 'europe', img: 'https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?auto=format&fit=crop&q=80&w=400', plans: 4, price: 6 },
+      { name: 'Greece', flag: '🇬🇷', region: 'europe', img: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&q=80&w=400', plans: 4, price: 7 },
+      { name: 'Netherlands', flag: '🇳🇱', region: 'europe', img: 'https://images.unsplash.com/photo-1468838153952-eb6a8d94a321?auto=format&fit=crop&q=80&w=400', plans: 4, price: 7 },
+      { name: 'Switzerland', flag: '🇨🇭', region: 'europe', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=400', plans: 4, price: 9 },
+      { name: 'Poland', flag: '🇵🇱', region: 'europe', img: 'https://images.unsplash.com/photo-1519197924294-4ba991a11128?auto=format&fit=crop&q=80&w=400', plans: 3, price: 5 },
+      { name: 'Czech Republic', flag: '🇨🇿', region: 'europe', img: 'https://images.unsplash.com/photo-1513805959324-96eb66ca8713?auto=format&fit=crop&q=80&w=400', plans: 3, price: 6 },
+      { name: 'Singapore', flag: '🇸🇬', region: 'asia', img: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&q=80&w=400', plans: 5, price: 8 },
+      { name: 'Indonesia', flag: '🇮🇩', region: 'asia', img: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&q=80&w=400', plans: 5, price: 7 },
+      { name: 'India', flag: '🇮🇳', region: 'asia', img: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=400', plans: 6, price: 6 },
+      { name: 'Vietnam', flag: '🇻🇳', region: 'asia', img: 'https://images.unsplash.com/photo-1573270689103-d7a4e42b609a?auto=format&fit=crop&q=80&w=400', plans: 5, price: 6 },
+      { name: 'Malaysia', flag: '🇲🇾', region: 'asia', img: 'https://images.unsplash.com/photo-1534008897995-27a23e859048?auto=format&fit=crop&q=80&w=400', plans: 5, price: 6 },
+      { name: 'Philippines', flag: '🇵🇭', region: 'asia', img: 'https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&q=80&w=400', plans: 4, price: 7 },
+      { name: 'Taiwan', flag: '🇹🇼', region: 'asia', img: 'https://images.unsplash.com/photo-1470075801209-17f9ec0cada6?auto=format&fit=crop&q=80&w=400', plans: 5, price: 8 },
+      { name: 'Hong Kong', flag: '🇭🇰', region: 'asia', img: 'https://images.unsplash.com/photo-1536599018102-9f803c140fc1?auto=format&fit=crop&q=80&w=400', plans: 4, price: 7 },
+      { name: 'Brazil', flag: '🇧🇷', region: 'americas', img: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&q=80&w=400', plans: 5, price: 8 },
+      { name: 'Mexico', flag: '🇲🇽', region: 'americas', img: 'https://images.unsplash.com/photo-1518638150340-f706e86654de?auto=format&fit=crop&q=80&w=400', plans: 5, price: 7 },
+      { name: 'Canada', flag: '🇨🇦', region: 'americas', img: 'https://images.unsplash.com/photo-1517935706615-2717063c2225?auto=format&fit=crop&q=80&w=400', plans: 5, price: 10 },
+      { name: 'Colombia', flag: '🇨🇴', region: 'americas', img: 'https://images.unsplash.com/photo-1535730037448-9e6b7e932fc8?auto=format&fit=crop&q=80&w=400', plans: 4, price: 7 },
+      { name: 'Argentina', flag: '🇦🇷', region: 'americas', img: 'https://images.unsplash.com/photo-1589909202802-8f4aadce1849?auto=format&fit=crop&q=80&w=400', plans: 4, price: 8 },
+      { name: 'Peru', flag: '🇵🇪', region: 'americas', img: 'https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&q=80&w=400', plans: 3, price: 7 },
+      { name: 'Egypt', flag: '🇪🇬', region: 'africa', img: 'https://images.unsplash.com/photo-1539768942893-daf53e736b68?auto=format&fit=crop&q=80&w=400', plans: 4, price: 7 },
+      { name: 'South Africa', flag: '🇿🇦', region: 'africa', img: 'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&q=80&w=400', plans: 4, price: 8 },
+      { name: 'Morocco', flag: '🇲🇦', region: 'africa', img: 'https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?auto=format&fit=crop&q=80&w=400', plans: 3, price: 7 },
+      { name: 'Kenya', flag: '🇰🇪', region: 'africa', img: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&q=80&w=400', plans: 3, price: 8 },
+      { name: 'Tanzania', flag: '🇹🇿', region: 'africa', img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&q=80&w=400', plans: 3, price: 8 },
+      { name: 'New Zealand', flag: '🇳🇿', region: 'oceania', img: 'https://images.unsplash.com/photo-1469521669194-babb45599def?auto=format&fit=crop&q=80&w=400', plans: 4, price: 11 },
+      { name: 'Fiji', flag: '🇫🇯', region: 'oceania', img: 'https://images.unsplash.com/photo-1559628233-100c798642d5?auto=format&fit=crop&q=80&w=400', plans: 3, price: 12 },
     ];
 
     const grid = document.getElementById('dest-grid');
@@ -121,15 +135,20 @@
     function renderGrid(items) {
       grid.innerHTML = '';
       noResults.style.display = items.length === 0 ? 'block' : 'none';
-
       items.forEach(d => {
-        const card = document.createElement('a');
-        card.href = '#';
+        const card = document.createElement('div');
         card.className = 'dest-card';
+        card.setAttribute('tabindex', '0');
+        card.setAttribute('role', 'article');
         card.innerHTML = `
           <img src="${d.img}" alt="${d.name}" class="dest-card__img" loading="lazy">
           <div class="dest-card__body">
-            <div class="dest-card__name">${d.flag} ${d.name}</div>
+            <div class="dest-card__name">${d.flag} ${d.name}${d.popular ? ' <span style="font-size:0.6875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent);margin-left:0.375rem;">Popular</span>' : ''}</div>
+            <div class="dest-card__plans">${d.plans} plan${d.plans !== 1 ? 's' : ''} available</div>
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:var(--space-sm);">
+              <span class="dest-card__price">from $${d.price}</span>
+              <span style="font-size:0.75rem;color:var(--text-tertiary);display:flex;align-items:center;gap:0.25rem;">View in app <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg></span>
+            </div>
           </div>
         `;
         grid.appendChild(card);
@@ -138,22 +157,13 @@
 
     function filterDestinations() {
       const query = searchInput.value.toLowerCase().trim();
-      let filtered = destinations;
-
-      if (activeFilter === 'popular') {
-        filtered = filtered.filter(d => d.popular);
-      } else if (activeFilter !== 'all') {
-        filtered = filtered.filter(d => d.region === activeFilter);
-      }
-
-      if (query) {
-        filtered = filtered.filter(d => d.name.toLowerCase().includes(query));
-      }
-
+      let filtered = activeFilter === 'popular' ? destinations.filter(d => d.popular)
+                   : activeFilter !== 'all' ? destinations.filter(d => d.region === activeFilter)
+                   : destinations;
+      if (query) filtered = filtered.filter(d => d.name.toLowerCase().includes(query));
       renderGrid(filtered);
     }
 
-    // Event listeners
     filterTabs.forEach(tab => {
       tab.addEventListener('click', () => {
         filterTabs.forEach(t => t.classList.remove('filter-tab--active'));
@@ -162,10 +172,7 @@
         filterDestinations();
       });
     });
-
     searchInput.addEventListener('input', filterDestinations);
-
-    // Initial render
     renderGrid(destinations);
   </script>
 

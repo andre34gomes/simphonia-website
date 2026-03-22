@@ -7,6 +7,11 @@
   <title>Support & FAQ — Simphonia eSIM</title>
   <meta name="description" content="Get help with your Simphonia eSIM. Browse frequently asked questions or contact our 24/7 support team.">
   <meta name="theme-color" content="#121212">
+  <link rel="canonical" href="https://simphonia.app/support/">
+  <meta property="og:title" content="Support & FAQ — Simphonia eSIM">
+  <meta property="og:description" content="Get help with your Simphonia eSIM. Browse FAQs or contact our 24/7 support team.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://simphonia.app/support/">
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
   <link rel="shortcut icon" href="../assets/favicon.svg">
   <link rel="mask-icon" href="../assets/favicon.svg" color="#D4AF37">
@@ -244,9 +249,33 @@
       });
     }
 
-    // Contact form validation
+    // Contact form validation + inline feedback
     const form = document.getElementById('contact-form');
     if (form) {
+      const submitBtn = form.querySelector('button[type="submit"]');
+
+      function showFormState(type, message) {
+        let el = document.getElementById('form-feedback');
+        if (!el) {
+          el = document.createElement('div');
+          el.id = 'form-feedback';
+          el.style.cssText = 'margin-top:var(--space-md);padding:var(--space-md) var(--space-lg);border-radius:var(--radius-md);font-size:0.9375rem;font-weight:500;display:flex;align-items:center;gap:0.625rem;animation:result-pop 0.4s cubic-bezier(0.16,1,0.3,1)';
+          submitBtn.parentNode.insertBefore(el, submitBtn.nextSibling);
+        }
+        if (type === 'success') {
+          el.style.background = 'rgba(74,222,128,0.1)';
+          el.style.border = '1px solid rgba(74,222,128,0.3)';
+          el.style.color = '#4ade80';
+          el.innerHTML = '✓ ' + message;
+        } else {
+          el.style.background = 'rgba(248,113,113,0.1)';
+          el.style.border = '1px solid rgba(248,113,113,0.3)';
+          el.style.color = '#f87171';
+          el.innerHTML = '⚠ ' + message;
+        }
+        el.style.display = 'flex';
+      }
+
       form.addEventListener('submit', (e) => {
         e.preventDefault();
         const name = document.getElementById('contact-name').value.trim();
@@ -254,18 +283,23 @@
         const message = document.getElementById('contact-message').value.trim();
 
         if (!name || !email || !message) {
-          alert('Please fill in all required fields.');
+          showFormState('error', 'Please fill in all required fields.');
           return;
         }
-
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          alert('Please enter a valid email address.');
+          showFormState('error', 'Please enter a valid email address.');
           return;
         }
 
-        // In production, this would submit to an API
-        alert('Thank you for your message! We\'ll get back to you within 24 hours.');
-        form.reset();
+        // Simulate sending — disable button while "sending"
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending…';
+        setTimeout(() => {
+          showFormState('success', 'Message sent! We\'ll get back to you within 24 hours.');
+          form.reset();
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send Message';
+        }, 900);
       });
     }
   </script>

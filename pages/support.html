@@ -98,7 +98,7 @@
               <strong>Samsung:</strong> Galaxy S20, Note 20 and later<br>
               <strong>Google:</strong> Pixel 3 and later<br>
               <strong>Others:</strong> Huawei P40+, Motorola Razr, Oppo Find X3+<br><br>
-              Check our <a href="support.html" style="color:var(--accent);">support page</a> for more details.
+              Check our <a href="compatibility.html" style="color:var(--accent);">compatibility page</a> for the full list.
             </div>
           </details>
 
@@ -244,9 +244,33 @@
       });
     }
 
-    // Contact form validation
+    // Contact form validation + inline feedback
     const form = document.getElementById('contact-form');
     if (form) {
+      const submitBtn = form.querySelector('button[type="submit"]');
+
+      function showFormState(type, message) {
+        let el = document.getElementById('form-feedback');
+        if (!el) {
+          el = document.createElement('div');
+          el.id = 'form-feedback';
+          el.style.cssText = 'margin-top:var(--space-md);padding:var(--space-md) var(--space-lg);border-radius:var(--radius-md);font-size:0.9375rem;font-weight:500;display:flex;align-items:center;gap:0.625rem;animation:result-pop 0.4s cubic-bezier(0.16,1,0.3,1)';
+          submitBtn.parentNode.insertBefore(el, submitBtn.nextSibling);
+        }
+        if (type === 'success') {
+          el.style.background = 'rgba(74,222,128,0.1)';
+          el.style.border = '1px solid rgba(74,222,128,0.3)';
+          el.style.color = '#4ade80';
+          el.innerHTML = '✓ ' + message;
+        } else {
+          el.style.background = 'rgba(248,113,113,0.1)';
+          el.style.border = '1px solid rgba(248,113,113,0.3)';
+          el.style.color = '#f87171';
+          el.innerHTML = '⚠ ' + message;
+        }
+        el.style.display = 'flex';
+      }
+
       form.addEventListener('submit', (e) => {
         e.preventDefault();
         const name = document.getElementById('contact-name').value.trim();
@@ -254,18 +278,22 @@
         const message = document.getElementById('contact-message').value.trim();
 
         if (!name || !email || !message) {
-          alert('Please fill in all required fields.');
+          showFormState('error', 'Please fill in all required fields.');
           return;
         }
-
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          alert('Please enter a valid email address.');
+          showFormState('error', 'Please enter a valid email address.');
           return;
         }
 
-        // In production, this would submit to an API
-        alert('Thank you for your message! We\'ll get back to you within 24 hours.');
-        form.reset();
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'Sending…';
+        setTimeout(() => {
+          showFormState('success', 'Message sent! We\'ll get back to you within 24 hours.');
+          form.reset();
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'Send Message';
+        }, 900);
       });
     }
   </script>

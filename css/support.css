@@ -19,6 +19,16 @@ html, body { overflow-x: hidden !important; max-width: 100vw; }
 
 /* Contact Form */
 .contact-form {
+  // ...existing code...
+}
+
+@keyframes result-pop {
+  0%  { opacity: 0; transform: scale(0.94) translateY(6px); }
+  100%{ opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Contact Form */
+.contact-form {
   max-width: 560px;
   margin: 0 auto;
   display: flex;
@@ -100,3 +110,4 @@ textarea.form-input {
     font-size: 0.9375rem;
   }
 }
+
