@@ -766,4 +766,24 @@ function injectFooter() {
   document.body.appendChild(footer);
 }
 
+if (typeof window !== 'undefined') {
+  Object.assign(window, {
+    applyTheme,
+    getBasePath,
+    getStoredTheme,
+    initBackToTop: injectBackToTop,
+    initTheme,
+    injectBackToTop,
+    injectCookieBanner,
+    injectFooter,
+    injectMobileCTA,
+    injectNav,
+    injectNoscript,
+    injectScrollProgress,
+    injectShell,
+    pagePath,
+    toggleTheme,
+  });
+}
+
 

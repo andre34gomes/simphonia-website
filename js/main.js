@@ -6,91 +6,173 @@
  * + globe.js) have already run.
  */
 
-// 0. Apply theme immediately (prevents flash)
-initTheme();
+const LAYOUT_ASSET_VERSION = '20260325-1';
+const REQUIRED_LAYOUT_APIS = [
+  'initTheme',
+  'injectShell',
+  'injectNav',
+  'injectFooter',
+  'injectNoscript',
+  'injectScrollProgress',
+  'injectMobileCTA',
+  'injectBackToTop',
+  'injectCookieBanner',
+];
 
-// 1. Inject shared shell (skip-link, bg-noise, stars, cursor)
-injectShell();
-
-// 3. Inject shared nav + footer
-injectNav();
-injectFooter();
-
-// 4. Inject noscript fallback
-injectNoscript();
-
-// 5. Inject progressive enhancement utilities
-injectScrollProgress();
-injectMobileCTA();
-injectBackToTop();
-injectCookieBanner();
-
-// 6. Custom cursor
-initCursor();
-
-// 7. Star background canvas
-if (document.getElementById('stars-canvas')) initStars();
-
-// 8. Three.js globe (hero page only)
-if (document.getElementById('globe-container')) initGlobe('globe-container');
-
-// 9. GSAP scroll animations — has internal retry loop for CDN timing safety
-initAnimations();
-
-// 9b. Hero typing effect — starts after hero entrance animation completes
-if (document.getElementById('typing-text')) {
-  setTimeout(initHeroTyping, 1200);
+function hasLayoutBootstrap() {
+  return REQUIRED_LAYOUT_APIS.every(function (name) {
+    return typeof window[name] === 'function';
+  });
 }
 
-// 10. Safety net — if GSAP still hasn't loaded after 5 s, ensure everything visible
-setTimeout(function () {
-  if (!document.documentElement.classList.contains('gsap-ready')) {
-    // Generic reveal classes — CSS hides them with visibility:hidden
-    document.querySelectorAll('.reveal,.reveal--left,.reveal--right,.reveal--scale')
-      .forEach(function (el) {
-        el.style.opacity = '1';
-        el.style.visibility = 'visible';
-        el.style.transform = 'none';
-      });
-    // Hero-specific elements set to autoAlpha:0 by _hero()
-    [
-      '.hero__h1 .line-1', '.hero__h1 .line-2',
-      '.hero__desc', '.hero__actions', '.hero__trust-points', '.iphone-mockup',
-      // Sub-page hero elements
-      '.about-hero h1', '.about-hero p', '.about-hero .label',
-      '.destinations-hero h1', '.destinations-hero p', '.destinations-hero .label',
-      '.support-hero h1', '.support-hero p', '.support-hero .label',
-      '.legal-hero h1', '.legal-hero p', '.legal-hero .label',
-      // Story block children
-      '.about-story__img', '.about-story > div',
-      // Section-specific elements hidden by GSAP batch
-      '.value-card', '.team-card', '.feat-card', '.step-card',
-      '.dest-card', '.dest-grid-card', '.faq-item',
-      // Section header children
-      '.section-header .label', '.section-header h2', '.section-header p',
-    ].forEach(function (sel) {
-      document.querySelectorAll(sel).forEach(function (el) {
-        el.style.opacity = '1';
-        el.style.visibility = 'visible';
-        el.style.transform = 'none';
-      });
-    });
-    // Footer elements
-    document.querySelectorAll('.footer__brand, .footer__col, .footer__bottom')
-      .forEach(function (el) {
-        el.style.opacity = '1';
-        el.style.visibility = 'visible';
-        el.style.transform = 'none';
-      });
-    // Also kick off typing effect if it hasn't started
-    if (document.getElementById('typing-text') && !document.getElementById('typing-text').textContent) {
-      initHeroTyping();
-    }
+function resolveMainScriptUrl() {
+  if (document.currentScript && document.currentScript.src) {
+    return new URL(document.currentScript.src, window.location.href);
   }
-}, 5000);
 
-// 9. Native anchor navigation + focus polish
-initSmoothScroll();
+  const mainScript = Array.from(document.scripts).find(function (script) {
+    return /\/js\/main\.js(?:\?|$)/.test(script.src || '');
+  });
+
+  if (mainScript && mainScript.src) {
+    return new URL(mainScript.src, window.location.href);
+  }
+
+  return new URL('js/main.js', window.location.href);
+}
+
+function ensureLayoutBootstrap() {
+  if (hasLayoutBootstrap()) return Promise.resolve(true);
+  if (window.__simphoniaLayoutLoadPromise) return window.__simphoniaLayoutLoadPromise;
+
+  const mainScriptUrl = resolveMainScriptUrl();
+  const layoutUrl = new URL('./components/layout.js?v=' + encodeURIComponent(LAYOUT_ASSET_VERSION), mainScriptUrl);
+
+  window.__simphoniaLayoutLoadPromise = new Promise(function (resolve) {
+    const existing = document.querySelector('script[data-simphonia-layout-retry="true"]');
+    if (existing) {
+      existing.addEventListener('load', function () { resolve(hasLayoutBootstrap()); }, { once: true });
+      existing.addEventListener('error', function () { resolve(false); }, { once: true });
+      return;
+    }
+
+    const script = document.createElement('script');
+    script.src = layoutUrl.href;
+    script.defer = true;
+    script.dataset.simphoniaLayoutRetry = 'true';
+    script.onload = function () {
+      resolve(hasLayoutBootstrap());
+    };
+    script.onerror = function () {
+      resolve(false);
+    };
+    document.head.appendChild(script);
+  });
+
+  return window.__simphoniaLayoutLoadPromise;
+}
+
+function revealGsapFallbacks() {
+  if (document.documentElement.classList.contains('gsap-ready')) return;
+
+  // Generic reveal classes — CSS hides them with visibility:hidden
+  document.querySelectorAll('.reveal,.reveal--left,.reveal--right,.reveal--scale')
+    .forEach(function (el) {
+      el.style.opacity = '1';
+      el.style.visibility = 'visible';
+      el.style.transform = 'none';
+    });
+
+  // Hero-specific elements set to autoAlpha:0 by _hero()
+  [
+    '.hero__h1 .line-1', '.hero__h1 .line-2',
+    '.hero__desc', '.hero__actions', '.hero__trust-points', '.iphone-mockup',
+    // Sub-page hero elements
+    '.about-hero h1', '.about-hero p', '.about-hero .label',
+    '.destinations-hero h1', '.destinations-hero p', '.destinations-hero .label',
+    '.support-hero h1', '.support-hero p', '.support-hero .label',
+    '.legal-hero h1', '.legal-hero p', '.legal-hero .label',
+    // Story block children
+    '.about-story__img', '.about-story > div',
+    // Section-specific elements hidden by GSAP batch
+    '.value-card', '.team-card', '.feat-card', '.step-card',
+    '.dest-card', '.dest-grid-card', '.faq-item',
+    // Section header children
+    '.section-header .label', '.section-header h2', '.section-header p',
+  ].forEach(function (sel) {
+    document.querySelectorAll(sel).forEach(function (el) {
+      el.style.opacity = '1';
+      el.style.visibility = 'visible';
+      el.style.transform = 'none';
+    });
+  });
+
+  // Footer elements
+  document.querySelectorAll('.footer__brand, .footer__col, .footer__bottom')
+    .forEach(function (el) {
+      el.style.opacity = '1';
+      el.style.visibility = 'visible';
+      el.style.transform = 'none';
+    });
+
+  // Also kick off typing effect if it hasn't started
+  if (document.getElementById('typing-text') && !document.getElementById('typing-text').textContent) {
+    initHeroTyping();
+  }
+}
+
+async function bootstrapSite() {
+  const layoutReady = await ensureLayoutBootstrap();
+
+  if (!layoutReady) {
+    console.error('[main] Shared layout bootstrap is unavailable. Check js/components/layout.js and clear any stale cached asset.');
+    return;
+  }
+
+  // 0. Apply theme immediately (prevents flash)
+  window.initTheme();
+
+  // 1. Inject shared shell (skip-link, bg-noise, stars, cursor)
+  window.injectShell();
+
+  // 3. Inject shared nav + footer
+  window.injectNav();
+  window.injectFooter();
+
+  // 4. Inject noscript fallback
+  window.injectNoscript();
+
+  // 5. Inject progressive enhancement utilities
+  window.injectScrollProgress();
+  window.injectMobileCTA();
+  window.injectBackToTop();
+  window.injectCookieBanner();
+
+  // 6. Custom cursor
+  initCursor();
+
+  // 7. Star background canvas
+  if (document.getElementById('stars-canvas')) initStars();
+
+  // 8. Three.js globe (hero page only)
+  if (document.getElementById('globe-container')) initGlobe('globe-container');
+
+  // 9. GSAP scroll animations — has internal retry loop for CDN timing safety
+  initAnimations();
+
+  // 9b. Hero typing effect — starts after hero entrance animation completes
+  if (document.getElementById('typing-text')) {
+    setTimeout(initHeroTyping, 1200);
+  }
+
+  // 10. Safety net — if GSAP still hasn't loaded after 5 s, ensure everything visible
+  setTimeout(revealGsapFallbacks, 5000);
+
+  // 11. Native anchor navigation + focus polish
+  initSmoothScroll();
+}
+
+bootstrapSite();
 
 // ============================================================
 // Custom Cursor

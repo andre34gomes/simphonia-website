@@ -171,7 +171,8 @@ test('hash focus targets element without forcing another scroll', () => {
   runtime.flushRAF();
 
   assert.equal(target.getAttribute('tabindex'), '-1');
-  assert.deepEqual(target.focusCalls, [{ preventScroll: true }]);
+  assert.equal(target.focusCalls.length, 1);
+  assert.equal(target.focusCalls[0].preventScroll, true);
 });
 
 // ─────────────────────────────────────────────────────────
