@@ -12,37 +12,84 @@ initTheme();
 // 1. Inject shared shell (skip-link, bg-noise, stars, cursor)
 injectShell();
 
-// 2. Inject shared nav + footer
+// 3. Inject shared nav + footer
 injectNav();
 injectFooter();
 
-// 3. Inject noscript fallback
+// 4. Inject noscript fallback
 injectNoscript();
 
-// 4. Custom cursor
+// 5. Inject progressive enhancement utilities
+injectScrollProgress();
+injectMobileCTA();
+injectBackToTop();
+injectCookieBanner();
+
+// 6. Custom cursor
 initCursor();
 
-// 5. Star background canvas
+// 7. Star background canvas
 if (document.getElementById('stars-canvas')) initStars();
 
-// 6. Three.js globe (hero page only)
+// 8. Three.js globe (hero page only)
 if (document.getElementById('globe-container')) initGlobe('globe-container');
 
-// 7. GSAP scroll animations — has internal retry loop for CDN timing safety
+// 9. GSAP scroll animations — has internal retry loop for CDN timing safety
 initAnimations();
 
-// 8. Safety net — if GSAP still hasn't loaded after 5 s, ensure everything visible
+// 9b. Hero typing effect — starts after hero entrance animation completes
+if (document.getElementById('typing-text')) {
+  setTimeout(initHeroTyping, 1200);
+}
+
+// 10. Safety net — if GSAP still hasn't loaded after 5 s, ensure everything visible
 setTimeout(function () {
   if (!document.documentElement.classList.contains('gsap-ready')) {
+    // Generic reveal classes — CSS hides them with visibility:hidden
     document.querySelectorAll('.reveal,.reveal--left,.reveal--right,.reveal--scale')
-      .forEach(function (el) { el.style.opacity = '1'; el.style.transform = 'none'; });
-    // Ensure text reveal words are also visible
-    document.querySelectorAll('.text-reveal__heading .word')
-      .forEach(function (w) { w.style.opacity = '1'; });
+      .forEach(function (el) {
+        el.style.opacity = '1';
+        el.style.visibility = 'visible';
+        el.style.transform = 'none';
+      });
+    // Hero-specific elements set to autoAlpha:0 by _hero()
+    [
+      '.hero__h1 .line-1', '.hero__h1 .line-2',
+      '.hero__desc', '.hero__actions', '.hero__trust-points', '.iphone-mockup',
+      // Sub-page hero elements
+      '.about-hero h1', '.about-hero p', '.about-hero .label',
+      '.destinations-hero h1', '.destinations-hero p', '.destinations-hero .label',
+      '.support-hero h1', '.support-hero p', '.support-hero .label',
+      '.legal-hero h1', '.legal-hero p', '.legal-hero .label',
+      // Story block children
+      '.about-story__img', '.about-story > div',
+      // Section-specific elements hidden by GSAP batch
+      '.value-card', '.team-card', '.feat-card', '.step-card',
+      '.dest-card', '.dest-grid-card', '.faq-item',
+      // Section header children
+      '.section-header .label', '.section-header h2', '.section-header p',
+    ].forEach(function (sel) {
+      document.querySelectorAll(sel).forEach(function (el) {
+        el.style.opacity = '1';
+        el.style.visibility = 'visible';
+        el.style.transform = 'none';
+      });
+    });
+    // Footer elements
+    document.querySelectorAll('.footer__brand, .footer__col, .footer__bottom')
+      .forEach(function (el) {
+        el.style.opacity = '1';
+        el.style.visibility = 'visible';
+        el.style.transform = 'none';
+      });
+    // Also kick off typing effect if it hasn't started
+    if (document.getElementById('typing-text') && !document.getElementById('typing-text').textContent) {
+      initHeroTyping();
+    }
   }
 }, 5000);
 
-// 9. Smooth anchor scroll
+// 9. Native anchor navigation + focus polish
 initSmoothScroll();
 
 // ============================================================
@@ -71,7 +118,7 @@ function initCursor() {
   const SEL = [
     'a', 'button', '.glass-card', '.feat-card', '.bento-item', '.dest-card',
     '.dest-grid-card', '.feature-card', '.step-card', '.metric-card',
-    '.filter-tab', '.faq-item summary', '.compat-brand-card', '.team-card',
+    '.filter-tab', '.faq-item summary', '.team-card',
     'input', 'textarea', 'select',
   ].join(',');
 
@@ -133,25 +180,93 @@ function initStars() {
 }
 
 // ============================================================
-// Smooth Anchor Scroll
+// Native Anchor Navigation
 // ============================================================
 function initSmoothScroll() {
-  document.addEventListener('click', (e) => {
-    const link = e.target.closest('a[href*="#"]');
-    if (!link) return;
+  const scrollCoordinator = window.scrollCoordinator;
 
-    const href    = link.getAttribute('href');
-    const hashIdx = href.indexOf('#');
-    if (hashIdx === -1) return;
+  const focusHashTarget = () => {
+    if (scrollCoordinator && typeof scrollCoordinator.focusHashTarget === 'function') {
+      const target = scrollCoordinator.focusHashTarget();
+      if (target && typeof scrollCoordinator.scheduleRefresh === 'function') {
+        scrollCoordinator.scheduleRefresh();
+      }
+      return;
+    }
 
-    const hash   = href.slice(hashIdx);
-    const target = document.querySelector(hash);
+    const hash = window.location.hash;
+    if (!hash) return;
+
+    const target = document.getElementById(decodeURIComponent(hash.slice(1)));
     if (!target) return;
 
-    const page = href.slice(0, hashIdx);
-    if (page && !window.location.pathname.endsWith(page) && page !== '') return;
+    requestAnimationFrame(() => {
+      if (!target.hasAttribute('tabindex')) {
+        target.setAttribute('tabindex', '-1');
+      }
+      target.focus({ preventScroll: true });
+    });
+  };
 
-    e.preventDefault();
-    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  });
+  window.addEventListener('hashchange', focusHashTarget);
+  focusHashTarget();
 }
+
+// ============================================================
+// Hero Typing Effect — mirrors Flutter TypingPlaceholder
+// ============================================================
+function initHeroTyping() {
+  var el = document.getElementById('typing-text');
+  if (!el) return;
+
+  var phrases = [
+    'Wherever You Go.',
+    'Without Limits.',
+    'Across the Globe.',
+    'Ready in Seconds.',
+    'Always Online.',
+  ];
+
+  var TYPING_SPEED   = 100;   // ms per character (typing)
+  var DELETING_SPEED  = 50;   // ms per character (deleting)
+  var PAUSE_DURATION  = 2000; // ms pause after fully typed
+
+  var phraseIndex = 0;
+  var charIndex   = 0;
+  var isDeleting  = false;
+  var timer       = null;
+
+  function tick() {
+    var phrase = phrases[phraseIndex];
+
+    if (!isDeleting) {
+      // Typing
+      if (charIndex < phrase.length) {
+        charIndex++;
+        el.textContent = phrase.substring(0, charIndex);
+        timer = setTimeout(tick, TYPING_SPEED);
+      } else {
+        // Finished typing — pause then start deleting
+        timer = setTimeout(function () {
+          isDeleting = true;
+          tick();
+        }, PAUSE_DURATION);
+      }
+    } else {
+      // Deleting
+      if (charIndex > 0) {
+        charIndex--;
+        el.textContent = phrase.substring(0, charIndex);
+        timer = setTimeout(tick, DELETING_SPEED);
+      } else {
+        // Finished deleting — move to next phrase
+        isDeleting = false;
+        phraseIndex = (phraseIndex + 1) % phrases.length;
+        timer = setTimeout(tick, TYPING_SPEED);
+      }
+    }
+  }
+
+  tick();
+}
+

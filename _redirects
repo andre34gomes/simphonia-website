@@ -6,9 +6,14 @@
 /pages/how-it-works.html   /how-it-works/   301
 /pages/support.html        /support/        301
 /pages/about.html          /about/          301
-/pages/compatibility.html  /compatibility/  301
 /pages/privacy.html        /privacy/        301
 /pages/terms.html          /terms/          301
+
+# Custom 404 page
+/*                         /404.html        404
+
+
+
 
 
 

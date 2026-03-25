@@ -4,7 +4,6 @@
     { "source": "/how-it-works", "destination": "/how-it-works/index.html" },
     { "source": "/support", "destination": "/support/index.html" },
     { "source": "/about", "destination": "/about/index.html" },
-    { "source": "/compatibility", "destination": "/compatibility/index.html" },
     { "source": "/privacy", "destination": "/privacy/index.html" },
     { "source": "/terms", "destination": "/terms/index.html" }
   ],
@@ -13,13 +12,13 @@
     { "source": "/pages/how-it-works.html", "destination": "/how-it-works/", "permanent": true },
     { "source": "/pages/support.html", "destination": "/support/", "permanent": true },
     { "source": "/pages/about.html", "destination": "/about/", "permanent": true },
-    { "source": "/pages/compatibility.html", "destination": "/compatibility/", "permanent": true },
     { "source": "/pages/privacy.html", "destination": "/privacy/", "permanent": true },
     { "source": "/pages/terms.html", "destination": "/terms/", "permanent": true }
   ],
   "cleanUrls": true,
   "trailingSlash": true
 }
+
 
 
 

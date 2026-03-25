@@ -8,6 +8,91 @@ const THEME_KEY = 'simphonia-theme';
 const NAV_COLLAPSE_WIDTH = 960;
 
 // ────────────────────────────────────────
+// Shared scroll coordinator
+// ────────────────────────────────────────
+
+(function initScrollCoordinator() {
+  if (typeof window === 'undefined' || window.scrollCoordinator) return;
+
+  var refreshPending = false;
+  var waitingForLoad = false;
+
+  function setScrollLocked(isLocked) {
+    // Only toggle on body — never touch html, which is the scroll container on WebKit.
+    document.body.classList.toggle('nav-scroll-locked', !!isLocked);
+  }
+
+  function scheduleRefresh(options) {
+    options = options || {};
+
+    function flush() {
+      if (refreshPending) return;
+      refreshPending = true;
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          refreshPending = false;
+          if (typeof ScrollTrigger !== 'undefined') {
+            ScrollTrigger.refresh();
+          }
+        });
+      });
+    }
+
+    if (options.waitForLoad && document.readyState !== 'complete') {
+      if (waitingForLoad) return;
+      waitingForLoad = true;
+      window.addEventListener('load', function onLoad() {
+        waitingForLoad = false;
+        flush();
+      }, { once: true });
+      return;
+    }
+
+    flush();
+  }
+
+  function focusHashTarget(hash) {
+    var rawHash = typeof hash === 'string' ? hash : window.location.hash;
+    if (!rawHash) return null;
+
+    var id = rawHash.charAt(0) === '#' ? rawHash.slice(1) : rawHash;
+    if (!id) return null;
+
+    var target = document.getElementById(decodeURIComponent(id));
+    if (!target) return null;
+
+    requestAnimationFrame(function () {
+      if (!target.hasAttribute('tabindex')) {
+        target.setAttribute('tabindex', '-1');
+      }
+      if (typeof target.focus === 'function') {
+        target.focus({ preventScroll: true });
+      }
+    });
+
+    return target;
+  }
+
+  window.scrollCoordinator = {
+    scheduleRefresh: scheduleRefresh,
+    setScrollLocked: setScrollLocked,
+    clearScrollLock: function () { setScrollLocked(false); },
+    focusHashTarget: focusHashTarget,
+  };
+
+  window.scheduleScrollRefresh = scheduleRefresh;
+
+  // Restore clean state after bfcache navigation.
+  // GSAP's ignoreMobileResize:true handles resize internally — no refresh on resize here.
+  window.addEventListener('pageshow', function (event) {
+    setScrollLocked(false);
+    if (event.persisted) {
+      scheduleRefresh();
+    }
+  });
+})();
+
+// ────────────────────────────────────────
 // Theme helpers
 // ────────────────────────────────────────
 
@@ -95,15 +180,213 @@ function injectShell() {
 }
 
 /**
+ * Injects a sticky mobile CTA bar at the bottom of the page (mobile only).
+ * Shows after the user scrolls past 500px.
+ */
+function injectMobileCTA() {
+  const base = getBasePath();
+  const bar = document.createElement('div');
+  bar.className = 'mobile-cta-bar';
+  bar.id = 'mobile-cta-bar';
+  bar.setAttribute('aria-hidden', 'true'); // hidden until shown
+  bar.innerHTML = `
+    <a href="${base}destinations/" class="btn btn--primary">Browse Plans</a>
+    <a href="${base}how-it-works/" class="btn btn--outline">How It Works</a>
+  `;
+  document.body.appendChild(bar);
+
+  let ticking = false;
+  const onScroll = () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const visible = window.scrollY > 500;
+      bar.classList.toggle('mobile-cta-bar--visible', visible);
+      bar.setAttribute('aria-hidden', String(!visible));
+      ticking = false;
+    });
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+}
+
+/**
+ * Injects a back-to-top button that appears once the user scrolls 600px down.
+ */
+function injectBackToTop() {
+  const btn = document.createElement('button');
+  btn.className = 'back-to-top';
+  btn.id = 'back-to-top';
+  btn.setAttribute('aria-label', 'Scroll back to top');
+  btn.setAttribute('aria-hidden', 'true');
+  btn.innerHTML = `
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M12 19V5"/>
+      <path d="m5 12 7-7 7 7"/>
+    </svg>
+  `;
+  document.body.appendChild(btn);
+
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(() => {
+      const visible = window.scrollY > 600;
+      btn.classList.toggle('back-to-top--visible', visible);
+      btn.setAttribute('aria-hidden', String(!visible));
+      ticking = false;
+    });
+  }, { passive: true });
+
+  btn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    btn.blur();
+  });
+}
+
+/**
+ * Injects a lightweight cookie/privacy consent banner.
+ * Does nothing if the user has already accepted.
+ */
+function injectCookieBanner() {
+  const COOKIE_KEY = 'simphonia-cookies';
+  try {
+    if (localStorage.getItem(COOKIE_KEY)) return;
+  } catch (_) {}
+
+  const base = getBasePath();
+  const banner = document.createElement('div');
+  banner.className = 'cookie-banner';
+  banner.id = 'cookie-banner';
+  banner.setAttribute('role', 'dialog');
+  banner.setAttribute('aria-live', 'polite');
+  banner.setAttribute('aria-label', 'Cookie consent');
+  banner.setAttribute('aria-hidden', 'true');
+
+  banner.innerHTML = `
+    <div class="cookie-banner__content">
+      <div class="cookie-banner__icon" aria-hidden="true">🍪</div>
+      <p class="cookie-banner__text">
+        We use cookies to improve your experience and analyse site traffic.
+        By clicking <strong>Accept</strong>, you agree to our
+        <a href="${base}privacy/">Privacy Policy</a>.
+      </p>
+      <div class="cookie-banner__actions">
+        <button class="btn btn--ghost btn--sm" id="cookie-decline">Decline</button>
+        <button class="btn btn--primary btn--sm" id="cookie-accept">Accept All</button>
+      </div>
+    </div>
+  `;
+  document.body.appendChild(banner);
+
+  // Show with a small delay so it doesn't distract on page load
+  const showTimer = setTimeout(() => {
+    banner.classList.add('cookie-banner--visible');
+    banner.setAttribute('aria-hidden', 'false');
+  }, 1800);
+
+  const dismiss = (accepted) => {
+    clearTimeout(showTimer);
+    if (accepted) {
+      try { localStorage.setItem(COOKIE_KEY, '1'); } catch (_) {}
+    }
+    banner.classList.remove('cookie-banner--visible');
+    banner.setAttribute('aria-hidden', 'true');
+    setTimeout(() => banner.remove(), 400);
+  };
+
+  banner.addEventListener('click', (e) => {
+    if (e.target.id === 'cookie-accept') dismiss(true);
+    if (e.target.id === 'cookie-decline') dismiss(false);
+  });
+}
+
+/**
+ * Injects a thin scroll-progress bar at the very top of the viewport.
+ * The bar fills from left to right as the user scrolls the page.
+ */
+function injectScrollProgress() {
+  const bar = document.createElement('div');
+  bar.className = 'scroll-progress';
+  bar.id = 'scroll-progress';
+  bar.setAttribute('role', 'progressbar');
+  bar.setAttribute('aria-valuenow', '0');
+  bar.setAttribute('aria-valuemin', '0');
+  bar.setAttribute('aria-valuemax', '100');
+  bar.setAttribute('aria-label', 'Page scroll progress');
+  document.body.appendChild(bar);
+
+  let ticking = false;
+  const update = () => {
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
+    const pct  = docH > 0 ? Math.min(100, (window.scrollY / docH) * 100) : 0;
+    bar.style.transform = `scaleX(${pct / 100})`;
+    bar.setAttribute('aria-valuenow', Math.round(pct));
+    ticking = false;
+  };
+
+  window.addEventListener('scroll', () => {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+}
+
+/**
+ * Injects a dismissible announcement banner just below the nav.
+ * Only shown on the homepage (root path).
+ * Dismissed state is persisted in sessionStorage so it stays gone for the session.
+ */
+function injectAnnouncementBanner() {
+  const BANNER_KEY = 'simphonia-banner-v1';
+  try { if (sessionStorage.getItem(BANNER_KEY)) return; } catch (_) {}
+
+  // Only show on homepage
+  const path = window.location.pathname;
+  const isHome = path === '/' || path === '/index.html' ||
+    (!['destinations','how-it-works','about','support','privacy','terms']
+      .some(p => path.includes('/' + p)));
+  if (!isHome) return;
+
+  const base = getBasePath();
+  const banner = document.createElement('div');
+  banner.className = 'announcement-banner';
+  banner.id = 'announcement-banner';
+  banner.setAttribute('role', 'banner');
+  banner.innerHTML = `
+    <div class="announcement-banner__inner">
+      <span class="announcement-banner__icon" aria-hidden="true">🚀</span>
+      <span class="announcement-banner__text">
+        Simphonia is launching soon — <a href="${base}destinations/" class="announcement-banner__link">browse plans early</a> and be first in line.
+      </span>
+      <button class="announcement-banner__close" id="announcement-close" aria-label="Dismiss announcement">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+  `;
+  // Insert after nav (which will be prepended), so insert at body start for now;
+  // layout.js injects nav first via prepend, then footer append.
+  // We'll insert the banner as first child of body after nav is set.
+  document.body.appendChild(banner);
+
+  document.getElementById('announcement-close')?.addEventListener('click', () => {
+    try { sessionStorage.setItem(BANNER_KEY, '1'); } catch (_) {}
+    banner.classList.add('announcement-banner--closing');
+    setTimeout(() => banner.remove(), 350);
+  });
+}
+
+/**
  * Injects the shared <noscript> fallback styles at the end of <body>.
  */
 function injectNoscript() {
   const ns = document.createElement('noscript');
   const style = document.createElement('style');
   style.textContent =
-    '.reveal,.reveal--left,.reveal--right,.reveal--scale{opacity:1;transform:none}' +
+    '.reveal,.reveal--left,.reveal--right,.reveal--scale{opacity:1;visibility:visible;transform:none}' +
     '#globe-container,#stars-canvas,.cursor{display:none}' +
-    '.mobile-cta-bar{display:none}';
+    '.mobile-cta-bar,.back-to-top,.cookie-banner{display:none}' +
+    '.footer__brand,.footer__col,.footer__bottom{opacity:1;visibility:visible;transform:none}';
   ns.appendChild(style);
   document.body.appendChild(ns);
 }
@@ -130,14 +413,14 @@ function getBasePath() {
   if (path === '/' || path === '/index.html') return './';
 
   // Detect if we're inside one of the known page directories
-  const pagePattern = /\/(destinations|how-it-works|support|about|compatibility|privacy|terms)(\/|\/index\.html)?$/;
+  const pagePattern = /\/(destinations|how-it-works|support|about|privacy|terms)(\/|\/index\.html)?$/;
   if (pagePattern.test(path)) return '../';
 
   // Fallback: if path ends with /index.html or just /, count depth
   // by checking if the second-to-last segment is a known page slug
   const segments = path.replace(/\/index\.html$/, '').replace(/\/$/, '').split('/');
   const last = segments[segments.length - 1];
-  const knownPages = ['destinations', 'how-it-works', 'support', 'about', 'compatibility', 'privacy', 'terms'];
+  const knownPages = ['destinations', 'how-it-works', 'support', 'about', 'privacy', 'terms'];
   if (knownPages.includes(last)) return '../';
 
   // Default: assume we're at root level
@@ -171,7 +454,7 @@ function activeClass(slug) {
     // Home: path is root, or ends with index.html at the root level
     const segments = path.replace(/\/index\.html$/, '').replace(/\/$/, '').split('/');
     const last = segments[segments.length - 1];
-    const knownPages = ['destinations', 'how-it-works', 'support', 'about', 'compatibility', 'privacy', 'terms'];
+    const knownPages = ['destinations', 'how-it-works', 'support', 'about', 'privacy', 'terms'];
     return knownPages.includes(last) ? '' : 'nav__link--active';
   }
   return path.includes('/' + slug) ? 'nav__link--active' : '';
@@ -194,12 +477,15 @@ function injectNav() {
       <div class="nav__links">
         <a href="${pagePath('destinations')}" class="nav__link ${activeClass('destinations')}">Destinations</a>
         <a href="${pagePath('how-it-works')}" class="nav__link ${activeClass('how-it-works')}">How It Works</a>
-        <a href="${pagePath('compatibility')}" class="nav__link ${activeClass('compatibility')}">Compatibility</a>
         <a href="${pagePath('support')}" class="nav__link ${activeClass('support')}">Support</a>
         <a href="${pagePath('about')}" class="nav__link ${activeClass('about')}">About</a>
       </div>
 
       <div class="nav__actions">
+        <a href="${base}" class="btn btn--primary btn--sm nav__download-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download App
+        </a>
         <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">
           <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="4.5"/>
@@ -253,10 +539,16 @@ function injectNav() {
       <nav class="nav__mobile-links" aria-label="Site pages">
         <a href="${pagePath('destinations')}" class="nav__mobile-link${activeClass('destinations') ? ' nav__mobile-link--active' : ''}">Destinations</a>
         <a href="${pagePath('how-it-works')}" class="nav__mobile-link${activeClass('how-it-works') ? ' nav__mobile-link--active' : ''}">How It Works</a>
-        <a href="${pagePath('compatibility')}" class="nav__mobile-link${activeClass('compatibility') ? ' nav__mobile-link--active' : ''}">Compatibility</a>
         <a href="${pagePath('support')}" class="nav__mobile-link${activeClass('support') ? ' nav__mobile-link--active' : ''}">Support</a>
         <a href="${pagePath('about')}" class="nav__mobile-link${activeClass('about') ? ' nav__mobile-link--active' : ''}">About</a>
       </nav>
+
+      <div class="nav__mobile-download">
+        <a href="${base}" class="btn btn--primary btn--block">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download App
+        </a>
+      </div>
 
 
     </div>
@@ -273,42 +565,76 @@ function initNavBehavior() {
   const hamburger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobile-menu');
   const themeBtn = document.getElementById('theme-toggle');
+  const scrollCoordinator = window.scrollCoordinator;
+
+  /* ── Highlight download buttons ── */
+  function highlightDownloadBtns() {
+    const btns = document.querySelectorAll('.hero-dl-btn');
+    if (!btns.length) return;
+    btns.forEach(btn => {
+      btn.classList.remove('hero-dl-btn--highlight');
+      void btn.offsetWidth; // force reflow to restart animation
+      btn.classList.add('hero-dl-btn--highlight');
+      btn.addEventListener('animationend', () => btn.classList.remove('hero-dl-btn--highlight'), { once: true });
+    });
+  }
+
+  /* Expose so the showcase scroll-complete callback in animations.js can call it */
+  window.highlightDownloadBtns = highlightDownloadBtns;
+
+  document.querySelectorAll('.nav__download-btn, .nav__mobile-download a').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      const onHomePage = !!document.getElementById('download');
+      if (onHomePage) {
+        // Already on home page — no reload needed
+        e.preventDefault();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        // Highlight after scroll settles — only if showcase was already completed
+        if (window.showcaseScrollComplete) {
+          setTimeout(highlightDownloadBtns, 400);
+        }
+      } else {
+        // On another page — navigate to root, flag highlight for next load
+        try { sessionStorage.setItem('hl-download', '1'); } catch (_) {}
+      }
+    });
+  });
+
+  // On load: if flagged from another page, highlight and clear the flag
+  // (coming from another page means the user has already seen the features)
+  try {
+    if (sessionStorage.getItem('hl-download')) {
+      sessionStorage.removeItem('hl-download');
+      window.showcaseScrollComplete = true;
+      setTimeout(highlightDownloadBtns, 350);
+    }
+  } catch (_) {}
 
   /* ── Scroll-lock ──
-     Uses position:fixed on <body> so that iOS Safari (which ignores
-     overflow:hidden on <html>) also stops scrolling.  The current
-     scrollY is saved and applied as a negative top offset so the
-     visible page doesn't jump.  On unlock we restore scroll. */
-  let savedScrollY = 0;
+     Only the mobile menu uses a temporary scroll lock.
+     Lock is class-based on body only — never touch html (WebKit scroll container). */
   let isScrollLocked = false;
 
   const lockScroll = () => {
     if (isScrollLocked) return;
     isScrollLocked = true;
-    savedScrollY = window.scrollY;
-    document.body.style.position = 'fixed';
-    document.body.style.top = `-${savedScrollY}px`;
-    document.body.style.left = '0';
-    document.body.style.right = '0';
-    document.body.style.overflow = 'hidden';
+    if (scrollCoordinator) {
+      scrollCoordinator.setScrollLocked(true);
+    } else {
+      document.body.classList.add('nav-scroll-locked');
+    }
   };
 
   const unlockScroll = () => {
     if (!isScrollLocked) return;
     isScrollLocked = false;
-    document.body.style.position = '';
-    document.body.style.top = '';
-    document.body.style.left = '';
-    document.body.style.right = '';
-    document.body.style.overflow = '';
-    // Use 'instant' to override CSS scroll-behavior:smooth on <html>,
-    // otherwise the browser animates from 0 → savedScrollY and
-    // GSAP ScrollTrigger re-fires animations along the way.
-    window.scrollTo({ top: savedScrollY, left: 0, behavior: 'instant' });
-    // Recalculate GSAP ScrollTrigger positions after body layout change
-    if (typeof ScrollTrigger !== 'undefined') {
-      ScrollTrigger.refresh();
+    if (scrollCoordinator) {
+      scrollCoordinator.clearScrollLock();
+    } else {
+      document.body.classList.remove('nav-scroll-locked');
     }
+    // No ScrollTrigger.refresh() here — it fires mid-scroll on some browsers
+    // and causes scrub animations to stutter. GSAP manages its own state.
   };
 
   const closeMenu = () => {
@@ -321,15 +647,24 @@ function initNavBehavior() {
     unlockScroll();
   };
 
-  // Scroll effect — skip while scroll-locked because window.scrollY
-  // reads as 0 when body is position:fixed, which would wrongly
-  // remove the nav background.
   const onScroll = () => {
-    if (isScrollLocked) return;
     navbar.classList.toggle('nav--scrolled', window.scrollY > 40);
   };
   window.addEventListener('scroll', onScroll, { passive: true });
   onScroll();
+
+  // bfcache / history restore: reset all menu + lock state.
+  window.addEventListener('pageshow', () => {
+    isScrollLocked = false;
+    document.body.classList.remove('nav-scroll-locked');
+    if (mobileMenu) mobileMenu.classList.remove('nav__mobile--open');
+    if (hamburger) {
+      hamburger.classList.remove('nav__hamburger--open');
+      hamburger.setAttribute('aria-expanded', 'false');
+      hamburger.style.opacity = '';
+      hamburger.style.pointerEvents = '';
+    }
+  });
 
   // Theme toggle
   if (themeBtn) {
@@ -390,7 +725,6 @@ function injectFooter() {
           <ul>
             <li><a href="${pagePath('destinations')}">Destinations</a></li>
             <li><a href="${pagePath('how-it-works')}">How It Works</a></li>
-            <li><a href="${pagePath('compatibility')}">Compatibility</a></li>
           </ul>
         </div>
 
@@ -431,4 +765,5 @@ function injectFooter() {
 
   document.body.appendChild(footer);
 }
+
 

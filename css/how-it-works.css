@@ -1,54 +1,235 @@
 @import 'base.css';
 
-/* Global overflow hardening */
-html, body { overflow-x: hidden !important; max-width: 100vw; }
 
 /* ============================================================
    SIMPHONIA — How It Works Page Stylesheet
-   ============================================================
-   This page reuses shared components from base.css:
-   about-hero, about-story, badge, faq, cta-section,
-   check-item. Add page-specific overrides below.
    ============================================================ */
 
-/* Step badge — floating animation */
-.about-story .badge {
-  animation: float-slow 5s ease-in-out infinite;
+/* ─── Central Timeline ──────────────────────────────────────── */
+.timeline {
+  position: relative;
+  max-width: 1040px;
+  margin: 0 auto;
 }
 
-.about-story:nth-child(2) .badge { animation-delay: -1.5s; }
-.about-story:nth-child(3) .badge { animation-delay: -3s; }
-
-/* Checklist items — animated reveal */
-.about-story ul {
-  counter-reset: none;
+/* Vertical track line — animated via GSAP scaleY */
+.timeline__track {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  transform: translateX(-50%);
+  transform-origin: top center;
+  background: linear-gradient(
+    to bottom,
+    transparent 0%,
+    var(--accent) 8%,
+    var(--accent) 92%,
+    transparent 100%
+  );
+  opacity: 0.35;
+  z-index: 0;
 }
 
-.about-story ul li.check-item {
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  padding: 0.5rem 0;
-  border-bottom: 1px solid var(--border-subtle);
+/* ── Step row (3-column grid: card | node | empty  OR  empty | node | card) */
+.timeline__step {
+  display: grid;
+  grid-template-columns: 1fr 72px 1fr;
+  align-items: center;
+  gap: 0 2.5rem;
+  padding: 3rem 0;
 }
 
-.about-story ul li.check-item:last-child {
-  border-bottom: none;
+/* LEFT variant — card col-1, node col-2, spacer col-3 */
+.timeline__step--left .timeline__card  { grid-column: 1; grid-row: 1; }
+.timeline__step--left .timeline__node  { grid-column: 2; grid-row: 1; }
+.timeline__step--left .timeline__spacer{ grid-column: 3; grid-row: 1; }
+
+/* RIGHT variant — spacer col-1, node col-2, card col-3 */
+.timeline__step--right .timeline__spacer{ grid-column: 1; grid-row: 1; }
+.timeline__step--right .timeline__node  { grid-column: 2; grid-row: 1; }
+.timeline__step--right .timeline__card  { grid-column: 3; grid-row: 1; }
+
+/* ── Node ── */
+.timeline__node {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--bg-elevated);
+  border: 2px solid var(--accent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  justify-self: center;
+  z-index: 2;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 6px var(--bg-primary), 0 0 24px rgba(212, 175, 55, 0.2);
 }
 
-.about-story ul li.check-item:hover {
+.timeline__node-num {
+  font-size: 0.6875rem;
+  font-weight: 800;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+/* Pulsing outer ring */
+.timeline__node-ring {
+  position: absolute;
+  inset: -8px;
+  border-radius: 50%;
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  animation: timeline-pulse 2.4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes timeline-pulse {
+  0%, 100% { transform: scale(1);    opacity: 0.6; }
+  50%       { transform: scale(1.25); opacity: 0;   }
+}
+
+/* ── Card ── */
+.timeline__card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  transition: border-color 0.3s var(--ease-out),
+              box-shadow    0.3s var(--ease-out);
+}
+
+.timeline__card:hover {
+  border-color: var(--border-accent);
+  box-shadow: 0 12px 40px rgba(212, 175, 55, 0.09);
+}
+
+.timeline__card-img {
+  width: 100%;
+  aspect-ratio: 16 / 8;
+  overflow: hidden;
+}
+
+.timeline__card-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform 0.55s var(--ease-out);
+}
+
+.timeline__card:hover .timeline__card-img img {
+  transform: scale(1.05);
+}
+
+.timeline__card-body {
+  padding: 1.625rem 1.875rem 1.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.timeline__card-body .label {
+  display: block;
+}
+
+.timeline__card-body h3 {
+  font-size: 1.1875rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin: 0;
   color: var(--text-primary);
 }
 
-/* FAQ item hover glow */
-.faq-item:hover {
-  box-shadow: 0 4px 30px rgba(212, 175, 55, 0.08);
+.timeline__card-body p {
+  font-size: 0.9375rem;
+  line-height: 1.75;
+  color: var(--text-secondary);
+  margin: 0;
 }
 
+.timeline__checks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid var(--border-subtle);
+  margin-top: 0.25rem;
+}
+
+/* ── Connector dots between card edge and node ── */
+.timeline__step--left .timeline__card::after,
+.timeline__step--right .timeline__card::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--accent);
+  opacity: 0.4;
+  transform: translateY(-50%);
+}
+
+.timeline__card { position: relative; }
+
+.timeline__step--left .timeline__card::after  { right: -2.5rem; }
+.timeline__step--right .timeline__card::after { left:  -2.5rem; }
+
 /* ==============================================
-   RESPONSIVE — How It Works Page
+   RESPONSIVE
    ============================================== */
-@media (max-width: 768px) {
-  /* Reduce large bottom margins on step blocks (inline style uses --space-5xl) */
-  .about-story[style*="margin-bottom"] {
-    margin-bottom: var(--space-3xl) !important;
+
+/* Tablet: compress slightly */
+@media (max-width: 900px) {
+  .timeline__step {
+    grid-template-columns: 1fr 56px 1fr;
+    gap: 0 1.5rem;
+    padding: 2.25rem 0;
   }
+
+  .timeline__node { width: 44px; height: 44px; }
+
+  .timeline__step--left .timeline__card::after  { right: -1.5rem; }
+  .timeline__step--right .timeline__card::after { left:  -1.5rem; }
+}
+
+/* Mobile: single column, track on the left edge */
+@media (max-width: 640px) {
+  .timeline__track {
+    left: 20px;
+    transform: none;
+  }
+
+  .timeline__step {
+    grid-template-columns: 40px 1fr;
+    grid-template-rows: auto;
+    gap: 0 1rem;
+    padding: 1.75rem 0;
+    align-items: start;
+  }
+
+  /* All nodes go to col-1 */
+  .timeline__step--left  .timeline__node,
+  .timeline__step--right .timeline__node  { grid-column: 1; grid-row: 1; justify-self: center; }
+
+  /* All cards go to col-2 */
+  .timeline__step--left  .timeline__card,
+  .timeline__step--right .timeline__card  { grid-column: 2; grid-row: 1; }
+
+  /* Hide spacers */
+  .timeline__spacer { display: none; }
+
+  /* Remove connector dots on mobile */
+  .timeline__step--left  .timeline__card::after,
+  .timeline__step--right .timeline__card::after { display: none; }
+
+  .timeline__node { width: 40px; height: 40px; box-shadow: 0 0 0 4px var(--bg-primary); }
+  .timeline__node-ring { inset: -6px; }
+
+  .timeline__card-img { aspect-ratio: 16 / 9; }
+  .timeline__card-body { padding: 1.25rem 1.375rem 1.375rem; }
 }

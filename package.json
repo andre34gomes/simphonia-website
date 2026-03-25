@@ -1,0 +1,9 @@
+{
+  "name": "simphonia-website",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "test": "node --test tests/*.test.js"
+  }
+}
+

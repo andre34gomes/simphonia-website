@@ -7,11 +7,11 @@
   <title>About — Simphonia eSIM</title>
   <meta name="description" content="Learn about Simphonia's mission to make global connectivity accessible, affordable, and effortless for every traveler.">
   <meta name="theme-color" content="#121212">
-  <link rel="canonical" href="https://simphonia.app/about/">
+  <link rel="canonical" href="https://simphonia.pt/about/">
   <meta property="og:title" content="About — Simphonia eSIM">
   <meta property="og:description" content="Learn about Simphonia's mission to make global connectivity accessible, affordable, and effortless for every traveler.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://simphonia.app/about/">
+  <meta property="og:url" content="https://simphonia.pt/about/">
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
   <link rel="shortcut icon" href="../assets/favicon.svg">
   <link rel="mask-icon" href="../assets/favicon.svg" color="#D4AF37">
@@ -28,58 +28,59 @@
 
     <!-- Hero -->
     <section class="about-hero">
-      <div class="container">
+      <div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:700px;height:350px;background:radial-gradient(ellipse at center,rgba(212,175,55,0.09) 0%,transparent 70%);pointer-events:none;"></div>
+      <div class="container" style="position:relative;z-index:1;">
         <span class="label reveal">About Simphonia</span>
-        <h1 class="reveal" style="margin-top:var(--space-md);">Connecting the World,<br><span class="text-gradient">One Trip at a Time</span></h1>
+        <h1 class="reveal">Connecting the World,<br><span class="text-gradient">One Trip at a Time</span></h1>
         <p class="reveal">We believe staying connected while traveling should be effortless, affordable, and available to everyone.</p>
+      </div>
+      <div class="hero__scroll" aria-hidden="true">
+        <div class="hero__scroll-line"></div>
+        <span>Scroll</span>
       </div>
     </section>
 
     <!-- Story -->
-    <section class="section">
+    <section class="section" id="story">
       <div class="container">
-        <div class="about-story reveal">
-          <div class="about-story__img">
-            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&q=80&w=800" alt="Team collaboration" loading="lazy">
+        <div class="origin-block reveal">
+          <div class="origin-block__img">
+            <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&q=80&w=1000" alt="Traveler looking at a departure board" loading="lazy">
+            <div class="origin-block__img-tag" aria-hidden="true">Est. 2024</div>
           </div>
-          <div>
+          <div class="origin-block__body">
             <span class="label">Our Story</span>
-            <h2 style="margin-top:var(--space-md);">Born From a Travel Frustration</h2>
-            <p style="margin-top:var(--space-lg);font-size:1.0625rem;line-height:1.8;">
-              Simphonia was born from a simple frustration every traveler knows: landing in a new
-              country without mobile data. The hunt for a local SIM card, the confusing carrier shops,
-              the exorbitant roaming fees — we knew there had to be a better way.
+            <h2>Born From a<br><span class="text-gradient">Travel Frustration</span></h2>
+            <blockquote class="origin-block__quote">
+              "I landed in Tokyo at midnight with zero mobile data. No maps, no ride, no translation. That one trip changed everything."
+            </blockquote>
+            <p>
+              That frustration — the overpriced roaming, the hunt for local SIM cards, the confusing carrier shops — became the spark behind Simphonia.
             </p>
-            <p style="margin-top:var(--space-md);font-size:1.0625rem;line-height:1.8;">
-              Founded in 2024, our team of travel enthusiasts and technologists set out to build
-              the most seamless global connectivity experience. Today, Simphonia serves travelers
-              in over 200 countries with instant eSIM activation and 24/7 AI-powered support.
+            <p>
+              Founded in 2024, we set out to make global connectivity instant and accessible for every traveler. Today, Simphonia covers 200+ countries with one-tap eSIM activation, transparent pricing, and 24/7 AI-powered support.
             </p>
+            <div class="origin-block__stats">
+              <div class="origin-block__stat">
+                <span class="origin-block__stat-val">200+</span>
+                <span class="origin-block__stat-label">Countries</span>
+              </div>
+              <div class="origin-block__stat">
+                <span class="origin-block__stat-val">&lt;2min</span>
+                <span class="origin-block__stat-label">To Connect</span>
+              </div>
+              <div class="origin-block__stat">
+                <span class="origin-block__stat-val">24/7</span>
+                <span class="origin-block__stat-label">AI Support</span>
+              </div>
+            </div>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Mission -->
-    <section class="section" style="background:var(--bg-secondary);border-top:1px solid var(--border-subtle);border-bottom:1px solid var(--border-subtle);">
-      <div class="container text-center">
-        <div class="reveal" style="max-width:700px;margin:0 auto;">
-          <span class="label">Our Mission</span>
-          <h2 style="margin-top:var(--space-md);margin-bottom:var(--space-xl);">
-            Make global connectivity<br>
-            <span class="text-gradient">accessible to everyone.</span>
-          </h2>
-          <p style="font-size:1.125rem;line-height:1.8;">
-            We're building a world where staying connected abroad is as natural as connecting at home.
-            No barriers, no complexity, no unfair pricing — just instant, reliable mobile data
-            wherever your journey takes you.
-          </p>
         </div>
       </div>
     </section>
 
     <!-- Values -->
-    <section class="section">
+    <section class="section" id="values">
       <div class="container">
         <div class="section-header reveal">
           <span class="label">Our Values</span>
@@ -112,7 +113,7 @@
     </section>
 
     <!-- Team -->
-    <section class="section" style="background:var(--bg-secondary);border-top:1px solid var(--border-subtle);border-bottom:1px solid var(--border-subtle);">
+    <section class="section section--alt" id="team">
       <div class="container">
         <div class="section-header reveal">
           <span class="label">Our Team</span>
@@ -124,31 +125,6 @@
             <div class="team-card__avatar">AG</div>
             <div class="team-card__name">André Gomes</div>
             <div class="team-card__role">Founder & CEO</div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Numbers -->
-    <section class="section">
-      <div class="container">
-        <div class="section-header reveal">
-          <span class="label">By the Numbers</span>
-          <h2>Our Impact</h2>
-        </div>
-
-        <div class="impact-grid">
-          <div class="impact-card reveal--scale">
-            <div class="impact-card__value" data-count-up="200" data-suffix="+">0</div>
-            <div class="impact-card__label">Countries</div>
-          </div>
-          <div class="impact-card reveal--scale">
-            <div class="impact-card__value">24/7</div>
-            <div class="impact-card__label">AI Support</div>
-          </div>
-          <div class="impact-card reveal--scale">
-            <div class="impact-card__value">&lt;2min</div>
-            <div class="impact-card__label">To Connect</div>
           </div>
         </div>
       </div>

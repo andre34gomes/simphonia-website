@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+
+# Block build artefacts
+Disallow: /build/
+Disallow: /.git/
+
+Sitemap: https://simphonia.pt/sitemap.xml
+

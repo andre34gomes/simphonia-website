@@ -7,11 +7,11 @@
   <title>Destinations — Simphonia eSIM</title>
   <meta name="description" content="Browse eSIM plans for 200+ countries and regions. Find the perfect data plan for your next trip.">
   <meta name="theme-color" content="#121212">
-  <link rel="canonical" href="https://simphonia.app/destinations/">
+  <link rel="canonical" href="https://simphonia.pt/destinations/">
   <meta property="og:title" content="Destinations — Simphonia eSIM">
   <meta property="og:description" content="Browse eSIM plans for 200+ countries and regions. Find the perfect data plan for your next trip.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://simphonia.app/destinations/">
+  <meta property="og:url" content="https://simphonia.pt/destinations/">
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
   <link rel="shortcut icon" href="../assets/favicon.svg">
   <link rel="mask-icon" href="../assets/favicon.svg" color="#D4AF37">
@@ -27,42 +27,57 @@
   <main id="main-content">
 
     <!-- Hero -->
-    <section class="destinations-hero">
-      <div class="container">
+    <section class="about-hero" id="destinations" aria-labelledby="destinations-heading">
+      <div class="container" style="position:relative;z-index:1;">
         <span class="label reveal">Destinations</span>
-        <h1 class="reveal" style="margin-top:var(--space-md);">Explore 200+ Countries</h1>
-        <p class="reveal" style="font-size:1.125rem;max-width:520px;margin:var(--space-lg) auto 0;">
-          Find the perfect eSIM plan for your next trip. Local coverage worldwide.
-        </p>
-
-        <div class="search-bar reveal">
-          <svg class="search-bar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
-          </svg>
-          <input type="text" class="search-bar__input" id="dest-search" placeholder="Search countries or regions..." aria-label="Search destinations" autocomplete="off">
-        </div>
-
-        <div class="filter-tabs reveal">
-          <button class="filter-tab filter-tab--active" data-filter="all">All</button>
-          <button class="filter-tab" data-filter="popular">Popular</button>
-          <button class="filter-tab" data-filter="asia">Asia</button>
-          <button class="filter-tab" data-filter="europe">Europe</button>
-          <button class="filter-tab" data-filter="americas">Americas</button>
-          <button class="filter-tab" data-filter="africa">Africa</button>
-          <button class="filter-tab" data-filter="oceania">Oceania</button>
-        </div>
+        <h1 class="reveal" id="destinations-heading">Explore<br><span class="text-gradient">200+ Countries</span></h1>
+        <p class="reveal">Find the perfect eSIM plan for your next trip. Local coverage worldwide.</p>
+      </div>
+      <div class="hero__scroll" aria-hidden="true">
+        <div class="hero__scroll-line"></div>
+        <span>Scroll</span>
       </div>
     </section>
 
     <!-- Destinations Grid -->
-    <section class="section" style="padding-top:0;">
+    <section class="section" id="destinations-grid">
       <div class="container container--wide">
+
+        <div class="section-header reveal" style="text-align:center;margin-bottom:var(--space-3xl);">
+          <span class="label">Explore</span>
+          <h2>Where Will You Go Next?</h2>
+          <p>Coverage across 200+ countries and regions. Search or filter to find your destination.</p>
+        </div>
+
+        <div class="search-bar reveal" style="max-width:600px;margin:0 auto var(--space-xl);">
+          <svg class="search-bar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+          </svg>
+          <input type="text" class="search-bar__input" id="dest-search" placeholder="Search countries…" aria-label="Search countries" autocomplete="off" spellcheck="false">
+          <button class="search-bar__clear" id="dest-search-clear" aria-label="Clear search" hidden>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M18 6 6 18M6 6l12 12"/></svg>
+          </button>
+        </div>
+
+
+        <div class="filter-tabs reveal" style="margin-bottom:var(--space-2xl);" id="region-tabs">
+          <!-- Populated by JS from API -->
+          <button class="filter-tab filter-tab--active" data-region="all">All</button>
+        </div>
+
+        <div class="dest-results-bar reveal">
+          <span id="dest-count" class="dest-count"></span>
+        </div>
+
         <div class="dest-grid" id="dest-grid">
           <!-- Populated by JS -->
         </div>
-        <p id="no-results" style="display:none;text-align:center;color:var(--text-tertiary);padding:var(--space-3xl) 0;font-size:1.125rem;">
-          No destinations found. Try a different search term.
-        </p>
+
+        <div id="no-results" class="dest-no-results" style="display:none;" role="alert">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M8 11h6"/></svg>
+          <p>No countries found for <strong id="no-results-query"></strong></p>
+          <button class="btn btn--ghost btn--sm" id="no-results-clear">Clear search</button>
+        </div>
       </div>
     </section>
 
@@ -89,120 +104,277 @@
   <script defer src="../js/globe.js"></script>
   <script defer src="../js/main.js"></script>
   <script type="module">
-    // Destination data — name, flag, region, image, popular, plans (count), price (from $X)
-    const destinations = [
-      // Popular picks
-      { name: 'Japan', flag: '🇯🇵', region: 'asia', img: 'https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&q=80&w=400', popular: true, plans: 6, price: 9 },
-      { name: 'Portugal', flag: '🇵🇹', region: 'europe', img: 'https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?auto=format&fit=crop&q=80&w=400', popular: true, plans: 5, price: 6 },
-      { name: 'United States', flag: '🇺🇸', region: 'americas', img: 'https://images.unsplash.com/photo-1485738422979-f5c462d49f04?auto=format&fit=crop&q=80&w=400', popular: true, plans: 8, price: 10 },
-      { name: 'United Kingdom', flag: '🇬🇧', region: 'europe', img: 'https://images.unsplash.com/photo-1513635269975-59663e0ac1ad?auto=format&fit=crop&q=80&w=400', popular: true, plans: 5, price: 8 },
-      { name: 'Thailand', flag: '🇹🇭', region: 'asia', img: 'https://images.unsplash.com/photo-1528181304800-259b08848526?auto=format&fit=crop&q=80&w=400', popular: true, plans: 7, price: 7 },
-      { name: 'France', flag: '🇫🇷', region: 'europe', img: 'https://images.unsplash.com/photo-1502602898657-3e91760cbb34?auto=format&fit=crop&q=80&w=400', popular: true, plans: 5, price: 7 },
-      { name: 'Dubai (UAE)', flag: '🇦🇪', region: 'asia', img: 'https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=400', popular: true, plans: 6, price: 8 },
-      { name: 'South Korea', flag: '🇰🇷', region: 'asia', img: 'https://images.unsplash.com/photo-1538485399081-7191377e8241?auto=format&fit=crop&q=80&w=400', popular: true, plans: 6, price: 8 },
-      { name: 'Australia', flag: '🇦🇺', region: 'oceania', img: 'https://images.unsplash.com/photo-1523482580672-f109ba8cb9be?auto=format&fit=crop&q=80&w=400', popular: true, plans: 5, price: 11 },
-      // Europe
-      { name: 'Italy', flag: '🇮🇹', region: 'europe', img: 'https://images.unsplash.com/photo-1515859005217-8a1f08870f59?auto=format&fit=crop&q=80&w=400', plans: 5, price: 7 },
-      { name: 'Spain', flag: '🇪🇸', region: 'europe', img: 'https://images.unsplash.com/photo-1543783207-ec64e4d95325?auto=format&fit=crop&q=80&w=400', plans: 5, price: 7 },
-      { name: 'Germany', flag: '🇩🇪', region: 'europe', img: 'https://images.unsplash.com/photo-1467269204594-9661b134dd2b?auto=format&fit=crop&q=80&w=400', plans: 4, price: 7 },
-      { name: 'Turkey', flag: '🇹🇷', region: 'europe', img: 'https://images.unsplash.com/photo-1541432901042-2d8bd64b4a9b?auto=format&fit=crop&q=80&w=400', plans: 4, price: 6 },
-      { name: 'Greece', flag: '🇬🇷', region: 'europe', img: 'https://images.unsplash.com/photo-1533105079780-92b9be482077?auto=format&fit=crop&q=80&w=400', plans: 4, price: 7 },
-      { name: 'Netherlands', flag: '🇳🇱', region: 'europe', img: 'https://images.unsplash.com/photo-1468838153952-eb6a8d94a321?auto=format&fit=crop&q=80&w=400', plans: 4, price: 7 },
-      { name: 'Switzerland', flag: '🇨🇭', region: 'europe', img: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?auto=format&fit=crop&q=80&w=400', plans: 4, price: 9 },
-      { name: 'Poland', flag: '🇵🇱', region: 'europe', img: 'https://images.unsplash.com/photo-1519197924294-4ba991a11128?auto=format&fit=crop&q=80&w=400', plans: 3, price: 5 },
-      { name: 'Czech Republic', flag: '🇨🇿', region: 'europe', img: 'https://images.unsplash.com/photo-1513805959324-96eb66ca8713?auto=format&fit=crop&q=80&w=400', plans: 3, price: 6 },
-      // Asia
-      { name: 'Singapore', flag: '🇸🇬', region: 'asia', img: 'https://images.unsplash.com/photo-1525625293386-3f8f99389edd?auto=format&fit=crop&q=80&w=400', plans: 5, price: 8 },
-      { name: 'Indonesia', flag: '🇮🇩', region: 'asia', img: 'https://images.unsplash.com/photo-1537996194471-e657df975ab4?auto=format&fit=crop&q=80&w=400', plans: 5, price: 7 },
-      { name: 'India', flag: '🇮🇳', region: 'asia', img: 'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?auto=format&fit=crop&q=80&w=400', plans: 6, price: 6 },
-      { name: 'Vietnam', flag: '🇻🇳', region: 'asia', img: 'https://images.unsplash.com/photo-1573270689103-d7a4e42b609a?auto=format&fit=crop&q=80&w=400', plans: 5, price: 6 },
-      { name: 'Malaysia', flag: '🇲🇾', region: 'asia', img: 'https://images.unsplash.com/photo-1534008897995-27a23e859048?auto=format&fit=crop&q=80&w=400', plans: 5, price: 6 },
-      { name: 'Philippines', flag: '🇵🇭', region: 'asia', img: 'https://images.unsplash.com/photo-1518509562904-e7ef99cdcc86?auto=format&fit=crop&q=80&w=400', plans: 4, price: 7 },
-      { name: 'Taiwan', flag: '🇹🇼', region: 'asia', img: 'https://images.unsplash.com/photo-1470075801209-17f9ec0cada6?auto=format&fit=crop&q=80&w=400', plans: 5, price: 8 },
-      { name: 'Hong Kong', flag: '🇭🇰', region: 'asia', img: 'https://images.unsplash.com/photo-1536599018102-9f803c140fc1?auto=format&fit=crop&q=80&w=400', plans: 4, price: 7 },
-      // Americas
-      { name: 'Brazil', flag: '🇧🇷', region: 'americas', img: 'https://images.unsplash.com/photo-1483729558449-99ef09a8c325?auto=format&fit=crop&q=80&w=400', plans: 5, price: 8 },
-      { name: 'Mexico', flag: '🇲🇽', region: 'americas', img: 'https://images.unsplash.com/photo-1518638150340-f706e86654de?auto=format&fit=crop&q=80&w=400', plans: 5, price: 7 },
-      { name: 'Canada', flag: '🇨🇦', region: 'americas', img: 'https://images.unsplash.com/photo-1517935706615-2717063c2225?auto=format&fit=crop&q=80&w=400', plans: 5, price: 10 },
-      { name: 'Colombia', flag: '🇨🇴', region: 'americas', img: 'https://images.unsplash.com/photo-1535730037448-9e6b7e932fc8?auto=format&fit=crop&q=80&w=400', plans: 4, price: 7 },
-      { name: 'Argentina', flag: '🇦🇷', region: 'americas', img: 'https://images.unsplash.com/photo-1589909202802-8f4aadce1849?auto=format&fit=crop&q=80&w=400', plans: 4, price: 8 },
-      { name: 'Peru', flag: '🇵🇪', region: 'americas', img: 'https://images.unsplash.com/photo-1526392060635-9d6019884377?auto=format&fit=crop&q=80&w=400', plans: 3, price: 7 },
-      // Africa
-      { name: 'Egypt', flag: '🇪🇬', region: 'africa', img: 'https://images.unsplash.com/photo-1539768942893-daf53e736b68?auto=format&fit=crop&q=80&w=400', plans: 4, price: 7 },
-      { name: 'South Africa', flag: '🇿🇦', region: 'africa', img: 'https://images.unsplash.com/photo-1580060839134-75a5edca2e99?auto=format&fit=crop&q=80&w=400', plans: 4, price: 8 },
-      { name: 'Morocco', flag: '🇲🇦', region: 'africa', img: 'https://images.unsplash.com/photo-1489749798305-4fea3ae63d43?auto=format&fit=crop&q=80&w=400', plans: 3, price: 7 },
-      { name: 'Kenya', flag: '🇰🇪', region: 'africa', img: 'https://images.unsplash.com/photo-1547471080-7cc2caa01a7e?auto=format&fit=crop&q=80&w=400', plans: 3, price: 8 },
-      { name: 'Tanzania', flag: '🇹🇿', region: 'africa', img: 'https://images.unsplash.com/photo-1516026672322-bc52d61a55d5?auto=format&fit=crop&q=80&w=400', plans: 3, price: 8 },
-      // Oceania
-      { name: 'New Zealand', flag: '🇳🇿', region: 'oceania', img: 'https://images.unsplash.com/photo-1469521669194-babb45599def?auto=format&fit=crop&q=80&w=400', plans: 4, price: 11 },
-      { name: 'Fiji', flag: '🇫🇯', region: 'oceania', img: 'https://images.unsplash.com/photo-1559628233-100c798642d5?auto=format&fit=crop&q=80&w=400', plans: 3, price: 12 },
-    ];
+    // ── Config ──────────────────────────────────────────────────────────────
+    const API_BASE = 'http://localhost:3000';
+    const CURRENCY = 'EUR';
+    const LANG     = (navigator.language || 'en').split('-')[0];
 
-    const grid = document.getElementById('dest-grid');
-    const noResults = document.getElementById('no-results');
-    const searchInput = document.getElementById('dest-search');
-    const filterTabs = document.querySelectorAll('.filter-tab');
-    let activeFilter = 'all';
+    const REGION_LABELS = {
+      AFRICA:        'Africa',
+      ASIA:          'Asia',
+      CARIBBEAN:     'Caribbean',
+      EUROPE:        'Europe',
+      EU_UK:         'EU & UK',
+      LATIN_AMERICA: 'Latin America',
+      MENA:          'Middle East & Africa',
+      NORTH_AMERICA: 'North America',
+      OCEANIA:       'Oceania',
+    };
 
+    // ── Guest-token management ────────────────────────────────────────────────
+    const TOKEN_KEY   = 'simphonia_guest_token';
+    const EXPIRY_KEY  = 'simphonia_guest_expiry';
+    // Refresh 60 s before actual expiry to avoid edge-case 401s
+    const EXPIRY_MARGIN_MS = 60_000;
+
+    async function getGuestToken() {
+      const stored = localStorage.getItem(TOKEN_KEY);
+      const expiry = Number(localStorage.getItem(EXPIRY_KEY) || 0);
+
+      if (stored && Date.now() < expiry - EXPIRY_MARGIN_MS) {
+        return stored;
+      }
+
+      const res = await fetch(`${API_BASE}/api/v1/auth/guest`, { method: 'POST' });
+      if (!res.ok) throw new Error(`Guest auth failed: ${res.status}`);
+
+      const envelope = await res.json();
+      const { token, expiresIn } = envelope.data ?? envelope;
+
+      localStorage.setItem(TOKEN_KEY,  token);
+      localStorage.setItem(EXPIRY_KEY, Date.now() + expiresIn * 1000);
+
+      return token;
+    }
+
+    // ── Helpers ───────────────────────────────────────────────────────────────
+    function flagEmoji(code) {
+      if (!code || code.length < 2) return '';
+      return [...code.toUpperCase().slice(0, 2)]
+        .map(c => String.fromCodePoint(c.charCodeAt(0) + 127397))
+        .join('');
+    }
+
+    function resolveImage(url) {
+      if (!url) return null;
+      if (url.startsWith('http') || url.startsWith('//')) return url;
+      return API_BASE + (url.startsWith('/') ? url : '/' + url);
+    }
+
+    async function apiFetch(path) {
+      const token = await getGuestToken();
+      const res = await fetch(`${API_BASE}${path}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+      const envelope = await res.json();
+      return envelope.data ?? envelope;
+    }
+    const regionTabsContainer = document.getElementById('region-tabs');
+    const grid            = document.getElementById('dest-grid');
+    const noResults       = document.getElementById('no-results');
+    const noResultsQ      = document.getElementById('no-results-query');
+    const countEl         = document.getElementById('dest-count');
+    const searchInput     = document.getElementById('dest-search');
+    const clearBtn        = document.getElementById('dest-search-clear');
+    const noResultsClear  = document.getElementById('no-results-clear');
+
+    // ── State ─────────────────────────────────────────────────────────────────
+    let allCountries      = [];   // full list, loaded once on init
+    let displayedCountries = [];  // current filtered list (by region)
+    let activeRegionCode  = null; // null = "All"
+
+    // ── DOM refs ─────────────────────────────────────────────────────────────
+    function setLoading(on) {
+      if (on) {
+        grid.innerHTML = `
+          <div style="grid-column:1/-1;text-align:center;padding:var(--space-3xl);color:var(--text-tertiary);">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
+                 style="animation:spin 1s linear infinite;display:inline-block;" aria-hidden="true">
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4
+                       M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+            </svg>
+            <p style="margin-top:var(--space-md)">Loading destinations…</p>
+          </div>`;
+        countEl.textContent = '';
+        noResults.style.display = 'none';
+      }
+    }
+
+    function showFetchError() {
+      grid.innerHTML = `
+        <p style="grid-column:1/-1;text-align:center;padding:var(--space-3xl);color:var(--color-text-muted,#888);">
+          Could not load destinations. Please try again later.
+        </p>`;
+    }
+
+    // ── Render grid ───────────────────────────────────────────────────────────
     function renderGrid(items) {
       grid.innerHTML = '';
-      noResults.style.display = items.length === 0 ? 'block' : 'none';
+      const total = displayedCountries.length;
+      const query = searchInput.value.trim();
 
-      items.forEach(d => {
+      noResults.style.display  = items.length === 0 ? 'flex' : 'none';
+      noResultsQ.textContent   = query
+        ? `"${query}"`
+        : (REGION_LABELS[activeRegionCode] ?? activeRegionCode ?? 'selected filter');
+
+      countEl.textContent = items.length === 0
+        ? ''
+        : items.length === total
+          ? `${total} countries`
+          : `${items.length} of ${total} countries`;
+
+      items.forEach((d, i) => {
+        const code  = d.countryCode ?? '';
+        const name  = d.countryName || code;
+        const flag  = flagEmoji(code);
+        const img   = resolveImage(d.imageUrl);
+
         const card = document.createElement('div');
         card.className = 'dest-card';
-        card.setAttribute('tabindex', '0');
+        card.tabIndex  = 0;
         card.setAttribute('role', 'article');
-        card.setAttribute('aria-label', d.name);
+        card.setAttribute('aria-label', name);
+        card.style.animationDelay = `${Math.min(i, 12) * 40}ms`;
         card.innerHTML = `
-          <img src="${d.img}" alt="${d.name}" class="dest-card__img" loading="lazy">
-          <div class="dest-card__body">
-            <div class="dest-card__name">${d.flag} ${d.name}${d.popular ? ' <span style="font-size:0.6875rem;font-weight:600;text-transform:uppercase;letter-spacing:0.06em;color:var(--accent);margin-left:0.375rem;">Popular</span>' : ''}</div>
-            <div class="dest-card__plans">${d.plans} plan${d.plans !== 1 ? 's' : ''} available</div>
-            <div style="display:flex;align-items:center;justify-content:space-between;margin-top:var(--space-sm);">
-              <span class="dest-card__price">from $${d.price}</span>
-              <span style="font-size:0.75rem;color:var(--text-tertiary);display:flex;align-items:center;gap:0.25rem;">
-                View in app
-                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-              </span>
-            </div>
+          <div class="dest-card__img-wrap">
+            ${img
+              ? `<img src="${img}" alt="${name}" class="dest-card__img" loading="lazy">`
+              : `<div class="dest-card__img"
+                      style="background:linear-gradient(135deg,var(--bg-elevated),var(--border-subtle));"
+                      aria-hidden="true"></div>`}
+            ${d.discount ? `<span class="dest-card__discount">-${d.discount}%</span>` : ''}
           </div>
-        `;
+          <div class="dest-card__body">
+            <div class="dest-card__name">${flag ? flag + '\u00A0' : ''}${name}</div>
+            ${d.startingPrice ? `<div style="font-size:.8125rem;color:var(--text-tertiary);margin-top:.25rem;">From €${d.startingPrice.toFixed(2)}</div>` : ''}
+          </div>`;
+        card.addEventListener('keydown', e => {
+          if (e.key === 'Enter' || e.key === ' ') card.click();
+        });
         grid.appendChild(card);
       });
     }
 
-    function filterDestinations() {
+    // ── Filter + search ───────────────────────────────────────────────────────
+    function applySearch() {
       const query = searchInput.value.toLowerCase().trim();
-      let filtered = destinations;
-
-      if (activeFilter === 'popular') {
-        filtered = filtered.filter(d => d.popular);
-      } else if (activeFilter !== 'all') {
-        filtered = filtered.filter(d => d.region === activeFilter);
-      }
-
-      if (query) {
-        filtered = filtered.filter(d => d.name.toLowerCase().includes(query));
-      }
-
+      clearBtn.hidden = !query;
+      const filtered = query
+        ? displayedCountries.filter(d =>
+            (d.countryName || d.countryCode || '').toLowerCase().includes(query))
+        : displayedCountries;
       renderGrid(filtered);
     }
 
-    filterTabs.forEach(tab => {
-      tab.addEventListener('click', () => {
-        filterTabs.forEach(t => t.classList.remove('filter-tab--active'));
-        tab.classList.add('filter-tab--active');
-        activeFilter = tab.dataset.filter;
-        filterDestinations();
-      });
+    // ── API calls ─────────────────────────────────────────────────────────────
+    async function loadAllCountries() {
+      setLoading(true);
+      try {
+        allCountries      = await apiFetch(`/api/v1/countries?currency=${CURRENCY}&lang=${LANG}`);
+        displayedCountries = allCountries;
+        applySearch();
+      } catch (err) {
+        console.error('[destinations] Failed to load countries:', err);
+        showFetchError();
+      }
+    }
+
+    async function loadCountriesForRegion(regionCode) {
+      setLoading(true);
+      try {
+        displayedCountries = await apiFetch(
+          `/api/v1/regions/${regionCode}/countries?currency=${CURRENCY}&lang=${LANG}`
+        );
+        applySearch();
+      } catch (err) {
+        console.error('[destinations] Failed to load region countries:', err);
+        showFetchError();
+      }
+    }
+
+    async function buildRegionTabs() {
+      try {
+        const regions = await apiFetch(`/api/v1/regions?currency=${CURRENCY}`);
+        regions.forEach(r => {
+          const label = REGION_LABELS[r.regionCode] ?? r.regionCode;
+          const btn   = document.createElement('button');
+          btn.className    = 'filter-tab';
+          btn.dataset.region = r.regionCode;
+          btn.textContent  = label;
+          regionTabsContainer.appendChild(btn);
+        });
+      } catch (err) {
+        console.error('[destinations] Failed to load regions:', err);
+      }
+    }
+
+    // ── Event listeners ───────────────────────────────────────────────────────
+    regionTabsContainer.addEventListener('click', e => {
+      const tab = e.target.closest('.filter-tab');
+      if (!tab) return;
+
+      regionTabsContainer.querySelectorAll('.filter-tab')
+        .forEach(t => t.classList.remove('filter-tab--active'));
+      tab.classList.add('filter-tab--active');
+
+      const code = tab.dataset.region;
+      activeRegionCode = code === 'all' ? null : code;
+      searchInput.value = '';
+      clearBtn.hidden   = true;
+
+      if (!activeRegionCode) {
+        displayedCountries = allCountries;
+        applySearch();
+      } else {
+        loadCountriesForRegion(activeRegionCode);
+      }
     });
 
-    searchInput.addEventListener('input', filterDestinations);
-    renderGrid(destinations);
+    searchInput.addEventListener('input', applySearch);
 
+    clearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      clearBtn.hidden   = true;
+      searchInput.focus();
+      applySearch();
+    });
+
+    noResultsClear.addEventListener('click', () => {
+      searchInput.value = '';
+      clearBtn.hidden   = true;
+      regionTabsContainer.querySelectorAll('.filter-tab')
+        .forEach(t => t.classList.remove('filter-tab--active'));
+      regionTabsContainer.querySelector('.filter-tab').classList.add('filter-tab--active');
+      activeRegionCode   = null;
+      displayedCountries = allCountries;
+      applySearch();
+    });
+
+    // ── Bootstrap ─────────────────────────────────────────────────────────────
+    buildRegionTabs();
+    loadAllCountries();
   </script>
+
+  <style>
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .dest-card__discount {
+      position: absolute;
+      top: .6rem;
+      right: .6rem;
+      background: var(--accent, #D4AF37);
+      color: #000;
+      font-size: .6875rem;
+      font-weight: 700;
+      letter-spacing: .03em;
+      padding: .2rem .45rem;
+      border-radius: 4px;
+      line-height: 1.4;
+      pointer-events: none;
+    }
+  </style>
 
 </body>
 </html>
-

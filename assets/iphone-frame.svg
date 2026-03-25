@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 430 880" fill="none">
+  <!-- iPhone 17 Pro Max frame -->
+  <!-- Outer body -->
+  <rect x="2" y="2" width="426" height="876" rx="68" ry="68" fill="#1a1a1a" stroke="#3a3a3a" stroke-width="2"/>
+  <!-- Inner bezel -->
+  <rect x="8" y="8" width="414" height="864" rx="62" ry="62" fill="#111"/>
+  <!-- Screen area -->
+  <rect x="14" y="14" width="402" height="852" rx="56" ry="56" fill="#000"/>
+  <!-- Dynamic Island -->
+  <rect x="155" y="22" width="120" height="34" rx="17" ry="17" fill="#1a1a1a"/>
+  <!-- Camera dot -->
+  <circle cx="195" cy="39" r="6" fill="#0d0d0d" stroke="#222" stroke-width="1"/>
+  <!-- Side buttons - Power -->
+  <rect x="427" y="180" width="5" height="80" rx="2" fill="#2a2a2a"/>
+  <!-- Side buttons - Volume Up -->
+  <rect x="-2" y="160" width="5" height="50" rx="2" fill="#2a2a2a"/>
+  <!-- Side buttons - Volume Down -->
+  <rect x="-2" y="220" width="5" height="50" rx="2" fill="#2a2a2a"/>
+  <!-- Action button -->
+  <rect x="-2" y="120" width="5" height="30" rx="2" fill="#2a2a2a"/>
+  <!-- Top edge highlight -->
+  <line x1="80" y1="3" x2="350" y2="3" stroke="rgba(255,255,255,0.15)" stroke-width="1" stroke-linecap="round"/>
+  <!-- Titanium finish subtle gradient overlay -->
+  <rect x="2" y="2" width="426" height="876" rx="68" ry="68" fill="url(#titanium)" opacity="0.04"/>
+  <defs>
+    <linearGradient id="titanium" x1="0" y1="0" x2="430" y2="880">
+      <stop offset="0%" stop-color="#fff"/>
+      <stop offset="50%" stop-color="#888"/>
+      <stop offset="100%" stop-color="#fff"/>
+    </linearGradient>
+  </defs>
+</svg>
+
