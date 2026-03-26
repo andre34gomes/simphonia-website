@@ -7,13 +7,22 @@
   <title>Support & FAQ — Simphonia eSIM</title>
   <meta name="description" content="Get help with your Simphonia eSIM. Browse frequently asked questions or contact our 24/7 support team.">
   <meta name="theme-color" content="#121212">
+  <link rel="canonical" href="https://simphonia.pt/support/">
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
   <link rel="shortcut icon" href="../assets/favicon.svg">
   <link rel="mask-icon" href="../assets/favicon.svg" color="#D4AF37">
-  <script>!function(){var t;try{t=localStorage.getItem("simphonia-theme")}catch(e){}if(!t)t=matchMedia("(prefers-color-scheme:light)").matches?"light":"dark";document.documentElement.dataset.theme=t;if(t==="light"){var m=document.querySelector("meta[name=theme-color]");if(m)m.content="#FFF5F1"}}()</script>
+  <script src="../js/theme-init.js"></script>
+  <!-- Open Graph -->
+  <meta property="og:title" content="Support & FAQ — Simphonia eSIM">
+  <meta property="og:description" content="Get help with your Simphonia eSIM. Browse frequently asked questions or contact our 24/7 support team.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://simphonia.pt/support/">
+  <meta property="og:image" content="https://simphonia.pt/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://simphonia.pt/assets/og-image.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/support.css">
 
   <!-- FAQ Structured Data -->
@@ -59,12 +68,12 @@
     <section class="support-hero">
       <div class="container">
         <span class="label reveal">Support</span>
-        <h1 class="reveal" style="margin-top:var(--space-md);">How Can We Help?</h1>
-        <p class="reveal" style="font-size:1.125rem;max-width:520px;margin:var(--space-lg) auto 0;">
+        <h1 class="reveal">How Can We Help?</h1>
+        <p class="reveal">
           Find answers to common questions or get in touch with our team. We're here 24/7.
         </p>
 
-        <div class="search-bar reveal" style="margin-top:var(--space-2xl);">
+        <div class="search-bar reveal">
           <svg class="search-bar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
           </svg>
@@ -74,9 +83,9 @@
     </section>
 
     <!-- FAQ -->
-    <section class="section" style="padding-top:0;">
+    <section class="section section--no-top">
       <div class="container">
-        <div class="section-header" style="margin-bottom:var(--space-2xl);">
+        <div class="section-header section-header--compact">
           <h2>Frequently Asked Questions</h2>
         </div>
 
@@ -189,7 +198,7 @@
             <label for="contact-message">Message</label>
             <textarea id="contact-message" class="form-input" placeholder="Describe your issue or question..." required></textarea>
           </div>
-          <button type="submit" class="btn btn--primary btn--lg" style="align-self:flex-start;">Send Message</button>
+          <button type="submit" class="btn btn--primary btn--lg">Send Message</button>
         </form>
       </div>
     </section>
@@ -198,20 +207,20 @@
     <section class="section">
       <div class="container">
         <div class="grid grid--3">
-          <div class="glass-card reveal" style="padding:var(--space-2xl);text-align:center;">
-            <div style="font-size:2rem;margin-bottom:var(--space-md);">💬</div>
-            <h3 style="margin-bottom:var(--space-sm);">In-App Chat</h3>
-            <p style="font-size:0.9375rem;">Get instant help from our AI assistant directly in the Simphonia app.</p>
+          <div class="glass-card reveal">
+            <div class="contact-channel__icon">💬</div>
+            <h3>In-App Chat</h3>
+            <p>Get instant help from our AI assistant directly in the Simphonia app.</p>
           </div>
-          <div class="glass-card reveal" style="padding:var(--space-2xl);text-align:center;">
-            <div style="font-size:2rem;margin-bottom:var(--space-md);">📧</div>
-            <h3 style="margin-bottom:var(--space-sm);">Email</h3>
-            <p style="font-size:0.9375rem;">Reach us at <a href="mailto:support@simphonia.pt" style="color:var(--accent);">support@simphonia.pt</a></p>
+          <div class="glass-card reveal">
+            <div class="contact-channel__icon">📧</div>
+            <h3>Email</h3>
+            <p>Reach us at <a href="mailto:support@simphonia.pt" class="text-accent">support@simphonia.pt</a></p>
           </div>
-          <div class="glass-card reveal" style="padding:var(--space-2xl);text-align:center;">
-            <div style="font-size:2rem;margin-bottom:var(--space-md);">📱</div>
-            <h3 style="margin-bottom:var(--space-sm);">Social</h3>
-            <p style="font-size:0.9375rem;">Follow us on Instagram and X for updates and travel tips.</p>
+          <div class="glass-card reveal">
+            <div class="contact-channel__icon">📱</div>
+            <h3>Social</h3>
+            <p>Follow us on Instagram and X for updates and travel tips.</p>
           </div>
         </div>
       </div>
@@ -219,83 +228,17 @@
 
   </main>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-  <script defer src="../js/components/layout.js?v=20260325-1"></script>
-  <script defer src="../js/animations.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+          integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+          crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+          integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
+          crossorigin="anonymous" defer></script>
+  <script defer src="../js/components/layout.js?v=20260326-10"></script>
+  <script defer src="../js/animations.js?v=20260326-10"></script>
   <script defer src="../js/globe.js"></script>
-  <script defer src="../js/main.js?v=20260325-1"></script>
-
-  <script type="module">
-    // FAQ search
-    const faqSearch = document.getElementById('faq-search');
-    const faqItems = document.querySelectorAll('.faq-item');
-
-    if (faqSearch) {
-      faqSearch.addEventListener('input', () => {
-        const query = faqSearch.value.toLowerCase().trim();
-        faqItems.forEach(item => {
-          const text = item.textContent.toLowerCase();
-          const keywords = (item.dataset.keywords || '').toLowerCase();
-          const match = !query || text.includes(query) || keywords.includes(query);
-          item.style.display = match ? '' : 'none';
-        });
-      });
-    }
-
-    // Contact form validation + inline feedback
-    const form = document.getElementById('contact-form');
-    if (form) {
-      const submitBtn = form.querySelector('button[type="submit"]');
-
-      function showFormState(type, message) {
-        let el = document.getElementById('form-feedback');
-        if (!el) {
-          el = document.createElement('div');
-          el.id = 'form-feedback';
-          el.style.cssText = 'margin-top:var(--space-md);padding:var(--space-md) var(--space-lg);border-radius:var(--radius-md);font-size:0.9375rem;font-weight:500;display:flex;align-items:center;gap:0.625rem;animation:result-pop 0.4s cubic-bezier(0.16,1,0.3,1)';
-          submitBtn.parentNode.insertBefore(el, submitBtn.nextSibling);
-        }
-        if (type === 'success') {
-          el.style.background = 'rgba(74,222,128,0.1)';
-          el.style.border = '1px solid rgba(74,222,128,0.3)';
-          el.style.color = '#4ade80';
-          el.innerHTML = '✓ ' + message;
-        } else {
-          el.style.background = 'rgba(248,113,113,0.1)';
-          el.style.border = '1px solid rgba(248,113,113,0.3)';
-          el.style.color = '#f87171';
-          el.innerHTML = '⚠ ' + message;
-        }
-        el.style.display = 'flex';
-      }
-
-      form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        const name = document.getElementById('contact-name').value.trim();
-        const email = document.getElementById('contact-email').value.trim();
-        const message = document.getElementById('contact-message').value.trim();
-
-        if (!name || !email || !message) {
-          showFormState('error', 'Please fill in all required fields.');
-          return;
-        }
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          showFormState('error', 'Please enter a valid email address.');
-          return;
-        }
-
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Sending…';
-        setTimeout(() => {
-          showFormState('success', 'Message sent! We\'ll get back to you within 24 hours.');
-          form.reset();
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'Send Message';
-        }, 900);
-      });
-    }
-  </script>
+  <script defer src="../js/main.js?v=20260326-10"></script>
+  <script type="module" src="../js/support.js"></script>
 
 </body>
 </html>

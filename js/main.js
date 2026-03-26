@@ -6,7 +6,7 @@
  * + globe.js) have already run.
  */
 
-const LAYOUT_ASSET_VERSION = '20260325-1';
+const LAYOUT_ASSET_VERSION = '20260326-10';
 const REQUIRED_LAYOUT_APIS = [
   'initTheme',
   'injectShell',
@@ -75,12 +75,13 @@ function ensureLayoutBootstrap() {
 function revealGsapFallbacks() {
   if (document.documentElement.classList.contains('gsap-ready')) return;
 
-  // Generic reveal classes — CSS hides them with visibility:hidden
+  // Generic reveal classes — clear clip-path and any residual transforms
   document.querySelectorAll('.reveal,.reveal--left,.reveal--right,.reveal--scale')
     .forEach(function (el) {
       el.style.opacity = '1';
       el.style.visibility = 'visible';
       el.style.transform = 'none';
+      el.style.clipPath = 'none';
     });
 
   // Hero-specific elements set to autoAlpha:0 by _hero()
@@ -96,7 +97,7 @@ function revealGsapFallbacks() {
     '.about-story__img', '.about-story > div',
     // Section-specific elements hidden by GSAP batch
     '.value-card', '.team-card', '.feat-card', '.step-card',
-    '.dest-card', '.dest-grid-card', '.faq-item',
+    '.dest-card', '.faq-item',
     // Section header children
     '.section-header .label', '.section-header h2', '.section-header p',
   ].forEach(function (sel) {
@@ -104,6 +105,7 @@ function revealGsapFallbacks() {
       el.style.opacity = '1';
       el.style.visibility = 'visible';
       el.style.transform = 'none';
+      el.style.clipPath = 'none';
     });
   });
 
@@ -113,6 +115,7 @@ function revealGsapFallbacks() {
       el.style.opacity = '1';
       el.style.visibility = 'visible';
       el.style.transform = 'none';
+      el.style.clipPath = 'none';
     });
 
   // Also kick off typing effect if it hasn't started
@@ -170,9 +173,48 @@ async function bootstrapSite() {
 
   // 11. Native anchor navigation + focus polish
   initSmoothScroll();
+
+  // 12. Legal page table-of-contents active-link tracker
+  initLegalToc();
 }
 
 bootstrapSite();
+
+// ============================================================
+// Legal TOC — shared by /privacy/ and /terms/
+// Highlights the sidebar link matching the section currently
+// visible at the top of the viewport.
+// ============================================================
+function initLegalToc() {
+  const links = document.querySelectorAll('.legal-toc__link');
+  if (!links.length) return;
+
+  const sections = Array.from(links)
+    .map(l => document.querySelector(l.getAttribute('href')))
+    .filter(Boolean);
+
+  if (!sections.length) return;
+
+  const navH = parseInt(
+    getComputedStyle(document.documentElement).getPropertyValue('--nav-height'), 10
+  ) || 72;
+
+  function update() {
+    let current = sections[0];
+    sections.forEach(s => {
+      if (s.getBoundingClientRect().top <= navH + 40) current = s;
+    });
+    links.forEach(l => {
+      l.classList.toggle(
+        'legal-toc__link--active',
+        l.getAttribute('href') === '#' + current.id
+      );
+    });
+  }
+
+  window.addEventListener('scroll', update, { passive: true });
+  update();
+}
 
 // ============================================================
 // Custom Cursor
@@ -199,7 +241,7 @@ function initCursor() {
 
   const SEL = [
     'a', 'button', '.glass-card', '.feat-card', '.bento-item', '.dest-card',
-    '.dest-grid-card', '.feature-card', '.step-card', '.metric-card',
+    '.feature-card', '.step-card', '.metric-card',
     '.filter-tab', '.faq-item summary', '.team-card',
     'input', 'textarea', 'select',
   ].join(',');

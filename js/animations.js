@@ -47,14 +47,12 @@ function _st(trigger, startPct) {
 
 function _batchReveal(selector, fromVars, tweenVars, batchMax) {
   if (!document.querySelector(selector)) return;
+  var from = Object.assign({ clipPath: 'inset(0 0 100% 0)' }, fromVars);
+  var to   = Object.assign({ clipPath: 'inset(0 0 0% 0)', overwrite: 'auto' }, tweenVars);
   ScrollTrigger.batch(selector, {
     batchMax: batchMax || 4,
     onEnter: function (batch) {
-      gsap.fromTo(
-        batch,
-        { autoAlpha: 0, ...fromVars },
-        { autoAlpha: 1, ...tweenVars, overwrite: 'auto' }
-      );
+      gsap.fromTo(batch, from, to);
     },
     start: 'top 88%',
     once: true,
@@ -109,7 +107,12 @@ function _scheduleScrollRefresh(options) {
 /* ───────────────────────────────────────────────────────────
    PUBLIC: initAnimations()
    ─────────────────────────────────────────────────────────── */
+var _animationsInitialized = false;
+
 function initAnimations() {
+  if (_animationsInitialized) return;
+  _animationsInitialized = true;
+
   _waitForLibs()
     .then(function () {
       if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -138,10 +141,10 @@ function initAnimations() {
       _destCardsHover3D();
       _ctaSectionReveal();
       _sectionDividers();
+      _howItWorksTimeline();
       _numberCountUp();
 
       // Enhanced animations
-      _destGridParallax();
       // _phoneFloat(); // phone float disabled — static mockup with badge chips
       _footerReveal();
       _featCardIconPulse();
@@ -150,7 +153,6 @@ function initAnimations() {
       // ── New in v6 ──
       _sectionHeaderSplit();
 
-      _destGridStagger();
       _stepCardIconHover();
       _featCardRevealPulse();
       _ctaButtonEntrance();
@@ -176,6 +178,9 @@ function _hero() {
     gsap.set([
       '.hero__h1 .line-1',
       '.hero__h1 .line-2',
+    ], { clipPath: 'inset(0 0 100% 0)' });
+
+    gsap.set([
       '.hero__desc',
       '.hero__actions',
       '.hero__trust-points',
@@ -186,12 +191,16 @@ function _hero() {
     const tl = gsap.timeline({ defaults: { ease: 'power3.out', overwrite: 'auto' } });
 
     tl
-      .fromTo('.hero__h1 .line-1', { y: 50 }, { autoAlpha: 1, y: 0, duration: 0.75 }, 0.15)
-      .fromTo('.hero__h1 .line-2', { y: 30 }, { autoAlpha: 1, y: 0, duration: 0.6 }, 0.5)
-      .fromTo('.hero__desc',       { y: 22 }, { autoAlpha: 1, y: 0, duration: 0.65 }, 0.65)
-      .fromTo('.hero__actions',    { y: 18 }, { autoAlpha: 1, y: 0, duration: 0.6  }, 0.75)
-      .fromTo('.hero__trust-points', { y: 12 }, { autoAlpha: 1, y: 0, duration: 0.5 }, 0.85)
-      .to('.iphone-mockup',        { autoAlpha: 1, x: 0, duration: 1.1, ease: 'power2.out' }, 0.15);
+      .fromTo('.hero__h1 .line-1',
+        { clipPath: 'inset(0 0 100% 0)' },
+        { clipPath: 'inset(0 0 0% 0)', duration: 0.55 }, 0.1)
+      .fromTo('.hero__h1 .line-2',
+        { clipPath: 'inset(0 0 100% 0)' },
+        { clipPath: 'inset(0 0 0% 0)', duration: 0.5  }, 0.38)
+      .fromTo('.hero__desc',       { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.5  }, 0.55)
+      .fromTo('.hero__actions',    { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.45 }, 0.65)
+      .fromTo('.hero__trust-points', { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.4 }, 0.75)
+      .to('.iphone-mockup',        { autoAlpha: 1, x: 0, duration: 1.0, ease: 'power2.out' }, 0.1);
 
     return;
   }
@@ -221,8 +230,8 @@ function _genericReveals() {
   document.querySelectorAll('.reveal').forEach(el => {
     if (_skip(el)) return;
     gsap.fromTo(el,
-      { autoAlpha: 0, y: 28 },
-      { autoAlpha: 1, y: 0, duration: 0.75, ease: 'power3.out',
+      { clipPath: 'inset(0 0 100% 0)', y: 10 },
+      { clipPath: 'inset(0 0 0% 0)', y: 0, duration: 0.5, ease: 'power2.out',
         overwrite: 'auto', scrollTrigger: _st(el) }
     );
   });
@@ -230,8 +239,8 @@ function _genericReveals() {
   document.querySelectorAll('.reveal--left').forEach(el => {
     if (_skip(el)) return;
     gsap.fromTo(el,
-      { autoAlpha: 0, x: -32 },
-      { autoAlpha: 1, x: 0, duration: 0.8, ease: 'power3.out',
+      { clipPath: 'inset(0 0 100% 0)', x: -14 },
+      { clipPath: 'inset(0 0 0% 0)', x: 0, duration: 0.55, ease: 'power2.out',
         overwrite: 'auto', scrollTrigger: _st(el, '85%') }
     );
   });
@@ -239,8 +248,8 @@ function _genericReveals() {
   document.querySelectorAll('.reveal--right').forEach(el => {
     if (_skip(el)) return;
     gsap.fromTo(el,
-      { autoAlpha: 0, x: 32 },
-      { autoAlpha: 1, x: 0, duration: 0.8, ease: 'power3.out',
+      { clipPath: 'inset(0 0 100% 0)', x: 14 },
+      { clipPath: 'inset(0 0 0% 0)', x: 0, duration: 0.55, ease: 'power2.out',
         overwrite: 'auto', scrollTrigger: _st(el, '85%') }
     );
   });
@@ -248,8 +257,8 @@ function _genericReveals() {
   document.querySelectorAll('.reveal--scale').forEach(el => {
     if (_skip(el)) return;
     gsap.fromTo(el,
-      { autoAlpha: 0, scale: 0.93 },
-      { autoAlpha: 1, scale: 1, duration: 0.75, ease: 'power3.out',
+      { clipPath: 'inset(0 0 100% 0)', scale: 0.97 },
+      { clipPath: 'inset(0 0 0% 0)', scale: 1, duration: 0.5, ease: 'power2.out',
         overwrite: 'auto', scrollTrigger: _st(el) }
     );
   });
@@ -260,8 +269,8 @@ function _genericReveals() {
 // ─────────────────────────────────────────────────────────
 function _stepCards() {
   _batchReveal('.step-card',
-    { y: 50 },
-    { y: 0, duration: 0.75, ease: 'power3.out', stagger: 0.15 },
+    { y: 16 },
+    { y: 0, duration: 0.5, ease: 'power2.out', stagger: 0.1 },
     3
   );
 }
@@ -271,13 +280,13 @@ function _stepCards() {
 // ─────────────────────────────────────────────────────────
 function _featureCards() {
   _batchReveal('.feat-card',
-    { y: 40 },
-    { y: 0, duration: 0.7, ease: 'power3.out', stagger: 0.1 },
+    { y: 12 },
+    { y: 0, duration: 0.48, ease: 'power2.out', stagger: 0.08 },
     3
   );
   _batchReveal('.feature-card',
-    { y: 40 },
-    { y: 0, duration: 0.7, ease: 'power3.out', stagger: 0.12 },
+    { y: 12 },
+    { y: 0, duration: 0.48, ease: 'power2.out', stagger: 0.09 },
     3
   );
 }
@@ -298,13 +307,9 @@ function _stickyShowcase() {
   var panelCount = panels.length;
   if (!panelCount) return;
 
-  /* ── Mobile: flat stacked layout, no animation ── */
-  if (window.innerWidth < 1024) {
-    panels.forEach(function(p) {
-      gsap.set(p, { clearProps: 'all' });
-    });
-    return;
-  }
+  /* Vertical layout on narrow viewports is handled by CSS only —
+     always use the pinned GSAP showcase so animations are preserved. */
+  // var isCompactViewport = window.innerWidth < 1024;
 
   /* ── Build segment fill bars ── */
   var segFills = [];
@@ -324,6 +329,128 @@ function _stickyShowcase() {
 
   var lastActive = -1;
   var screens    = section.querySelectorAll('.sas-screen');
+
+  function showScreen(newIdx) {
+    if (!screens.length || newIdx === lastActive || !screens[newIdx]) return;
+
+    screens.forEach(function (screen, i) {
+      gsap.killTweensOf(screen);
+      if (i !== newIdx) {
+        gsap.to(screen, {
+          opacity: 0,
+          duration: 0.28,
+          ease: 'power2.out',
+          overwrite: 'auto',
+        });
+        screen.style.pointerEvents = 'none';
+      }
+    });
+
+    gsap.fromTo(screens[newIdx],
+      { opacity: Number(gsap.getProperty(screens[newIdx], 'opacity')) || 0 },
+      {
+        opacity: 1,
+        duration: 0.4,
+        ease: 'power2.out',
+        overwrite: 'auto',
+      }
+    );
+    screens[newIdx].style.pointerEvents = 'auto';
+    lastActive = newIdx;
+  }
+
+  function setupCompactShowcase() {
+    if (segsEl) {
+      segsEl.querySelectorAll('.showcase-segment__fill').forEach(function (fill) {
+        fill.remove();
+      });
+    }
+
+    screens.forEach(function (screen, i) {
+      gsap.set(screen, { opacity: i === 0 ? 1 : 0, scale: 1, y: 0 });
+      screen.style.pointerEvents = i === 0 ? 'auto' : 'none';
+    });
+    lastActive = 0;
+
+    panels.forEach(function (panel, idx) {
+      var ghostNum = panel.querySelector('.showcase-panel__ghost-num');
+      var meta     = panel.querySelector('.showcase-panel__meta');
+      var title    = panel.querySelector('.showcase-panel__title');
+      var desc     = panel.querySelector('.showcase-panel__desc');
+
+      if (ghostNum) {
+        gsap.fromTo(ghostNum,
+          { opacity: 0, x: 24 },
+          {
+            opacity: 0.045,
+            x: 0,
+            duration: 0.7,
+            ease: 'power3.out',
+            overwrite: 'auto',
+            scrollTrigger: { trigger: panel, start: 'top 88%', once: true },
+          }
+        );
+      }
+
+      if (meta) {
+        gsap.fromTo(meta,
+          { clipPath: 'inset(0 0 100% 0)', y: 8 },
+          {
+            clipPath: 'inset(0 0 0% 0)',
+            y: 0,
+            duration: 0.38,
+            ease: 'power2.out',
+            overwrite: 'auto',
+            scrollTrigger: { trigger: panel, start: 'top 88%', once: true },
+          }
+        );
+      }
+
+      if (title) {
+        gsap.fromTo(title,
+          { clipPath: 'inset(0 0 100% 0)', y: 10 },
+          {
+            clipPath: 'inset(0 0 0% 0)',
+            y: 0,
+            duration: 0.52,
+            ease: 'power2.out',
+            overwrite: 'auto',
+            scrollTrigger: { trigger: panel, start: 'top 86%', once: true },
+          }
+        );
+      }
+
+      if (desc) {
+        gsap.fromTo(desc,
+          { clipPath: 'inset(0 0 100% 0)', y: 8 },
+          {
+            clipPath: 'inset(0 0 0% 0)',
+            y: 0,
+            duration: 0.44,
+            ease: 'power2.out',
+            overwrite: 'auto',
+            scrollTrigger: { trigger: panel, start: 'top 84%', once: true },
+          }
+        );
+      }
+
+      ScrollTrigger.create({
+        trigger: panel,
+        start: 'top center',
+        end: 'bottom center',
+        onEnter: function () { showScreen(idx); },
+        onEnterBack: function () { showScreen(idx); },
+      });
+    });
+  }
+
+  /* Compact (non-animated) showcase is no longer used —
+     vertical layout with animations is handled by the CSS media queries.
+  if (isCompactViewport) {
+    setupCompactShowcase();
+    return;
+  }
+  */
 
   /* ── Transition between panels + phone screens ── */
   function transitionTo(newIdx, prevIdx) {
@@ -444,7 +571,11 @@ function _stickyShowcase() {
       maxH = Math.max(maxH, p.offsetHeight);
       gsap.set(p, { position: 'absolute', opacity: 0, y: 40 });
     });
-    if (maxH) stage.style.minHeight = (maxH + 24) + 'px';
+    /* On desktop, set a fixed min-height so absolute panels don't collapse the stage.
+       On ≤1024 px the stage uses flex:1 inside a stretched grid, so skip the inline value. */
+    if (maxH && window.innerWidth > 1024) {
+      stage.style.minHeight = (maxH + 24) + 'px';
+    }
 
     /* Hide all phone screens; screen 0 shown with first panel */
     if (screens.length) {
@@ -528,10 +659,10 @@ function _faqItems() {
 
   gsap.fromTo(
     list.querySelectorAll('.faq-item'),
-    { autoAlpha: 0, y: 18 },
+    { clipPath: 'inset(0 0 100% 0)', y: 8 },
     {
-      autoAlpha: 1, y: 0, duration: 0.5, stagger: 0.08,
-      ease: 'power3.out', overwrite: 'auto',
+      clipPath: 'inset(0 0 0% 0)', y: 0, duration: 0.42, stagger: 0.07,
+      ease: 'power2.out', overwrite: 'auto',
       scrollTrigger: { trigger: list, start: 'top 82%', once: true },
     }
   );
@@ -547,23 +678,24 @@ function _subpageHeroParallax() {
     var p = hero.querySelector('p');
     var label = hero.querySelector('.label');
 
-    // Fade in + rise on load
+    // Clip-path wipe for the eyebrow label and headline — they reveal, not load
     if (label) {
       gsap.fromTo(label,
-        { autoAlpha: 0, y: 30 },
-        { autoAlpha: 1, y: 0, duration: 0.7, delay: 0.1, ease: 'power3.out' }
+        { clipPath: 'inset(0 0 100% 0)' },
+        { clipPath: 'inset(0 0 0% 0)', duration: 0.4, delay: 0.1, ease: 'power2.out' }
       );
     }
     if (h1) {
       gsap.fromTo(h1,
-        { autoAlpha: 0, y: 50 },
-        { autoAlpha: 1, y: 0, duration: 0.9, delay: 0.2, ease: 'power3.out' }
+        { clipPath: 'inset(0 0 100% 0)' },
+        { clipPath: 'inset(0 0 0% 0)', duration: 0.52, delay: 0.18, ease: 'power2.out' }
       );
     }
+    // Secondary elements use a short fade (not scroll-triggered, just page load)
     if (p) {
       gsap.fromTo(p,
-        { autoAlpha: 0, y: 30 },
-        { autoAlpha: 1, y: 0, duration: 0.7, delay: 0.35, ease: 'power3.out' }
+        { autoAlpha: 0, y: 16 },
+        { autoAlpha: 1, y: 0, duration: 0.5, delay: 0.32, ease: 'power3.out' }
       );
     }
 
@@ -654,14 +786,19 @@ function _valueCards3D() {
   var cards = document.querySelectorAll('.value-card');
   if (!cards.length) return;
 
+  // Strip .reveal so the CSS clip-path pre-state doesn't hide these cards —
+  // this function owns the reveal, not _genericReveals().
+  cards.forEach(function(card) { card.classList.remove('reveal'); });
+  gsap.set(cards, { autoAlpha: 0 });
+
   ScrollTrigger.batch(cards, {
     batchMax: 4,
     onEnter: function(batch) {
       gsap.fromTo(batch,
-        { autoAlpha: 0, y: 60, scale: 0.88, rotateX: 8 },
+        { autoAlpha: 0, y: 28, rotateX: 5 },
         {
-          autoAlpha: 1, y: 0, scale: 1, rotateX: 0,
-          duration: 0.85, stagger: 0.12,
+          autoAlpha: 1, y: 0, rotateX: 0,
+          duration: 0.7, stagger: 0.1,
           ease: 'back.out(1.4)', overwrite: 'auto',
         }
       );
@@ -702,14 +839,17 @@ function _teamCardsStagger() {
   var cards = document.querySelectorAll('.team-card');
   if (!cards.length) return;
 
+  cards.forEach(function(card) { card.classList.remove('reveal'); });
+  gsap.set(cards, { autoAlpha: 0 });
+
   ScrollTrigger.batch(cards, {
     batchMax: 4,
     onEnter: function(batch) {
       gsap.fromTo(batch,
-        { autoAlpha: 0, y: 50, scale: 0.85, rotateY: -15 },
+        { autoAlpha: 0, y: 22, rotateY: -10 },
         {
-          autoAlpha: 1, y: 0, scale: 1, rotateY: 0,
-          duration: 0.8, stagger: 0.1,
+          autoAlpha: 1, y: 0, rotateY: 0,
+          duration: 0.65, stagger: 0.09,
           ease: 'back.out(1.6)', overwrite: 'auto',
         }
       );
@@ -762,16 +902,16 @@ function _ctaSectionReveal() {
     var revealChildren = inner.querySelectorAll('.reveal, .reveal--scale');
 
     gsap.fromTo(inner,
-      { autoAlpha: 0, scale: 0.92, y: 40 },
+      { clipPath: 'inset(0 0 100% 0)', y: 12 },
       {
-        autoAlpha: 1, scale: 1, y: 0,
-        duration: 1, ease: 'power3.out', overwrite: 'auto',
+        clipPath: 'inset(0 0 0% 0)', y: 0,
+        duration: 0.6, ease: 'power2.out', overwrite: 'auto',
         scrollTrigger: { trigger: cta, start: 'top 82%', once: true },
         onStart: function() {
           // Immediately make inner reveal children visible
           // (they were skipped by _genericReveals via _isCTAChild)
           revealChildren.forEach(function(child) {
-            gsap.set(child, { autoAlpha: 1, y: 0, scale: 1 });
+            gsap.set(child, { clipPath: 'none', y: 0 });
           });
         },
       }
@@ -780,16 +920,102 @@ function _ctaSectionReveal() {
 }
 
 // ─────────────────────────────────────────────────────────
-// 19. SECTION DIVIDERS — horizontal line grow animation
+// 19. SECTION DIVIDERS — inject between sections + animate
+//     Diamond dot appears first, then gradient lines grow
+//     outward from center. Applied to every section transition
+//     on every page — no exclusions.
 // ─────────────────────────────────────────────────────────
 function _sectionDividers() {
-  var dividers = document.querySelectorAll('.section-divider');
-  dividers.forEach(function(d) {
-    gsap.fromTo(d,
-      { scaleX: 0 },
+  var main = document.querySelector('main');
+  if (!main) return;
+
+  // Inject a static divider before every section except the hero (index 0).
+  // Guards:
+  //  1. Filter out elements that are already section-dividers from the walk.
+  //  2. Skip any element whose immediate previous sibling is already a divider
+  //     — prevents double-injection if this function ever runs more than once.
+  var children = Array.from(main.children).filter(function(el) {
+    return !el.classList.contains('section-divider');
+  });
+
+  children.forEach(function(el, i) {
+    if (i === 0) return;
+    // Only inject before actual content elements — never before <script>, <style>, etc.
+    var tag = el.tagName.toLowerCase();
+    if (tag !== 'section' && tag !== 'div' && tag !== 'article' && tag !== 'aside') return;
+    // Belt-and-suspenders: skip if a divider is already sitting right before this element
+    var prev = el.previousElementSibling;
+    if (prev && prev.classList.contains('section-divider')) return;
+
+    var div = document.createElement('div');
+    div.className = 'section-divider';
+    div.setAttribute('aria-hidden', 'true');
+    div.innerHTML =
+      '<span class="section-divider__line section-divider__line--left"></span>' +
+      '<span class="section-divider__dot"></span>' +
+      '<span class="section-divider__line section-divider__line--right"></span>';
+    main.insertBefore(div, el);
+  });
+}
+
+// ─────────────────────────────────────────────────────────
+// 19b. HOW-IT-WORKS TIMELINE — track scrub + node + card reveals
+// ─────────────────────────────────────────────────────────
+function _howItWorksTimeline() {
+  var track = document.querySelector('.timeline__track');
+  if (!track) return; // only runs on the how-it-works page
+
+  // Track grows top-to-bottom as user scrolls through the section
+  gsap.fromTo(track,
+    { scaleY: 0 },
+    {
+      scaleY: 1,
+      ease: 'none',
+      transformOrigin: 'top center',
+      scrollTrigger: {
+        trigger: '#steps-timeline',
+        start: 'top 75%',
+        end: 'bottom 40%',
+        scrub: 1.2,
+      },
+    }
+  );
+
+  // Nodes scale in one by one
+  document.querySelectorAll('.timeline__node').forEach(function(node) {
+    gsap.fromTo(node,
+      { scale: 0, autoAlpha: 0 },
       {
-        scaleX: 1, duration: 1.2, ease: 'power3.inOut',
-        scrollTrigger: { trigger: d, start: 'top 90%', once: true },
+        scale: 1, autoAlpha: 1,
+        duration: 0.55,
+        ease: 'back.out(2)',
+        scrollTrigger: { trigger: node, start: 'top 82%', once: true },
+      }
+    );
+  });
+
+  // Left cards slide in from the left
+  document.querySelectorAll('.timeline__step--left .timeline__card').forEach(function(card) {
+    gsap.fromTo(card,
+      { autoAlpha: 0, x: -70 },
+      {
+        autoAlpha: 1, x: 0,
+        duration: 0.85,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: card, start: 'top 80%', once: true },
+      }
+    );
+  });
+
+  // Right cards slide in from the right
+  document.querySelectorAll('.timeline__step--right .timeline__card').forEach(function(card) {
+    gsap.fromTo(card,
+      { autoAlpha: 0, x: 70 },
+      {
+        autoAlpha: 1, x: 0,
+        duration: 0.85,
+        ease: 'power3.out',
+        scrollTrigger: { trigger: card, start: 'top 80%', once: true },
       }
     );
   });
@@ -829,32 +1055,6 @@ function _numberCountUp() {
   });
 }
 
-// ─────────────────────────────────────────────────────────
-// 22. DESTINATION GRID PARALLAX — images scroll slower than overlay
-// ─────────────────────────────────────────────────────────
-function _destGridParallax() {
-  var cards = document.querySelectorAll('.dest-grid-card');
-  if (!cards.length || window.innerWidth < 768) return;
-
-  cards.forEach(function(card) {
-    var img = card.querySelector('img');
-    if (!img) return;
-
-    gsap.fromTo(img,
-      { y: -20 },
-      {
-        y: 20,
-        ease: 'none',
-        scrollTrigger: {
-          trigger: card,
-          start: 'top bottom',
-          end: 'bottom top',
-          scrub: 1.5,
-        },
-      }
-    );
-  });
-}
 
 // ─────────────────────────────────────────────────────────
 // 23. PHONE FLOAT — activate floating animation after hero entrance
@@ -898,25 +1098,25 @@ function _footerReveal() {
 
   if (brand) {
     tl.fromTo(brand,
-      { autoAlpha: 0, y: 24 },
-      { autoAlpha: 1, y: 0, duration: 0.6, ease: 'power3.out' },
+      { clipPath: 'inset(0 0 100% 0)' },
+      { clipPath: 'inset(0 0 0% 0)', duration: 0.48, ease: 'power2.out' },
       0
     );
   }
 
   if (cols.length) {
     tl.fromTo(cols,
-      { autoAlpha: 0, y: 20 },
-      { autoAlpha: 1, y: 0, duration: 0.55, stagger: 0.08, ease: 'power3.out' },
-      0.1
+      { clipPath: 'inset(0 0 100% 0)' },
+      { clipPath: 'inset(0 0 0% 0)', duration: 0.44, stagger: 0.07, ease: 'power2.out' },
+      0.08
     );
   }
 
   if (bottom) {
     tl.fromTo(bottom,
-      { autoAlpha: 0, y: 12 },
-      { autoAlpha: 1, y: 0, duration: 0.5, ease: 'power3.out' },
-      0.35
+      { clipPath: 'inset(0 0 100% 0)' },
+      { clipPath: 'inset(0 0 0% 0)', duration: 0.4, ease: 'power2.out' },
+      0.26
     );
   }
 }
@@ -993,51 +1193,24 @@ function _sectionHeaderSplit() {
 
     // Remove the generic .reveal class so _genericReveals doesn't also grab it
     header.classList.remove('reveal');
-    gsap.set(targets, { autoAlpha: 0 });
+    gsap.set(targets, { clipPath: 'inset(0 0 100% 0)' });
 
     var tl = gsap.timeline({
       scrollTrigger: { trigger: header, start: 'top 86%', once: true },
-      defaults: { ease: 'power3.out', overwrite: 'auto' },
+      defaults: { ease: 'power2.out', overwrite: 'auto' },
     });
 
-    if (label) tl.fromTo(label, { autoAlpha: 0, y: 16, scale: 0.9 },
-                                 { autoAlpha: 1, y: 0,  scale: 1, duration: 0.5 }, 0);
-    if (h2)    tl.fromTo(h2,    { autoAlpha: 0, y: 32 },
-                                 { autoAlpha: 1, y: 0,  duration: 0.75 }, 0.12);
-    if (p)     tl.fromTo(p,     { autoAlpha: 0, y: 20 },
-                                 { autoAlpha: 1, y: 0,  duration: 0.65 }, 0.28);
+    if (label) tl.fromTo(label, { clipPath: 'inset(0 0 100% 0)', y: 6 },
+                                  { clipPath: 'inset(0 0 0% 0)', y: 0, duration: 0.38 }, 0);
+    if (h2)    tl.fromTo(h2,    { clipPath: 'inset(0 0 100% 0)', y: 8 },
+                                  { clipPath: 'inset(0 0 0% 0)', y: 0, duration: 0.5  }, 0.1);
+    if (p)     tl.fromTo(p,     { clipPath: 'inset(0 0 100% 0)', y: 8 },
+                                  { clipPath: 'inset(0 0 0% 0)', y: 0, duration: 0.44 }, 0.22);
   });
 }
 
 // ─────────────────────────────────────────────────────────
 
-// ─────────────────────────────────────────────────────────
-// 31. DESTINATION GRID STAGGER — batch the cards with stagger
-// ─────────────────────────────────────────────────────────
-function _destGridStagger() {
-  var cards = document.querySelectorAll('.dest-grid-card');
-  if (!cards.length) return;
-
-  // Remove individual .reveal so _genericReveals doesn't double-animate
-  cards.forEach(function(c) { c.classList.remove('reveal'); });
-  gsap.set(cards, { autoAlpha: 0 });
-
-  ScrollTrigger.batch(cards, {
-    batchMax: 3,
-    start: 'top 88%',
-    once: true,
-    onEnter: function(batch) {
-      gsap.fromTo(batch,
-        { autoAlpha: 0, y: 48, scale: 0.94 },
-        {
-          autoAlpha: 1, y: 0, scale: 1,
-          duration: 0.75, stagger: 0.09,
-          ease: 'power3.out', overwrite: 'auto',
-        }
-      );
-    },
-  });
-}
 
 // ─────────────────────────────────────────────────────────
 // 32. STEP CARD ICON HOVER — GSAP spring bounce on mouseenter
@@ -1095,12 +1268,12 @@ function _featCardRevealPulse() {
 function _ctaButtonEntrance() {
   document.querySelectorAll('.cta-section .btn').forEach(function(btn, i) {
     gsap.fromTo(btn,
-      { autoAlpha: 0, y: 20, scale: 0.92 },
+      { clipPath: 'inset(0 0 100% 0)', y: 10 },
       {
-        autoAlpha: 1, y: 0, scale: 1,
-        duration: 0.7,
-        delay: 0.18 + i * 0.12,
-        ease: 'back.out(1.7)',
+        clipPath: 'inset(0 0 0% 0)', y: 0,
+        duration: 0.48,
+        delay: 0.1 + i * 0.1,
+        ease: 'power2.out',
         overwrite: 'auto',
         scrollTrigger: { trigger: btn, start: 'top 88%', once: true },
       }

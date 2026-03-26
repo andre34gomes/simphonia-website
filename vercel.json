@@ -1,4 +1,21 @@
 {
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Frame-Options",           "value": "DENY" },
+        { "key": "X-Content-Type-Options",    "value": "nosniff" },
+        { "key": "X-XSS-Protection",          "value": "1; mode=block" },
+        { "key": "Referrer-Policy",           "value": "strict-origin-when-cross-origin" },
+        { "key": "Permissions-Policy",        "value": "camera=(), microphone=(), geolocation=(), payment=(self)" },
+        { "key": "Strict-Transport-Security", "value": "max-age=31536000; includeSubDomains; preload" },
+        {
+          "key": "Content-Security-Policy",
+          "value": "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://images.unsplash.com data: blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+        }
+      ]
+    }
+  ],
   "rewrites": [
     { "source": "/destinations", "destination": "/destinations/index.html" },
     { "source": "/how-it-works", "destination": "/how-it-works/index.html" },
@@ -10,10 +27,10 @@
   "redirects": [
     { "source": "/pages/destinations.html", "destination": "/destinations/", "permanent": true },
     { "source": "/pages/how-it-works.html", "destination": "/how-it-works/", "permanent": true },
-    { "source": "/pages/support.html", "destination": "/support/", "permanent": true },
-    { "source": "/pages/about.html", "destination": "/about/", "permanent": true },
-    { "source": "/pages/privacy.html", "destination": "/privacy/", "permanent": true },
-    { "source": "/pages/terms.html", "destination": "/terms/", "permanent": true }
+    { "source": "/pages/support.html",      "destination": "/support/",      "permanent": true },
+    { "source": "/pages/about.html",        "destination": "/about/",        "permanent": true },
+    { "source": "/pages/privacy.html",      "destination": "/privacy/",      "permanent": true },
+    { "source": "/pages/terms.html",        "destination": "/terms/",        "permanent": true }
   ],
   "cleanUrls": true,
   "trailingSlash": true

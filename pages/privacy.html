@@ -7,13 +7,22 @@
   <title>Privacy Policy — Simphonia eSIM</title>
   <meta name="description" content="Simphonia's privacy policy. Learn how we collect, use, and protect your personal information.">
   <meta name="theme-color" content="#121212">
+  <link rel="canonical" href="https://simphonia.pt/privacy/">
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
   <link rel="shortcut icon" href="../assets/favicon.svg">
   <link rel="mask-icon" href="../assets/favicon.svg" color="#D4AF37">
-  <script>!function(){var t;try{t=localStorage.getItem("simphonia-theme")}catch(e){}if(!t)t=matchMedia("(prefers-color-scheme:light)").matches?"light":"dark";document.documentElement.dataset.theme=t;if(t==="light"){var m=document.querySelector("meta[name=theme-color]");if(m)m.content="#FFF5F1"}}()</script>
+  <script src="../js/theme-init.js"></script>
+  <!-- Open Graph -->
+  <meta property="og:title" content="Privacy Policy — Simphonia eSIM">
+  <meta property="og:description" content="Simphonia's privacy policy. Learn how we collect, use, and protect your personal information.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://simphonia.pt/privacy/">
+  <meta property="og:image" content="https://simphonia.pt/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://simphonia.pt/assets/og-image.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="../css/legal.css">
 </head>
 <body>
@@ -24,12 +33,12 @@
     <section class="legal-hero">
       <div class="container">
         <span class="label">Legal</span>
-        <h1 style="margin-top:var(--space-md);">Privacy Policy</h1>
+        <h1>Privacy Policy</h1>
         <p>Last updated: March 22, 2026</p>
       </div>
     </section>
 
-    <section class="section" style="padding-top:var(--space-2xl);">
+    <section class="section">
       <div class="container">
         <div class="legal-layout">
 
@@ -127,8 +136,8 @@
             <h2 id="contact">11. Contact Us</h2>
             <p>If you have questions about this Privacy Policy or wish to exercise your rights, contact us at:</p>
             <ul>
-              <li>Email: <a href="mailto:privacy@simphonia.pt" style="color:var(--accent);">privacy@simphonia.pt</a></li>
-              <li>Support: <a href="../support/" style="color:var(--accent);">simphonia.pt/support</a></li>
+              <li>Email: <a href="mailto:privacy@simphonia.pt">privacy@simphonia.pt</a></li>
+              <li>Support: <a href="../support/">simphonia.pt/support</a></li>
             </ul>
 
             <div class="legal-cta">
@@ -146,27 +155,16 @@
 
   </main>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-  <script defer src="../js/components/layout.js?v=20260325-1"></script>
-  <script defer src="../js/animations.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+          integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+          crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+          integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
+          crossorigin="anonymous" defer></script>
+  <script defer src="../js/components/layout.js?v=20260326-10"></script>
+  <script defer src="../js/animations.js?v=20260326-10"></script>
   <script defer src="../js/globe.js"></script>
-  <script defer src="../js/main.js?v=20260325-1"></script>
-
-  <script>
-    (function() {
-      const links = document.querySelectorAll('.legal-toc__link');
-      const sections = Array.from(links).map(l => document.querySelector(l.getAttribute('href'))).filter(Boolean);
-      const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-height')) || 72;
-      function update() {
-        let current = sections[0];
-        sections.forEach(s => { if (s.getBoundingClientRect().top <= navH + 40) current = s; });
-        links.forEach(l => { l.classList.toggle('legal-toc__link--active', l.getAttribute('href') === '#' + current.id); });
-      }
-      window.addEventListener('scroll', update, { passive: true });
-      update();
-    })();
-  </script>
+  <script defer src="../js/main.js?v=20260326-10"></script>
 </body>
 </html>
 

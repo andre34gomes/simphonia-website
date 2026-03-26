@@ -6,16 +6,23 @@
   <title>Simphonia — Stay Connected, Wherever You Go.</title>
   <meta name="description" content="Instant eSIM activation for 200+ countries. No roaming fees, no SIM swaps, no contracts. Stay connected wherever you go with Simphonia.">
   <meta name="theme-color" content="#121212">
+  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <link rel="canonical" href="https://simphonia.pt/">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="shortcut icon" href="assets/favicon.svg">
   <link rel="mask-icon" href="assets/favicon.svg" color="#D4AF37">
-  <script>!function(){var t;try{t=localStorage.getItem('simphonia-theme')}catch(e){}if(!t)t=matchMedia('(prefers-color-scheme:light)').matches?'light':'dark';document.documentElement.dataset.theme=t;if(t==='light'){document.querySelector('meta[name=theme-color]')&&(document.querySelector('meta[name=theme-color]').content='#FFF5F1')}}()</script>
+  <script src="js/theme-init.js"></script>
 
   <!-- Open Graph -->
   <meta property="og:title" content="Simphonia — Stay Connected, Wherever You Go">
   <meta property="og:description" content="Instant eSIM. 200+ countries. No roaming fees. Stay connected with Simphonia.">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://simphonia.pt">
+  <meta property="og:url" content="https://simphonia.pt/">
+  <meta property="og:image" content="https://simphonia.pt/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Simphonia — Stay Connected, Wherever You Go">
+  <meta name="twitter:description" content="Instant eSIM. 200+ countries. No roaming fees. Stay connected with Simphonia.">
+  <meta name="twitter:image" content="https://simphonia.pt/assets/og-image.png">
 
   <!-- Preconnects -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -111,8 +118,6 @@
                 <div class="phone-screen-glow" aria-hidden="true"></div>
               </div>
             </div>
-
-            <!-- Floating stat chips removed -->
           </div>
         </div>
 
@@ -164,6 +169,7 @@
           </ul>
         </div>
       </div>
+      <div class="hero-postcard__spacer" aria-hidden="true"></div>
     </section>
 
     <!-- ════════════════════════════════════════
@@ -429,85 +435,19 @@
       </div><!-- /.showcase-sticky__scene -->
     </section>
 
-    <!-- ════════════════════════════════════════
-         DESTINATIONS — Responsive grid
-         ════════════════════════════════════════ -->
-    <section class="section section--alt" id="destinations" aria-labelledby="dest-heading">
-      <div class="container container--wide">
-        <div class="section-header reveal">
-          <span class="label">Popular Destinations</span>
-          <h2 id="dest-heading">The World Is Within Reach</h2>
-          <p>Tailored eSIM plans for the world's most popular travel destinations.</p>
-        </div>
-
-        <div class="dest-grid">
-          <div class="dest-grid-card reveal">
-            <img src="https://images.unsplash.com/photo-1493246507139-91e8fad9978e?auto=format&fit=crop&q=80&w=600" alt="Mount Fuji, Japan" loading="lazy">
-            <div class="dest-grid-card__overlay">
-              <span class="dest-grid-card__badge">Popular</span>
-              <h3>Japan</h3>
-              <p>5G Ready · Multiple Plans</p>
-            </div>
-          </div>
-          <div class="dest-grid-card reveal">
-            <img src="https://images.unsplash.com/photo-1515542622106-78bda8ba0e5b?auto=format&fit=crop&q=80&w=600" alt="Portugal coastline" loading="lazy">
-            <div class="dest-grid-card__overlay">
-              <h3>Portugal</h3>
-              <p>4G LTE · Instant Activation</p>
-            </div>
-          </div>
-          <div class="dest-grid-card reveal">
-            <img src="https://images.unsplash.com/photo-1512453979798-5ea266f8880c?auto=format&fit=crop&q=80&w=600" alt="Dubai skyline at night" loading="lazy">
-            <div class="dest-grid-card__overlay">
-              <h3>UAE</h3>
-              <p>5G · Premium Coverage</p>
-            </div>
-          </div>
-          <div class="dest-grid-card reveal">
-            <img src="https://images.unsplash.com/photo-1528181304800-259b08848526?auto=format&fit=crop&q=80&w=600" alt="Thailand temples" loading="lazy">
-            <div class="dest-grid-card__overlay">
-              <span class="dest-grid-card__badge">Popular</span>
-              <h3>Thailand</h3>
-              <p>4G/5G · Instant Activation</p>
-            </div>
-          </div>
-          <div class="dest-grid-card reveal">
-            <img src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?auto=format&fit=crop&q=80&w=600" alt="Sydney Opera House" loading="lazy">
-            <div class="dest-grid-card__overlay">
-              <h3>Australia</h3>
-              <p>4G/5G · Nationwide Coverage</p>
-            </div>
-          </div>
-          <div class="dest-grid-card reveal">
-            <img src="https://images.unsplash.com/photo-1485738422979-f5c462d49f04?auto=format&fit=crop&q=80&w=600" alt="New York City skyline" loading="lazy">
-            <div class="dest-grid-card__overlay">
-              <h3>United States</h3>
-              <p>5G · Coast to Coast</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="dest-cta reveal">
-          <a href="./destinations/">
-            Explore all 200+ destinations
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-          </a>
-        </div>
-      </div>
-    </section>
 
     <!-- ════════════════════════════════════════
          FINAL CTA
          ════════════════════════════════════════ -->
     <section class="section cta-section">
       <div class="cta-section__bg" aria-hidden="true"></div>
-      <div class="container" style="position:relative;z-index:1;">
+      <div class="container">
         <div class="reveal text-center">
           <h2>
             Stay Connected,<br>
             <span class="text-gradient">Wherever You Go.</span>
           </h2>
-          <p style="font-size:1.125rem;max-width:480px;margin:0 auto var(--space-2xl);">Explore our destinations and find the perfect eSIM plan for your next adventure.</p>
+          <p>Explore our destinations and find the perfect eSIM plan for your next adventure.</p>
           <div class="flex flex-center gap-md">
             <a href="./destinations/" class="btn btn--primary btn--lg">Browse Destinations</a>
             <a href="./how-it-works/" class="btn btn--outline btn--lg">How It Works</a>
@@ -519,13 +459,19 @@
   </main>
 
   <!-- Scripts — Three.js and GSAP via CDN, deferred -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-  <script defer src="js/components/layout.js?v=20260325-1"></script>
-  <script defer src="js/animations.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
+          integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ=="
+          crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+          integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+          crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+          integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
+          crossorigin="anonymous" defer></script>
+  <script defer src="js/components/layout.js?v=20260326-10"></script>
+  <script defer src="js/animations.js?v=20260326-10"></script>
   <script defer src="js/globe.js"></script>
-  <script defer src="js/main.js?v=20260325-1"></script>
+  <script defer src="js/main.js?v=20260326-10"></script>
 
 
 

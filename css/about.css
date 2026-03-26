@@ -4,22 +4,19 @@
    SIMPHONIA — About Page Stylesheet
    ============================================================ */
 
-/* ─── Origin Story Block ─────────────────────────────────────── */
+/* ── Origin / Story block — two-column image + text ── */
 .origin-block {
   display: grid;
-  grid-template-columns: 5fr 6fr;
-  gap: clamp(2rem, 4vw, 3.5rem);
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(3rem, 6vw, 6rem);
   align-items: center;
-  max-width: 1020px;
-  margin: 0 auto;
 }
 
-/* Image */
 .origin-block__img {
   position: relative;
   border-radius: var(--radius-lg);
   overflow: hidden;
-  aspect-ratio: 3 / 4;
+  aspect-ratio: 4 / 3;
 }
 
 .origin-block__img img {
@@ -27,119 +24,77 @@
   height: 100%;
   object-fit: cover;
   display: block;
-  transition: transform 0.6s var(--ease-out);
 }
 
-.origin-block:hover .origin-block__img img {
-  transform: scale(1.04);
-}
-
-/* "Est. 2024" floating tag */
 .origin-block__img-tag {
   position: absolute;
-  bottom: 1.25rem;
-  left: 1.25rem;
-  padding: 0.4rem 0.875rem;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  border-radius: var(--radius-full);
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  bottom: 1rem;
+  left: 1rem;
+  background: rgba(18, 18, 18, 0.75);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid var(--border-accent);
   color: var(--accent);
-}
-
-/* Body */
-.origin-block__body {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
-}
-
-.origin-block__body .label {
-  display: block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-sm);
 }
 
 .origin-block__body h2 {
-  font-size: clamp(1.75rem, 3.5vw, 2.75rem);
-  font-weight: 900;
-  letter-spacing: -0.03em;
-  line-height: 1.1;
-  margin: 0;
+  margin-top: var(--space-md);
+}
+
+.origin-block__quote {
+  margin: var(--space-xl) 0;
+  padding: var(--space-lg) var(--space-xl);
+  border-left: 3px solid var(--accent);
+  background: var(--glass-bg);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  font-size: 1rem;
+  font-style: italic;
+  color: var(--text-secondary);
+  line-height: 1.7;
 }
 
 .origin-block__body p {
-  font-size: 0.9375rem;
-  line-height: 1.75;
-  color: var(--text-secondary);
-  margin: 0;
+  margin-top: var(--space-lg);
+  font-size: 1.0625rem;
+  line-height: 1.8;
 }
 
-/* Pull-quote */
-.origin-block__quote {
-  position: relative;
-  margin: 0.5rem 0;
-  padding: 1.25rem 1.5rem;
-  background: var(--bg-elevated);
-  border-left: 3px solid var(--accent);
-  border-radius: 0 var(--radius-md) var(--radius-md) 0;
-  font-size: 0.9375rem;
-  font-style: italic;
-  line-height: 1.65;
-  color: var(--text-primary);
+.origin-block__body p + p {
+  margin-top: var(--space-md);
 }
 
-/* Inline stats row */
 .origin-block__stats {
   display: flex;
-  gap: 2rem;
-  padding-top: 1rem;
+  gap: var(--space-2xl);
+  margin-top: var(--space-2xl);
+  padding-top: var(--space-xl);
   border-top: 1px solid var(--border-subtle);
-  margin-top: 0.25rem;
-}
-
-.origin-block__stat {
-  display: flex;
-  flex-direction: column;
-  gap: 0.15rem;
 }
 
 .origin-block__stat-val {
-  font-size: 1.5rem;
-  font-weight: 900;
-  letter-spacing: -0.04em;
+  display: block;
+  font-size: 1.75rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
   color: var(--accent);
   line-height: 1;
 }
 
 .origin-block__stat-label {
-  font-size: 0.6875rem;
-  font-weight: 600;
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-tertiary);
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  color: var(--text-tertiary);
+  margin-top: 0.375rem;
 }
-
-/* ─── Origin Block Responsive ────────────────────────────────── */
-@media (max-width: 768px) {
-  .origin-block {
-    grid-template-columns: 1fr;
-    gap: 1.5rem;
-  }
-
-  .origin-block__img {
-    aspect-ratio: 16 / 9;
-  }
-
-  .origin-block__stats {
-    gap: 1.5rem;
-    flex-wrap: wrap;
-  }
-}
-
 
 /* Values */
 .values-grid {
@@ -344,6 +299,9 @@
    RESPONSIVE — About Page
    ============================================== */
 @media (max-width: 768px) {
+  .origin-block {
+    grid-template-columns: 1fr;
+  }
   .team-card { padding: var(--space-xl) var(--space-2xl); }
   .values-grid { grid-template-columns: 1fr; }
   .value-card { padding: var(--space-xl); }
@@ -353,3 +311,42 @@
 @media (max-width: 480px) {
   .team-card { padding: var(--space-lg); min-width: 200px; }
 }
+
+/* ==============================================
+   STORY SECTION — About Page
+   ============================================== */
+
+/* h2 directly inside the text column of .about-story */
+.about-story > div > h2 {
+  margin-top: var(--space-md);
+}
+
+/* Prose paragraphs inside the text column */
+.about-story > div > p {
+  margin-top: var(--space-lg);
+  font-size: 1.0625rem;
+  line-height: 1.8;
+}
+
+.about-story > div > p + p {
+  margin-top: var(--space-md);
+}
+
+/* ==============================================
+   MISSION SECTION — About Page
+   ============================================== */
+.about-mission {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.about-mission h2 {
+  margin-top: var(--space-md);
+  margin-bottom: var(--space-xl);
+}
+
+.about-mission p {
+  font-size: 1.125rem;
+  line-height: 1.8;
+}
+

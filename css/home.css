@@ -512,6 +512,11 @@
   z-index: 3;
 }
 
+.hero-postcard__spacer {
+  flex-shrink: 0;
+  height: 1vh;
+}
+
 /* ── Light theme overrides for gradient hero ── */
 [data-theme="light"] .hero-postcard__bg {
   background: radial-gradient(ellipse 120% 80% at 20% 50%, rgba(255, 240, 220, 1) 0%, var(--bg-primary) 70%);
@@ -2262,7 +2267,7 @@ section[id] {
 .hero__destinations-strip {
   flex-shrink: 0;
   width: 100%;
-  background: var(--bg-secondary);
+  background: var(--bg-primary);
   border-top: 1px solid var(--border-subtle);
   border-bottom: 1px solid var(--border-subtle);
   padding: 0.875rem 0;
@@ -2281,11 +2286,11 @@ section[id] {
 }
 .hero__destinations-strip::before {
   left: 0;
-  background: linear-gradient(to right, var(--bg-secondary) 0%, transparent 100%);
+  background: linear-gradient(to right, var(--bg-primary) 0%, transparent 100%);
 }
 .hero__destinations-strip::after {
   right: 0;
-  background: linear-gradient(to left, var(--bg-secondary) 0%, transparent 100%);
+  background: linear-gradient(to left, var(--bg-primary) 0%, transparent 100%);
 }
 
 .hero__destinations-strip .marquee-track {
@@ -3258,14 +3263,80 @@ section[id] {
   .feature-grid--new { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .feat-card--wide { grid-column: span 2; }
   .metrics-strip__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-md); }
-  .showcase-sticky__inner { grid-template-columns: 1fr; gap: 2rem; }
-  .showcase-sticky__scene { height: auto; overflow: visible; }
-  .showcase-sticky__left { order: 2; padding: 2rem 0; }
-  .showcase-sticky__phone { order: 1; padding: 2rem 0; }
-  .showcase-segments { display: none; }
-  .showcase-panels-stage { min-height: auto !important; }
-  .showcase-sticky__panel { position: relative !important; opacity: 1 !important; transform: none !important; top: auto !important; }
-  .showcase-sticky__panel + .showcase-sticky__panel { margin-top: var(--space-3xl); }
+  /* ── Showcase — vertical layout (phone top, panels bottom), animations preserved ── */
+  .showcase-sticky__scene {
+    align-items: stretch;          /* let inner fill the full 100vh */
+  }
+  .showcase-sticky__inner {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto 1fr;  /* phone auto, panels fill rest */
+    gap: 0;
+    padding-top: calc(var(--nav-height, 72px) + clamp(0.5rem, 1.5vh, 1.25rem));
+    padding-bottom: clamp(1.25rem, 2.5vh, 2rem);
+  }
+  .showcase-sticky__phone {
+    order: 1;
+    padding: 0 0 clamp(0.5rem, 1vh, 0.75rem);
+  }
+  .showcase-sticky__left {
+    order: 2;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  /* Segment bar — acts as a separator between phone & text */
+  .showcase-segments {
+    width: 100%;
+    max-width: 220px;
+    margin: 0 auto clamp(0.75rem, 1.5vh, 1.25rem);
+    gap: 5px;
+  }
+  .showcase-segment { height: 2.5px; }
+
+  /* Panel stage takes remaining space and centers content vertically */
+  .showcase-panels-stage {
+    width: 100%;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 0 !important; /* override JS inline for mobile */
+  }
+
+  /* Ghost number hidden to save space */
+  .showcase-panel__ghost-num { display: none; }
+
+  /* Phone sizing — proportional to viewport height */
+  .iphone-mockup--showcase { width: clamp(145px, 25vh, 230px); }
+  .showcase-phone-glow {
+    width: clamp(150px, 22vh, 220px);
+    height: clamp(150px, 22vh, 220px);
+  }
+
+  /* Panel text — centered, tight spacing */
+  .showcase-panel__meta {
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: clamp(0.25rem, 0.75vh, 0.5rem);
+  }
+  .showcase-panel__step  { font-size: 0.625rem; letter-spacing: 0.16em; }
+  .showcase-panel__count { font-size: 0.625rem; }
+  .showcase-panel__title {
+    font-size: clamp(1.5rem, 5.5vw, 2.75rem);
+    text-align: center;
+    margin-bottom: clamp(0.375rem, 1vh, 0.75rem);
+    line-height: 1.1;
+  }
+  .showcase-panel__desc {
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    font-size: clamp(0.8125rem, 2.4vw, 0.9375rem);
+    max-width: 360px;
+    line-height: 1.6;
+  }
   .dest-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .dest-grid-card { max-height: 360px; }
 }
@@ -3432,20 +3503,23 @@ section[id] {
   .feat-card__desc { font-size: 0.8125rem; }
   .feat-card__tag { font-size: 0.6rem; padding: 0.2rem 0.55rem; }
 
-  /* Showcase — compact */
-  .showcase-panel__title { font-size: clamp(1.75rem, 7vw, 2.25rem); }
-  .showcase-panel__ghost-num { font-size: clamp(4.5rem, 14vw, 6rem); margin-bottom: -0.75rem; }
-  .showcase-panel__desc { font-size: 0.9375rem; }
-  .showcase-panels-stage { min-height: auto !important; }
+  /* Showcase — compact vertical */
+  .showcase-panel__title { font-size: clamp(1.25rem, 6vw, 1.75rem); }
+  .showcase-panel__desc { font-size: 0.8125rem; max-width: 300px; }
   .showcase-sticky__panel h3 { font-size: 1.0625rem; }
-  .showcase-sticky__panel p { font-size: 0.875rem; }
+  .showcase-sticky__panel p { font-size: 0.8125rem; }
   .showcase-panel__icon {
     width: 42px; height: 42px;
     font-size: 1.125rem;
     margin-bottom: var(--space-sm);
   }
   .iphone-mockup--showcase {
-    width: 209px;
+    width: clamp(130px, 22vh, 180px);
+  }
+  .showcase-segments { max-width: 180px; }
+  .showcase-sticky__inner {
+    padding-top: calc(var(--nav-height, 64px) + clamp(0.25rem, 1vh, 0.75rem));
+    padding-bottom: clamp(0.75rem, 2vh, 1.5rem);
   }
   .iphone-mockup {
     border-radius: 34px;
@@ -3461,7 +3535,7 @@ section[id] {
     border-radius: 30px;
   }
   .showcase-sticky__phone {
-    padding: 1rem 0;
+    padding: 0 0 0.25rem;
   }
 
   /* Marquee — smaller items */
@@ -3501,8 +3575,11 @@ section[id] {
   }
 
   .iphone-mockup--showcase {
-    width: 180px;
+    width: clamp(115px, 18vh, 155px);
   }
+  .showcase-segments { max-width: 160px; }
+  .showcase-panel__title { font-size: clamp(1.125rem, 5.5vw, 1.5rem); }
+  .showcase-panel__desc { max-width: 260px; font-size: 0.75rem; }
 
   .dest-grid-card {
     max-height: 180px;
@@ -3811,7 +3888,7 @@ section[id] {
 
 /* ── Active data fill entrance (hero phone) ── */
 @keyframes bar-fill-in {
-  from { width: 0%; }
+  from { width: 0; }
   to   { width: 38%; }
 }
 
@@ -3891,39 +3968,3 @@ section[id] {
   .showcase-progress__dot.is-active::before { animation: none; }
 }
 
-/* Temporary fix for Safari bug with nested grid and minmax() */
-@supports (-webkit-overflow-scrolling: touch) {
-  .hero-postcard__content {
-    display: block;
-  }
-
-  .hero-postcard__copy {
-    max-width: none;
-  }
-
-  .hero-postcard__h1 {
-    font-size: 2.5rem;
-  }
-
-  .hero-postcard__desc {
-    max-width: 100%;
-  }
-
-  .hero-postcard__actions {
-    justify-content: center;
-    flex-wrap: wrap;
-  }
-
-  .hero-dl-btn {
-    width: 100%;
-    max-width: 300px;
-  }
-
-  .hero-postcard__proof {
-    justify-content: center;
-  }
-
-  .hero-postcard__trust-pill {
-    justify-content: center;
-  }
-}

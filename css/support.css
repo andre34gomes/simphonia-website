@@ -24,6 +24,25 @@
 
 .support-hero > .container { position: relative; z-index: 1; padding-inline: clamp(2rem, 8vw, 6rem); }
 
+.support-hero::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 800px;
+  height: 400px;
+  background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.09) 0%, transparent 70%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Hero description paragraph */
+.support-hero p {
+  font-size: 1.125rem;
+  max-width: 520px;
+  margin: var(--space-lg) auto 0;
+}
+
 @keyframes result-pop {
   0%  { opacity: 0; transform: scale(0.94) translateY(6px); }
   100%{ opacity: 1; transform: scale(1) translateY(0); }
@@ -36,6 +55,11 @@
   display: flex;
   flex-direction: column;
   gap: var(--space-lg);
+}
+
+/* Submit button aligns to the left edge of the flex column */
+.contact-form button[type="submit"] {
+  align-self: flex-start;
 }
 
 .form-group {
@@ -104,12 +128,23 @@ select.form-input {
 /* Contact cards — hover glow */
 .support-hero + .section .glass-card {
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: var(--space-2xl);
+  text-align: center;
 }
 
 .support-hero + .section .glass-card:hover {
   transform: translateY(-6px) scale(1.02);
   box-shadow: 0 16px 40px rgba(212, 175, 55, 0.1),
               0 0 0 1px var(--border-accent);
+}
+
+/* h3 and p inside contact cards */
+.support-hero + .section .glass-card h3 {
+  margin-bottom: var(--space-sm);
+}
+
+.support-hero + .section .glass-card p {
+  font-size: 0.9375rem;
 }
 
 
@@ -125,21 +160,36 @@ select.form-input {
   margin-top: var(--space-2xl);
 }
 
-/* ─── FAQ Two-Panel Layout ──────────────────────────────────── */
+/* ==============================================
+   RESPONSIVE — Support Page
+   ============================================== */
+@media (max-width: 768px) {
+
+  .contact-form {
+    gap: var(--space-md);
+  }
+
+  .form-input {
+    padding: 0.75rem 1rem;
+    font-size: 0.9375rem;
+  }
+}
+/* FAQ two-panel layout */
 .faq-panel {
   display: grid;
-  grid-template-columns: 5fr 7fr;
+  grid-template-columns: 280px 1fr;
   gap: 1.5rem;
-  align-items: stretch;
-  max-width: 1020px;
-  margin: 0 auto;
+  align-items: start;
 }
 
-/* Question navigation list */
 .faq-panel__nav {
   display: flex;
   flex-direction: column;
   gap: 3px;
+  position: sticky;
+  top: calc(var(--nav-height) + 1rem);
+  max-height: calc(100vh - var(--nav-height) - 2rem);
+  overflow-y: auto;
 }
 
 .faq-panel__q {

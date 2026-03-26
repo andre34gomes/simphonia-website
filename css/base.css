@@ -356,21 +356,6 @@ p {
   justify-content: center;
 }
 
-/* Golden shimmer separator at the top of every section */
-.section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent 0%, transparent 35%, var(--accent) 50%, transparent 65%, transparent 100%);
-  background-size: 200% 100%;
-  animation: shimmer-line 4s ease-in-out infinite;
-  pointer-events: none;
-  z-index: 1;
-}
-
 .section--full {
   min-height: 100dvh;
   display: flex;
@@ -416,6 +401,33 @@ section[id] {
 
 .text-center { text-align: center; }
 .mx-auto { margin-left: auto; margin-right: auto; }
+
+/* Spacing utilities — mirrors the --space-* token scale */
+.mt-sm  { margin-top: var(--space-sm); }
+.mt-md  { margin-top: var(--space-md); }
+.mt-lg  { margin-top: var(--space-lg); }
+.mt-xl  { margin-top: var(--space-xl); }
+.mt-2xl { margin-top: var(--space-2xl); }
+
+/* Positioning helper — commonly needed to sit above section bg overlays */
+.rel-z1 { position: relative; z-index: 1; }
+
+/* CTA section inner container always needs to sit above the bg layer */
+.cta-section .container { position: relative; z-index: 1; }
+
+/* Remove section top padding (used when adjacent content provides spacing) */
+.section--no-top { padding-top: 0; }
+
+/* Compact section-header bottom gap — use when the section already has context */
+.section-header--compact { margin-bottom: var(--space-2xl); }
+
+/* Inner-page hero h1 always sits just below its label/breadcrumb */
+.about-hero h1,
+.destinations-hero h1,
+.support-hero h1,
+.legal-hero h1 {
+  margin-top: var(--space-md);
+}
 
 .sr-only {
   position: absolute;
@@ -862,22 +874,6 @@ body.theme-transition *::after {
   justify-content: center;
 }
 
-.cta-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent 0%, transparent 35%, var(--accent) 50%, transparent 65%, transparent 100%);
-  background-size: 200% 100%;
-  animation: shimmer-line 4s ease-in-out infinite;
-}
-
-@keyframes shimmer-line {
-  0%   { background-position: 200% center; opacity: 0.6; }
-  100% { background-position: -200% center; opacity: 0.6; }
-}
 
 .cta-section__bg {
   position: absolute;
@@ -912,7 +908,8 @@ body.theme-transition *::after {
 
 .cta-section p {
   font-size: 1.125rem;
-  margin-bottom: var(--space-2xl);
+  max-width: 480px;
+  margin: 0 auto var(--space-2xl);
   position: relative;
   z-index: 1;
 }
@@ -1024,7 +1021,17 @@ body.theme-transition *::after {
   .destinations-hero .hero__scroll,
   .support-hero .hero__scroll,
   .legal-hero .hero__scroll {
-    display: none;
+    bottom: 1.25rem;
+    gap: 0.25rem;
+    padding: 0.75rem 0;
+    font-size: 0.625rem;
+  }
+
+  .about-hero .hero__scroll-line,
+  .destinations-hero .hero__scroll-line,
+  .support-hero .hero__scroll-line,
+  .legal-hero .hero__scroll-line {
+    height: 20px;
   }
 }
 
@@ -1491,19 +1498,29 @@ body.theme-transition *::after {
   transform: none;
 }
 
-/* Only hide elements when GSAP is confirmed available */
-html.gsap-ready .reveal,
-html.gsap-ready .reveal--left,
-html.gsap-ready .reveal--right,
+/* ─── Clip-path pre-state ───────────────────────────────────────────
+   Elements are at full opacity and in normal flow but fully clipped.
+   GSAP wipes the clip open on scroll — looks like content revealing
+   itself, never like content loading from the network.
+   ─────────────────────────────────────────────────────────────────── */
+html.gsap-ready .reveal {
+  clip-path: inset(0 0 100% 0);
+}
+html.gsap-ready .reveal--left {
+  clip-path: inset(0 0 100% 0);
+}
+html.gsap-ready .reveal--right {
+  clip-path: inset(0 0 100% 0);
+}
 html.gsap-ready .reveal--scale {
-  visibility: hidden;
+  clip-path: inset(0 0 100% 0);
 }
 
-/* Footer elements — hidden until GSAP animates them in */
+/* Footer elements — clipped until GSAP wipes them in */
 html.gsap-ready .footer__brand,
 html.gsap-ready .footer__col,
 html.gsap-ready .footer__bottom {
-  visibility: hidden;
+  clip-path: inset(0 0 100% 0);
 }
 
 /* Reduced motion */
@@ -1521,6 +1538,7 @@ html.gsap-ready .footer__bottom {
   .reveal--left,
   .reveal--right,
   .reveal--scale {
+    clip-path: none !important;
     opacity: 1 !important;
     visibility: visible !important;
     transform: none !important;
@@ -1529,6 +1547,7 @@ html.gsap-ready .footer__bottom {
   .footer__brand,
   .footer__col,
   .footer__bottom {
+    clip-path: none !important;
     opacity: 1 !important;
     visibility: visible !important;
     transform: none !important;
@@ -1603,13 +1622,13 @@ html.gsap-ready .footer__bottom {
     gap: var(--space-2xl);
   }
 
-  /* Sub-page heroes — reduce padding on tablet */
+  /* Sub-page heroes — symmetric padding so justify-content:center = true viewport center */
   .about-hero,
   .destinations-hero,
   .support-hero,
   .legal-hero {
-    padding-top: calc(var(--nav-height) + var(--space-xl));
-    padding-bottom: var(--space-xl);
+    padding-top: var(--nav-height);
+    padding-bottom: var(--nav-height);
   }
 
   /* CTA section — reduce padding on tablet */
@@ -1655,13 +1674,13 @@ html.gsap-ready .footer__bottom {
     aspect-ratio: 16/9;
   }
 
-  /* Sub-page heroes — compact on phones */
+  /* Sub-page heroes — symmetric padding so justify-content:center = true viewport center */
   .about-hero,
   .destinations-hero,
   .support-hero,
   .legal-hero {
-    padding-top: calc(var(--nav-height) + var(--space-lg));
-    padding-bottom: var(--space-lg);
+    padding-top: var(--nav-height);
+    padding-bottom: var(--nav-height);
   }
 
   .about-hero p,
@@ -1796,22 +1815,103 @@ html.gsap-ready .footer__bottom {
   perspective: 1200px;
 }
 
-/* About-story blocks — 3D perspective for slide-in */
+/* About-story blocks — two-column grid with 3D perspective for slide-in */
 .about-story {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: clamp(3rem, 6vw, 6rem);
+  align-items: center;
   perspective: 1000px;
 }
 
 .about-story__img {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  aspect-ratio: 4 / 3;
   transform-style: preserve-3d;
   will-change: transform;
 }
 
-/* Section divider — horizontal grow line */
+.about-story__img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* ── Section Divider ────────────────────────────────────────────────
+   Injected by _sectionDividers() between every adjacent section.
+   Diamond dot + gradient lines that radiate from the centre.
+   "More intense" version: stronger gradients, larger dot, glow filter.
+   ─────────────────────────────────────────────────────────────────── */
 .section-divider {
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border-default), transparent);
-  transform-origin: center;
-  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-inline: clamp(1.5rem, 5vw, 5rem);
+  overflow: visible;
+  position: relative;
+  z-index: 1;
+  margin-block: 0;
+}
+
+/* Both lines grow from the dot outward — strong gold near centre, fades to nothing */
+.section-divider__line {
+  flex: 1;                       /* no max-width cap — spans the full available space */
+  height: 1.5px;
+  flex-shrink: 1;
+  transform-origin: right center;
+  background: linear-gradient(
+    to left,
+    rgba(212, 175, 55, 0.9)  0%,
+    rgba(212, 175, 55, 0.5)  20%,
+    rgba(212, 175, 55, 0.18) 55%,
+    rgba(212, 175, 55, 0.04) 80%,
+    transparent              100%
+  );
+}
+
+.section-divider__line--right {
+  transform-origin: left center;
+  background: linear-gradient(
+    to right,
+    rgba(212, 175, 55, 0.9)  0%,
+    rgba(212, 175, 55, 0.5)  20%,
+    rgba(212, 175, 55, 0.18) 55%,
+    rgba(212, 175, 55, 0.04) 80%,
+    transparent              100%
+  );
+}
+
+.section-divider__dot {
+  width: 10px;
+  height: 10px;
+  flex-shrink: 0;
+  background: var(--accent, #D4AF37);
+  clip-path: polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%); /* diamond */
+  margin: 0 14px;
+  filter: drop-shadow(0 0 5px rgba(212, 175, 55, 0.8))
+          drop-shadow(0 0 12px rgba(212, 175, 55, 0.4));
+}
+
+/* Light-theme overrides */
+[data-theme="light"] .section-divider__line {
+  background: linear-gradient(to left,
+    rgba(160, 110, 10, 0.7)  0%,
+    rgba(160, 110, 10, 0.3)  25%,
+    rgba(160, 110, 10, 0.08) 60%,
+    transparent              100%);
+}
+[data-theme="light"] .section-divider__line--right {
+  background: linear-gradient(to right,
+    rgba(160, 110, 10, 0.7)  0%,
+    rgba(160, 110, 10, 0.3)  25%,
+    rgba(160, 110, 10, 0.08) 60%,
+    transparent              100%);
+}
+[data-theme="light"] .section-divider__dot {
+  filter: drop-shadow(0 0 4px rgba(160, 110, 10, 0.6));
 }
 
 /* Smooth scroll-linked transitions for cards */
@@ -1868,22 +1968,6 @@ html.gsap-ready .footer__bottom {
 }
 
 /* Animated gradient border for CTA sections */
-.cta-section::before {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent 0%, transparent 35%, var(--accent) 50%, transparent 65%, transparent 100%);
-  background-size: 200% 100%;
-  animation: shimmer-line 4s ease-in-out infinite;
-}
-
-@keyframes shimmer-line {
-  0%   { background-position: 200% center; opacity: 0.6; }
-  100% { background-position: -200% center; opacity: 0.6; }
-}
 
 /* Parallax depth layers */
 [data-parallax-speed] {
@@ -1964,14 +2048,6 @@ html.gsap-ready .footer__bottom {
   position: relative;
 }
 
-.section--alt::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 0; right: 0;
-  height: 1px;
-  background: linear-gradient(90deg, transparent, var(--border-subtle), transparent);
-  pointer-events: none;
-}
 
 /* ==============================================
    MOBILE STICKY CTA BAR

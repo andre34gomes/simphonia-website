@@ -30,16 +30,7 @@
   pointer-events: none;
 }
 
-/* Gold accent line below hero */
-.legal-hero::after {
-  content: '';
-  position: absolute;
-  bottom: 0; left: 50%;
-  transform: translateX(-50%);
-  width: 60px; height: 2px;
-  background: linear-gradient(90deg, transparent, var(--accent), transparent);
-  border-radius: var(--radius-full);
-}
+
 
 .legal-hero .label {
   display: block;
@@ -47,6 +38,11 @@
 }
 
 .legal-hero > .container { position: relative; z-index: 1; padding-inline: clamp(2rem, 8vw, 6rem); }
+
+/* The prose/TOC section directly below the legal hero has reduced top padding */
+.legal-hero + .section {
+  padding-top: var(--space-2xl);
+}
 
 
 /* ── Legal Layout — two-col on desktop ── */
@@ -109,6 +105,20 @@
 /* ── Legal Prose ── */
 .legal-prose {
   min-width: 0;
+}
+
+/* Links inside legal content */
+.legal-prose a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: var(--border-accent);
+  text-underline-offset: 3px;
+  transition: color var(--duration-fast), text-decoration-color var(--duration-fast);
+}
+
+.legal-prose a:hover {
+  color: var(--accent-light);
+  text-decoration-color: var(--accent);
 }
 
 .legal-prose h2 {

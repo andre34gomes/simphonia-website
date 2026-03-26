@@ -1,3 +1,23 @@
+# ── Security Headers ─────────────────────────────────────────
+# Applied to every response. Use the most restrictive settings
+# compatible with site functionality.
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options              = "DENY"
+    X-Content-Type-Options       = "nosniff"
+    X-XSS-Protection             = "1; mode=block"
+    Referrer-Policy              = "strict-origin-when-cross-origin"
+    Permissions-Policy           = "camera=(), microphone=(), geolocation=(), payment=(self)"
+    Strict-Transport-Security    = "max-age=31536000; includeSubDomains; preload"
+    # CSP: script-src allows self + cdnjs CDN.
+    # Theme init is now an external file (js/theme-init.js), so no 'unsafe-inline'
+    # is needed for <head> scripts. The body inline scripts (support form, destinations
+    # data module) still use 'unsafe-inline'; extract them to dedicated JS files to
+    # remove it entirely. Until then, 'unsafe-inline' is scoped here as a reminder.
+    Content-Security-Policy      = "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://images.unsplash.com data: blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+
+# ── Redirects ─────────────────────────────────────────────────
 [[redirects]]
   from = "/pages/destinations.html"
   to = "/destinations/"

@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
   <title>How It Works — Simphonia eSIM</title>
   <meta name="description" content="Get connected in 3 simple steps. Choose your destination, buy instantly, and travel connected with Simphonia eSIM.">
@@ -12,6 +12,11 @@
   <meta property="og:description" content="Get connected in 3 simple steps. Choose your destination, buy instantly, and travel connected with Simphonia eSIM.">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://simphonia.pt/how-it-works/">
+  <meta property="og:image" content="https://simphonia.pt/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="How It Works — Simphonia eSIM">
+  <meta name="twitter:description" content="Get connected in 3 simple steps. Choose your destination, buy instantly, and travel connected with Simphonia eSIM.">
+  <meta name="twitter:image" content="https://simphonia.pt/assets/og-image.png">
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
   <link rel="shortcut icon" href="../assets/favicon.svg">
   <link rel="mask-icon" href="../assets/favicon.svg" color="#D4AF37">
@@ -27,8 +32,6 @@
 
     <!-- Hero -->
     <section class="about-hero">
-      <!-- Background orb -->
-      <div style="position:absolute;top:0;left:50%;transform:translateX(-50%);width:700px;height:350px;background:radial-gradient(ellipse at center,rgba(212,175,55,0.09) 0%,transparent 70%);pointer-events:none;"></div>
       <div class="container" style="position:relative;z-index:1;">
         <span class="label reveal">How It Works</span>
         <h1 class="reveal">Connected in<br><span class="text-gradient">Under 2 Minutes</span></h1>
@@ -128,67 +131,6 @@
       </div>
     </section>
 
-    <!-- GSAP Timeline Animations -->
-    <script>
-    window.addEventListener('load', function () {
-      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
-
-      /* Track — grows from top to bottom as user scrolls through the section */
-      gsap.fromTo('.timeline__track',
-        { scaleY: 0 },
-        {
-          scaleY: 1,
-          ease: 'none',
-          transformOrigin: 'top center',
-          scrollTrigger: {
-            trigger: '#steps-timeline',
-            start: 'top 75%',
-            end: 'bottom 40%',
-            scrub: 1.2
-          }
-        }
-      );
-
-      /* Nodes — scale + fade in one by one */
-      document.querySelectorAll('.timeline__node').forEach(function (node) {
-        gsap.fromTo(node,
-          { scale: 0, autoAlpha: 0 },
-          {
-            scale: 1, autoAlpha: 1,
-            duration: 0.55,
-            ease: 'back.out(2)',
-            scrollTrigger: { trigger: node, start: 'top 82%', once: true }
-          }
-        );
-      });
-
-      /* Left cards — slide in from the left */
-      document.querySelectorAll('.timeline__step--left .timeline__card').forEach(function (card) {
-        gsap.fromTo(card,
-          { autoAlpha: 0, x: -70 },
-          {
-            autoAlpha: 1, x: 0,
-            duration: 0.85,
-            ease: 'power3.out',
-            scrollTrigger: { trigger: card, start: 'top 80%', once: true }
-          }
-        );
-      });
-
-      /* Right cards — slide in from the right */
-      document.querySelectorAll('.timeline__step--right .timeline__card').forEach(function (card) {
-        gsap.fromTo(card,
-          { autoAlpha: 0, x: 70 },
-          {
-            autoAlpha: 1, x: 0,
-            duration: 0.85,
-            ease: 'power3.out',
-            scrollTrigger: { trigger: card, start: 'top 80%', once: true }
-          }
-        );
-      });
-    });
-    </script>
 
     <!-- CTA -->
     <section class="section cta-section">
@@ -211,10 +153,9 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-  <script defer src="../js/components/layout.js?v=20260325-1"></script>
-  <script defer src="../js/animations.js"></script>
-  <script defer src="../js/globe.js"></script>
-  <script defer src="../js/main.js?v=20260325-1"></script>
+  <script defer src="../js/components/layout.js?v=20260326-10"></script>
+  <script defer src="../js/animations.js?v=20260326-10"></script>
+  <script defer src="../js/main.js?v=20260326-10"></script>
 
 </body>
 </html>
