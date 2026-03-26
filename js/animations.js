@@ -453,9 +453,19 @@ function _stickyShowcase() {
   */
 
   /* ── Transition between panels + phone screens ── */
+  var isMobileShowcase = window.innerWidth <= 960;
+
   function transitionTo(newIdx, prevIdx) {
     var forward = newIdx > prevIdx;
     var panelDelay = prevIdx >= 0 ? 0.1 : 0;
+
+    /* Scale slide distances for mobile's compact layout */
+    var slideOut  = isMobileShowcase ? 28 : 60;
+    var slideIn   = isMobileShowcase ? 32 : 68;
+    var firstSlide = isMobileShowcase ? 16 : 28;
+    var innerMeta  = isMobileShowcase ? 8  : 14;
+    var innerTitle = isMobileShowcase ? 14 : 24;
+    var innerDesc  = isMobileShowcase ? 10 : 20;
 
     /* ─── FAST-SCROLL GUARD: kill every in-flight tween on all panels/screens,
            then instantly zero-out anything that is neither the outgoing nor
@@ -486,7 +496,7 @@ function _stickyShowcase() {
     if (prevIdx >= 0 && panels[prevIdx]) {
       gsap.to(panels[prevIdx], {
         opacity:  0,
-        y:        forward ? -60 : 60,
+        y:        forward ? -slideOut : slideOut,
         scale:    0.92,
         duration: 0.42,
         ease:     'power3.in',
@@ -502,14 +512,14 @@ function _stickyShowcase() {
     var title    = panels[newIdx].querySelector('.showcase-panel__title');
     var desc     = panels[newIdx].querySelector('.showcase-panel__desc');
 
-    var fromY = forward ? 68 : -68;
-    if (prevIdx < 0) fromY = 28;
+    var fromY = forward ? slideIn : -slideIn;
+    if (prevIdx < 0) fromY = firstSlide;
 
     gsap.set(panels[newIdx], { y: fromY, scale: 0.95 });
     if (ghostNum) gsap.set(ghostNum, { opacity: 0, x: forward ? 36 : -36 });
-    if (meta)     gsap.set(meta,     { opacity: 0, y: forward ? 14 : -14 });
-    if (title)    gsap.set(title,    { opacity: 0, y: forward ? 24 : -24 });
-    if (desc)     gsap.set(desc,     { opacity: 0, y: forward ? 20 : -20 });
+    if (meta)     gsap.set(meta,     { opacity: 0, y: forward ? innerMeta : -innerMeta });
+    if (title)    gsap.set(title,    { opacity: 0, y: forward ? innerTitle : -innerTitle });
+    if (desc)     gsap.set(desc,     { opacity: 0, y: forward ? innerDesc : -innerDesc });
 
     /* ─── Animate panel in ─── */
     gsap.to(panels[newIdx], {
@@ -571,9 +581,10 @@ function _stickyShowcase() {
       maxH = Math.max(maxH, p.offsetHeight);
       gsap.set(p, { position: 'absolute', opacity: 0, y: 40 });
     });
-    /* On desktop, set a fixed min-height so absolute panels don't collapse the stage.
-       On ≤1024 px the stage uses flex:1 inside a stretched grid, so skip the inline value. */
-    if (maxH && window.innerWidth > 1024) {
+    /* Set a min-height so absolute-positioned panels don't collapse the stage.
+       On mobile (≤960 px) the stage fills the CSS 45fr row via flex:1, so
+       skip the inline value there — it would fight the CSS layout. */
+    if (maxH && window.innerWidth > 960) {
       stage.style.minHeight = (maxH + 24) + 'px';
     }
 
