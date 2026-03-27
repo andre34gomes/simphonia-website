@@ -1,6 +1,5 @@
-# Netlify redirects — serve clean URLs
-# The directory/index.html approach works natively, but these
-# ensure old /pages/*.html links still work.
+# Redirects — serve clean URLs
+# Ensure old /pages/*.html links still work.
 
 /pages/destinations.html   /destinations/   301
 /pages/how-it-works.html   /how-it-works/   301
@@ -9,8 +8,8 @@
 /pages/privacy.html        /privacy/        301
 /pages/terms.html          /terms/          301
 
-# Custom 404 page
-/*                         /404.html        404
+# Note: 404 page is handled automatically by Cloudflare Pages
+# via the 404.html file in the root directory.
 
 
 
