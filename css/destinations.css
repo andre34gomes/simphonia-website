@@ -30,15 +30,6 @@
   padding-top: 0;
 }
 
-.destinations-hero::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 50%;
-  transform: translateX(-50%);
-  width: 800px; height: 400px;
-  background: radial-gradient(ellipse at center, rgba(212,175,55,0.07) 0%, transparent 70%);
-  pointer-events: none;
-}
 
 /* Search clear button */
 .search-bar__clear {
@@ -56,7 +47,9 @@
   background: var(--glass-bg, rgba(255,255,255,0.06));
   border: 1px solid var(--border-subtle);
   cursor: pointer;
-  transition: all var(--duration-fast, 0.15s);
+  transition: color        var(--duration-fast),
+              background   var(--duration-fast),
+              border-color var(--duration-fast);
   padding: 0;
 }
 
@@ -82,7 +75,10 @@
   background: transparent;
   border: 1px solid var(--border-subtle);
   cursor: pointer;
-  transition: all var(--duration-normal) var(--ease-out);
+  transition: color        var(--duration-normal) var(--ease-out),
+              background   var(--duration-normal) var(--ease-out),
+              border-color var(--duration-normal) var(--ease-out),
+              box-shadow   var(--duration-normal) var(--ease-out);
   position: relative;
   overflow: hidden;
 }
@@ -143,7 +139,9 @@
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-lg);
   overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform    0.4s var(--ease-out),
+              box-shadow   0.4s var(--ease-out),
+              border-color 0.4s var(--ease-out);
   transform-style: preserve-3d;
   position: relative;
   cursor: pointer;
@@ -163,7 +161,7 @@
   height: 2px;
   background: linear-gradient(90deg, transparent, var(--accent), transparent);
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity var(--duration-normal);
 }
 
 .dest-card:hover {
@@ -187,7 +185,7 @@
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.6s var(--ease-out);
   display: block;
 }
 
@@ -253,6 +251,7 @@
 
 /* No-results empty state */
 .dest-no-results {
+  display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--space-md);
@@ -271,6 +270,26 @@
 
 .dest-no-results strong {
   color: var(--text-secondary);
+}
+
+/* ── Loading / error states (rendered by JS into dest-grid) ── */
+.dest-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: var(--space-3xl) 0;
+  color: var(--text-tertiary);
+}
+
+.dest-state__spinner {
+  animation: spin 1s linear infinite;
+  display: inline-block;
+}
+
+/* Card starting-price line */
+.dest-card__price {
+  font-size: 0.8125rem;
+  color: var(--text-tertiary);
+  margin-top: 0.25rem;
 }
 
 /* ==============================================
@@ -298,14 +317,14 @@
 /* ── Discount badge — rendered inside .dest-card__img-wrap ── */
 .dest-card__discount {
   position: absolute;
-  top: .6rem;
-  right: .6rem;
+  top: 0.6rem;
+  right: 0.6rem;
   background: var(--accent, #D4AF37);
   color: #000;
-  font-size: .6875rem;
+  font-size: 0.6875rem;
   font-weight: 700;
-  letter-spacing: .03em;
-  padding: .2rem .45rem;
+  letter-spacing: 0.03em;
+  padding: 0.2rem 0.45rem;
   border-radius: 4px;
   line-height: 1.4;
   pointer-events: none;

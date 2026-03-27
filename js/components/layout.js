@@ -527,29 +527,51 @@ function injectNav() {
   mobileMenu.innerHTML = `
     <div class="nav__mobile-drawer">
 
-      <div class="nav__mobile-header">
-        <a href="${base}" class="nav__logo nav__mobile-logo" aria-label="Simphonia Home" tabindex="-1">
-          ${brandMarkup(base)}
-        </a>
-        <button class="nav__mobile-close" id="mobile-menu-close" aria-label="Close menu">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
-        </button>
+      <!-- Decorative background elements -->
+      <div class="nav__mobile-glow" aria-hidden="true"></div>
+      <div class="nav__mobile-wave-bg" aria-hidden="true">
+        <img src="${base}assets/logo-mark.svg" alt="" width="320" height="320">
       </div>
 
+      <!-- Floating close button — mirrors hamburger position (top-right) -->
+      <button class="nav__mobile-close" id="mobile-menu-close" aria-label="Close menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+          <line x1="18" y1="6" x2="6" y2="18"/>
+          <line x1="6" y1="6" x2="18" y2="18"/>
+        </svg>
+      </button>
+
+      <!-- Navigation links -->
       <nav class="nav__mobile-links" aria-label="Site pages">
-        <a href="${pagePath('destinations')}" class="nav__mobile-link${activeClass('destinations') ? ' nav__mobile-link--active' : ''}">Destinations</a>
-        <a href="${pagePath('how-it-works')}" class="nav__mobile-link${activeClass('how-it-works') ? ' nav__mobile-link--active' : ''}">How It Works</a>
-        <a href="${pagePath('support')}" class="nav__mobile-link${activeClass('support') ? ' nav__mobile-link--active' : ''}">Support</a>
-        <a href="${pagePath('about')}" class="nav__mobile-link${activeClass('about') ? ' nav__mobile-link--active' : ''}">About</a>
+        <a href="${pagePath('destinations')}" class="nav__mobile-link${activeClass('destinations') ? ' nav__mobile-link--active' : ''}">
+          <span class="nav__mobile-link-num" aria-hidden="true">01</span>
+          <span class="nav__mobile-link-text">Destinations</span>
+          <svg class="nav__mobile-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a href="${pagePath('how-it-works')}" class="nav__mobile-link${activeClass('how-it-works') ? ' nav__mobile-link--active' : ''}">
+          <span class="nav__mobile-link-num" aria-hidden="true">02</span>
+          <span class="nav__mobile-link-text">How It Works</span>
+          <svg class="nav__mobile-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a href="${pagePath('support')}" class="nav__mobile-link${activeClass('support') ? ' nav__mobile-link--active' : ''}">
+          <span class="nav__mobile-link-num" aria-hidden="true">03</span>
+          <span class="nav__mobile-link-text">Support</span>
+          <svg class="nav__mobile-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
+        <a href="${pagePath('about')}" class="nav__mobile-link${activeClass('about') ? ' nav__mobile-link--active' : ''}">
+          <span class="nav__mobile-link-num" aria-hidden="true">04</span>
+          <span class="nav__mobile-link-text">About</span>
+          <svg class="nav__mobile-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+        </a>
       </nav>
 
+      <!-- CTA -->
       <div class="nav__mobile-download">
-        <a href="${base}" class="btn btn--primary btn--block">
+        <a href="${base}" class="btn btn--primary btn--block nav__mobile-cta-btn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Download App
         </a>
       </div>
-
 
     </div>
   `;
@@ -785,5 +807,4 @@ if (typeof window !== 'undefined') {
     toggleTheme,
   });
 }
-
 

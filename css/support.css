@@ -1,54 +1,65 @@
 @import 'base.css';
 
-
 /* ============================================================
    SIMPHONIA — Support Page Stylesheet
    ============================================================
-   Styles exclusive to pages/support.html.
-   Shared components (search-bar, faq) are in base.css.
+   Styles exclusive to /support/.
+   Shared components (search-bar, faq) live in base.css.
    ============================================================ */
 
-/* Support Hero */
-.support-hero {
-  padding-top: calc(var(--nav-height) + var(--space-3xl));
-  padding-bottom: calc(var(--space-3xl) * 2);
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
+/* ── Support Hero ──
+   Layout, centering, and flex properties are shared with .about-hero
+   in base.css. Only page-specific overrides are listed here.        */
+.support-hero p {
+  max-width: 520px; /* narrower than the default 600px in base.css */
 }
 
-.support-hero > .container { position: relative; z-index: 1; padding-inline: clamp(2rem, 8vw, 6rem); }
-
+/* Slightly stronger glow than the default 0.07 in base.css */
 .support-hero::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 50%;
-  transform: translateX(-50%);
-  width: 800px;
-  height: 400px;
   background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.09) 0%, transparent 70%);
-  pointer-events: none;
   z-index: 0;
 }
 
-/* Hero description paragraph */
-.support-hero p {
-  font-size: 1.125rem;
+
+/* ── FAQ search wrapper — centred with a tight max-width ── */
+.faq-search-wrap {
   max-width: 520px;
-  margin: var(--space-lg) auto 0;
+  margin: 0 auto var(--space-3xl);
 }
 
 @keyframes result-pop {
-  0%  { opacity: 0; transform: scale(0.94) translateY(6px); }
-  100%{ opacity: 1; transform: scale(1) translateY(0); }
+  from { opacity: 0; transform: scale(0.94) translateY(6px); }
+  to   { opacity: 1; transform: scale(1)    translateY(0);   }
 }
 
-/* Contact Form */
+/* ── Search clear button ── */
+.search-bar__clear {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  padding: 0;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  border-radius: 50%;
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: color 0.2s, background 0.2s;
+}
+
+.search-bar__clear svg {
+  width: 0.875rem;
+  height: 0.875rem;
+  pointer-events: none;
+}
+
+.search-bar__clear:hover {
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+}
+
 .contact-form {
   max-width: 560px;
   margin: 0 auto;
@@ -57,7 +68,6 @@
   gap: var(--space-lg);
 }
 
-/* Submit button aligns to the left edge of the flex column */
 .contact-form button[type="submit"] {
   align-self: flex-start;
 }
@@ -74,6 +84,15 @@
   color: var(--text-secondary);
 }
 
+/* Required-field asterisk */
+.form-group label .required-mark {
+  color: var(--accent);
+  margin-left: 0.2em;
+  font-size: 0.75rem;
+  vertical-align: super;
+  line-height: 1;
+}
+
 .form-input {
   padding: 0.875rem 1.25rem;
   background: var(--bg-elevated);
@@ -81,16 +100,21 @@
   border-radius: var(--radius-md);
   color: var(--text-primary);
   outline: none;
-  transition: border-color var(--duration-normal),
-              box-shadow 0.3s ease,
-              transform 0.2s ease;
+  transition:
+    border-color var(--duration-normal),
+    box-shadow   0.3s ease,
+    transform    0.2s ease;
 }
 
 .form-input:focus {
   border-color: var(--accent);
-  box-shadow: 0 0 0 3px var(--accent-subtle),
-              0 0 20px rgba(212, 175, 55, 0.08);
+  box-shadow: 0 0 0 3px var(--accent-subtle), 0 0 20px var(--accent-subtle);
   transform: translateY(-1px);
+}
+
+.form-input--error {
+  border-color: #f87171 !important;
+  box-shadow: 0 0 0 3px rgba(248, 113, 113, 0.15) !important;
 }
 
 textarea.form-input {
@@ -98,14 +122,74 @@ textarea.form-input {
   resize: vertical;
 }
 
-/* Submit button loading state */
 .btn[disabled] {
   opacity: 0.65;
   cursor: not-allowed;
   pointer-events: none;
 }
 
-/* FAQ no-results state */
+/* ── Per-field error messages ── */
+.field-error {
+  display: block;
+  font-size: 0.8125rem;
+  color: #f87171;
+  margin-top: 0.25rem;
+}
+
+.field-error[hidden] { display: none; }
+
+/* ── Global form feedback banner ── */
+.form-feedback {
+  padding: var(--space-md) var(--space-lg);
+  border-radius: var(--radius-md);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  animation: result-pop 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.form-feedback[hidden] { display: none; }
+
+.form-feedback--success {
+  background: rgba(74, 222, 128, 0.1);
+  border: 1px solid rgba(74, 222, 128, 0.3);
+  color: #4ade80;
+}
+
+.form-feedback--error {
+  background: rgba(248, 113, 113, 0.1);
+  border: 1px solid rgba(248, 113, 113, 0.3);
+  color: #f87171;
+}
+
+/* ── Character counter ── */
+.char-counter {
+  font-size: 0.75rem;
+  color: var(--text-tertiary);
+  text-align: right;
+  display: block;
+  margin-top: 0.25rem;
+  transition: color 0.2s;
+}
+
+.char-counter--warn { color: #f59e0b; }
+
+/* ── Button loading spinner ── */
+.btn-spinner {
+  display: inline-block;
+  width: 0.875rem;
+  height: 0.875rem;
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: btn-spin 0.6s linear infinite;
+  vertical-align: middle;
+  margin-right: 0.25rem;
+}
+
+@keyframes btn-spin {
+  to { transform: rotate(360deg); }
+}
+
 .faq-list:empty::after,
 .faq-no-results {
   display: block;
@@ -115,66 +199,61 @@ textarea.form-input {
   font-size: 0.9375rem;
 }
 
-/* Select element styling */
-select.form-input {
-  appearance: none;
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23888' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
-  background-repeat: no-repeat;
-  background-position: right 1rem center;
-  padding-right: 2.5rem;
-  cursor: pointer;
-}
-
-/* Contact cards — hover glow */
-.support-hero + .section .glass-card {
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+/* ── Contact channel cards ── */
+.contact-card {
+  transition: transform      0.4s var(--ease-out),
+              box-shadow     0.4s var(--ease-out),
+              border-color   0.4s var(--ease-out);
   padding: var(--space-2xl);
   text-align: center;
 }
 
-.support-hero + .section .glass-card:hover {
+.contact-card:hover {
   transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 16px 40px rgba(212, 175, 55, 0.1),
-              0 0 0 1px var(--border-accent);
+  box-shadow: 0 16px 40px rgba(212, 175, 55, 0.1), 0 0 0 1px var(--border-accent);
 }
 
-/* h3 and p inside contact cards */
-.support-hero + .section .glass-card h3 {
-  margin-bottom: var(--space-sm);
-}
+.contact-card h3 { margin-bottom: var(--space-sm); }
+.contact-card p  { font-size: 0.9375rem; }
 
-.support-hero + .section .glass-card p {
-  font-size: 0.9375rem;
-}
-
-
-/* Contact channel icon (emoji) */
 .contact-channel__icon {
   font-size: 2rem;
   margin-bottom: var(--space-md);
 }
 
-/* Search bar hero variant — extra top margin */
-.support-hero .search-bar,
+.contact-card__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+  margin-top: var(--space-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.contact-card__link svg { flex-shrink: 0; }
+
+.contact-card__socials {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: var(--space-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.contact-card__socials-sep {
+  color: var(--border-default);
+  user-select: none;
+}
+
 .destinations-hero .search-bar {
   margin-top: var(--space-2xl);
 }
 
-/* ==============================================
-   RESPONSIVE — Support Page
-   ============================================== */
-@media (max-width: 768px) {
-
-  .contact-form {
-    gap: var(--space-md);
-  }
-
-  .form-input {
-    padding: 0.75rem 1rem;
-    font-size: 0.9375rem;
-  }
-}
-/* FAQ two-panel layout */
+/* ══════════════════════════════════════════════════════════
+   FAQ — Two-panel layout
+   ══════════════════════════════════════════════════════════ */
 .faq-panel {
   display: grid;
   grid-template-columns: 280px 1fr;
@@ -204,11 +283,11 @@ select.form-input {
   border-left: 2px solid transparent;
   border-radius: 0 var(--radius-md) var(--radius-md) 0;
   cursor: pointer;
-  font-family: inherit;
   color: var(--text-tertiary);
-  transition: background 0.2s var(--ease-out),
-              color 0.2s var(--ease-out),
-              border-color 0.2s var(--ease-out);
+  transition:
+    background   0.2s var(--ease-out),
+    color        0.2s var(--ease-out),
+    border-color 0.2s var(--ease-out);
 }
 
 .faq-panel__q:hover {
@@ -244,17 +323,14 @@ select.form-input {
   flex: 1;
 }
 
-/* Hidden when search filters it out */
 .faq-panel__q[hidden] { display: none; }
 
-/* Answer display panel */
 .faq-panel__display {
   background: var(--bg-elevated);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
   padding: 2.5rem 2.75rem;
   height: 100%;
-  box-sizing: border-box;
   overflow: hidden;
 }
 
@@ -270,7 +346,6 @@ select.form-input {
   transform: translateY(10px);
 }
 
-/* Large decorative question number */
 .faq-panel__display-deco {
   font-size: 4.5rem;
   font-weight: 900;
@@ -297,11 +372,10 @@ select.form-input {
   color: var(--text-secondary);
 }
 
-.faq-panel__display-body p { margin: 0; }
-.faq-panel__display-body p + p { margin-top: 0.625rem; }
-.faq-panel__display-body strong { color: var(--text-primary); font-weight: 600; }
+.faq-panel__display-body p         { margin: 0; }
+.faq-panel__display-body p + p     { margin-top: 0.625rem; }
+.faq-panel__display-body strong    { color: var(--text-primary); font-weight: 600; }
 
-/* "Contact us" link */
 .faq-panel__display-cta {
   display: inline-flex;
   align-items: center;
@@ -315,17 +389,14 @@ select.form-input {
   transition: gap 0.2s var(--ease-out), color 0.2s;
 }
 
-.faq-panel__display-cta:hover { gap: 0.625rem; color: var(--accent-light); }
-
-/* No results message */
-.faq-no-results {
-  text-align: center;
-  padding: var(--space-3xl) 0;
-  color: var(--text-tertiary);
-  font-size: 0.9375rem;
+.faq-panel__display-cta:hover {
+  gap: 0.625rem;
+  color: var(--accent-light);
 }
 
-/* ─── Responsive ─────────────────────────────────────────────── */
+/* ══════════════════════════════════════════════════════════
+   RESPONSIVE
+   ══════════════════════════════════════════════════════════ */
 @media (max-width: 860px) {
   .faq-panel {
     grid-template-columns: 1fr;
@@ -352,14 +423,8 @@ select.form-input {
   }
 }
 
-/* ==============================================
-   RESPONSIVE — Support Page
-   ============================================== */
 @media (max-width: 768px) {
-
-  .contact-form {
-    gap: var(--space-md);
-  }
+  .contact-form { gap: var(--space-md); }
 
   .form-input {
     padding: 0.75rem 1rem;

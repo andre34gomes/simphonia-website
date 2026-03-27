@@ -107,7 +107,9 @@
 .value-card {
   padding: var(--space-2xl);
   transform-style: preserve-3d;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform  0.4s var(--ease-out),
+              box-shadow 0.4s var(--ease-out),
+              border-color 0.4s var(--ease-out);
   position: relative;
   overflow: hidden;
 }
@@ -120,7 +122,7 @@
   width: 3px;
   background: linear-gradient(to bottom, var(--accent), transparent 80%);
   opacity: 0;
-  transition: opacity 0.3s var(--ease-out);
+  transition: opacity var(--duration-normal) var(--ease-out);
 }
 
 /* Hover glow from center */
@@ -128,9 +130,9 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle at 50% 30%, rgba(212,175,55,0.08) 0%, transparent 60%);
+  background: radial-gradient(circle at 50% 30%, var(--accent-subtle) 0%, transparent 60%);
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity var(--duration-normal);
   pointer-events: none;
 }
 
@@ -147,7 +149,8 @@
   font-size: 2.5rem;
   margin-bottom: var(--space-md);
   animation: float-gentle 4s ease-in-out infinite;
-  position: relative; z-index: 1;
+  position: relative;
+  z-index: 1;
 }
 
 .value-card h3 {
@@ -155,14 +158,16 @@
   font-weight: 700;
   letter-spacing: -0.02em;
   margin-bottom: var(--space-sm);
-  position: relative; z-index: 1;
+  position: relative;
+  z-index: 1;
 }
 
 .value-card p {
   font-size: 0.9375rem;
   color: var(--text-secondary);
   line-height: 1.65;
-  position: relative; z-index: 1;
+  position: relative;
+  z-index: 1;
 }
 
 .value-card:nth-child(2) .value-card__icon { animation-delay: -1s; }
@@ -182,7 +187,9 @@
   text-align: center;
   padding: var(--space-2xl) var(--space-3xl);
   transform-style: preserve-3d;
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform  0.4s var(--ease-out),
+              box-shadow 0.4s var(--ease-out),
+              border-color 0.4s var(--ease-out);
   min-width: 240px;
   position: relative;
   overflow: hidden;
@@ -195,7 +202,7 @@
   height: 2px;
   background: linear-gradient(90deg, transparent, var(--accent), transparent);
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity var(--duration-normal);
 }
 
 .team-card:hover {
@@ -219,8 +226,8 @@
   font-size: 1.5rem;
   font-weight: 700;
   color: var(--accent);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-              box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.4s var(--ease-out),
+              box-shadow 0.4s var(--ease-out);
 }
 
 .team-card:hover .team-card__avatar {
@@ -255,7 +262,9 @@
   border-radius: var(--radius-lg);
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  transition: all var(--duration-normal) var(--ease-out);
+  transition: transform       var(--duration-normal) var(--ease-out),
+              box-shadow      var(--duration-normal) var(--ease-out),
+              border-color    var(--duration-normal) var(--ease-out);
   position: relative;
   overflow: hidden;
 }
@@ -267,7 +276,7 @@
   height: 2px;
   background: linear-gradient(90deg, transparent, var(--accent), transparent);
   opacity: 0;
-  transition: opacity 0.3s;
+  transition: opacity var(--duration-normal);
 }
 
 .impact-card:hover {
@@ -315,20 +324,17 @@
 /* ==============================================
    STORY SECTION — About Page
    ============================================== */
-
-/* h2 directly inside the text column of .about-story */
-.about-story > div > h2 {
+.about-story__body h2 {
   margin-top: var(--space-md);
 }
 
-/* Prose paragraphs inside the text column */
-.about-story > div > p {
+.about-story__body p {
   margin-top: var(--space-lg);
   font-size: 1.0625rem;
   line-height: 1.8;
 }
 
-.about-story > div > p + p {
+.about-story__body p + p {
   margin-top: var(--space-md);
 }
 

@@ -38,7 +38,7 @@
 
 .hero-fade-up {
   opacity: 0;
-  animation: hero-fade-up-in 0.7s cubic-bezier(.22,1,.36,1) both;
+  animation: hero-fade-up-in 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
   animation-delay: var(--delay, 0ms);
 }
 
@@ -330,7 +330,7 @@
 }
 
 .hero-dl-btn--highlight {
-  animation: dl-btn-highlight 0.9s cubic-bezier(.25,.46,.45,.94) forwards;
+  animation: dl-btn-highlight 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
 }
 
 /* ── Hero Download Buttons ── */
@@ -1472,12 +1472,13 @@
   position: relative;
   z-index: 2;
   padding: 0;
+  min-height: 100dvh;
 }
 
 /* Viewport-filling stage — GSAP pins this element to the viewport while the section scrolls */
 .showcase-sticky__scene {
   height: 100vh;
-  height: 100dvh;                  /* matches hero-postcard — always equals the visible viewport */
+  height: 100dvh;
   display: flex;
   align-items: center;
   overflow: hidden;
@@ -1494,17 +1495,7 @@
 
 .showcase-sticky__inner > * { min-width: 0; }
 
-/* Left column: section header + roulette drum */
-.showcase-sticky__left {
-  display: flex;
-  flex-direction: column;
-  gap: 2rem;
-  min-width: 0;
-}
-
-.showcase-sticky__header { padding-top: 0; }
-
-/* ── Left column layout ── */
+/* Left column — vertically centred flex column */
 .showcase-sticky__left {
   display: flex;
   flex-direction: column;
@@ -1513,6 +1504,8 @@
   min-width: 0;
   padding: 3rem 0;
 }
+
+.showcase-sticky__header { padding-top: 0; }
 
 /* ─────────────────────────────────────────
    Segment progress bar  (Apple-style thin lines)
@@ -1654,15 +1647,6 @@
   align-items: center;
   position: relative;
 }
-
-/* ── Showcase app screen: container for the 4 stacked screens ── */
-.showcase-app-screen {
-  width: 100%; height: 100%;
-  position: relative;
-  overflow: hidden;
-  background: linear-gradient(160deg, #080c18 0%, #0a0818 100%);
-}
-
 
 /* ══════════════════════════════════════════════
    PHONE SCREENS  (.sas-screen)
@@ -2100,6 +2084,7 @@
   width: 100%; height: 100%;
   object-fit: cover;
   transition: transform 0.8s var(--ease-out);
+  will-change: transform;
 }
 
 .dest-grid-card:hover img { transform: scale(1.08); }
@@ -2112,6 +2097,11 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
+  transition: transform 0.4s var(--ease-out);
+}
+
+.dest-grid-card:hover .dest-grid-card__overlay {
+  transform: translateY(-6px);
 }
 
 .dest-grid-card__overlay h3 {
@@ -2233,6 +2223,11 @@ section[id] {
   100% { transform: scaleY(1); opacity: 0; }
 }
 
+@keyframes strip-entrance {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
 /* Destinations strip — pinned to the bottom of the hero viewport */
 .hero__destinations-strip {
   flex-shrink: 0;
@@ -2245,6 +2240,7 @@ section[id] {
   position: relative;
   z-index: 2;
   user-select: none;
+  animation: strip-entrance 0.8s ease-out 1.4s both;
 }
 
 .hero__destinations-strip::before,
@@ -2478,7 +2474,7 @@ section[id] {
   aspect-ratio: 290 / 594;
   z-index: 1;
   color: inherit;
-  transition: transform 0.4s cubic-bezier(.25,.46,.45,.94), filter 0.4s ease;
+  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), filter 0.4s ease;
   background: #1a1a2e;
   border-radius: 44px;
   border: 5px solid #2a2a3e;
@@ -3228,19 +3224,24 @@ section[id] {
   .showcase-sticky__scene {
     height: 100vh;
     height: 100dvh;
+    flex-direction: column;   /* stack inner vertically so flex:1 works on height */
     align-items: stretch;
   }
   .showcase-sticky__inner {
     grid-template-columns: 1fr;
+    /* Phone row (order:1 → visual row 1): sized by its content (phone aspect-ratio).
+       Text row (order:2 → visual row 2): fills all remaining height. */
     grid-template-rows: auto 1fr;
     gap: 0;
-    height: 100%;
-    align-items: stretch; /* override the desktop align-items: center */
+    /* flex:1 fills scene height reliably in column-flex context on all browsers */
+    flex: 1 1 0;
+    min-height: 0;
+    align-items: stretch;
     padding-top: calc(var(--nav-height, 64px) + clamp(0.25rem, 0.8dvh, 0.75rem));
-    padding-bottom: clamp(0.75rem, 1.5dvh, 1.25rem);
+    padding-bottom: calc(clamp(0.75rem, 1.5dvh, 1.25rem) + env(safe-area-inset-bottom, 0px));
     box-sizing: border-box;
   }
-  /* Phone row — identical sizing to the hero phone (var(--phone-width) from base CSS) */
+  /* Phone row */
   .showcase-sticky__phone {
     order: 1;
     padding: 0;
@@ -3248,38 +3249,46 @@ section[id] {
     align-items: center;
     justify-content: center;
   }
-  /* Text row — breathing space from phone, always stacks above phone glow/shadow */
+  /* Text row — vertically centred within the remaining viewport height */
   .showcase-sticky__left {
     order: 2;
-    padding: clamp(0.875rem, 2vh, 1.5rem) 0 0;
+    padding: 0;                      /* symmetrical: flex centering handles offsets */
     position: relative;
     z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: center;         /* centre segments + stage inside the 1fr row */
+    gap: clamp(0.375rem, 1dvh, 0.75rem);
     min-height: 0;
     overflow: hidden;
   }
   .showcase-segments {
     width: 100%;
     max-width: 200px;
-    margin: clamp(0.375rem, 0.8dvh, 0.625rem) auto;
+    margin: 0 auto;
     gap: 5px;
     flex-shrink: 0;
   }
   .showcase-segment { height: 2.5px; }
+  /* Stage: constrained height so absolute panels don't create a huge empty box */
   .showcase-panels-stage {
     width: 100%;
-    flex: 1;
+    flex: none;                      /* do NOT grow; use explicit height */
+    /* Fits the text content (~140px) with a little breathing room */
+    min-height: clamp(140px, 20dvh, 200px);
     display: flex;
     flex-direction: column;
-    justify-content: center;
-    min-height: 0;
+    justify-content: flex-start;
     position: relative;
+  }
+  /* Panels: push content down slightly so it feels centred in the stage */
+  .showcase-sticky__panel {
+    padding-top: clamp(0.5rem, 1.5dvh, 1.25rem);
   }
   .showcase-panel__ghost-num { display: none; }
 
-  /* Panel text — centered, tight spacing */
+  /* Panel text — centred, tight spacing */
   .showcase-panel__meta {
     justify-content: center;
     gap: 0.75rem;
@@ -3467,21 +3476,24 @@ section[id] {
   .feat-card__desc { font-size: 0.8125rem; }
   .feat-card__tag { font-size: 0.6rem; padding: 0.2rem 0.55rem; }
 
-  /* Showcase — compact vertical */
-  .showcase-panel__title { font-size: clamp(1.25rem, 5.5vw, 1.625rem); }
-  .showcase-panel__desc { font-size: 0.75rem; max-width: 290px; line-height: 1.5; }
+  /* Showcase — phone-sized improvements */
+  .showcase-panel__title { font-size: clamp(1.5rem, 6vw, 1.875rem); }
+  .showcase-panel__desc  { font-size: clamp(0.875rem, 2.5vw, 1rem); max-width: 300px; line-height: 1.6; }
   .showcase-sticky__panel h3 { font-size: 1.0625rem; }
-  .showcase-sticky__panel p { font-size: 0.75rem; }
+  .showcase-sticky__panel p  { font-size: 0.875rem; }
   .showcase-panel__icon {
     width: 42px; height: 42px;
     font-size: 1.125rem;
     margin-bottom: var(--space-sm);
   }
   .showcase-segments { max-width: 170px; }
+  /* More breathing room above phone; safe-area at bottom for iOS home indicator */
   .showcase-sticky__inner {
-    padding-top: calc(var(--nav-height, 64px) + clamp(0.125rem, 0.5dvh, 0.5rem));
-    padding-bottom: clamp(0.5rem, 1dvh, 1rem);
+    padding-top: calc(var(--nav-height, 64px) + clamp(0.75rem, 3dvh, 2rem));
+    padding-bottom: calc(clamp(0.5rem, 1dvh, 1rem) + env(safe-area-inset-bottom, 0px));
   }
+  /* Do NOT set .showcase-sticky__phone padding here —
+     the 960px breathing-room top value (clamp 0.5rem,2.5dvh,1.5rem) must apply */
   .iphone-mockup {
     border-radius: 34px;
     border-width: 4px;
@@ -3494,9 +3506,6 @@ section[id] {
   }
   .iphone-mockup__screen {
     border-radius: 30px;
-  }
-  .showcase-sticky__phone {
-    padding: 0 0 0.25rem;
   }
 
   /* Marquee — smaller items */
@@ -3532,12 +3541,12 @@ section[id] {
   }
 
   .showcase-sticky__panel {
-    padding: var(--space-md);
+    padding: 0.75rem var(--space-md) 0; /* conserve vertical space on tiny screens */
   }
 
   .showcase-segments { max-width: 160px; }
-  .showcase-panel__title { font-size: clamp(1.125rem, 5.5vw, 1.5rem); }
-  .showcase-panel__desc { max-width: 260px; font-size: 0.75rem; }
+  .showcase-panel__title { font-size: clamp(1.3125rem, 5.5vw, 1.5rem); }
+  .showcase-panel__desc  { max-width: 270px; font-size: 0.8125rem; }
 
   .dest-grid-card {
     max-height: 180px;
@@ -3661,7 +3670,18 @@ section[id] {
 
 .adl-bar-wrap { display: flex; flex-direction: column; gap: 6px; }
 .adl-bar { height: 5px; background: rgba(255,255,255,0.1); border-radius: 3px; overflow: hidden; }
-.adl-bar-fill { height: 100%; background: linear-gradient(90deg, var(--accent-dark), var(--accent)); border-radius: 3px; }
+
+@keyframes bar-fill-in {
+  from { width: 0; }
+  to   { width: 38%; }
+}
+
+.adl-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-dark), var(--accent));
+  border-radius: 3px;
+  animation: bar-fill-in 1.4s cubic-bezier(0.22, 1, 0.36, 1) 1.6s both;
+}
 .adl-bar-label { font-size: 0.6875rem; color: rgba(255,255,255,0.45); text-align: right; }
 
 .adl-add-btn {
@@ -3737,16 +3757,6 @@ section[id] {
   100% { left: 200%; }
 }
 
-/* ── Hero destinations strip entrance ── */
-@keyframes strip-entrance {
-  0%   { opacity: 0; transform: translateY(16px); }
-  100% { opacity: 1; transform: translateY(0); }
-}
-
-.hero__destinations-strip {
-  animation: strip-entrance 0.8s ease-out 1.4s both;
-}
-
 /* ── Showcase progress dots ── */
 .showcase-progress {
   position: absolute;
@@ -3760,11 +3770,14 @@ section[id] {
 }
 
 .showcase-progress__dot {
+  position: relative;
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background: var(--border-default);
-  transition: all 0.4s var(--ease-out);
+  transition: background var(--duration-normal) var(--ease-out),
+              transform  var(--duration-normal) var(--ease-out),
+              box-shadow var(--duration-normal) var(--ease-out);
   cursor: pointer;
 }
 
@@ -3776,15 +3789,6 @@ section[id] {
 
 @media (max-width: 960px) {
   .showcase-progress { display: none; }
-}
-
-/* ── Destination grid card image parallax (overflow hidden already set) ── */
-.dest-grid-card {
-  overflow: hidden;
-}
-
-.dest-grid-card img {
-  will-change: transform;
 }
 
 /* ── Reduced motion — disable new animations ── */
@@ -3824,15 +3828,6 @@ section[id] {
 
 .dest-grid-card:hover::before { opacity: 1; }
 
-/* ── Dest card overlay text slide-up on hover ── */
-.dest-grid-card__overlay {
-  transition: transform 0.4s var(--ease-out);
-}
-
-.dest-grid-card:hover .dest-grid-card__overlay {
-  transform: translateY(-6px);
-}
-
 /* ── Step card icon bounce ── */
 @keyframes icon-bounce {
   0%, 100% { transform: scale(1) translateY(0); }
@@ -3844,15 +3839,6 @@ section[id] {
   animation: icon-bounce 0.55s ease-out;
 }
 
-/* ── Active data fill entrance (hero phone) ── */
-@keyframes bar-fill-in {
-  from { width: 0; }
-  to   { width: 38%; }
-}
-
-.adl-bar-fill {
-  animation: bar-fill-in 1.4s cubic-bezier(.22,1,.36,1) 1.6s both;
-}
 
 /* ── Showcase panel active: icon spin-in ── */
 @keyframes icon-spin-in {
@@ -3903,9 +3889,6 @@ section[id] {
   animation: dot-ring-pulse 1.8s ease-out infinite;
 }
 
-.showcase-progress__dot {
-  position: relative;
-}
 
 @keyframes dot-ring-pulse {
   0%   { transform: scale(0.6); opacity: 0.8; }

@@ -5,39 +5,27 @@
    SIMPHONIA — Legal Pages Stylesheet
    ============================================================ */
 
-/* ── Legal Hero ── */
-.legal-hero {
-  padding-top: calc(var(--nav-height) + var(--space-3xl));
-  padding-bottom: calc(var(--space-3xl) * 2);
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+/* ── Legal Hero ──
+   Layout, centering, and flex properties are shared with .about-hero
+   in base.css via the combined .about-hero, .support-hero, .legal-hero rule.
+   Only page-specific overrides are listed here.                       */
 
-/* Subtle radial glow behind hero text */
+/* Smaller glow ellipse than the shared 800×400 default */
 .legal-hero::before {
-  content: '';
-  position: absolute;
-  top: 0; left: 50%;
-  transform: translateX(-50%);
-  width: 600px; height: 300px;
-  background: radial-gradient(ellipse at center, rgba(212, 175, 55, 0.07) 0%, transparent 70%);
-  pointer-events: none;
+  width: 600px;
+  height: 300px;
 }
-
-
 
 .legal-hero .label {
   display: block;
   margin-bottom: var(--space-md);
 }
 
-.legal-hero > .container { position: relative; z-index: 1; padding-inline: clamp(2rem, 8vw, 6rem); }
+.legal-hero > .container {
+  position: relative;
+  z-index: 1;
+  padding-inline: clamp(2rem, 8vw, 6rem);
+}
 
 /* The prose/TOC section directly below the legal hero has reduced top padding */
 .legal-hero + .section {
@@ -186,8 +174,8 @@
   padding: var(--space-lg) var(--space-xl);
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius-md);
   border-left: 3px solid var(--accent);
+  border-radius: var(--radius-md);
   margin-bottom: var(--space-2xl);
 }
 
@@ -201,8 +189,8 @@
   margin-top: var(--space-4xl);
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
-  border-radius: var(--radius-lg);
   border-top: 2px solid var(--border-accent);
+  border-radius: var(--radius-lg);
 }
 
 .legal-cta__text h4 {
