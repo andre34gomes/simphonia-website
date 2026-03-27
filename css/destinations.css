@@ -30,6 +30,22 @@
   padding-top: 0;
 }
 
+/* Search + filter controls — grouped, centred wrapper */
+.search-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-md);          /* 1rem between search bar and tabs */
+  width: 100%;
+  margin-bottom: var(--space-xl); /* 2rem before the results/grid */
+}
+
+/* Reset the 3rem top-margin base.css adds when the bar is inside the wrapper */
+.search-controls .search-bar {
+  margin: 0 auto;
+  width: 100%;
+}
+
 
 /* Search clear button */
 .search-bar__clear {
@@ -111,7 +127,7 @@
 .dest-results-bar {
   display: flex;
   align-items: center;
-  margin-bottom: var(--space-lg);
+  margin-bottom: var(--space-md);
   min-height: 1.75rem;
 }
 

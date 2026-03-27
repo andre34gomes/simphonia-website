@@ -537,50 +537,48 @@
 
 /* ── Light theme overrides for gradient hero ── */
 [data-theme="light"] .hero-postcard__bg {
-  background: radial-gradient(ellipse 120% 80% at 20% 50%, rgba(255, 240, 220, 1) 0%, var(--bg-primary) 70%);
+  background: var(--bg-primary);
 }
 
 [data-theme="light"] .hero-postcard__mesh {
-  background:
-    radial-gradient(ellipse 60% 50% at 15% 45%, rgba(212, 175, 55, 0.08) 0%, transparent 60%),
-    radial-gradient(ellipse 50% 60% at 80% 30%, rgba(56, 189, 248, 0.05) 0%, transparent 55%),
-    radial-gradient(ellipse 70% 40% at 50% 90%, rgba(212, 175, 55, 0.04) 0%, transparent 50%);
+  /* single centred glow — mirrors about-hero::before */
+  background: radial-gradient(ellipse 90% 70% at 50% 40%,
+    rgba(212, 175, 55, 0.10) 0%,
+    transparent 65%);
 }
 
 [data-theme="light"] .hero-postcard__grid-pattern {
-  background-image: radial-gradient(circle, rgba(0, 0, 0, 0.04) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(100, 65, 15, 0.04) 1px, transparent 1px);
 }
 
 [data-theme="light"] .hero-postcard__orb--1 {
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.1) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.08) 0%, transparent 70%);
 }
 
 [data-theme="light"] .hero-postcard__orb--2 {
-  background: radial-gradient(circle, rgba(56, 189, 248, 0.06) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.04) 0%, transparent 70%);
 }
 
 [data-theme="light"] .hero-postcard__orb--3 {
-  background: radial-gradient(circle, rgba(168, 85, 247, 0.05) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.03) 0%, transparent 70%);
 }
 
 [data-theme="light"] .hero-postcard__orb--4 {
-  background: radial-gradient(circle, rgba(212, 175, 55, 0.06) 0%, transparent 70%);
+  background: radial-gradient(circle, rgba(212, 175, 55, 0.04) 0%, transparent 70%);
 }
 
 [data-theme="light"] .hero-postcard__bg-overlay {
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 40%, transparent 0%, rgba(255, 245, 241, 0.2) 100%),
-    linear-gradient(to bottom,
-      transparent 0%,
-      transparent 70%,
-      rgba(255, 245, 241, 0.5) 88%,
-      var(--bg-primary) 100%
-    );
+  background: linear-gradient(to bottom,
+    transparent 0%,
+    transparent 75%,
+    rgba(254, 249, 238, 0.60) 90%,
+    var(--bg-primary) 100%
+  );
 }
 
 [data-theme="light"] .hero-postcard__h1 {
   color: var(--text-primary);
-  text-shadow: 0 2px 24px rgba(255, 245, 241, 0.5);
+  text-shadow: 0 2px 24px rgba(254, 249, 238, 0.7);
 }
 
 [data-theme="light"] .hero-postcard__desc {
@@ -642,9 +640,9 @@
 }
 
 [data-theme="light"] .iphone-mockup {
-  filter: drop-shadow(0 20px 50px rgba(0,0,0,0.15)) drop-shadow(0 0 80px rgba(212,175,55,0.06));
-  background: #e8e8f0;
-  border-color: #d0d0dc;
+  filter: drop-shadow(0 20px 50px rgba(60, 30, 5, 0.14)) drop-shadow(0 0 60px rgba(212,175,55,0.08));
+  background: #E8E2D6;
+  border-color: #CFC7B8;
 }
 
 /* Reduced motion: disable orb + portal animations */
@@ -657,14 +655,12 @@
 /* Light theme responsive overlay fix for single-column layout */
 @media (max-width: 960px) {
   [data-theme="light"] .hero-postcard__bg-overlay {
-    background:
-      radial-gradient(ellipse 80% 60% at 50% 40%, transparent 0%, rgba(255, 245, 241, 0.3) 100%),
-      linear-gradient(to bottom,
-        transparent 0%,
-        transparent 60%,
-        rgba(255, 245, 241, 0.6) 88%,
-        var(--bg-primary) 100%
-      );
+    background: linear-gradient(to bottom,
+      transparent 0%,
+      transparent 65%,
+      rgba(254, 249, 238, 0.65) 88%,
+      var(--bg-primary) 100%
+    );
   }
 }
 

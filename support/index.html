@@ -21,7 +21,7 @@
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
   <link rel="shortcut icon" href="../assets/favicon.svg">
   <link rel="mask-icon" href="../assets/favicon.svg" color="#D4AF37">
-  <script>!function(){var t;try{t=localStorage.getItem("simphonia-theme")}catch(e){}if(!t)t=matchMedia("(prefers-color-scheme:light)").matches?"light":"dark";document.documentElement.dataset.theme=t;if(t==="light"){var m=document.querySelector("meta[name=theme-color]");if(m)m.content="#FFF5F1"}}()</script>
+  <script>!function(){var t;try{t=localStorage.getItem("simphonia-theme")}catch(e){}if(!t)t=matchMedia("(prefers-color-scheme:light)").matches?"light":"dark";document.documentElement.dataset.theme=t;if(t==="light"){var m=document.querySelector("meta[name=theme-color]");if(m)m.content="#FEF9EE"}}()</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -144,8 +144,19 @@
             </div>
           </div>
           <div class="form-group">
-            <label for="contact-subject">Subject</label>
-            <input type="text" id="contact-subject" name="subject" class="form-input" placeholder="How can we help?" autocomplete="off">
+            <label for="contact-subject">Subject <span class="required-mark" aria-hidden="true">*</span></label>
+            <div class="select-wrapper">
+              <select id="contact-subject" name="subject" class="form-input form-select" required aria-required="true">
+                <option value="" disabled selected>Select a topic…</option>
+                <option value="General Inquiry">General Inquiry</option>
+                <option value="Billing &amp; Payments">Billing &amp; Payments</option>
+                <option value="Technical Issue">Technical Issue</option>
+                <option value="eSIM Activation">eSIM Activation</option>
+                <option value="Refund Request">Refund Request</option>
+                <option value="Other">Other</option>
+              </select>
+              <svg class="select-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+            </div>
           </div>
           <div class="form-group">
             <label for="contact-message">Message <span class="required-mark" aria-hidden="true">*</span></label>
@@ -156,8 +167,8 @@
       </div>
     </section>
 
-    <!-- Quick Links -->
-    <section class="section" id="quick-links">
+    <!-- Contact Channels -->
+    <section class="section section--alt" id="quick-links">
       <div class="container">
         <div class="section-header reveal">
           <span class="label">Other Ways to Reach Us</span>
@@ -165,31 +176,49 @@
           <p>Pick the channel that works best for you.</p>
         </div>
 
-        <div class="grid grid--3">
-          <div class="glass-card contact-card reveal">
-            <div class="contact-channel__icon" aria-hidden="true">💬</div>
+        <div class="reach-channels reveal">
+
+          <!-- In-App Chat -->
+          <div class="reach-channel">
+            <div class="reach-channel__icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+              </svg>
+            </div>
             <h3>In-App Chat</h3>
-            <p>Get instant help from our AI assistant directly in the Simphonia app.</p>
-            <a href="https://simphonia.pt/download/" class="contact-card__link link-accent">
-              Download the App
-              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-            </a>
+            <p>Get instant answers from our AI assistant directly inside the Simphonia app — available 24/7.</p>
           </div>
-          <div class="glass-card contact-card reveal">
-            <div class="contact-channel__icon" aria-hidden="true">📧</div>
+
+          <!-- Email -->
+          <div class="reach-channel">
+            <div class="reach-channel__icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                <rect x="2" y="4" width="20" height="16" rx="2"/>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+              </svg>
+            </div>
             <h3>Email</h3>
-            <p>Reach us at <a href="mailto:support@simphonia.pt" class="link-accent">support@simphonia.pt</a></p>
+            <p>Drop us a line any time — we typically respond within a few hours.</p>
+            <a href="mailto:support@simphonia.pt" class="reach-channel__link link-accent">support@simphonia.pt</a>
           </div>
-          <div class="glass-card contact-card reveal">
-            <div class="contact-channel__icon" aria-hidden="true">📱</div>
+
+          <!-- Social -->
+          <div class="reach-channel">
+            <div class="reach-channel__icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75">
+                <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+                <path d="m8.59 13.51 6.83 3.98M15.41 6.51l-6.82 3.98"/>
+              </svg>
+            </div>
             <h3>Social</h3>
-            <p>Follow us for updates and travel tips.</p>
-            <div class="contact-card__socials">
+            <p>Follow us for destination highlights, travel tips, and product updates.</p>
+            <div class="reach-channel__socials">
               <a href="https://instagram.com/simphonia.pt" target="_blank" rel="noopener noreferrer" class="link-accent" aria-label="Simphonia on Instagram">Instagram</a>
-              <span aria-hidden="true" class="contact-card__socials-sep">·</span>
+              <span aria-hidden="true">·</span>
               <a href="https://x.com/simphonia" target="_blank" rel="noopener noreferrer" class="link-accent" aria-label="Simphonia on X (formerly Twitter)">X / Twitter</a>
             </div>
           </div>
+
         </div>
       </div>
     </section>

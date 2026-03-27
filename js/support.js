@@ -28,13 +28,21 @@ async function getGuestToken() {
   const expiry  = Number(localStorage.getItem(EXPIRY_KEY) || 0);
   if (stored && Date.now() < expiry - 60_000) return stored;
 
-  const res = await fetch(API_BASE + '/api/v1/auth/guest', { method: 'POST' });
-  if (!res.ok) throw new Error('Auth failed (' + res.status + ')');
+  try {
+    const res = await fetch(API_BASE + '/api/v1/auth/guest', { method: 'POST' });
+    if (!res.ok) return null;
 
-  const { data } = await res.json();
-  localStorage.setItem(TOKEN_KEY,  data.token);
-  localStorage.setItem(EXPIRY_KEY, String(Date.now() + data.expiresIn * 1000));
-  return data.token;
+    const envelope = await res.json();
+    // Handle both { data: { token, expiresIn } } and { token, expiresIn } shapes
+    const { token, expiresIn } = envelope.data ?? envelope;
+    if (!token) return null;
+
+    localStorage.setItem(TOKEN_KEY,  token);
+    localStorage.setItem(EXPIRY_KEY, String(Date.now() + expiresIn * 1000));
+    return token;
+  } catch {
+    return null;
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -277,7 +285,8 @@ function showFormFeedback(form, type, message) {
 }
 
 function addFieldListeners(form) {
-  form.querySelectorAll('.form-input[required]').forEach(function (field) {
+  // Text / email / textarea — input + blur
+  form.querySelectorAll('.form-input[required]:not(select)').forEach(function (field) {
     field.addEventListener('input', function () {
       if (field.value.trim()) setFieldError(field.id, '');
     });
@@ -287,6 +296,13 @@ function addFieldListeners(form) {
       } else if (field.type === 'email' && !EMAIL_RE.test(field.value.trim())) {
         setFieldError(field.id, 'Please enter a valid email address.');
       }
+    });
+  });
+
+  // Select elements — change event
+  form.querySelectorAll('select.form-input[required]').forEach(function (field) {
+    field.addEventListener('change', function () {
+      if (field.value) setFieldError(field.id, '');
     });
   });
 }
@@ -325,7 +341,7 @@ function initContactForm() {
 
   const submitBtn = form.querySelector('button[type="submit"]');
   addFieldListeners(form);
-  initCharCounter('contact-message', 1000);
+  initCharCounter('contact-message', 5000);
 
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
@@ -348,6 +364,10 @@ function initContactForm() {
       setFieldError('contact-email', 'Please enter a valid email address.');
       valid = false;
     }
+    if (!subjectEl.value) {
+      setFieldError('contact-subject', 'Please select a subject.');
+      valid = false;
+    }
     if (!msgEl.value.trim()) {
       setFieldError('contact-message', 'Please describe your issue or question.');
       valid = false;
@@ -359,17 +379,19 @@ function initContactForm() {
     submitBtn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span> Sending\u2026';
 
     try {
+      // Token is optional — endpoint is @PermitAll; we try for rate-limit purposes
       const token = await getGuestToken();
-      const res   = await fetch(API_BASE + '/api/v1/support/contact', {
+
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) headers['Authorization'] = 'Bearer ' + token;
+
+      const res = await fetch(API_BASE + '/api/v1/support/contact', {
         method:  'POST',
-        headers: {
-          'Content-Type':  'application/json',
-          'Authorization': 'Bearer ' + token,
-        },
+        headers: headers,
         body: JSON.stringify({
           name:    nameEl.value.trim(),
           email:   emailEl.value.trim(),
-          subject: subjectEl.value.trim() || 'General Enquiry',
+          subject: subjectEl.value,
           message: msgEl.value.trim(),
         }),
       });
@@ -378,20 +400,21 @@ function initContactForm() {
         showFormFeedback(form, 'success', "Message sent! We'll get back to you within 24 hours.");
         form.reset();
 
+        // Reset select placeholder styling
+        if (subjectEl) subjectEl.value = '';
+
         // Reset character counters
         form.querySelectorAll('[id$="-counter"]').forEach(function (el) {
-          const parts        = el.textContent.split('/');
-          const max          = parts[1] ? parts[1].trim() : '1000';
-          el.textContent     = '0 / ' + max;
+          const parts    = el.textContent.split('/');
+          const max      = parts[1] ? parts[1].trim() : '5000';
+          el.textContent = '0 / ' + max;
           el.classList.remove('char-counter--warn');
         });
       } else {
-        console.error('[contact-form] Server error', res.status);
-        showFormFeedback(
-          form,
-          'error',
-          'Something went wrong. Please try again or email us at support@simphonia.pt.',
-        );
+        const body = await res.json().catch(function () { return {}; });
+        const msg  = (body && body.message) || 'Something went wrong. Please try again or email us at support@simphonia.pt.';
+        console.error('[contact-form] Server error', res.status, body);
+        showFormFeedback(form, 'error', msg);
       }
     } catch (err) {
       console.error('[contact-form]', err);

@@ -185,40 +185,40 @@ input, textarea, select {
   --section-padding: clamp(4rem, 10vw, 8rem);
 }
 
-/* ----- Light theme — mapped from AppColorsLight ----- */
+/* ----- Light theme — warm cream palette ----- */
 [data-theme="light"] {
-  --bg-primary: #FFF5F1;
-  --bg-secondary: #FFFFFF;
-  --bg-tertiary: #F2F0ED;
+  --bg-primary: #FEF9EE;
+  --bg-secondary: #FBF4E4;
+  --bg-tertiary: #F5EDD5;
   --bg-elevated: #FFFFFF;
 
-  --text-primary: #1A1816;
-  --text-secondary: #7D756D;
-  --text-tertiary: #9E968D;
+  --text-primary: #1C1814;
+  --text-secondary: #78716C;
+  --text-tertiary: #A8A29E;
   --text-inverse: #FFFFFF;
 
-  --glass-bg: rgba(0, 0, 0, 0.03);
-  --glass-border: rgba(0, 0, 0, 0.07);
-  --glass-hover: rgba(0, 0, 0, 0.05);
-  --glass-accent: rgba(212, 175, 55, 0.1);
+  --glass-bg: rgba(255, 255, 255, 0.50);
+  --glass-border: rgba(100, 65, 15, 0.08);
+  --glass-hover: rgba(255, 255, 255, 0.70);
+  --glass-accent: rgba(212, 175, 55, 0.12);
 
-  --border-subtle: rgba(0, 0, 0, 0.06);
-  --border-default: rgba(0, 0, 0, 0.1);
-  --border-accent: rgba(212, 175, 55, 0.25);
+  --border-subtle: rgba(100, 65, 15, 0.07);
+  --border-default: rgba(100, 65, 15, 0.12);
+  --border-accent: rgba(212, 175, 55, 0.30);
 
-  --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.06);
-  --shadow-md: 0 8px 32px rgba(0, 0, 0, 0.08);
-  --shadow-lg: 0 16px 64px rgba(0, 0, 0, 0.12);
-  --shadow-glow: 0 0 40px rgba(212, 175, 55, 0.12);
+  --shadow-sm: 0 1px 4px rgba(60, 30, 5, 0.07);
+  --shadow-md: 0 4px 24px rgba(60, 30, 5, 0.09);
+  --shadow-lg: 0 8px 48px rgba(60, 30, 5, 0.12);
+  --shadow-glow: 0 0 32px rgba(212, 175, 55, 0.14);
 
-  --accent-glow: rgba(212, 175, 55, 0.25);
-  --accent-subtle: rgba(212, 175, 55, 0.06);
+  --accent-glow: rgba(212, 175, 55, 0.28);
+  --accent-subtle: rgba(212, 175, 55, 0.10);
 
-  --nav-scrolled-bg: rgba(255, 245, 241, 0.88);
-  --wordmark-color: #1A1816;
-  --wordmark-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 0 12px rgba(212,175,55,0.08);
+  --nav-scrolled-bg: rgba(254, 249, 238, 0.92);
+  --wordmark-color: #1C1814;
+  --wordmark-shadow: 0 1px 2px rgba(60,30,5,0.10), 0 0 12px rgba(212,175,55,0.10);
 
-  --star-color: 26, 24, 22;
+  --star-color: 28, 24, 20;
 }
 
 /* ==============================================
@@ -743,7 +743,7 @@ body.theme-transition *::after {
 
 .search-bar__input {
   width: 100%;
-  padding: 1rem 1.5rem 1rem 3rem;
+  padding: 1rem 3rem;
   background: var(--bg-elevated);
   border: 1px solid var(--border-default);
   border-radius: var(--radius-full);
@@ -2036,6 +2036,10 @@ html.gsap-ready .footer__bottom {
 }
 
 /* Light-theme overrides */
+[data-theme="light"] .section-divider {
+  background: var(--bg-primary);
+}
+
 [data-theme="light"] .section-divider__line {
   background: linear-gradient(to left,
     rgba(160, 110, 10, 0.7)  0%,

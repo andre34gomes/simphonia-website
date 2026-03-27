@@ -34,6 +34,10 @@
 
 /* ── Search clear button ── */
 .search-bar__clear {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -110,6 +114,46 @@
   border-color: var(--accent);
   box-shadow: 0 0 0 3px var(--accent-subtle), 0 0 20px var(--accent-subtle);
   transform: translateY(-1px);
+}
+
+/* ── Select dropdown ── */
+.select-wrapper {
+  position: relative;
+}
+
+.form-select {
+  width: 100%;
+  appearance: none;
+  -webkit-appearance: none;
+  padding-right: 2.75rem; /* room for chevron */
+  cursor: pointer;
+  background-color: var(--bg-elevated);
+}
+
+/* placeholder option */
+.form-select:invalid,
+.form-select option[value=""] {
+  color: var(--text-tertiary);
+}
+
+.form-select option {
+  color: var(--text-primary);
+  background: var(--bg-elevated);
+}
+
+.select-chevron {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-tertiary);
+  pointer-events: none;
+  transition: transform 0.2s var(--ease-out), color 0.2s;
+}
+
+.select-wrapper:focus-within .select-chevron {
+  color: var(--accent);
+  transform: translateY(-50%) rotate(180deg);
 }
 
 .form-input--error {
@@ -199,56 +243,97 @@ textarea.form-input {
   font-size: 0.9375rem;
 }
 
-/* ── Contact channel cards ── */
-.contact-card {
-  transition: transform      0.4s var(--ease-out),
-              box-shadow     0.4s var(--ease-out),
-              border-color   0.4s var(--ease-out);
-  padding: var(--space-2xl);
-  text-align: center;
+/* ── Reach channels ── */
+.reach-channels {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  max-width: 900px;
+  margin: 0 auto;
 }
 
-.contact-card:hover {
-  transform: translateY(-6px) scale(1.02);
-  box-shadow: 0 16px 40px rgba(212, 175, 55, 0.1), 0 0 0 1px var(--border-accent);
+.reach-channel {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  padding: 2.5rem 2rem;
+  background: var(--bg-elevated);
+  border-right: 1px solid var(--border-subtle);
+  transition: background 0.25s var(--ease-out);
 }
 
-.contact-card h3 { margin-bottom: var(--space-sm); }
-.contact-card p  { font-size: 0.9375rem; }
-
-.contact-channel__icon {
-  font-size: 2rem;
-  margin-bottom: var(--space-md);
+.reach-channel:last-child {
+  border-right: none;
 }
 
-.contact-card__link {
-  display: inline-flex;
+.reach-channel:hover {
+  background: var(--bg-tertiary);
+}
+
+.reach-channel__icon {
+  display: flex;
   align-items: center;
-  gap: 0.3em;
-  margin-top: var(--space-md);
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-md);
+  background: var(--accent-subtle);
+  border: 1px solid var(--border-accent);
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.reach-channel h3 {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.reach-channel p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  margin: 0;
+  flex: 1;
+}
+
+.reach-channel__link {
   font-size: 0.875rem;
   font-weight: 600;
+  margin-top: auto;
 }
 
-.contact-card__link svg { flex-shrink: 0; }
-
-.contact-card__socials {
+.reach-channel__socials {
   display: flex;
   align-items: center;
   gap: 0.75rem;
-  justify-content: center;
-  margin-top: var(--space-md);
   font-size: 0.875rem;
   font-weight: 600;
+  margin-top: auto;
 }
 
-.contact-card__socials-sep {
-  color: var(--border-default);
+.reach-channel__socials span {
+  color: var(--text-tertiary);
   user-select: none;
 }
 
-.destinations-hero .search-bar {
-  margin-top: var(--space-2xl);
+@media (max-width: 700px) {
+  .reach-channels {
+    grid-template-columns: 1fr;
+  }
+
+  .reach-channel {
+    border-right: none;
+    border-bottom: 1px solid var(--border-subtle);
+    padding: 1.75rem 1.5rem;
+  }
+
+  .reach-channel:last-child {
+    border-bottom: none;
+  }
 }
 
 /* ══════════════════════════════════════════════════════════

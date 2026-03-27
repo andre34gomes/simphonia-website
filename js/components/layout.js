@@ -116,7 +116,7 @@ function applyTheme(theme) {
 
   // Update meta theme-color
   const meta = document.querySelector('meta[name="theme-color"]');
-  if (meta) meta.content = theme === 'light' ? '#FFF5F1' : '#121212';
+  if (meta) meta.content = theme === 'light' ? '#FEF9EE' : '#121212';
 
   try { localStorage.setItem(THEME_KEY, theme); } catch (_) {}
 }

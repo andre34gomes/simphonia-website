@@ -20,7 +20,7 @@
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
   <link rel="shortcut icon" href="../assets/favicon.svg">
   <link rel="mask-icon" href="../assets/favicon.svg" color="#D4AF37">
-  <script>!function(){var t;try{t=localStorage.getItem("simphonia-theme")}catch(e){}if(!t)t=matchMedia("(prefers-color-scheme:light)").matches?"light":"dark";document.documentElement.dataset.theme=t;if(t==="light"){var m=document.querySelector("meta[name=theme-color]");if(m)m.content="#FFF5F1"}}()</script>
+  <script>!function(){var t;try{t=localStorage.getItem("simphonia-theme")}catch(e){}if(!t)t=matchMedia("(prefers-color-scheme:light)").matches?"light":"dark";document.documentElement.dataset.theme=t;if(t==="light"){var m=document.querySelector("meta[name=theme-color]");if(m)m.content="#FEF9EE"}}()</script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -48,26 +48,27 @@
     <section class="section" id="destinations-grid">
       <div class="container container--wide">
 
-        <div class="section-header section-header--compact reveal">
+        <div class="section-header section-header--tight reveal">
           <span class="label">Explore</span>
           <h2>Where Will You Go Next?</h2>
           <p>Coverage across 200+ countries and regions. Search or filter to find your destination.</p>
         </div>
 
-        <div class="search-bar reveal">
-          <svg class="search-bar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
-          </svg>
-          <input type="text" class="search-bar__input" id="dest-search" placeholder="Search countries…" aria-label="Search countries" autocomplete="off" spellcheck="false">
-          <button class="search-bar__clear" id="dest-search-clear" aria-label="Clear search" hidden>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M18 6 6 18M6 6l12 12"/></svg>
-          </button>
-        </div>
+        <div class="search-controls">
+          <div class="search-bar reveal">
+            <svg class="search-bar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
+            </svg>
+            <input type="text" class="search-bar__input" id="dest-search" placeholder="Search countries…" aria-label="Search countries" autocomplete="off" spellcheck="false">
+            <button class="search-bar__clear" id="dest-search-clear" aria-label="Clear search" hidden>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M18 6 6 18M6 6l12 12"/></svg>
+            </button>
+          </div>
 
-
-        <div class="filter-tabs reveal mb-2xl" id="region-tabs">
-          <!-- Populated by JS from API -->
-          <button class="filter-tab filter-tab--active" data-region="all">All</button>
+          <div class="filter-tabs reveal" id="region-tabs">
+            <!-- Populated by JS from API -->
+            <button class="filter-tab filter-tab--active" data-region="all">All</button>
+          </div>
         </div>
 
         <div class="dest-results-bar reveal">

@@ -22,7 +22,7 @@
   document.documentElement.dataset.theme = t;
   if (t === 'light') {
     var m = document.querySelector('meta[name="theme-color"]');
-    if (m) m.content = '#FFF5F1';
+    if (m) m.content = '#FEF9EE';
   }
 }());
 
