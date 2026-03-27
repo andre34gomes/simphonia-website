@@ -8,6 +8,7 @@
   <meta name="description" content="Get help with your Simphonia eSIM. Browse frequently asked questions or contact our 24/7 support team.">
   <meta name="theme-color" content="#121212">
   <link rel="canonical" href="https://simphonia.pt/support/">
+  <meta name="robots" content="index, follow">
   <meta property="og:title" content="Support & FAQ — Simphonia eSIM">
   <meta property="og:description" content="Get help with your Simphonia eSIM. Browse FAQs or contact our 24/7 support team.">
   <meta property="og:type" content="website">
@@ -63,7 +64,7 @@
 <body>
 
 
-  <main id="main-content">
+  <main id="main-content" tabindex="-1">
 
     <!-- Hero -->
     <section class="support-hero">
@@ -90,7 +91,7 @@
         </div>
 
         <!-- Search -->
-        <div class="reveal" style="max-width:520px;margin:0 auto var(--space-3xl);">
+        <div class="faq-search-wrap reveal">
           <div class="search-bar">
             <svg class="search-bar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
@@ -117,7 +118,7 @@
         </div>
 
         <p class="faq-no-results" id="faq-no-results" style="display:none;">
-          No questions match your search. Try different keywords or <a href="#contact" style="color:var(--accent);">contact us directly</a>.
+          No questions match your search. Try different keywords or <a href="#contact" class="link-accent">contact us directly</a>.
         </p>
       </div>
     </section>
@@ -134,23 +135,23 @@
         <form class="contact-form reveal" id="contact-form" novalidate>
           <div class="grid grid--2">
             <div class="form-group">
-              <label for="contact-name">Name</label>
-              <input type="text" id="contact-name" class="form-input" placeholder="Your name" required>
+              <label for="contact-name">Name <span class="required-mark" aria-hidden="true">*</span></label>
+              <input type="text" id="contact-name" name="name" class="form-input" placeholder="Your name" required autocomplete="name">
             </div>
             <div class="form-group">
-              <label for="contact-email">Email</label>
-              <input type="email" id="contact-email" class="form-input" placeholder="you@example.com" required>
+              <label for="contact-email">Email <span class="required-mark" aria-hidden="true">*</span></label>
+              <input type="email" id="contact-email" name="email" class="form-input" placeholder="you@example.com" required autocomplete="email">
             </div>
           </div>
           <div class="form-group">
             <label for="contact-subject">Subject</label>
-            <input type="text" id="contact-subject" class="form-input" placeholder="How can we help?">
+            <input type="text" id="contact-subject" name="subject" class="form-input" placeholder="How can we help?" autocomplete="off">
           </div>
           <div class="form-group">
-            <label for="contact-message">Message</label>
-            <textarea id="contact-message" class="form-input" placeholder="Describe your issue or question..." required></textarea>
+            <label for="contact-message">Message <span class="required-mark" aria-hidden="true">*</span></label>
+            <textarea id="contact-message" name="message" class="form-input" placeholder="Describe your issue or question…" required></textarea>
           </div>
-          <button type="submit" class="btn btn--primary btn--lg" style="align-self:flex-start;">Send Message</button>
+          <button type="submit" class="btn btn--primary btn--lg">Send Message</button>
         </form>
       </div>
     </section>
@@ -158,21 +159,36 @@
     <!-- Quick Links -->
     <section class="section" id="quick-links">
       <div class="container">
+        <div class="section-header reveal">
+          <span class="label">Other Ways to Reach Us</span>
+          <h2>We're Always Available</h2>
+          <p>Pick the channel that works best for you.</p>
+        </div>
+
         <div class="grid grid--3">
-          <div class="glass-card reveal" style="padding:var(--space-2xl);text-align:center;">
-            <div class="contact-channel__icon">💬</div>
+          <div class="glass-card contact-card reveal">
+            <div class="contact-channel__icon" aria-hidden="true">💬</div>
             <h3>In-App Chat</h3>
             <p>Get instant help from our AI assistant directly in the Simphonia app.</p>
+            <a href="https://simphonia.pt/download/" class="contact-card__link link-accent">
+              Download the App
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
           </div>
-          <div class="glass-card reveal" style="padding:var(--space-2xl);text-align:center;">
-            <div class="contact-channel__icon">📧</div>
+          <div class="glass-card contact-card reveal">
+            <div class="contact-channel__icon" aria-hidden="true">📧</div>
             <h3>Email</h3>
-            <p>Reach us at <a href="mailto:support@simphonia.pt" style="color:var(--accent);">support@simphonia.pt</a></p>
+            <p>Reach us at <a href="mailto:support@simphonia.pt" class="link-accent">support@simphonia.pt</a></p>
           </div>
-          <div class="glass-card reveal" style="padding:var(--space-2xl);text-align:center;">
-            <div class="contact-channel__icon">📱</div>
+          <div class="glass-card contact-card reveal">
+            <div class="contact-channel__icon" aria-hidden="true">📱</div>
             <h3>Social</h3>
-            <p>Follow us on Instagram and X for updates and travel tips.</p>
+            <p>Follow us for updates and travel tips.</p>
+            <div class="contact-card__socials">
+              <a href="https://instagram.com/simphonia.pt" target="_blank" rel="noopener noreferrer" class="link-accent" aria-label="Simphonia on Instagram">Instagram</a>
+              <span aria-hidden="true" class="contact-card__socials-sep">·</span>
+              <a href="https://x.com/simphonia" target="_blank" rel="noopener noreferrer" class="link-accent" aria-label="Simphonia on X (formerly Twitter)">X / Twitter</a>
+            </div>
           </div>
         </div>
       </div>
@@ -186,204 +202,7 @@
   <script defer src="../js/animations.js?v=20260326-10"></script>
   <script defer src="../js/main.js?v=20260326-10"></script>
 
-  <script type="module">
-    /* ── FAQ Panel ──────────────────────────────────────────── */
-    const faqData = [
-      {
-        q: 'What is an eSIM?',
-        keywords: 'esim what is digital sim embedded',
-        a: 'An eSIM (embedded SIM) is a digital SIM built into your smartphone. It lets you activate a cellular data plan without inserting a physical SIM card. You can store multiple eSIM profiles on one device and switch between them instantly.'
-      },
-      {
-        q: 'Is my phone compatible with eSIM?',
-        keywords: 'compatible phone device support iphone samsung pixel',
-        a: 'Most modern smartphones released after 2018 support eSIM.<br><br><strong>Apple:</strong> iPhone XS, XR and all later models<br><strong>Samsung:</strong> Galaxy S20, Note 20 and later<br><strong>Google:</strong> Pixel 3 and later<br><strong>Others:</strong> Huawei P40+, Motorola Razr, Oppo Find X3+'
-      },
-      {
-        q: 'How do I install my eSIM?',
-        keywords: 'install setup qr code scan how activate settings',
-        a: 'After purchasing a plan, your QR code appears in the Simphonia app. Go to your phone\'s <strong>Settings → Cellular/Mobile Data → Add eSIM</strong> and scan the QR code. Follow the on-screen prompts — the whole process takes about 1 minute. We recommend installing while on WiFi, before you travel.'
-      },
-      {
-        q: 'Do I need to remove my physical SIM?',
-        keywords: 'physical sim keep number dual remove',
-        a: 'No! eSIM works alongside your physical SIM (Dual SIM). Keep your regular number active for calls and texts, and use Simphonia for mobile data. You can set the eSIM as your default data line in your phone\'s settings.'
-      },
-      {
-        q: 'When does my eSIM plan start?',
-        keywords: 'activate when start begin use plan days',
-        a: 'Your plan starts when you connect to a network at your destination and begin using data. Install the eSIM before you travel — it activates automatically on arrival. No wasted days!'
-      },
-      {
-        q: 'Can I top up or extend my plan?',
-        keywords: 'top up extend renew data more add',
-        a: 'Yes! Open the Simphonia app, go to your active eSIM and tap <strong>"Top Up"</strong>. Additional data is added instantly. You can also purchase a brand-new plan for the same or a different destination at any time.'
-      },
-      {
-        q: 'What speeds can I expect?',
-        keywords: 'speed 4g 5g lte data slow fast network',
-        a: 'Simphonia connects you to premium local networks in each country. Most plans offer <strong>4G/LTE</strong> speeds, and <strong>5G</strong> is available in select destinations. Actual speeds depend on local network conditions, your device model, and your physical location.'
-      },
-      {
-        q: 'What is your refund policy?',
-        keywords: 'refund cancel money back return policy',
-        a: 'If you haven\'t activated your eSIM (not yet connected to a network), you can request a full refund within <strong>30 days</strong> of purchase. Once data has been used, refunds are evaluated case-by-case. Contact our support team and we\'ll make it right.'
-      },
-      {
-        q: 'Can I use hotspot / tethering?',
-        keywords: 'hotspot tethering share data wifi personal',
-        a: 'Most Simphonia plans support personal hotspot/tethering, allowing you to share your data connection with laptops or tablets. Check the plan details page before purchase — hotspot support is clearly marked for every plan.'
-      },
-      {
-        q: 'Can I make calls and send texts?',
-        keywords: 'call text sms voice phone whatsapp',
-        a: 'Our eSIM plans are <strong>data-only</strong>. You can make calls and send messages using apps like WhatsApp, FaceTime, Telegram, or Signal over your data connection. Your physical SIM keeps your regular number active for traditional calls and SMS.'
-      }
-    ];
-
-    let activeIndex = 0;
-
-    function renderNav() {
-      const nav = document.getElementById('faq-panel-nav');
-      if (!nav) return;
-      nav.innerHTML = '';
-      faqData.forEach((item, i) => {
-        const btn = document.createElement('button');
-        btn.className = 'faq-panel__q' + (i === 0 ? ' is-active' : '');
-        btn.dataset.index = i;
-        btn.dataset.keywords = item.keywords;
-        btn.innerHTML =
-          '<span class="faq-panel__q-num">' + String(i + 1).padStart(2, '0') + '</span>' +
-          '<span class="faq-panel__q-text">' + item.q + '</span>';
-        btn.addEventListener('click', () => switchFaq(i));
-        nav.appendChild(btn);
-      });
-    }
-
-    function renderDisplay(index) {
-      const item = faqData[index];
-      document.getElementById('fpd-num').textContent = String(index + 1).padStart(2, '0');
-      document.getElementById('fpd-q').textContent = item.q;
-      document.getElementById('fpd-body').innerHTML = '<p>' + item.a + '</p>';
-    }
-
-    function switchFaq(index) {
-      if (index === activeIndex) return;
-      const inner = document.getElementById('faq-display-inner');
-      inner.classList.add('is-switching');
-      setTimeout(() => {
-        activeIndex = index;
-        renderDisplay(index);
-        document.querySelectorAll('.faq-panel__q').forEach(btn => {
-          btn.classList.toggle('is-active', parseInt(btn.dataset.index) === index);
-        });
-        inner.classList.remove('is-switching');
-      }, 180);
-    }
-
-    renderNav();
-    renderDisplay(0);
-
-    /* ── FAQ Search ─────────────────────────────────────────── */
-    const faqSearch = document.getElementById('faq-search');
-    const faqNoResults = document.getElementById('faq-no-results');
-    const faqPanelEl = document.getElementById('faq-panel');
-
-    if (faqSearch) {
-      faqSearch.addEventListener('input', () => {
-        const query = faqSearch.value.toLowerCase().trim();
-        const btns = document.querySelectorAll('.faq-panel__q');
-        let visibleCount = 0;
-        btns.forEach(btn => {
-          const text = btn.querySelector('.faq-panel__q-text').textContent.toLowerCase();
-          const kw = (btn.dataset.keywords || '').toLowerCase();
-          const match = !query || text.includes(query) || kw.includes(query);
-          btn.hidden = !match;
-          if (match) visibleCount++;
-        });
-        faqPanelEl.style.display = visibleCount === 0 ? 'none' : '';
-        faqNoResults.style.display = visibleCount === 0 ? 'block' : 'none';
-        if (query && visibleCount > 0) {
-          const first = Array.from(btns).find(b => !b.hidden);
-          if (first) switchFaq(parseInt(first.dataset.index));
-        }
-      });
-    }
-
-    /* ── Contact Form ───────────────────────────────────────── */
-    const API_BASE   = 'http://localhost:3000';
-    const TOKEN_KEY  = 'simphonia_guest_token';
-    const EXPIRY_KEY = 'simphonia_guest_expiry';
-
-    async function getGuestToken() {
-      const stored = localStorage.getItem(TOKEN_KEY);
-      const expiry = Number(localStorage.getItem(EXPIRY_KEY) || 0);
-      if (stored && Date.now() < expiry - 60_000) return stored;
-      const res = await fetch(`${API_BASE}/api/v1/auth/guest`, { method: 'POST' });
-      if (!res.ok) throw new Error('Auth failed');
-      const { data } = await res.json();
-      localStorage.setItem(TOKEN_KEY,  data.token);
-      localStorage.setItem(EXPIRY_KEY, Date.now() + data.expiresIn * 1000);
-      return data.token;
-    }
-
-    const form = document.getElementById('contact-form');
-    if (form) {
-      const submitBtn = form.querySelector('button[type="submit"]');
-
-      function showFormState(type, message) {
-        let el = document.getElementById('form-feedback');
-        if (!el) {
-          el = document.createElement('div');
-          el.id = 'form-feedback';
-          el.style.cssText = 'margin-top:var(--space-md);padding:var(--space-md) var(--space-lg);border-radius:var(--radius-md);font-size:0.9375rem;font-weight:500;display:flex;align-items:center;gap:0.625rem;animation:result-pop 0.4s cubic-bezier(0.16,1,0.3,1)';
-          submitBtn.parentNode.insertBefore(el, submitBtn.nextSibling);
-        }
-        el.style.background = type === 'success' ? 'rgba(74,222,128,0.1)' : 'rgba(248,113,113,0.1)';
-        el.style.border     = type === 'success' ? '1px solid rgba(74,222,128,0.3)' : '1px solid rgba(248,113,113,0.3)';
-        el.style.color      = type === 'success' ? '#4ade80' : '#f87171';
-        el.innerHTML        = (type === 'success' ? '✓ ' : '⚠ ') + message;
-        el.style.display    = 'flex';
-      }
-
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const name    = document.getElementById('contact-name').value.trim();
-        const email   = document.getElementById('contact-email').value.trim();
-        const subject = document.getElementById('contact-subject').value.trim();
-        const message = document.getElementById('contact-message').value.trim();
-
-        if (!name || !email || !message) { showFormState('error', 'Please fill in all required fields.'); return; }
-        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { showFormState('error', 'Please enter a valid email address.'); return; }
-
-        submitBtn.disabled = true;
-        submitBtn.textContent = 'Sending…';
-
-        try {
-          const token = await getGuestToken();
-          const res = await fetch(`${API_BASE}/api/v1/support/contact`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`,
-            },
-            body: JSON.stringify({ name, email, subject: subject || 'General Enquiry', message }),
-          });
-
-          if (!res.ok) throw new Error(`Server error ${res.status}`);
-
-          showFormState('success', "Message sent! We'll get back to you within 24 hours.");
-          form.reset();
-        } catch (err) {
-          console.error('[contact-form]', err);
-          showFormState('error', 'Something went wrong. Please try again or email us directly at support@simphonia.pt.');
-        } finally {
-          submitBtn.disabled = false;
-          submitBtn.textContent = 'Send Message';
-        }
-      });
-    }
-  </script>
+  <script type="module" src="../js/support.js?v=20260326-11"></script>
 
 </body>
 </html>

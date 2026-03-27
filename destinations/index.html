@@ -33,7 +33,7 @@
 
     <!-- Hero -->
     <section class="about-hero" id="destinations" aria-labelledby="destinations-heading">
-      <div class="container" style="position:relative;z-index:1;">
+      <div class="container">
         <span class="label reveal">Destinations</span>
         <h1 class="reveal" id="destinations-heading">Explore<br><span class="text-gradient">200+ Countries</span></h1>
         <p class="reveal">Find the perfect eSIM plan for your next trip. Local coverage worldwide.</p>
@@ -48,13 +48,13 @@
     <section class="section" id="destinations-grid">
       <div class="container container--wide">
 
-        <div class="section-header reveal" style="text-align:center;margin-bottom:var(--space-3xl);">
+        <div class="section-header section-header--compact reveal">
           <span class="label">Explore</span>
           <h2>Where Will You Go Next?</h2>
           <p>Coverage across 200+ countries and regions. Search or filter to find your destination.</p>
         </div>
 
-        <div class="search-bar reveal" style="max-width:600px;margin:0 auto var(--space-xl);">
+        <div class="search-bar reveal">
           <svg class="search-bar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
           </svg>
@@ -65,7 +65,7 @@
         </div>
 
 
-        <div class="filter-tabs reveal" style="margin-bottom:var(--space-2xl);" id="region-tabs">
+        <div class="filter-tabs reveal mb-2xl" id="region-tabs">
           <!-- Populated by JS from API -->
           <button class="filter-tab filter-tab--active" data-region="all">All</button>
         </div>
@@ -89,11 +89,11 @@
     <!-- CTA -->
     <section class="section cta-section">
       <div class="cta-section__bg" aria-hidden="true"></div>
-      <div class="container" style="position:relative;z-index:1;">
+      <div class="container">
         <div class="reveal">
           <h2>Can't Find Your Destination?</h2>
           <p>We're adding new countries every week. Check back soon for more destinations.</p>
-          <div class="flex flex-center gap-md" style="margin-top:var(--space-xl);">
+          <div class="flex flex-center gap-md mt-xl">
             <a href="../support/" class="btn btn--primary btn--lg">Contact Support</a>
           </div>
         </div>
@@ -109,7 +109,7 @@
   <script defer src="../js/main.js?v=20260326-10"></script>
   <script type="module">
     // ── Config ──────────────────────────────────────────────────────────────
-    const API_BASE = 'http://localhost:3000';
+    const API_BASE = 'https://api.simphonia.pt';
     const CURRENCY = 'EUR';
     const LANG     = (navigator.language || 'en').split('-')[0];
 
@@ -192,13 +192,13 @@
     function setLoading(on) {
       if (on) {
         grid.innerHTML = `
-          <div style="grid-column:1/-1;text-align:center;padding:var(--space-3xl);color:var(--text-tertiary);">
+          <div class="dest-state">
             <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-                 style="animation:spin 1s linear infinite;display:inline-block;" aria-hidden="true">
+                 class="dest-state__spinner" aria-hidden="true">
               <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4
                        M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
             </svg>
-            <p style="margin-top:var(--space-md)">Loading destinations…</p>
+            <p class="mt-md">Loading destinations…</p>
           </div>`;
         countEl.textContent = '';
         noResults.style.display = 'none';
@@ -207,9 +207,7 @@
 
     function showFetchError() {
       grid.innerHTML = `
-        <p style="grid-column:1/-1;text-align:center;padding:var(--space-3xl);color:var(--text-tertiary);">
-          Could not load destinations. Please try again later.
-        </p>`;
+        <p class="dest-state">Could not load destinations. Please try again later.</p>`;
     }
 
     // ── Render grid ───────────────────────────────────────────────────────────
@@ -252,7 +250,7 @@
           </div>
           <div class="dest-card__body">
             <div class="dest-card__name">${flag ? flag + '\u00A0' : ''}${name}</div>
-            ${d.startingPrice ? `<div style="font-size:.8125rem;color:var(--text-tertiary);margin-top:.25rem;">From €${d.startingPrice.toFixed(2)}</div>` : ''}
+            ${d.startingPrice ? `<div class="dest-card__price">From €${d.startingPrice.toFixed(2)}</div>` : ''}
           </div>`;
         card.addEventListener('keydown', e => {
           if (e.key === 'Enter' || e.key === ' ') card.click();
