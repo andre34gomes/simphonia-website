@@ -1,35 +1,26 @@
-name: Deploy Website to cPanel
+name: Website Quality Check
 
 on:
   push:
-    branches:
-      - develop
-      - main
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
 
 jobs:
-  web-deploy:
-    name: 🎉 Deploy
+  test:
+    name: Run Tests
     runs-on: ubuntu-latest
     steps:
-    - name: 🚚 Get latest code
-      uses: actions/checkout@v4
-    
-    - name: 🚀 Help and instructions
-      run: |
-        echo "Starting deployment to cPanel..."
-        echo "Make sure you have set the following secrets in your GitHub repository:"
-        echo "FTP_SERVER, FTP_USERNAME, FTP_PASSWORD"
+      - name: Checkout
+        uses: actions/checkout@v4
 
-    - name: 📂 Sync files
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.6
-      with:
-        server: ${{ secrets.FTP_SERVER }}
-        username: ${{ secrets.FTP_USERNAME }}
-        password: ${{ secrets.FTP_PASSWORD }}
-        server-dir: public_html/ # Adjust this if you need to deploy to a specific folder like public_html/
-        exclude: |
-          **/.git*
-          **/.git*/**
-          **/node_modules/**
-          LICENSE
-          README.md
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Run tests
+        run: node --test tests/*.test.js
+
+  # Cloudflare Pages handles deployment automatically on push
+  # No deploy step needed here
