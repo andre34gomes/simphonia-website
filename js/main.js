@@ -181,6 +181,176 @@ async function bootstrapSite() {
 bootstrapSite();
 
 // ============================================================
+// Destinations Marquee — populated from backend + scrollable
+// Uses the same guest-auth + endpoint as destinations/index.html
+// ============================================================
+(function initDestinationsMarquee() {
+  var strip = document.querySelector('.hero__destinations-strip');
+  if (!strip) return;
+
+  var API_BASE  = 'https://api.simphonia.pt';
+  var TOKEN_KEY = 'simphonia_guest_token';
+  var EXPIRY_KEY = 'simphonia_guest_expiry';
+  var EXPIRY_MARGIN_MS = 60000;
+
+  // ── Helpers ────────────────────────────────────────────────
+  function flagEmoji(code) {
+    if (!code || code.length < 2) return '';
+    return Array.from(code.toUpperCase().slice(0, 2))
+      .map(function (c) { return String.fromCodePoint(c.charCodeAt(0) + 127397); })
+      .join('');
+  }
+
+  function getGuestToken() {
+    var stored = localStorage.getItem(TOKEN_KEY);
+    var expiry = Number(localStorage.getItem(EXPIRY_KEY) || 0);
+    if (stored && Date.now() < expiry - EXPIRY_MARGIN_MS) {
+      return Promise.resolve(stored);
+    }
+    return fetch(API_BASE + '/api/v1/auth/guest', { method: 'POST' })
+      .then(function (res) {
+        if (!res.ok) throw new Error('Guest auth failed: ' + res.status);
+        return res.json();
+      })
+      .then(function (envelope) {
+        var data = envelope.data || envelope;
+        localStorage.setItem(TOKEN_KEY,  data.token);
+        localStorage.setItem(EXPIRY_KEY, Date.now() + data.expiresIn * 1000);
+        return data.token;
+      });
+  }
+
+  function populateLists(countries) {
+    var lists = strip.querySelectorAll('.marquee-list');
+    if (!lists.length || !countries.length) return;
+
+    var html = countries.map(function (d) {
+      var flag = flagEmoji(d.countryCode);
+      var name = d.countryName || d.countryCode;
+      return '<li class="marquee-item"><span class="marquee-item__flag">' + flag + '</span>' + name + '</li>';
+    }).join('');
+
+    lists.forEach(function (ul, i) {
+      if (i > 0) ul.setAttribute('aria-hidden', 'true');
+      ul.innerHTML = html;
+    });
+  }
+
+  // ── Auto-scroll + drag-to-scroll ──────────────────────────
+  var SPEED        = 0.6;    // px per animation frame
+  var RESUME_DELAY = 3000;   // ms before auto-scroll resumes
+  var paused       = false;
+  var resumeTimer  = null;
+  var isDragging   = false;
+  var dragStartX   = 0;
+  var dragStartScroll = 0;
+
+  function scheduleResume() {
+    clearTimeout(resumeTimer);
+    resumeTimer = setTimeout(function () { paused = false; }, RESUME_DELAY);
+  }
+
+  function cancelResume() {
+    clearTimeout(resumeTimer);
+    resumeTimer = null;
+  }
+
+  function loop() {
+    if (!document.hidden) {
+      // Normalization runs every frame — keeps the seamless loop intact
+      // even when the user has manually scrolled past the reset point.
+      var half = strip.scrollWidth / 2;
+      if (half > 0 && strip.scrollLeft >= half) {
+        strip.scrollLeft -= half;
+      }
+
+      if (!paused) {
+        strip.scrollLeft += SPEED;
+      }
+    }
+
+    requestAnimationFrame(loop);
+  }
+
+  // ── Desktop: hover pauses; leaving restarts the 3 s timer ──
+  strip.addEventListener('mouseenter', function () {
+    cancelResume();
+    paused = true;
+  });
+
+  strip.addEventListener('mouseleave', function () {
+    if (!isDragging) scheduleResume();
+  });
+
+  // ── Desktop: drag-to-scroll ─────────────────────────────────
+  strip.addEventListener('mousedown', function (e) {
+    isDragging      = true;
+    paused          = true;
+    dragStartX      = e.clientX;
+    dragStartScroll = strip.scrollLeft;
+    cancelResume();
+    e.preventDefault();
+  });
+
+  document.addEventListener('mousemove', function (e) {
+    if (!isDragging) return;
+    var dx   = e.clientX - dragStartX;
+    var half = strip.scrollWidth / 2;
+    var next = dragStartScroll - dx;
+    if (half > 0) next = ((next % half) + half) % half;
+    strip.scrollLeft = next;
+  });
+
+  document.addEventListener('mouseup', function () {
+    if (!isDragging) return;
+    isDragging = false;
+    // If mouse is still over the strip, keep paused until mouseleave
+    if (!strip.matches(':hover')) scheduleResume();
+  });
+
+  // ── Mobile: press pauses; release starts the 3 s timer ─────
+  strip.addEventListener('touchstart', function () {
+    cancelResume();
+    paused = true;
+  }, { passive: true });
+
+  strip.addEventListener('touchend', function () {
+    scheduleResume();
+  });
+
+  strip.addEventListener('touchcancel', function () {
+    scheduleResume();
+  });
+
+  requestAnimationFrame(loop);
+
+  // ── API fetch ──────────────────────────────────────────────
+  var lang = (navigator.language || 'en').split('-')[0];
+
+  getGuestToken()
+    .then(function (token) {
+      return fetch(
+        API_BASE + '/api/v1/countries?currency=EUR&lang=' + lang,
+        { headers: { Authorization: 'Bearer ' + token } }
+      );
+    })
+    .then(function (res) {
+      if (!res.ok) throw new Error('Countries fetch failed: ' + res.status);
+      return res.json();
+    })
+    .then(function (envelope) {
+      var countries = envelope.data || envelope;
+      if (Array.isArray(countries) && countries.length) {
+        populateLists(countries);
+      }
+    })
+    .catch(function (err) {
+      // Keep the static fallback items on error — no visible disruption
+      console.warn('[marquee] Could not load destinations from API:', err);
+    });
+}());
+
+// ============================================================
 // Legal TOC — shared by /privacy/ and /terms/
 // Highlights the sidebar link matching the section currently
 // visible at the top of the viewport.
@@ -224,20 +394,35 @@ function initCursor() {
   if (!cursor || !window.matchMedia('(hover: hover)').matches) return;
 
   let cx = 0, cy = 0, tx = 0, ty = 0;
+  let rafId = null;
+
+  function lerp() {
+    cx += (tx - cx) * 0.14;
+    cy += (ty - cy) * 0.14;
+    cursor.style.left = cx + 'px';
+    cursor.style.top  = cy + 'px';
+
+    // Keep running only while the cursor is still catching up (> 0.1 px delta).
+    if (Math.abs(tx - cx) > 0.1 || Math.abs(ty - cy) > 0.1) {
+      rafId = requestAnimationFrame(lerp);
+    } else {
+      rafId = null; // loop goes idle until the next mousemove
+    }
+  }
 
   document.addEventListener('mousemove', (e) => {
     tx = e.clientX;
     ty = e.clientY;
     cursor.classList.add('cursor--visible');
+    if (!rafId && !document.hidden) rafId = requestAnimationFrame(lerp);
   });
 
-  (function lerp() {
-    cx += (tx - cx) * 0.14;
-    cy += (ty - cy) * 0.14;
-    cursor.style.left = cx + 'px';
-    cursor.style.top  = cy + 'px';
-    requestAnimationFrame(lerp);
-  })();
+  // Resume loop if the user returns to the tab while the mouse is in motion.
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && !rafId && cursor.classList.contains('cursor--visible')) {
+      rafId = requestAnimationFrame(lerp);
+    }
+  });
 
   const SEL = [
     'a', 'button', '.glass-card', '.feat-card', '.bento-item', '.dest-card',
@@ -260,10 +445,25 @@ function initCursor() {
 function initStars() {
   const canvas = document.getElementById('stars-canvas');
   if (!canvas) return;
+  // Skip on mobile where CSS hides the canvas (display:none → no offsetParent)
+  if (!canvas.offsetParent && getComputedStyle(canvas).display === 'none') return;
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const ctx = canvas.getContext('2d');
-  const N   = 160;
+  const N = window.innerWidth < 768 ? 80 : 120;
   let w, h, stars = [];
+
+  // Cache the star colour so we don't hit getComputedStyle every frame.
+  let starRgb = '255,255,255';
+  function refreshStarColor() {
+    starRgb = getComputedStyle(document.documentElement)
+      .getPropertyValue('--star-color').trim() || '255,255,255';
+  }
+  refreshStarColor();
+  // Re-read only when the theme attribute changes, not every frame.
+  new MutationObserver(refreshStarColor).observe(
+    document.documentElement, { attributes: true, attributeFilter: ['data-theme'] }
+  );
 
   function resize() {
     w = canvas.width  = window.innerWidth;
@@ -282,9 +482,13 @@ function initStars() {
     }));
   }
 
+  let rafId = null;
+
   function draw() {
+    rafId = requestAnimationFrame(draw);
+    if (document.hidden) return; // don't paint while the tab is invisible
+
     ctx.clearRect(0, 0, w, h);
-    const starRgb = getComputedStyle(document.documentElement).getPropertyValue('--star-color').trim() || '255,255,255';
     for (const s of stars) {
       s.x += s.vx;
       s.y += s.vy;
@@ -295,7 +499,6 @@ function initStars() {
       ctx.fillStyle = 'rgba(' + starRgb + ',' + s.a + ')';
       ctx.fill();
     }
-    requestAnimationFrame(draw);
   }
 
   window.addEventListener('resize', resize, { passive: true });

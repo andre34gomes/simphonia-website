@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+/* Pacifico font loaded via <link> in HTML to avoid @import waterfall */
 
 /* ============================================================
    SIMPHONIA — Base & Shared Stylesheet
@@ -265,13 +265,6 @@ p {
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
-  background-size: 200% 200%;
-  animation: gradient-shift 6s ease-in-out infinite;
-}
-
-@keyframes gradient-shift {
-  0%, 100% { background-position: 0% 50%; }
-  50%       { background-position: 100% 50%; }
 }
 
 .text-accent { color: var(--accent); }
@@ -335,6 +328,10 @@ p {
   display: flex;
   flex-direction: column;
   justify-content: center;
+  /* Skip layout/paint for off-screen sections — browser renders them
+     only when they approach the viewport, reducing initial load work. */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 100dvh;
 }
 
 
@@ -611,6 +608,12 @@ section[id] {
   opacity: 0.025;
   pointer-events: none;
   z-index: 0;
+  contain: strict;
+}
+
+/* Noise overlay is invisible on phones — save the GPU layer entirely */
+@media (max-width: 768px) {
+  .bg-noise { display: none; }
 }
 
 [data-theme="light"] .bg-noise { opacity: 0.015; }
@@ -698,17 +701,26 @@ section[id] {
   box-shadow: 0 0 20px rgba(212, 175, 55, 0.20);
 }
 
-/* Smooth theme transition — only applied temporarily via JS */
-body.theme-transition,
-body.theme-transition *,
-body.theme-transition *::before,
-body.theme-transition *::after {
+/* Smooth theme transition — scoped to visible elements instead of * (which
+   forces style recalculation on every DOM node).  The body background and
+   the major surface / text elements are the only ones users notice. */
+body.theme-transition {
+  transition: background-color 0.35s var(--ease-out) !important;
+}
+body.theme-transition .nav,
+body.theme-transition .footer,
+body.theme-transition .glass-card,
+body.theme-transition .section--alt,
+body.theme-transition .hero-postcard__bg,
+body.theme-transition h1,
+body.theme-transition h2,
+body.theme-transition h3,
+body.theme-transition p,
+body.theme-transition a,
+body.theme-transition .btn {
   transition: background-color 0.35s var(--ease-out),
               color 0.35s var(--ease-out),
-              border-color 0.35s var(--ease-out),
-              box-shadow 0.35s var(--ease-out),
-              fill 0.35s var(--ease-out),
-              stroke 0.35s var(--ease-out) !important;
+              border-color 0.35s var(--ease-out) !important;
 }
 
 /* Hide stars canvas in light mode (looks odd on bright background) */
@@ -719,10 +731,11 @@ body.theme-transition *::after {
   width: 600px;
   height: 600px;
   border-radius: 50%;
-  filter: blur(120px);
+  filter: blur(80px);
   opacity: 0.15;
   pointer-events: none;
   z-index: 0;
+  contain: strict;
 }
 
 #stars-canvas {
@@ -732,6 +745,12 @@ body.theme-transition *::after {
   height: 100%;
   pointer-events: none;
   z-index: 0;
+  contain: strict;
+}
+
+/* Stars canvas is expensive on mobile — skip it entirely */
+@media (max-width: 768px) {
+  #stars-canvas { display: none; }
 }
 
 /* --- Search Bar (shared across destinations, support) --- */
@@ -1946,12 +1965,12 @@ html.gsap-ready .footer__bottom {
    APPLE-STYLE ANIMATION ENHANCEMENTS
    ============================================================ */
 
-/* 3D perspective context for cards */
-.values-grid,
-.team-grid,
-.dest-grid,
-.steps--cards,
-.feature-grid--new {
+/* 3D perspective context for cards — only during GSAP animations */
+html.gsap-ready .values-grid,
+html.gsap-ready .team-grid,
+html.gsap-ready .dest-grid,
+html.gsap-ready .steps--cards,
+html.gsap-ready .feature-grid--new {
   perspective: 1200px;
 }
 
@@ -1970,7 +1989,6 @@ html.gsap-ready .footer__bottom {
   overflow: hidden;
   aspect-ratio: 4 / 3;
   transform-style: preserve-3d;
-  will-change: transform;
 }
 
 .about-story__img img {
@@ -2065,7 +2083,8 @@ html.gsap-ready .footer__bottom {
 .step-card,
 .dest-card,
 .dest-grid-card {
-  will-change: transform, opacity;
+  /* will-change intentionally omitted — GSAP promotes layers dynamically;
+     always-on will-change wastes GPU memory on low-end devices. */
   transition: box-shadow var(--duration-normal) var(--ease-out);
 }
 
@@ -2075,24 +2094,6 @@ html.gsap-ready .footer__bottom {
 .team-card:hover {
   box-shadow: 0 8px 40px rgba(212, 175, 55, 0.12),
               0 0 0 1px var(--border-accent);
-}
-
-/* CTA section entrance — smooth scale container */
-.cta-section .container {
-  will-change: transform, opacity;
-}
-
-/* Sub-page hero elements — smooth transitions */
-.about-hero h1,
-.about-hero p,
-.about-hero .label,
-.destinations-hero h1,
-.destinations-hero p,
-.destinations-hero .label,
-.support-hero h1,
-.support-hero p,
-.support-hero .label {
-  will-change: transform, opacity;
 }
 
 /* Floating animation for hero decorative elements */
@@ -2113,10 +2114,7 @@ html.gsap-ready .footer__bottom {
 
 /* Animated gradient border for CTA sections */
 
-/* Parallax depth layers */
-[data-parallax-speed] {
-  will-change: transform;
-}
+/* Parallax depth layers — GSAP manages compositing at animation time */
 
 /* Enhanced card hover lift */
 .feat-card:hover,

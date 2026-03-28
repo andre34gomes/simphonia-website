@@ -65,7 +65,7 @@ function createCard(d) {
     : '';
 
   card.innerHTML = `
-    <img src="${d.img}" alt="${d.name}" class="dest-card__img" loading="lazy">
+    <img src="${d.img}" alt="${d.name}" class="dest-card__img" loading="lazy" decoding="async">
     <div class="dest-card__body">
       <div class="dest-card__name">${d.flag} ${d.name}${popularBadge}</div>
       <div class="dest-card__plans">${d.plans} plan${d.plans !== 1 ? 's' : ''} available</div>
@@ -122,7 +122,11 @@ function renderGrid(grid, noResults, items) {
   });
 
   if (searchInput) {
-    searchInput.addEventListener('input', refresh);
+    let debounceTimer = null;
+    searchInput.addEventListener('input', () => {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(refresh, 200);
+    });
   }
 
   refresh();

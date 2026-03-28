@@ -154,9 +154,7 @@ function initAnimations() {
       _sectionHeaderSplit();
 
       _stepCardIconHover();
-      _featCardRevealPulse();
       _ctaButtonEntrance();
-      _numberCountUpFlash();
 
       // ── Defer the initial measurement until the page layout is stable ──
       _scheduleScrollRefresh({ waitForLoad: true });
@@ -281,7 +279,20 @@ function _stepCards() {
 function _featureCards() {
   _batchReveal('.feat-card',
     { y: 12 },
-    { y: 0, duration: 0.48, ease: 'power2.out', stagger: 0.08 },
+    { y: 0, duration: 0.48, ease: 'power2.out', stagger: 0.08,
+      onComplete: function() {
+        // Pulse reveal merged here — previously a separate ScrollTrigger per card
+        this.targets().forEach(function(card) {
+          setTimeout(function() {
+            card.classList.add('pulse-reveal');
+            card.addEventListener('animationend', function onEnd() {
+              card.classList.remove('pulse-reveal');
+              card.removeEventListener('animationend', onEnd);
+            });
+          }, 350);
+        });
+      }
+    },
     3
   );
   _batchReveal('.feature-card',
@@ -359,101 +370,19 @@ function _stickyShowcase() {
     lastActive = newIdx;
   }
 
-  function setupCompactShowcase() {
-    if (segsEl) {
-      segsEl.querySelectorAll('.showcase-segment__fill').forEach(function (fill) {
-        fill.remove();
-      });
-    }
-
-    screens.forEach(function (screen, i) {
-      gsap.set(screen, { opacity: i === 0 ? 1 : 0, scale: 1, y: 0 });
-      screen.style.pointerEvents = i === 0 ? 'auto' : 'none';
-    });
-    lastActive = 0;
-
-    panels.forEach(function (panel, idx) {
-      var ghostNum = panel.querySelector('.showcase-panel__ghost-num');
-      var meta     = panel.querySelector('.showcase-panel__meta');
-      var title    = panel.querySelector('.showcase-panel__title');
-      var desc     = panel.querySelector('.showcase-panel__desc');
-
-      if (ghostNum) {
-        gsap.fromTo(ghostNum,
-          { opacity: 0, x: 24 },
-          {
-            opacity: 0.045,
-            x: 0,
-            duration: 0.7,
-            ease: 'power3.out',
-            overwrite: 'auto',
-            scrollTrigger: { trigger: panel, start: 'top 88%', once: true },
-          }
-        );
-      }
-
-      if (meta) {
-        gsap.fromTo(meta,
-          { clipPath: 'inset(0 0 100% 0)', y: 8 },
-          {
-            clipPath: 'inset(0 0 0% 0)',
-            y: 0,
-            duration: 0.38,
-            ease: 'power2.out',
-            overwrite: 'auto',
-            scrollTrigger: { trigger: panel, start: 'top 88%', once: true },
-          }
-        );
-      }
-
-      if (title) {
-        gsap.fromTo(title,
-          { clipPath: 'inset(0 0 100% 0)', y: 10 },
-          {
-            clipPath: 'inset(0 0 0% 0)',
-            y: 0,
-            duration: 0.52,
-            ease: 'power2.out',
-            overwrite: 'auto',
-            scrollTrigger: { trigger: panel, start: 'top 86%', once: true },
-          }
-        );
-      }
-
-      if (desc) {
-        gsap.fromTo(desc,
-          { clipPath: 'inset(0 0 100% 0)', y: 8 },
-          {
-            clipPath: 'inset(0 0 0% 0)',
-            y: 0,
-            duration: 0.44,
-            ease: 'power2.out',
-            overwrite: 'auto',
-            scrollTrigger: { trigger: panel, start: 'top 84%', once: true },
-          }
-        );
-      }
-
-      ScrollTrigger.create({
-        trigger: panel,
-        start: 'top center',
-        end: 'bottom center',
-        onEnter: function () { showScreen(idx); },
-        onEnterBack: function () { showScreen(idx); },
-      });
-    });
-  }
-
-  /* Compact (non-animated) showcase is no longer used —
-     vertical layout with animations is handled by the CSS media queries.
-  if (isCompactViewport) {
-    setupCompactShowcase();
-    return;
-  }
-  */
-
   /* ── Transition between panels + phone screens ── */
   var isMobileShowcase = window.innerWidth <= 960;
+
+  /* Cache panel child elements once — avoids querySelector on every transition */
+  var panelChildren = [];
+  panels.forEach(function(p) {
+    panelChildren.push({
+      ghost: p.querySelector('.showcase-panel__ghost-num'),
+      meta:  p.querySelector('.showcase-panel__meta'),
+      title: p.querySelector('.showcase-panel__title'),
+      desc:  p.querySelector('.showcase-panel__desc'),
+    });
+  });
 
   function transitionTo(newIdx, prevIdx) {
     var forward = newIdx > prevIdx;
@@ -473,12 +402,8 @@ function _stickyShowcase() {
            multiple steps faster than a single transition can complete. ─── */
     panels.forEach(function (p, i) {
       gsap.killTweensOf(p);
-      /* Also kill tweens on inner elements */
-      var ghost = p.querySelector('.showcase-panel__ghost-num');
-      var meta  = p.querySelector('.showcase-panel__meta');
-      var ttl   = p.querySelector('.showcase-panel__title');
-      var dsc   = p.querySelector('.showcase-panel__desc');
-      [ghost, meta, ttl, dsc].forEach(function (el) { if (el) gsap.killTweensOf(el); });
+      var ch = panelChildren[i];
+      [ch.ghost, ch.meta, ch.title, ch.desc].forEach(function (el) { if (el) gsap.killTweensOf(el); });
 
       if (i !== newIdx && i !== prevIdx) {
         gsap.set(p, { opacity: 0, y: 0, scale: 1 });
@@ -506,11 +431,12 @@ function _stickyShowcase() {
       });
     }
 
-    /* ─── Prep incoming panel inner elements ─── */
-    var ghostNum = panels[newIdx].querySelector('.showcase-panel__ghost-num');
-    var meta     = panels[newIdx].querySelector('.showcase-panel__meta');
-    var title    = panels[newIdx].querySelector('.showcase-panel__title');
-    var desc     = panels[newIdx].querySelector('.showcase-panel__desc');
+    /* ─── Prep incoming panel inner elements (from cache) ─── */
+    var ch = panelChildren[newIdx];
+    var ghostNum = ch.ghost;
+    var meta     = ch.meta;
+    var title    = ch.title;
+    var desc     = ch.desc;
 
     var fromY = forward ? slideIn : -slideIn;
     if (prevIdx < 0) fromY = firstSlide;
@@ -655,9 +581,6 @@ function _stickyShowcase() {
     window.addEventListener('load', setup, { once: true });
   }
 }
-
-/* _updateShowcaseCounter kept as no-op for safety */
-function _updateShowcaseCounter() {}
 
 // (No _heroParallax function — removed in v5, phone mockup is now static/clickable)
 
@@ -818,27 +741,35 @@ function _valueCards3D() {
     once: true,
   });
 
-  // Interactive 3D tilt on hover
+  // Interactive 3D tilt on hover — delegated instead of per-card
   cards.forEach(function(card) {
     card.style.transformStyle = 'preserve-3d';
     card.style.perspective = '800px';
+  });
 
-    card.addEventListener('mouseenter', function() {
-      gsap.to(card, { scale: 1.04, duration: 0.3, ease: 'power2.out' });
-    });
-    card.addEventListener('mouseleave', function() {
-      gsap.to(card, { scale: 1, rotateX: 0, rotateY: 0, duration: 0.4, ease: 'power2.out' });
-    });
-    card.addEventListener('mousemove', function(e) {
-      var rect = card.getBoundingClientRect();
-      var x = (e.clientX - rect.left) / rect.width - 0.5;
-      var y = (e.clientY - rect.top) / rect.height - 0.5;
-      gsap.to(card, {
-        rotateY: x * 12,
-        rotateX: -y * 12,
-        duration: 0.3,
-        ease: 'power2.out',
-      });
+  document.addEventListener('mouseover', function(e) {
+    var card = e.target.closest('.value-card');
+    if (!card) return;
+    gsap.to(card, { scale: 1.04, duration: 0.3, ease: 'power2.out' });
+  });
+
+  document.addEventListener('mouseout', function(e) {
+    var card = e.target.closest('.value-card');
+    if (!card) return;
+    gsap.to(card, { scale: 1, rotateX: 0, rotateY: 0, duration: 0.4, ease: 'power2.out' });
+  });
+
+  document.addEventListener('mousemove', function(e) {
+    var card = e.target.closest('.value-card');
+    if (!card) return;
+    var rect = card.getBoundingClientRect();
+    var x = (e.clientX - rect.left) / rect.width - 0.5;
+    var y = (e.clientY - rect.top) / rect.height - 0.5;
+    gsap.to(card, {
+      rotateY: x * 12,
+      rotateX: -y * 12,
+      duration: 0.3,
+      ease: 'power2.out',
     });
   });
 }
@@ -879,23 +810,33 @@ function _destCardsHover3D() {
 
   cards.forEach(function(card) {
     card.style.transformStyle = 'preserve-3d';
+  });
 
-    card.addEventListener('mouseenter', function() {
-      gsap.to(card, { scale: 1.03, y: -6, duration: 0.35, ease: 'power2.out' });
-    });
-    card.addEventListener('mouseleave', function() {
-      gsap.to(card, { scale: 1, y: 0, rotateX: 0, rotateY: 0, duration: 0.4, ease: 'power2.out' });
-    });
-    card.addEventListener('mousemove', function(e) {
-      var rect = card.getBoundingClientRect();
-      var x = (e.clientX - rect.left) / rect.width - 0.5;
-      var y = (e.clientY - rect.top) / rect.height - 0.5;
-      gsap.to(card, {
-        rotateY: x * 10,
-        rotateX: -y * 8,
-        duration: 0.3,
-        ease: 'power2.out',
-      });
+  var SEL = '.dest-card, .dest-grid-card';
+
+  document.addEventListener('mouseover', function(e) {
+    var card = e.target.closest(SEL);
+    if (!card) return;
+    gsap.to(card, { scale: 1.03, y: -6, duration: 0.35, ease: 'power2.out' });
+  });
+
+  document.addEventListener('mouseout', function(e) {
+    var card = e.target.closest(SEL);
+    if (!card) return;
+    gsap.to(card, { scale: 1, y: 0, rotateX: 0, rotateY: 0, duration: 0.4, ease: 'power2.out' });
+  });
+
+  document.addEventListener('mousemove', function(e) {
+    var card = e.target.closest(SEL);
+    if (!card) return;
+    var rect = card.getBoundingClientRect();
+    var x = (e.clientX - rect.left) / rect.width - 0.5;
+    var y = (e.clientY - rect.top) / rect.height - 0.5;
+    gsap.to(card, {
+      rotateY: x * 10,
+      rotateX: -y * 8,
+      duration: 0.3,
+      ease: 'power2.out',
     });
   });
 }
@@ -1059,6 +1000,12 @@ function _numberCountUp() {
           },
           onComplete: function() {
             el.textContent = target.toFixed(decimals) + suffix;
+            // Flash highlight merged from _numberCountUpFlash
+            el.classList.add('counted');
+            el.addEventListener('animationend', function onEnd() {
+              el.classList.remove('counted');
+              el.removeEventListener('animationend', onEnd);
+            });
           },
         });
       },
@@ -1066,19 +1013,6 @@ function _numberCountUp() {
   });
 }
 
-
-// ─────────────────────────────────────────────────────────
-// 23. PHONE FLOAT — activate floating animation after hero entrance
-// ─────────────────────────────────────────────────────────
-function _phoneFloat() {
-  var phone = document.querySelector('.iphone-mockup');
-  if (!phone || !document.querySelector('.hero--v2')) return;
-
-  // Wait for the hero entrance animation to finish, then add float class
-  setTimeout(function() {
-    phone.classList.add('is-floating');
-  }, 2200);
-}
 
 // ─────────────────────────────────────────────────────────
 // 24. FOOTER REVEAL — staggered fade-in for footer sections
@@ -1166,25 +1100,29 @@ function _featCardIconPulse() {
 function _magneticButtons() {
   if (!window.matchMedia('(hover: hover)').matches) return;
 
-  var btns = document.querySelectorAll('.btn--primary, .btn--outline');
-  btns.forEach(function(btn) {
-    btn.addEventListener('mousemove', function(e) {
-      var rect = btn.getBoundingClientRect();
-      var x = e.clientX - rect.left - rect.width / 2;
-      var y = e.clientY - rect.top - rect.height / 2;
-      gsap.to(btn, {
-        x: x * 0.15,
-        y: y * 0.15,
-        duration: 0.3,
-        ease: 'power2.out',
-      });
+  var SEL = '.btn--primary, .btn--outline';
+
+  document.addEventListener('mousemove', function(e) {
+    var btn = e.target.closest(SEL);
+    if (!btn) return;
+    var rect = btn.getBoundingClientRect();
+    var x = e.clientX - rect.left - rect.width / 2;
+    var y = e.clientY - rect.top - rect.height / 2;
+    gsap.to(btn, {
+      x: x * 0.15,
+      y: y * 0.15,
+      duration: 0.3,
+      ease: 'power2.out',
     });
-    btn.addEventListener('mouseleave', function() {
-      gsap.to(btn, {
-        x: 0, y: 0,
-        duration: 0.5,
-        ease: 'elastic.out(1, 0.4)',
-      });
+  });
+
+  document.addEventListener('mouseout', function(e) {
+    var btn = e.target.closest(SEL);
+    if (!btn) return;
+    gsap.to(btn, {
+      x: 0, y: 0,
+      duration: 0.5,
+      ease: 'elastic.out(1, 0.4)',
     });
   });
 }
@@ -1228,50 +1166,24 @@ function _sectionHeaderSplit() {
 // ─────────────────────────────────────────────────────────
 function _stepCardIconHover() {
   if (!window.matchMedia('(hover: hover)').matches) return;
+  if (!document.querySelector('.step-card')) return;
 
-  document.querySelectorAll('.step-card').forEach(function(card) {
+  document.addEventListener('mouseenter', function(e) {
+    var card = e.target.closest('.step-card');
+    if (!card) return;
     var icon = card.querySelector('.step-card__icon');
     if (!icon) return;
-
-    card.addEventListener('mouseenter', function() {
-      gsap.fromTo(icon,
-        { y: 0, scale: 1 },
-        { y: -6, scale: 1.1, duration: 0.25, ease: 'power2.out',
-          onComplete: function() {
-            gsap.to(icon, { y: 0, scale: 1, duration: 0.45, ease: 'elastic.out(1, 0.5)' });
-          }
+    gsap.fromTo(icon,
+      { y: 0, scale: 1 },
+      { y: -6, scale: 1.1, duration: 0.25, ease: 'power2.out',
+        onComplete: function() {
+          gsap.to(icon, { y: 0, scale: 1, duration: 0.45, ease: 'elastic.out(1, 0.5)' });
         }
-      );
-    });
-  });
+      }
+    );
+  }, true); // useCapture for mouseenter delegation
 }
 
-// ─────────────────────────────────────────────────────────
-// 33. SHOWCASE PHONE TILT — disabled (phone is static)
-// ─────────────────────────────────────────────────────────
-function _showcasePhoneTilt() {}
-
-// ─────────────────────────────────────────────────────────
-// 34. FEAT CARD REVEAL PULSE — adds a CSS class on reveal onComplete
-// ─────────────────────────────────────────────────────────
-function _featCardRevealPulse() {
-  document.querySelectorAll('.feat-card').forEach(function(card) {
-    ScrollTrigger.create({
-      trigger: card,
-      start: 'top 88%',
-      once: true,
-      onEnter: function() {
-        setTimeout(function() {
-          card.classList.add('pulse-reveal');
-          card.addEventListener('animationend', function onEnd() {
-            card.classList.remove('pulse-reveal');
-            card.removeEventListener('animationend', onEnd);
-          });
-        }, 350);
-      },
-    });
-  });
-}
 
 // ─────────────────────────────────────────────────────────
 // 35. CTA BUTTON ENTRANCE — buttons in CTA section spring in
@@ -1292,23 +1204,4 @@ function _ctaButtonEntrance() {
   });
 }
 
-// ─────────────────────────────────────────────────────────
-// 36. NUMBER COUNT-UP FLASH — adds .counted CSS class after counting
-// ─────────────────────────────────────────────────────────
-function _numberCountUpFlash() {
-  document.querySelectorAll('[data-count-up]').forEach(function(el) {
-    ScrollTrigger.create({
-      trigger: el,
-      start: 'top 85%',
-      once: true,
-      onEnter: function() {
-        el.classList.add('counted');
-        el.addEventListener('animationend', function onEnd() {
-          el.classList.remove('counted');
-          el.removeEventListener('animationend', onEnd);
-        });
-      },
-    });
-  });
-}
 

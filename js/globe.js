@@ -3,11 +3,21 @@
  *
  * Creates a wireframe globe with glowing city nodes and
  * animated connection arcs. Mouse-parallax + auto-rotation.
+ *
+ * Performance notes:
+ *  – Sphere segments reduced from 48→32 (visually identical at wireframe opacity)
+ *  – Ambient particles reduced from 300→150
+ *  – Pixel-ratio capped at 2
+ *  – Render loop pauses when the tab is hidden or the globe is off-screen
+ *  – prefers-reduced-motion bail-out
  */
 
 function initGlobe(containerId = 'globe-container') {
   const container = document.getElementById(containerId);
   if (!container || window.innerWidth < 768) return;
+
+  // Respect user preference — no animation at all
+  if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
 
   const THREE = window.THREE;
   if (!THREE) {
@@ -30,9 +40,9 @@ function initGlobe(containerId = 'globe-container') {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   container.appendChild(renderer.domElement);
 
-  // --- Globe Geometry ---
+  // --- Globe Geometry (32 segments — visually identical to 48 at 0.08 opacity) ---
   const globeRadius = 4;
-  const globeGeometry = new THREE.SphereGeometry(globeRadius, 48, 48);
+  const globeGeometry = new THREE.SphereGeometry(globeRadius, 32, 32);
   const globeMaterial = new THREE.MeshBasicMaterial({
     color: 0xD4AF37,
     wireframe: true,
@@ -43,7 +53,7 @@ function initGlobe(containerId = 'globe-container') {
   scene.add(globe);
 
   // --- Inner glow sphere ---
-  const innerGeometry = new THREE.SphereGeometry(globeRadius * 0.98, 32, 32);
+  const innerGeometry = new THREE.SphereGeometry(globeRadius * 0.98, 24, 24);
   const innerMaterial = new THREE.MeshBasicMaterial({
     color: 0xD4AF37,
     transparent: true,
@@ -119,7 +129,7 @@ function initGlobe(containerId = 'globe-container') {
     mid.normalize().multiplyScalar(midLen + 1.2);
 
     const curve = new THREE.QuadraticBezierCurve3(start, mid, end);
-    const curvePoints = curve.getPoints(48);
+    const curvePoints = curve.getPoints(32);
     const curveGeometry = new THREE.BufferGeometry().setFromPoints(curvePoints);
     const curveMaterial = new THREE.LineBasicMaterial({
       color: 0xD4AF37,
@@ -130,11 +140,11 @@ function initGlobe(containerId = 'globe-container') {
     globe.add(line);
   });
 
-  // --- Ambient Particles ---
-  const particleCount = 300;
+  // --- Ambient Particles (150 — halved from 300, visually equivalent) ---
+  const particleCount = 150;
   const particlePositions = new Float32Array(particleCount * 3);
   for (let i = 0; i < particleCount; i++) {
-    particlePositions[i * 3] = (Math.random() - 0.5) * 16;
+    particlePositions[i * 3]     = (Math.random() - 0.5) * 16;
     particlePositions[i * 3 + 1] = (Math.random() - 0.5) * 16;
     particlePositions[i * 3 + 2] = (Math.random() - 0.5) * 16;
   }
@@ -160,10 +170,27 @@ function initGlobe(containerId = 'globe-container') {
     mouseY = (e.clientY - window.innerHeight / 2) * 0.001;
   });
 
+  // --- Visibility & intersection state ---
+  // Pause the render loop when the tab is hidden OR the globe is off-screen.
+  let visible = true;
+  let tabActive = true;
+
+  document.addEventListener('visibilitychange', () => {
+    tabActive = !document.hidden;
+  });
+
+  const io = new IntersectionObserver(([entry]) => {
+    visible = entry.isIntersecting;
+  }, { threshold: 0.05 });
+  io.observe(container);
+
   // --- Animation Loop ---
   let animId;
   function animate() {
     animId = requestAnimationFrame(animate);
+
+    // Skip rendering when the tab is hidden or the globe is scrolled out of view
+    if (!tabActive || !visible) return;
 
     // Auto rotation
     globe.rotation.y += 0.001;
@@ -189,14 +216,14 @@ function initGlobe(containerId = 'globe-container') {
     camera.updateProjectionMatrix();
     renderer.setSize(container.clientWidth, container.clientHeight);
   }
-  window.addEventListener('resize', onResize);
+  window.addEventListener('resize', onResize, { passive: true });
 
   // Cleanup (in case of SPA navigation)
   return () => {
     cancelAnimationFrame(animId);
+    io.disconnect();
     window.removeEventListener('resize', onResize);
     renderer.dispose();
     container.removeChild(renderer.domElement);
   };
 }
-

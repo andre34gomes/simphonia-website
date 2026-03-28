@@ -1,4 +1,4 @@
-@import 'base.css';
+/* base.css loaded via <link> in HTML to avoid @import waterfall */
 
 /* ============================================================
    SIMPHONIA — Home Page Stylesheet
@@ -44,6 +44,8 @@
 
 @media (prefers-reduced-motion: reduce) {
   .hero-fade-up { animation: none; opacity: 1; }
+  .hero-postcard__orb { animation: none !important; }
+  .phone-screen-glow  { animation: none; opacity: 0.7; }
 }
 
 /* ==============================================
@@ -86,6 +88,9 @@
   inset: 0;
   z-index: 0;
   background: radial-gradient(ellipse 120% 80% at 20% 50%, rgba(30, 25, 18, 1) 0%, var(--bg-primary) 70%);
+  /* contain: layout paint isolates orb animations so they don't trigger
+     full-page repaints on every animation frame. */
+  contain: layout paint;
 }
 
 /* Gradient mesh layer */
@@ -112,9 +117,9 @@
 .hero-postcard__orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(80px);
+  filter: blur(60px);
   pointer-events: none;
-  will-change: transform;
+  will-change: transform; /* correct: these elements are always animating */
 }
 
 .hero-postcard__orb--1 {
@@ -1097,7 +1102,7 @@
 .hero__orb {
   position: absolute;
   border-radius: 50%;
-  filter: blur(100px);
+  filter: blur(70px);
   pointer-events: none;
   z-index: 0;
 }
@@ -1579,7 +1584,6 @@
   align-items: center;
   justify-content: space-between;
   margin-bottom: 0.5rem;
-  will-change: transform, opacity;
 }
 
 .showcase-panel__step {
@@ -1610,7 +1614,6 @@
   pointer-events: none;
   margin-bottom: -1.25rem;
   display: block;
-  will-change: transform, opacity;
 }
 
 /* Hero heading — the star of each panel */
@@ -1619,7 +1622,6 @@
   font-weight: 800;
   line-height: 1.06;
   letter-spacing: -0.04em;
-  will-change: transform, opacity;
   margin-bottom: 1.5rem;
   color: var(--text-primary);
   position: relative;
@@ -1634,7 +1636,6 @@
   max-width: 420px;
   position: relative;
   z-index: 1;
-  will-change: transform, opacity;
 }
 
 .showcase-sticky__phone {
@@ -2080,7 +2081,6 @@
   width: 100%; height: 100%;
   object-fit: cover;
   transition: transform 0.8s var(--ease-out);
-  will-change: transform;
 }
 
 .dest-grid-card:hover img { transform: scale(1.08); }
@@ -2232,34 +2232,37 @@ section[id] {
   border-top: 1px solid var(--border-subtle);
   border-bottom: 1px solid var(--border-subtle);
   padding: 0.875rem 0;
-  overflow: hidden;
+  overflow-x: auto;
+  overflow-y: hidden;
+  scrollbar-width: none;       /* Firefox */
+  -ms-overflow-style: none;    /* IE / Edge */
   position: relative;
   z-index: 2;
   user-select: none;
+  cursor: grab;
   animation: strip-entrance 0.8s ease-out 1.4s both;
 }
 
-.hero__destinations-strip::before,
-.hero__destinations-strip::after {
-  content: '';
-  position: absolute; top: 0;
-  width: 120px; height: 100%;
-  z-index: 2; pointer-events: none;
-}
-.hero__destinations-strip::before {
-  left: 0;
-  background: linear-gradient(to right, var(--bg-primary) 0%, transparent 100%);
-}
-.hero__destinations-strip::after {
-  right: 0;
-  background: linear-gradient(to left, var(--bg-primary) 0%, transparent 100%);
+.hero__destinations-strip::-webkit-scrollbar { display: none; }
+.hero__destinations-strip:active { cursor: grabbing; }
+
+/* Fade edges via mask so partial items become transparent — avoids the
+   background-colour-overlay artefact that makes cut flag emojis look broken */
+.hero__destinations-strip {
+  -webkit-mask-image: linear-gradient(to right,
+    transparent 0px,
+    black 100px,
+    black calc(100% - 100px),
+    transparent 100%);
+  mask-image: linear-gradient(to right,
+    transparent 0px,
+    black 100px,
+    black calc(100% - 100px),
+    transparent 100%);
 }
 
 .hero__destinations-strip .marquee-track {
-  animation: marquee-scroll 60s linear infinite;
-}
-.hero__destinations-strip:hover .marquee-track {
-  animation-play-state: paused;
+  animation: none;
 }
 
 .hero__split {
@@ -3382,6 +3385,12 @@ section[id] {
 
 /* ── Phones / small tablets ── */
 @media (max-width: 768px) {
+  /* Drop 2 of 4 blur-heavy orbs on phones — filter:blur() is expensive on mobile GPUs */
+  .hero-postcard__orb--3,
+  .hero-postcard__orb--4 { display: none; }
+  .hero-postcard__orb--1,
+  .hero-postcard__orb--2 { filter: blur(40px); }
+
   #globe-container { opacity: 0.15; width: 100vw; right: 0; }
   .hero__subtitle { max-width: 100%; }
 
@@ -3798,13 +3807,6 @@ section[id] {
 /* ==============================================
    ENHANCED ENTRANCE & INTERACTION ANIMATIONS
    ============================================== */
-
-/* ── Section header child stagger (driven by GSAP, fallback visible) ── */
-.section-header .label,
-.section-header h2,
-.section-header p {
-  will-change: transform, opacity;
-}
 
 /* ── Destination grid cards — staggered hover depth ── */
 .dest-grid-card::before {

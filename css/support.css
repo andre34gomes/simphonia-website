@@ -1,4 +1,4 @@
-@import 'base.css';
+/* base.css loaded via <link> in HTML to avoid @import waterfall */
 
 /* ============================================================
    SIMPHONIA — Support Page Stylesheet
