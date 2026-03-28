@@ -83,7 +83,7 @@
 
         <div id="no-results" class="dest-no-results" style="display:none;" role="alert">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M8 11h6"/></svg>
-          <p>No countries found for <strong id="no-results-query"></strong></p>
+          <p>No countries found for "<strong id="no-results-query"></strong>"</p>
           <button class="btn btn--ghost btn--sm" id="no-results-clear">Clear search</button>
         </div>
       </div>
@@ -168,6 +168,13 @@
       return API_BASE + (url.startsWith('/') ? url : '/' + url);
     }
 
+    /** Escape HTML special chars to prevent XSS when interpolating API data into innerHTML. */
+    function esc(str) {
+      const d = document.createElement('div');
+      d.textContent = str;
+      return d.innerHTML;
+    }
+
     async function apiFetch(path) {
       const token = await getGuestToken();
       const res = await fetch(`${API_BASE}${path}`, {
@@ -241,20 +248,21 @@
         card.className = 'dest-card';
         card.tabIndex  = 0;
         card.setAttribute('role', 'article');
+        const safeName = esc(name);
         card.setAttribute('aria-label', name);
         card.style.animationDelay = `${Math.min(i, 12) * 40}ms`;
         card.innerHTML = `
           <div class="dest-card__img-wrap">
             ${img
-              ? `<img src="${img}" alt="${name}" class="dest-card__img" loading="lazy" decoding="async">`
+              ? `<img src="${esc(img)}" alt="${safeName}" class="dest-card__img" loading="lazy" decoding="async">`
               : `<div class="dest-card__img"
                       style="background:linear-gradient(135deg,var(--bg-elevated),var(--border-subtle));"
                       aria-hidden="true"></div>`}
-            ${d.discount ? `<span class="dest-card__discount">-${d.discount}%</span>` : ''}
+            ${d.discount ? `<span class="dest-card__discount">-${parseInt(d.discount, 10)}%</span>` : ''}
           </div>
           <div class="dest-card__body">
-            <div class="dest-card__name">${flag ? flag + '\u00A0' : ''}${name}</div>
-            ${d.startingPrice ? `<div class="dest-card__price">From €${d.startingPrice.toFixed(2)}</div>` : ''}
+            <div class="dest-card__name">${flag ? flag + '\u00A0' : ''}${safeName}</div>
+            ${d.startingPrice ? `<div class="dest-card__price">From €${Number(d.startingPrice).toFixed(2)}</div>` : ''}
           </div>`;
         card.addEventListener('keydown', e => {
           if (e.key === 'Enter' || e.key === ' ') card.click();
