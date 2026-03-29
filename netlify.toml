@@ -10,12 +10,10 @@
     Referrer-Policy              = "strict-origin-when-cross-origin"
     Permissions-Policy           = "camera=(), microphone=(), geolocation=(), payment=(self)"
     Strict-Transport-Security    = "max-age=31536000; includeSubDomains; preload"
-    # CSP: script-src allows self + cdnjs CDN.
-    # Theme init is now an external file (js/theme-init.js), so no 'unsafe-inline'
-    # is needed for <head> scripts. The body inline scripts (support form, destinations
-    # data module) still use 'unsafe-inline'; extract them to dedicated JS files to
-    # remove it entirely. Until then, 'unsafe-inline' is scoped here as a reminder.
-    Content-Security-Policy      = "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com 'unsafe-inline'; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://images.unsplash.com data: blob:; connect-src 'self'; frame-ancestors 'none'; base-uri 'self'; form-action 'self';"
+    # CSP: script-src allows self + cdnjs CDN. No inline scripts exist,
+    # so 'unsafe-inline' is NOT needed for script-src (strong XSS protection).
+    # style-src still uses 'unsafe-inline' for dynamic class toggling.
+    Content-Security-Policy      = "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://images.unsplash.com https://api.simphonia.pt data: blob:; connect-src 'self' https://api.simphonia.pt; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;"
 
 # ── Redirects ─────────────────────────────────────────────────
 [[redirects]]
@@ -59,7 +57,34 @@
   to = "/404.html"
   status = 404
 
+# ── Cache Control ────────────────────────────────────────────
+# Immutable static assets — long cache with revalidation
+[[headers]]
+  for = "/css/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
 
+[[headers]]
+  for = "/js/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
 
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# HTML pages — always revalidate for freshness
+[[headers]]
+  for = "/*.html"
+  [headers.values]
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+# Web App Manifest — short cache so updates are picked up quickly
+[[headers]]
+  for = "/manifest.json"
+  [headers.values]
+    Cache-Control = "public, max-age=3600, must-revalidate"
+    Content-Type = "application/manifest+json"
 
 

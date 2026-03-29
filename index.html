@@ -11,6 +11,12 @@
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="shortcut icon" href="assets/favicon.svg">
   <link rel="mask-icon" href="assets/favicon.svg" color="#D4AF37">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Simphonia">
+  <!-- LCP preload: phone mockup SVG is the Largest Contentful Paint element -->
+  <link rel="preload" href="assets/iphone-frame.svg" as="image" type="image/svg+xml">
   <script src="js/theme-init.js"></script>
 
   <!-- Open Graph -->
@@ -41,6 +47,23 @@
     "name": "Simphonia",
     "url": "https://simphonia.pt",
     "description": "Global eSIM service for travelers in 200+ countries"
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Simphonia eSIM",
+    "operatingSystem": "iOS, Android",
+    "applicationCategory": "TravelApplication",
+    "description": "Instant eSIM activation for 200+ countries. No roaming fees, no SIM swaps, no contracts.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "EUR"
+    },
+    "installUrl": "https://apps.apple.com/app/simphonia",
+    "url": "https://simphonia.pt"
   }
   </script>
 </head>
@@ -187,7 +210,7 @@
 
         <div class="steps--cards">
           <div class="step-card reveal" data-step="1">
-            <div class="step-card__icon">🔍</div>
+            <div class="step-card__icon"><span role="img" aria-label="Search">🔍</span></div>
             <div class="step-card__number">Step 1</div>
             <h3 class="step-card__title">Choose Your Plan</h3>
             <p class="step-card__desc">
@@ -196,7 +219,7 @@
             </p>
           </div>
           <div class="step-card reveal" data-step="2">
-            <div class="step-card__icon">⚡</div>
+            <div class="step-card__icon"><span role="img" aria-label="Lightning bolt">⚡</span></div>
             <div class="step-card__number">Step 2</div>
             <h3 class="step-card__title">Buy in Seconds</h3>
             <p class="step-card__desc">
@@ -205,7 +228,7 @@
             </p>
           </div>
           <div class="step-card reveal" data-step="3">
-            <div class="step-card__icon">🌐</div>
+            <div class="step-card__icon"><span role="img" aria-label="Globe">🌐</span></div>
             <div class="step-card__number">Step 3</div>
             <h3 class="step-card__title">Travel Connected</h3>
             <p class="step-card__desc">
@@ -238,7 +261,7 @@
         <div class="feature-grid--new">
           <div class="feat-card reveal">
             <div class="feat-card__icon">
-              <svg viewBox="0 0 24 24"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
             </div>
             <h3 class="feat-card__title">Instant Activation</h3>
             <p class="feat-card__desc">QR code delivered instantly in-app. Go from purchase to online in under 60 seconds, no physical delivery required.</p>
@@ -246,7 +269,7 @@
 
           <div class="feat-card reveal">
             <div class="feat-card__icon">
-              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
             </div>
             <h3 class="feat-card__title">Zero Roaming Fees</h3>
             <p class="feat-card__desc">Connect to local networks at local prices. Save up to 90% compared to traditional carrier roaming charges.</p>
@@ -254,7 +277,7 @@
 
           <div class="feat-card reveal">
             <div class="feat-card__icon">
-              <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
             </div>
             <h3 class="feat-card__title">200+ Countries</h3>
             <p class="feat-card__desc">Global coverage that actually works. Local plans for every destination and every type of trip.</p>
@@ -262,7 +285,7 @@
 
           <div class="feat-card reveal">
             <div class="feat-card__icon">
-              <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
             </div>
             <h3 class="feat-card__title">Flexible Plans</h3>
             <p class="feat-card__desc">1 GB for a weekend getaway or unlimited data for a month-long expedition. Buy exactly what you need.</p>
@@ -270,7 +293,7 @@
 
           <div class="feat-card reveal">
             <div class="feat-card__icon">
-              <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
             </div>
             <h3 class="feat-card__title">AI Support 24/7</h3>
             <p class="feat-card__desc">Instant help from our AI assistant at any hour, in any timezone. Real human agents available when you need them most.</p>
@@ -278,7 +301,7 @@
 
           <div class="feat-card reveal">
             <div class="feat-card__icon">
-              <svg viewBox="0 0 24 24"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+              <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
             </div>
             <h3 class="feat-card__title">All Modern Devices</h3>
             <p class="feat-card__desc">Compatible with all eSIM-enabled iPhones, Samsung Galaxy, Google Pixel, and more.</p>
@@ -406,7 +429,7 @@
 
   </main>
 
-  <!-- Scripts — Three.js and GSAP via CDN, deferred -->
+  <!-- Scripts — Three.js and GSAP via CDN with local fallback, deferred -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
           integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ=="
           crossorigin="anonymous" defer></script>
@@ -416,6 +439,20 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
           integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
           crossorigin="anonymous" defer></script>
+  <!-- CDN fallback: if cdnjs is unavailable, silently degrade (animations are progressive enhancement) -->
+  <script defer>
+    window.addEventListener('load', function () {
+      if (typeof gsap === 'undefined') {
+        console.warn('[Simphonia] GSAP failed to load from CDN — animations disabled.');
+      }
+      if (typeof THREE === 'undefined') {
+        console.warn('[Simphonia] Three.js failed to load from CDN — globe disabled.');
+      }
+    });
+  </script>
+  <noscript>
+    <style>.hero-postcard__orb,.globe-canvas{display:none}</style>
+  </noscript>
   <script defer src="js/components/layout.js?v=20260326-10"></script>
   <script defer src="js/animations.js?v=20260326-10"></script>
   <script defer src="js/globe.js"></script>

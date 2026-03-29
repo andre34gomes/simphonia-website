@@ -15,7 +15,7 @@
 /* ───────────────────────────────────────────────────────────
    Constants
    ─────────────────────────────────────────────────────────── */
-var SECTION_SPECIFIC_SEL =
+const SECTION_SPECIFIC_SEL =
   '.feat-card, .step-card, .bento-item, ' +
   '.faq-item, .team-card, .value-card, .dest-card, .dest-grid-card, ' +
   '.feature-card, .section-header';
@@ -47,8 +47,8 @@ function _st(trigger, startPct) {
 
 function _batchReveal(selector, fromVars, tweenVars, batchMax) {
   if (!document.querySelector(selector)) return;
-  var from = Object.assign({ clipPath: 'inset(0 0 100% 0)' }, fromVars);
-  var to   = Object.assign({ clipPath: 'inset(0 0 0% 0)', overwrite: 'auto' }, tweenVars);
+  const from = Object.assign({ clipPath: 'inset(0 0 100% 0)' }, fromVars);
+  const to   = Object.assign({ clipPath: 'inset(0 0 0% 0)', overwrite: 'auto' }, tweenVars);
   ScrollTrigger.batch(selector, {
     batchMax: batchMax || 4,
     onEnter: function (batch) {
@@ -64,7 +64,7 @@ function _batchReveal(selector, fromVars, tweenVars, batchMax) {
    ─────────────────────────────────────────────────────────── */
 function _waitForLibs() {
   return new Promise(function (resolve, reject) {
-    var start = Date.now();
+    let start = Date.now();
     (function check() {
       if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
         return resolve();
@@ -107,7 +107,7 @@ function _scheduleScrollRefresh(options) {
 /* ───────────────────────────────────────────────────────────
    PUBLIC: initAnimations()
    ─────────────────────────────────────────────────────────── */
-var _animationsInitialized = false;
+let _animationsInitialized = false;
 
 function initAnimations() {
   if (_animationsInitialized) return;
@@ -306,16 +306,16 @@ function _featureCards() {
 // 7. STICKY SHOWCASE — GSAP pin + Apple-style cross-fade panels
 // ─────────────────────────────────────────────────────────
 function _stickyShowcase() {
-  var section = document.querySelector('.showcase-sticky');
+  const section = document.querySelector('.showcase-sticky');
   if (!section) return;
 
-  var scene   = section.querySelector('.showcase-sticky__scene');
-  var stage   = document.getElementById('showcasePanelsStage');
-  var segsEl  = document.getElementById('showcaseSegments');
+  const scene   = section.querySelector('.showcase-sticky__scene');
+  const stage   = document.getElementById('showcasePanelsStage');
+  const segsEl  = document.getElementById('showcaseSegments');
   if (!scene || !stage) return;
 
-  var panels     = stage.querySelectorAll('.showcase-sticky__panel');
-  var panelCount = panels.length;
+  const panels     = stage.querySelectorAll('.showcase-sticky__panel');
+  const panelCount = panels.length;
   if (!panelCount) return;
 
   /* Vertical layout on narrow viewports is handled by CSS only —
@@ -323,10 +323,10 @@ function _stickyShowcase() {
   // var isCompactViewport = window.innerWidth < 1024;
 
   /* ── Build segment fill bars ── */
-  var segFills = [];
+  const segFills = [];
   if (segsEl) {
     segsEl.querySelectorAll('.showcase-segment').forEach(function(seg) {
-      var fill = document.createElement('div');
+      const fill = document.createElement('div');
       fill.className = 'showcase-segment__fill';
       seg.appendChild(fill);
       segFills.push(fill);
@@ -338,8 +338,8 @@ function _stickyShowcase() {
     gsap.set(p, { position: 'absolute', opacity: 0, y: 40 });
   });
 
-  var lastActive = -1;
-  var screens    = section.querySelectorAll('.sas-screen');
+  let lastActive = -1;
+  const screens    = section.querySelectorAll('.sas-screen');
 
   function showScreen(newIdx) {
     if (!screens.length || newIdx === lastActive || !screens[newIdx]) return;
@@ -371,10 +371,10 @@ function _stickyShowcase() {
   }
 
   /* ── Transition between panels + phone screens ── */
-  var isMobileShowcase = window.innerWidth <= 960;
+  const isMobileShowcase = window.innerWidth <= 960;
 
   /* Cache panel child elements once — avoids querySelector on every transition */
-  var panelChildren = [];
+  const panelChildren = [];
   panels.forEach(function(p) {
     panelChildren.push({
       ghost: p.querySelector('.showcase-panel__ghost-num'),
@@ -385,16 +385,16 @@ function _stickyShowcase() {
   });
 
   function transitionTo(newIdx, prevIdx) {
-    var forward = newIdx > prevIdx;
-    var panelDelay = prevIdx >= 0 ? 0.1 : 0;
+    const forward = newIdx > prevIdx;
+    const panelDelay = prevIdx >= 0 ? 0.1 : 0;
 
     /* Scale slide distances for mobile's compact layout */
-    var slideOut  = isMobileShowcase ? 28 : 60;
-    var slideIn   = isMobileShowcase ? 32 : 68;
-    var firstSlide = isMobileShowcase ? 16 : 28;
-    var innerMeta  = isMobileShowcase ? 8  : 14;
-    var innerTitle = isMobileShowcase ? 14 : 24;
-    var innerDesc  = isMobileShowcase ? 10 : 20;
+    const slideOut  = isMobileShowcase ? 28 : 60;
+    const slideIn   = isMobileShowcase ? 32 : 68;
+    const firstSlide = isMobileShowcase ? 16 : 28;
+    const innerMeta  = isMobileShowcase ? 8  : 14;
+    const innerTitle = isMobileShowcase ? 14 : 24;
+    const innerDesc  = isMobileShowcase ? 10 : 20;
 
     /* ─── FAST-SCROLL GUARD: kill every in-flight tween on all panels/screens,
            then instantly zero-out anything that is neither the outgoing nor
@@ -402,7 +402,7 @@ function _stickyShowcase() {
            multiple steps faster than a single transition can complete. ─── */
     panels.forEach(function (p, i) {
       gsap.killTweensOf(p);
-      var ch = panelChildren[i];
+      const ch = panelChildren[i];
       [ch.ghost, ch.meta, ch.title, ch.desc].forEach(function (el) { if (el) gsap.killTweensOf(el); });
 
       if (i !== newIdx && i !== prevIdx) {
@@ -432,13 +432,13 @@ function _stickyShowcase() {
     }
 
     /* ─── Prep incoming panel inner elements (from cache) ─── */
-    var ch = panelChildren[newIdx];
-    var ghostNum = ch.ghost;
-    var meta     = ch.meta;
-    var title    = ch.title;
-    var desc     = ch.desc;
+    const ch = panelChildren[newIdx];
+    const ghostNum = ch.ghost;
+    const meta     = ch.meta;
+    const title    = ch.title;
+    const desc     = ch.desc;
 
-    var fromY = forward ? slideIn : -slideIn;
+    let fromY = forward ? slideIn : -slideIn;
     if (prevIdx < 0) fromY = firstSlide;
 
     gsap.set(panels[newIdx], { y: fromY, scale: 0.95 });
@@ -458,7 +458,7 @@ function _stickyShowcase() {
     });
 
     /* ─── Stagger inner elements ─── */
-    var eD = panelDelay + 0.08;
+    const eD = panelDelay + 0.08;
     if (ghostNum) gsap.to(ghostNum, { opacity: 0.045, x: 0, duration: 0.85, delay: eD,        ease: 'expo.out' });
     if (meta)     gsap.to(meta,     { opacity: 1,     y: 0, duration: 0.5,  delay: eD + 0.04, ease: 'power3.out' });
     if (title)    gsap.to(title,    { opacity: 1,     y: 0, duration: 0.72, delay: eD + 0.10, ease: 'expo.out' });
@@ -482,15 +482,15 @@ function _stickyShowcase() {
   /* ── Live-scrub segment fills ── */
   function updateSegs(progress) {
     /* Clamp against sub-zero / over-one values GSAP can emit at edges */
-    var p      = Math.min(Math.max(progress, 0), 1);
-    var raw    = p * panelCount;
-    var active = Math.min(Math.floor(raw), panelCount - 1);
+    const p      = Math.min(Math.max(progress, 0), 1);
+    const raw    = p * panelCount;
+    const active = Math.min(Math.floor(raw), panelCount - 1);
     /* frac: how far into the current panel's dwell range (0 → 1).
        raw - active rises naturally from 0 to 1 for every panel,
        including the last one — no special-casing needed.
        Math.min(..., 1) handles the progress === 1.0 boundary where
        raw === panelCount exactly. */
-    var frac   = Math.min(raw - active, 1);
+    const frac   = Math.min(raw - active, 1);
     segFills.forEach(function (fill, i) {
       fill.style.width = i < active   ? '100%'
                        : i === active ? (frac * 100).toFixed(1) + '%'
@@ -501,7 +501,7 @@ function _stickyShowcase() {
   /* ── Setup: measure + create ScrollTrigger ── */
   function setup() {
     /* Measure tallest panel so the stage never collapses */
-    var maxH = 0;
+    let maxH = 0;
     panels.forEach(function(p) {
       gsap.set(p, { position: 'relative', opacity: 1, y: 0 });
       maxH = Math.max(maxH, p.offsetHeight);
@@ -524,10 +524,10 @@ function _stickyShowcase() {
 
     /* Show first panel instantly — no startup animation */
     gsap.set(panels[0], { opacity: 1, y: 0, scale: 1 });
-    var g0 = panels[0].querySelector('.showcase-panel__ghost-num');
-    var m0 = panels[0].querySelector('.showcase-panel__meta');
-    var t0 = panels[0].querySelector('.showcase-panel__title');
-    var d0 = panels[0].querySelector('.showcase-panel__desc');
+    const g0 = panels[0].querySelector('.showcase-panel__ghost-num');
+    const m0 = panels[0].querySelector('.showcase-panel__meta');
+    const t0 = panels[0].querySelector('.showcase-panel__title');
+    const d0 = panels[0].querySelector('.showcase-panel__desc');
     if (g0) gsap.set(g0, { opacity: 0.045, x: 0 });
     if (m0) gsap.set(m0, { opacity: 1, y: 0 });
     if (t0) gsap.set(t0, { opacity: 1, y: 0 });
@@ -550,11 +550,11 @@ function _stickyShowcase() {
       pinSpacing   : true,
       anticipatePin: 1,
       onUpdate     : function(self) {
-        var p   = self.progress;
-        var idx = Math.min(Math.floor(p * panelCount), panelCount - 1);
+        const p   = self.progress;
+        const idx = Math.min(Math.floor(p * panelCount), panelCount - 1);
 
         if (idx !== lastActive) {
-          var prev = lastActive;
+          const prev = lastActive;
           lastActive = idx;
           transitionTo(idx, prev);
         }
@@ -606,11 +606,11 @@ function _faqItems() {
 // 12. SUB-PAGE HERO PARALLAX — parallax depth on about/dest/support heroes
 // ─────────────────────────────────────────────────────────
 function _subpageHeroParallax() {
-  var heroes = document.querySelectorAll('.about-hero, .destinations-hero, .support-hero, .legal-hero');
+  const heroes = document.querySelectorAll('.about-hero, .destinations-hero, .support-hero, .legal-hero');
   heroes.forEach(function(hero) {
-    var h1 = hero.querySelector('h1');
-    var p = hero.querySelector('p');
-    var label = hero.querySelector('.label');
+    const h1 = hero.querySelector('h1');
+    const p = hero.querySelector('p');
+    const label = hero.querySelector('.label');
 
     // Clip-path wipe for the eyebrow label and headline — they reveal, not load
     if (label) {
@@ -634,14 +634,14 @@ function _subpageHeroParallax() {
     }
 
     // Search bar & filter tabs (destinations page)
-    var searchBar = hero.querySelector('.search-bar');
+    const searchBar = hero.querySelector('.search-bar');
     if (searchBar) {
       gsap.fromTo(searchBar,
         { autoAlpha: 0, y: 20 },
         { autoAlpha: 1, y: 0, duration: 0.6, delay: 0.5, ease: 'power3.out' }
       );
     }
-    var filterTabs = hero.querySelector('.filter-tabs');
+    const filterTabs = hero.querySelector('.filter-tabs');
     if (filterTabs) {
       gsap.fromTo(filterTabs,
         { autoAlpha: 0, y: 20 },
@@ -650,7 +650,7 @@ function _subpageHeroParallax() {
     }
 
     // Scroll indicator — fades in last, after hero text settles
-    var scrollIndicator = hero.querySelector('.hero__scroll');
+    const scrollIndicator = hero.querySelector('.hero__scroll');
     if (scrollIndicator) {
       gsap.fromTo(scrollIndicator,
         { autoAlpha: 0, y: 12 },
@@ -664,17 +664,17 @@ function _subpageHeroParallax() {
 // 13. ABOUT STORY SLIDE-IN — alternate left/right slide with 3D rotation
 // ─────────────────────────────────────────────────────────
 function _aboutStorySlideIn() {
-  var stories = document.querySelectorAll('.about-story');
+  const stories = document.querySelectorAll('.about-story');
   if (!stories.length) return;
 
   stories.forEach(function(story, i) {
     // Remove the CSS visibility:hidden that comes from the .reveal class
     story.classList.remove('reveal');
 
-    var img = story.querySelector('.about-story__img');
+    const img = story.querySelector('.about-story__img');
     // Find the text sibling regardless of DOM order (img can be first or second child)
-    var textBlock = Array.from(story.children).find(function(c) { return c !== img; });
-    var isEven = i % 2 === 0;
+    const textBlock = Array.from(story.children).find(function(c) { return c !== img; });
+    const isEven = i % 2 === 0;
 
     if (img) {
       gsap.fromTo(img,
@@ -717,7 +717,7 @@ function _aboutStorySlideIn() {
 // 14. VALUE CARDS — 3D tilt + staggered scale-up reveal
 // ─────────────────────────────────────────────────────────
 function _valueCards3D() {
-  var cards = document.querySelectorAll('.value-card');
+  const cards = document.querySelectorAll('.value-card');
   if (!cards.length) return;
 
   // Strip .reveal so the CSS clip-path pre-state doesn't hide these cards —
@@ -748,23 +748,23 @@ function _valueCards3D() {
   });
 
   document.addEventListener('mouseover', function(e) {
-    var card = e.target.closest('.value-card');
+    const card = e.target.closest('.value-card');
     if (!card) return;
     gsap.to(card, { scale: 1.04, duration: 0.3, ease: 'power2.out' });
   });
 
   document.addEventListener('mouseout', function(e) {
-    var card = e.target.closest('.value-card');
+    const card = e.target.closest('.value-card');
     if (!card) return;
     gsap.to(card, { scale: 1, rotateX: 0, rotateY: 0, duration: 0.4, ease: 'power2.out' });
   });
 
   document.addEventListener('mousemove', function(e) {
-    var card = e.target.closest('.value-card');
+    const card = e.target.closest('.value-card');
     if (!card) return;
-    var rect = card.getBoundingClientRect();
-    var x = (e.clientX - rect.left) / rect.width - 0.5;
-    var y = (e.clientY - rect.top) / rect.height - 0.5;
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
     gsap.to(card, {
       rotateY: x * 12,
       rotateX: -y * 12,
@@ -778,7 +778,7 @@ function _valueCards3D() {
 // 15. TEAM CARDS — cascade stagger from center outward
 // ─────────────────────────────────────────────────────────
 function _teamCardsStagger() {
-  var cards = document.querySelectorAll('.team-card');
+  const cards = document.querySelectorAll('.team-card');
   if (!cards.length) return;
 
   cards.forEach(function(card) { card.classList.remove('reveal'); });
@@ -805,33 +805,33 @@ function _teamCardsStagger() {
 // 16. DESTINATION CARDS — 3D perspective reveal on scroll
 // ─────────────────────────────────────────────────────────
 function _destCardsHover3D() {
-  var cards = document.querySelectorAll('.dest-card, .dest-grid-card');
+  const cards = document.querySelectorAll('.dest-card, .dest-grid-card');
   if (!cards.length) return;
 
   cards.forEach(function(card) {
     card.style.transformStyle = 'preserve-3d';
   });
 
-  var SEL = '.dest-card, .dest-grid-card';
+  const SEL = '.dest-card, .dest-grid-card';
 
   document.addEventListener('mouseover', function(e) {
-    var card = e.target.closest(SEL);
+    const card = e.target.closest(SEL);
     if (!card) return;
     gsap.to(card, { scale: 1.03, y: -6, duration: 0.35, ease: 'power2.out' });
   });
 
   document.addEventListener('mouseout', function(e) {
-    var card = e.target.closest(SEL);
+    const card = e.target.closest(SEL);
     if (!card) return;
     gsap.to(card, { scale: 1, y: 0, rotateX: 0, rotateY: 0, duration: 0.4, ease: 'power2.out' });
   });
 
   document.addEventListener('mousemove', function(e) {
-    var card = e.target.closest(SEL);
+    const card = e.target.closest(SEL);
     if (!card) return;
-    var rect = card.getBoundingClientRect();
-    var x = (e.clientX - rect.left) / rect.width - 0.5;
-    var y = (e.clientY - rect.top) / rect.height - 0.5;
+    const rect = card.getBoundingClientRect();
+    const x = (e.clientX - rect.left) / rect.width - 0.5;
+    const y = (e.clientY - rect.top) / rect.height - 0.5;
     gsap.to(card, {
       rotateY: x * 10,
       rotateX: -y * 8,
@@ -845,13 +845,13 @@ function _destCardsHover3D() {
 // 17. CTA SECTION — dramatic scale-up reveal with glow pulse
 // ─────────────────────────────────────────────────────────
 function _ctaSectionReveal() {
-  var ctas = document.querySelectorAll('.cta-section');
+  const ctas = document.querySelectorAll('.cta-section');
   ctas.forEach(function(cta) {
-    var inner = cta.querySelector('.container');
+    const inner = cta.querySelector('.container');
     if (!inner) return;
 
     // Also grab any .reveal children so they don't stay invisible
-    var revealChildren = inner.querySelectorAll('.reveal, .reveal--scale');
+    const revealChildren = inner.querySelectorAll('.reveal, .reveal--scale');
 
     gsap.fromTo(inner,
       { clipPath: 'inset(0 0 100% 0)', y: 12 },
@@ -878,7 +878,7 @@ function _ctaSectionReveal() {
 //     on every page — no exclusions.
 // ─────────────────────────────────────────────────────────
 function _sectionDividers() {
-  var main = document.querySelector('main');
+  const main = document.querySelector('main');
   if (!main) return;
 
   // Inject a static divider before every section except the hero (index 0).
@@ -886,20 +886,20 @@ function _sectionDividers() {
   //  1. Filter out elements that are already section-dividers from the walk.
   //  2. Skip any element whose immediate previous sibling is already a divider
   //     — prevents double-injection if this function ever runs more than once.
-  var children = Array.from(main.children).filter(function(el) {
+  const children = Array.from(main.children).filter(function(el) {
     return !el.classList.contains('section-divider');
   });
 
   children.forEach(function(el, i) {
     if (i === 0) return;
     // Only inject before actual content elements — never before <script>, <style>, etc.
-    var tag = el.tagName.toLowerCase();
+    const tag = el.tagName.toLowerCase();
     if (tag !== 'section' && tag !== 'div' && tag !== 'article' && tag !== 'aside') return;
     // Belt-and-suspenders: skip if a divider is already sitting right before this element
-    var prev = el.previousElementSibling;
+    const prev = el.previousElementSibling;
     if (prev && prev.classList.contains('section-divider')) return;
 
-    var div = document.createElement('div');
+    const div = document.createElement('div');
     div.className = 'section-divider';
     div.setAttribute('aria-hidden', 'true');
     div.innerHTML =
@@ -914,7 +914,7 @@ function _sectionDividers() {
 // 19b. HOW-IT-WORKS TIMELINE — track scrub + node + card reveals
 // ─────────────────────────────────────────────────────────
 function _howItWorksTimeline() {
-  var track = document.querySelector('.timeline__track');
+  const track = document.querySelector('.timeline__track');
   if (!track) return; // only runs on the how-it-works page
 
   // Track grows top-to-bottom as user scrolls through the section
@@ -977,20 +977,20 @@ function _howItWorksTimeline() {
 // 20. NUMBER COUNT UP — for about page impact numbers
 // ─────────────────────────────────────────────────────────
 function _numberCountUp() {
-  var numEls = document.querySelectorAll('[data-count-up]');
+  const numEls = document.querySelectorAll('[data-count-up]');
   if (!numEls.length) return;
 
   numEls.forEach(function(el) {
-    var target = parseFloat(el.dataset.countUp);
-    var suffix = el.dataset.suffix || '';
-    var decimals = target % 1 !== 0 ? 1 : 0;
+    const target = parseFloat(el.dataset.countUp);
+    const suffix = el.dataset.suffix || '';
+    const decimals = target % 1 !== 0 ? 1 : 0;
 
     ScrollTrigger.create({
       trigger: el,
       start: 'top 85%',
       once: true,
       onEnter: function() {
-        var obj = { val: 0 };
+        const obj = { val: 0 };
         gsap.to(obj, {
           val: target,
           duration: 2,
@@ -1018,22 +1018,22 @@ function _numberCountUp() {
 // 24. FOOTER REVEAL — staggered fade-in for footer sections
 // ─────────────────────────────────────────────────────────
 function _footerReveal() {
-  var footer = document.querySelector('.footer');
+  const footer = document.querySelector('.footer');
   if (!footer) return;
 
-  var brand  = footer.querySelector('.footer__brand');
-  var cols   = footer.querySelectorAll('.footer__col');
-  var bottom = footer.querySelector('.footer__bottom');
+  const brand  = footer.querySelector('.footer__brand');
+  const cols   = footer.querySelectorAll('.footer__col');
+  const bottom = footer.querySelector('.footer__bottom');
 
   // Collect all targets that exist
-  var targets = [];
+  const targets = [];
   if (brand) targets.push(brand);
   cols.forEach(function(c) { targets.push(c); });
   if (bottom) targets.push(bottom);
   if (!targets.length) return;
 
   // Single coordinated timeline triggered once
-  var tl = gsap.timeline({
+  const tl = gsap.timeline({
     scrollTrigger: {
       trigger: footer,
       start: 'top 90%',
@@ -1070,7 +1070,7 @@ function _footerReveal() {
 // 27. FEATURE CARD ICON PULSE — glow animation on scroll enter
 // ─────────────────────────────────────────────────────────
 function _featCardIconPulse() {
-  var icons = document.querySelectorAll('.feat-card__icon');
+  const icons = document.querySelectorAll('.feat-card__icon');
   if (!icons.length) return;
 
   icons.forEach(function(icon) {
@@ -1100,14 +1100,14 @@ function _featCardIconPulse() {
 function _magneticButtons() {
   if (!window.matchMedia('(hover: hover)').matches) return;
 
-  var SEL = '.btn--primary, .btn--outline';
+  const SEL = '.btn--primary, .btn--outline';
 
   document.addEventListener('mousemove', function(e) {
-    var btn = e.target.closest(SEL);
+    const btn = e.target.closest(SEL);
     if (!btn) return;
-    var rect = btn.getBoundingClientRect();
-    var x = e.clientX - rect.left - rect.width / 2;
-    var y = e.clientY - rect.top - rect.height / 2;
+    const rect = btn.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
     gsap.to(btn, {
       x: x * 0.15,
       y: y * 0.15,
@@ -1117,7 +1117,7 @@ function _magneticButtons() {
   });
 
   document.addEventListener('mouseout', function(e) {
-    var btn = e.target.closest(SEL);
+    const btn = e.target.closest(SEL);
     if (!btn) return;
     gsap.to(btn, {
       x: 0, y: 0,
@@ -1133,18 +1133,18 @@ function _magneticButtons() {
 // ─────────────────────────────────────────────────────────
 function _sectionHeaderSplit() {
   document.querySelectorAll('.section-header').forEach(function(header) {
-    var label = header.querySelector('.label');
-    var h2    = header.querySelector('h2');
-    var p     = header.querySelector('p');
+    const label = header.querySelector('.label');
+    const h2    = header.querySelector('h2');
+    const p     = header.querySelector('p');
 
-    var targets = [label, h2, p].filter(Boolean);
+    const targets = [label, h2, p].filter(Boolean);
     if (!targets.length) return;
 
     // Remove the generic .reveal class so _genericReveals doesn't also grab it
     header.classList.remove('reveal');
     gsap.set(targets, { clipPath: 'inset(0 0 100% 0)' });
 
-    var tl = gsap.timeline({
+    const tl = gsap.timeline({
       scrollTrigger: { trigger: header, start: 'top 86%', once: true },
       defaults: { ease: 'power2.out', overwrite: 'auto' },
     });
@@ -1169,9 +1169,9 @@ function _stepCardIconHover() {
   if (!document.querySelector('.step-card')) return;
 
   document.addEventListener('mouseenter', function(e) {
-    var card = e.target.closest('.step-card');
+    const card = e.target.closest('.step-card');
     if (!card) return;
-    var icon = card.querySelector('.step-card__icon');
+    const icon = card.querySelector('.step-card__icon');
     if (!icon) return;
     gsap.fromTo(icon,
       { y: 0, scale: 1 },

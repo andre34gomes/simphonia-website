@@ -24,6 +24,9 @@ const TOKEN_KEY  = 'simphonia_guest_token';
 const EXPIRY_KEY = 'simphonia_guest_expiry';
 
 async function getGuestToken() {
+  // NOTE: localStorage is used (not sessionStorage) to share the guest token
+  // across pages and tabs — consistent with main.js. Guest tokens are
+  // low-sensitivity (no user data) and carry their own expiry timestamp.
   const stored = localStorage.getItem(TOKEN_KEY);
   const expiry  = Number(localStorage.getItem(EXPIRY_KEY) || 0);
   if (stored && Date.now() < expiry - 60_000) return stored;
@@ -37,8 +40,9 @@ async function getGuestToken() {
     const { token, expiresIn } = envelope.data ?? envelope;
     if (!token) return null;
 
+    const expiresInNum = Number(expiresIn);
     localStorage.setItem(TOKEN_KEY,  token);
-    localStorage.setItem(EXPIRY_KEY, String(Date.now() + expiresIn * 1000));
+    localStorage.setItem(EXPIRY_KEY, String(isFinite(expiresInNum) ? Date.now() + expiresInNum * 1000 : 0));
     return token;
   } catch {
     return null;
@@ -340,11 +344,30 @@ function initContactForm() {
   if (!form) return;
 
   const submitBtn = form.querySelector('button[type="submit"]');
+  let lastSubmitTime = 0;
+  const SUBMIT_COOLDOWN_MS = 30_000; // 30-second cooldown between submissions
+
   addFieldListeners(form);
   initCharCounter('contact-message', 5000);
 
   form.addEventListener('submit', async function (e) {
     e.preventDefault();
+
+    // Client-side cooldown to prevent rapid re-submissions
+    const now = Date.now();
+    if (now - lastSubmitTime < SUBMIT_COOLDOWN_MS) {
+      const remaining = Math.ceil((SUBMIT_COOLDOWN_MS - (now - lastSubmitTime)) / 1000);
+      showFormFeedback(form, 'error', 'Please wait ' + remaining + ' seconds before sending another message.');
+      return;
+    }
+
+    // Honeypot check — bots fill hidden fields, real users don't
+    const honeypot = document.getElementById('contact-website');
+    if (honeypot && honeypot.value) {
+      // Silently pretend success to avoid tipping off the bot
+      form.reset();
+      return;
+    }
 
     const nameEl    = document.getElementById('contact-name');
     const emailEl   = document.getElementById('contact-email');
@@ -397,6 +420,7 @@ function initContactForm() {
       });
 
       if (res.ok) {
+        lastSubmitTime = Date.now();
         showFormFeedback(form, 'success', "Message sent! We'll get back to you within 24 hours.");
         form.reset();
 

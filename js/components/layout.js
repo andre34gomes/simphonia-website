@@ -267,6 +267,7 @@ function injectCookieBanner() {
   banner.setAttribute('aria-live', 'polite');
   banner.setAttribute('aria-label', 'Cookie consent');
   banner.setAttribute('aria-hidden', 'true');
+  banner.setAttribute('aria-modal', 'true');
 
   banner.innerHTML = `
     <div class="cookie-banner__content">
@@ -288,6 +289,10 @@ function injectCookieBanner() {
   const showTimer = setTimeout(() => {
     banner.classList.add('cookie-banner--visible');
     banner.setAttribute('aria-hidden', 'false');
+    // Move keyboard focus to the Accept button so keyboard/screen-reader users
+    // can interact with the dialog without tabbing through the whole page first.
+    const acceptBtn = document.getElementById('cookie-accept');
+    if (acceptBtn) acceptBtn.focus();
   }, 1800);
 
   const dismiss = (accepted) => {
@@ -465,8 +470,25 @@ function activeClass(slug) {
   return path.includes('/' + slug) ? 'nav__link--active' : '';
 }
 
+/**
+ * Returns the best app store URL for the current user agent.
+ * iOS/iPadOS → App Store, Android → Play Store, all others → home page #download section.
+ */
+function getDownloadUrl(base) {
+  const ua = navigator.userAgent || '';
+  if (/iphone|ipad|ipod/i.test(ua)) {
+    return 'https://apps.apple.com/app/simphonia';
+  }
+  if (/android/i.test(ua)) {
+    return 'https://play.google.com/store/apps/details?id=com.simphonia.app';
+  }
+  // Desktop / unknown — scroll to the download section on the home page
+  return base + '#download';
+}
+
 function injectNav() {
   const base = getBasePath();
+  const downloadUrl = getDownloadUrl(base);
   const nav = document.createElement('nav');
   nav.className = 'nav';
   nav.id = 'navbar';
@@ -487,7 +509,7 @@ function injectNav() {
       </div>
 
       <div class="nav__actions">
-        <a href="${base}" class="btn btn--primary btn--sm nav__download-btn">
+        <a href="${downloadUrl}" class="btn btn--primary btn--sm nav__download-btn" target="_blank" rel="noopener noreferrer">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Download App
         </a>
@@ -797,6 +819,7 @@ if (typeof window !== 'undefined') {
   Object.assign(window, {
     applyTheme,
     getBasePath,
+    getDownloadUrl,
     getStoredTheme,
     initBackToTop: injectBackToTop,
     initTheme,

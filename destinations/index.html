@@ -20,7 +20,11 @@
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
   <link rel="shortcut icon" href="../assets/favicon.svg">
   <link rel="mask-icon" href="../assets/favicon.svg" color="#D4AF37">
-  <script>!function(){var t;try{t=localStorage.getItem("simphonia-theme")}catch(e){}if(!t)t=matchMedia("(prefers-color-scheme:light)").matches?"light":"dark";document.documentElement.dataset.theme=t;if(t==="light"){var m=document.querySelector("meta[name=theme-color]");if(m)m.content="#FEF9EE"}}()</script>
+  <link rel="manifest" href="/manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Simphonia">
+  <script src="../js/theme-init.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
@@ -74,7 +78,7 @@
         </div>
 
         <div class="dest-results-bar reveal">
-          <span id="dest-count" class="dest-count"></span>
+          <span id="dest-count" class="dest-count" aria-live="polite" aria-atomic="true"></span>
         </div>
 
         <div class="dest-grid" id="dest-grid">
@@ -83,7 +87,7 @@
 
         <div id="no-results" class="dest-no-results" style="display:none;" role="alert">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M8 11h6"/></svg>
-          <p>No countries found for "<strong id="no-results-query"></strong>"</p>
+          <p>No countries found for <strong id="no-results-query"></strong></p>
           <button class="btn btn--ghost btn--sm" id="no-results-clear">Clear search</button>
         </div>
       </div>
@@ -148,8 +152,10 @@
       const envelope = await res.json();
       const { token, expiresIn } = envelope.data ?? envelope;
 
+      if (!token) throw new Error('No token in guest auth response');
+      const expiresInNum = Number(expiresIn);
       localStorage.setItem(TOKEN_KEY,  token);
-      localStorage.setItem(EXPIRY_KEY, Date.now() + expiresIn * 1000);
+      localStorage.setItem(EXPIRY_KEY, isFinite(expiresInNum) ? Date.now() + expiresInNum * 1000 : 0);
 
       return token;
     }
@@ -175,11 +181,19 @@
       return d.innerHTML;
     }
 
-    async function apiFetch(path) {
+    async function apiFetch(path, _retried = false) {
       const token = await getGuestToken();
       const res = await fetch(`${API_BASE}${path}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+
+      // On 401, clear cached token, obtain a fresh one, and retry once
+      if (res.status === 401 && !_retried) {
+        localStorage.removeItem(TOKEN_KEY);
+        localStorage.removeItem(EXPIRY_KEY);
+        return apiFetch(path, true);
+      }
+
       if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
       const envelope = await res.json();
       return envelope.data ?? envelope;
@@ -217,7 +231,17 @@
 
     function showFetchError() {
       grid.innerHTML = `
-        <p class="dest-state">Could not load destinations. Please try again later.</p>`;
+        <div class="dest-state">
+          <p>Could not load destinations.</p>
+          <button class="btn btn--ghost btn--sm mt-md" id="dest-retry">Try again</button>
+        </div>`;
+      document.getElementById('dest-retry')?.addEventListener('click', () => {
+        if (activeRegionCode) {
+          loadCountriesForRegion(activeRegionCode);
+        } else {
+          loadAllCountries();
+        }
+      });
     }
 
     // ── Render grid ───────────────────────────────────────────────────────────
@@ -228,7 +252,7 @@
 
       noResults.style.display  = items.length === 0 ? 'flex' : 'none';
       noResultsQ.textContent   = query
-        ? `"${query}"`
+        ? `\u201C${query}\u201D`
         : (REGION_LABELS[activeRegionCode] ?? activeRegionCode ?? 'selected filter');
 
       countEl.textContent = items.length === 0
@@ -263,9 +287,17 @@
           <div class="dest-card__body">
             <div class="dest-card__name">${flag ? flag + '\u00A0' : ''}${safeName}</div>
             ${d.startingPrice ? `<div class="dest-card__price">From €${Number(d.startingPrice).toFixed(2)}</div>` : ''}
+            <div class="dest-card__footer">
+              <span class="dest-card__cta">View plans
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+              </span>
+            </div>
           </div>`;
+        card.addEventListener('click', () => {
+          window.location.href = '../#download';
+        });
         card.addEventListener('keydown', e => {
-          if (e.key === 'Enter' || e.key === ' ') card.click();
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
         });
         frag.appendChild(card);
       });

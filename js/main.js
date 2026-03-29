@@ -185,13 +185,13 @@ bootstrapSite();
 // Uses the same guest-auth + endpoint as destinations/index.html
 // ============================================================
 (function initDestinationsMarquee() {
-  var strip = document.querySelector('.hero__destinations-strip');
+  const strip = document.querySelector('.hero__destinations-strip');
   if (!strip) return;
 
-  var API_BASE  = 'https://api.simphonia.pt';
-  var TOKEN_KEY = 'simphonia_guest_token';
-  var EXPIRY_KEY = 'simphonia_guest_expiry';
-  var EXPIRY_MARGIN_MS = 60000;
+  const API_BASE  = 'https://api.simphonia.pt';
+  const TOKEN_KEY = 'simphonia_guest_token';
+  const EXPIRY_KEY = 'simphonia_guest_expiry';
+  const EXPIRY_MARGIN_MS = 60000;
 
   // ── Helpers ────────────────────────────────────────────────
   function flagEmoji(code) {
@@ -202,8 +202,8 @@ bootstrapSite();
   }
 
   function getGuestToken() {
-    var stored = localStorage.getItem(TOKEN_KEY);
-    var expiry = Number(localStorage.getItem(EXPIRY_KEY) || 0);
+    const stored = localStorage.getItem(TOKEN_KEY);
+    const expiry = Number(localStorage.getItem(EXPIRY_KEY) || 0);
     if (stored && Date.now() < expiry - EXPIRY_MARGIN_MS) {
       return Promise.resolve(stored);
     }
@@ -213,20 +213,22 @@ bootstrapSite();
         return res.json();
       })
       .then(function (envelope) {
-        var data = envelope.data || envelope;
+        const data = envelope.data || envelope;
+        if (!data.token) throw new Error('No token in guest auth response');
+        const expiresIn = Number(data.expiresIn);
         localStorage.setItem(TOKEN_KEY,  data.token);
-        localStorage.setItem(EXPIRY_KEY, Date.now() + data.expiresIn * 1000);
+        localStorage.setItem(EXPIRY_KEY, isFinite(expiresIn) ? Date.now() + expiresIn * 1000 : 0);
         return data.token;
       });
   }
 
   function populateLists(countries) {
-    var lists = strip.querySelectorAll('.marquee-list');
+    const lists = strip.querySelectorAll('.marquee-list');
     if (!lists.length || !countries.length) return;
 
-    var html = countries.map(function (d) {
-      var flag = flagEmoji(d.countryCode);
-      var name = d.countryName || d.countryCode;
+    const html = countries.map(function (d) {
+      const flag = flagEmoji(d.countryCode);
+      const name = d.countryName || d.countryCode;
       return '<li class="marquee-item"><span class="marquee-item__flag">' + flag + '</span>' + name + '</li>';
     }).join('');
 
@@ -237,13 +239,13 @@ bootstrapSite();
   }
 
   // ── Auto-scroll + drag-to-scroll ──────────────────────────
-  var SPEED        = 0.6;    // px per animation frame
-  var RESUME_DELAY = 3000;   // ms before auto-scroll resumes
-  var paused       = false;
-  var resumeTimer  = null;
-  var isDragging   = false;
-  var dragStartX   = 0;
-  var dragStartScroll = 0;
+  const SPEED        = 0.6;    // px per animation frame
+  const RESUME_DELAY = 3000;   // ms before auto-scroll resumes
+  let paused       = false;
+  let resumeTimer  = null;
+  let isDragging   = false;
+  let dragStartX   = 0;
+  let dragStartScroll = 0;
 
   function scheduleResume() {
     clearTimeout(resumeTimer);
@@ -259,7 +261,7 @@ bootstrapSite();
     if (!document.hidden) {
       // Normalization runs every frame — keeps the seamless loop intact
       // even when the user has manually scrolled past the reset point.
-      var half = strip.scrollWidth / 2;
+      const half = strip.scrollWidth / 2;
       if (half > 0 && strip.scrollLeft >= half) {
         strip.scrollLeft -= half;
       }
@@ -294,9 +296,9 @@ bootstrapSite();
 
   document.addEventListener('mousemove', function (e) {
     if (!isDragging) return;
-    var dx   = e.clientX - dragStartX;
-    var half = strip.scrollWidth / 2;
-    var next = dragStartScroll - dx;
+    const dx   = e.clientX - dragStartX;
+    const half = strip.scrollWidth / 2;
+    let next = dragStartScroll - dx;
     if (half > 0) next = ((next % half) + half) % half;
     strip.scrollLeft = next;
   });
@@ -325,7 +327,7 @@ bootstrapSite();
   requestAnimationFrame(loop);
 
   // ── API fetch ──────────────────────────────────────────────
-  var lang = (navigator.language || 'en').split('-')[0];
+  const lang = (navigator.language || 'en').split('-')[0];
 
   getGuestToken()
     .then(function (token) {
@@ -339,7 +341,7 @@ bootstrapSite();
       return res.json();
     })
     .then(function (envelope) {
-      var countries = envelope.data || envelope;
+      const countries = envelope.data || envelope;
       if (Array.isArray(countries) && countries.length) {
         populateLists(countries);
       }
@@ -543,10 +545,10 @@ function initSmoothScroll() {
 // Hero Typing Effect — mirrors Flutter TypingPlaceholder
 // ============================================================
 function initHeroTyping() {
-  var el = document.getElementById('typing-text');
+  const el = document.getElementById('typing-text');
   if (!el) return;
 
-  var phrases = [
+  const phrases = [
     'Wherever You Go.',
     'Without Limits.',
     'Across the Globe.',
@@ -554,17 +556,17 @@ function initHeroTyping() {
     'Always Online.',
   ];
 
-  var TYPING_SPEED   = 100;   // ms per character (typing)
-  var DELETING_SPEED  = 50;   // ms per character (deleting)
-  var PAUSE_DURATION  = 2000; // ms pause after fully typed
+  const TYPING_SPEED   = 100;   // ms per character (typing)
+  const DELETING_SPEED  = 50;   // ms per character (deleting)
+  const PAUSE_DURATION  = 2000; // ms pause after fully typed
 
-  var phraseIndex = 0;
-  var charIndex   = 0;
-  var isDeleting  = false;
-  var timer       = null;
+  let phraseIndex = 0;
+  let charIndex   = 0;
+  let isDeleting  = false;
+  let timer       = null;
 
   function tick() {
-    var phrase = phrases[phraseIndex];
+    const phrase = phrases[phraseIndex];
 
     if (!isDeleting) {
       // Typing
