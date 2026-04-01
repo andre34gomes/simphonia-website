@@ -419,6 +419,17 @@ section[id] {
   border: 0;
 }
 
+/* Flag images — replaces Unicode emoji (broken on Windows) */
+.flag-img {
+  display: inline-block;
+  width: 20px;
+  height: 15px;
+  vertical-align: middle;
+  border-radius: 2px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
 /* ==============================================
    5. SHARED COMPONENTS
    ============================================== */

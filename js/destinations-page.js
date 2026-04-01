@@ -180,7 +180,7 @@ function renderGrid(items) {
         (d.discount ? '<span class="dest-card__discount">-' + parseInt(d.discount, 10) + '%</span>' : '') +
       '</div>' +
       '<div class="dest-card__body">' +
-        '<div class="dest-card__name">' + (flag ? flag + '\u00A0' : '') + safeName + '</div>' +
+        '<div class="dest-card__name">' + (flag || '') + safeName + '</div>' +
         (d.startingPrice ? '<div class="dest-card__price">From \u20AC' + Number(d.startingPrice).toFixed(2) + '</div>' : '') +
       '</div>';
     frag.appendChild(card);

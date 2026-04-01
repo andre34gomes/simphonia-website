@@ -1848,7 +1848,7 @@
   border-bottom: 1px solid rgba(255,255,255,0.05);
 }
 .sas-dest-row:last-child { border-bottom: none; }
-.sas-dest-flag { font-size: 1.125rem; flex-shrink: 0; line-height: 1; }
+.sas-dest-flag { display: inline-flex; align-items: center; flex-shrink: 0; line-height: 1; }
 .sas-dest-info {
   flex: 1; min-width: 0;
   display: flex; flex-direction: column; gap: 1px;
@@ -1902,7 +1902,8 @@
   gap: 10px;
   margin-bottom: 8px;
 }
-.sas-plan-flag { font-size: 1.5rem; line-height: 1; }
+.sas-plan-flag { display: inline-flex; align-items: center; line-height: 1; }
+.sas-plan-flag .flag-img { width: 28px; height: 21px; }
 .sas-plan-name {
   font-size: 0.875rem;
   font-weight: 800;
@@ -2936,7 +2937,11 @@ section[id] {
 }
 
 .marquee-item:hover { color: var(--text-primary); }
-.marquee-item__flag { font-size: 1.125rem; }
+.marquee-item__flag {
+  display: inline-flex;
+  align-items: center;
+  line-height: 1;
+}
 
 @keyframes marquee-scroll {
   from { transform: translateX(0); }

@@ -8,13 +8,19 @@ const THEME_KEY = 'simphonia-theme';
 const NAV_COLLAPSE_WIDTH = 960;
 
 // ────────────────────────────────────────
-// Shared utility: Country code → flag emoji
+// Shared utility: Country code → flag image
+// Uses flagcdn.com images instead of Unicode Regional Indicator emoji
+// because Windows does not render flag emoji in any browser.
 // ────────────────────────────────────────
 window.flagEmoji = function(code) {
   if (!code || code.length < 2) return '';
-  return Array.from(code.toUpperCase().slice(0, 2))
-    .map(function(c) { return String.fromCodePoint(c.charCodeAt(0) + 127397); })
-    .join('');
+  var c = code.toLowerCase().slice(0, 2);
+  return '<img src="https://flagcdn.com/20x15/' + c + '.png"' +
+    ' srcset="https://flagcdn.com/40x30/' + c + '.png 2x"' +
+    ' width="20" height="15"' +
+    ' alt="' + code.toUpperCase() + '"' +
+    ' class="flag-img"' +
+    ' loading="lazy">';
 };
 
 // ────────────────────────────────────────
