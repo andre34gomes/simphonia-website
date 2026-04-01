@@ -23,7 +23,7 @@ function _initSubpageAnimations() {
 // ── 12. SUB-PAGE HERO PARALLAX ───────────────────────────
 function _subpageHeroParallax() {
   var heroes = document.querySelectorAll('.about-hero, .destinations-hero, .support-hero, .legal-hero');
-  heroes.forEach(function(hero) {
+  heroes.forEach(function (hero) {
     var h1 = hero.querySelector('h1');
     var p = hero.querySelector('p');
     var label = hero.querySelector('.label');
@@ -77,11 +77,11 @@ function _aboutStorySlideIn() {
   var stories = document.querySelectorAll('.about-story');
   if (!stories.length) return;
 
-  stories.forEach(function(story, i) {
+  stories.forEach(function (story, i) {
     story.classList.remove('reveal');
 
     var img = story.querySelector('.about-story__img');
-    var textBlock = Array.from(story.children).find(function(c) { return c !== img; });
+    var textBlock = Array.from(story.children).find(function (c) { return c !== img; });
     var isEven = i % 2 === 0;
 
     if (img) {
@@ -119,12 +119,12 @@ function _valueCards3D() {
   var cards = document.querySelectorAll('.value-card');
   if (!cards.length) return;
 
-  cards.forEach(function(card) { card.classList.remove('reveal'); });
+  cards.forEach(function (card) { card.classList.remove('reveal'); });
   gsap.set(cards, { autoAlpha: 0 });
 
   ScrollTrigger.batch(cards, {
     batchMax: 4,
-    onEnter: function(batch) {
+    onEnter: function (batch) {
       gsap.fromTo(batch,
         { autoAlpha: 0, y: 28, rotateX: 5 },
         { autoAlpha: 1, y: 0, rotateX: 0, duration: 0.7, stagger: 0.1, ease: 'back.out(1.4)', overwrite: 'auto' }
@@ -138,23 +138,26 @@ function _valueCards3D() {
   // the card's own rotateX/rotateY — perspective only affects children.
   // Use GSAP's transformPerspective which injects perspective() into the
   // transform string, giving correct depth to the card's own 3D rotation.
-  cards.forEach(function(card) {
+  cards.forEach(function (card) {
     card.style.transformStyle = 'preserve-3d';
   });
 
-  document.addEventListener('mouseover', function(e) {
+  document.addEventListener('mouseover', function (e) {
+    if (!e.target || typeof e.target.closest !== 'function') return;
     var card = e.target.closest('.value-card');
     if (!card) return;
     gsap.to(card, { scale: 1.04, duration: 0.3, ease: 'power2.out' });
   }, { passive: true });
 
-  document.addEventListener('mouseout', function(e) {
+  document.addEventListener('mouseout', function (e) {
+    if (!e.target || typeof e.target.closest !== 'function') return;
     var card = e.target.closest('.value-card');
     if (!card) return;
     gsap.to(card, { scale: 1, rotateX: 0, rotateY: 0, transformPerspective: 800, duration: 0.4, ease: 'power2.out' });
   }, { passive: true });
 
-  document.addEventListener('mousemove', function(e) {
+  document.addEventListener('mousemove', function (e) {
+    if (!e.target || typeof e.target.closest !== 'function') return;
     var card = e.target.closest('.value-card');
     if (!card) return;
     var rect = card.getBoundingClientRect();
@@ -169,12 +172,12 @@ function _teamCardsStagger() {
   var cards = document.querySelectorAll('.team-card');
   if (!cards.length) return;
 
-  cards.forEach(function(card) { card.classList.remove('reveal'); });
+  cards.forEach(function (card) { card.classList.remove('reveal'); });
   gsap.set(cards, { autoAlpha: 0 });
 
   ScrollTrigger.batch(cards, {
     batchMax: 4,
-    onEnter: function(batch) {
+    onEnter: function (batch) {
       gsap.fromTo(batch,
         { autoAlpha: 0, y: 22, rotateY: -10 },
         { autoAlpha: 1, y: 0, rotateY: 0, duration: 0.65, stagger: 0.09, ease: 'back.out(1.6)', overwrite: 'auto' }
@@ -190,7 +193,7 @@ function _destCardsHover3D() {
   var cards = document.querySelectorAll('.dest-card, .dest-grid-card');
   if (!cards.length) return;
 
-  cards.forEach(function(card) { card.style.transformStyle = 'preserve-3d'; });
+  cards.forEach(function (card) { card.style.transformStyle = 'preserve-3d'; });
 
   var SEL = '.dest-card, .dest-grid-card';
 
@@ -199,7 +202,8 @@ function _destCardsHover3D() {
   var _hoveredCard = null;
   var _hoveredRect = null;
 
-  document.addEventListener('mouseover', function(e) {
+  document.addEventListener('mouseover', function (e) {
+    if (!e.target || typeof e.target.closest !== 'function') return;
     var card = e.target.closest(SEL);
     if (!card) return;
     _hoveredCard = card;
@@ -207,14 +211,16 @@ function _destCardsHover3D() {
     gsap.to(card, { scale: 1.03, y: -6, duration: 0.35, ease: 'power2.out' });
   }, { passive: true });
 
-  document.addEventListener('mouseout', function(e) {
+  document.addEventListener('mouseout', function (e) {
+    if (!e.target || typeof e.target.closest !== 'function') return;
     var card = e.target.closest(SEL);
     if (!card) return;
     if (_hoveredCard === card) { _hoveredCard = null; _hoveredRect = null; }
     gsap.to(card, { scale: 1, y: 0, rotateX: 0, rotateY: 0, transformPerspective: 800, duration: 0.4, ease: 'power2.out' });
   }, { passive: true });
 
-  document.addEventListener('mousemove', function(e) {
+  document.addEventListener('mousemove', function (e) {
+    if (!e.target || typeof e.target.closest !== 'function') return;
     if (!_hoveredCard || !_hoveredRect) return;
     var card = e.target.closest(SEL);
     if (card !== _hoveredCard) return;
@@ -227,7 +233,7 @@ function _destCardsHover3D() {
 // ── 17. CTA SECTION REVEAL ───────────────────────────────
 function _ctaSectionReveal() {
   var ctas = document.querySelectorAll('.cta-section');
-  ctas.forEach(function(cta) {
+  ctas.forEach(function (cta) {
     var inner = cta.querySelector('.container');
     if (!inner) return;
 
@@ -239,8 +245,8 @@ function _ctaSectionReveal() {
         clipPath: 'inset(0 0 0% 0)', y: 0,
         duration: 0.6, ease: 'power2.out', overwrite: 'auto',
         scrollTrigger: { trigger: cta, start: 'top 82%', once: true },
-        onStart: function() {
-          revealChildren.forEach(function(child) {
+        onStart: function () {
+          revealChildren.forEach(function (child) {
             gsap.set(child, { clipPath: 'none', y: 0 });
           });
         },
@@ -262,27 +268,33 @@ function _howItWorksTimeline() {
     }
   );
 
-  document.querySelectorAll('.timeline__node').forEach(function(node) {
+  document.querySelectorAll('.timeline__node').forEach(function (node) {
     gsap.fromTo(node,
       { scale: 0, autoAlpha: 0 },
-      { scale: 1, autoAlpha: 1, duration: 0.55, ease: 'back.out(2)',
-        scrollTrigger: { trigger: node, start: 'top 82%', once: true } }
+      {
+        scale: 1, autoAlpha: 1, duration: 0.55, ease: 'back.out(2)',
+        scrollTrigger: { trigger: node, start: 'top 82%', once: true }
+      }
     );
   });
 
-  document.querySelectorAll('.timeline__step--left .timeline__card').forEach(function(card) {
+  document.querySelectorAll('.timeline__step--left .timeline__card').forEach(function (card) {
     gsap.fromTo(card,
       { autoAlpha: 0, x: -70 },
-      { autoAlpha: 1, x: 0, duration: 0.85, ease: 'power3.out',
-        scrollTrigger: { trigger: card, start: 'top 80%', once: true } }
+      {
+        autoAlpha: 1, x: 0, duration: 0.85, ease: 'power3.out',
+        scrollTrigger: { trigger: card, start: 'top 80%', once: true }
+      }
     );
   });
 
-  document.querySelectorAll('.timeline__step--right .timeline__card').forEach(function(card) {
+  document.querySelectorAll('.timeline__step--right .timeline__card').forEach(function (card) {
     gsap.fromTo(card,
       { autoAlpha: 0, x: 70 },
-      { autoAlpha: 1, x: 0, duration: 0.85, ease: 'power3.out',
-        scrollTrigger: { trigger: card, start: 'top 80%', once: true } }
+      {
+        autoAlpha: 1, x: 0, duration: 0.85, ease: 'power3.out',
+        scrollTrigger: { trigger: card, start: 'top 80%', once: true }
+      }
     );
   });
 }
@@ -292,7 +304,7 @@ function _numberCountUp() {
   var numEls = document.querySelectorAll('[data-count-up]');
   if (!numEls.length) return;
 
-  numEls.forEach(function(el) {
+  numEls.forEach(function (el) {
     var target = parseFloat(el.dataset.countUp);
     var suffix = el.dataset.suffix || '';
     var decimals = target % 1 !== 0 ? 1 : 0;
@@ -301,12 +313,12 @@ function _numberCountUp() {
       trigger: el,
       start: 'top 85%',
       once: true,
-      onEnter: function() {
+      onEnter: function () {
         var obj = { val: 0 };
         gsap.to(obj, {
           val: target, duration: 2, ease: 'power2.out',
-          onUpdate: function() { el.textContent = obj.val.toFixed(decimals) + suffix; },
-          onComplete: function() {
+          onUpdate: function () { el.textContent = obj.val.toFixed(decimals) + suffix; },
+          onComplete: function () {
             el.textContent = target.toFixed(decimals) + suffix;
             el.classList.add('counted');
             el.addEventListener('animationend', function onEnd() {

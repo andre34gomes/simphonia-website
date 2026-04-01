@@ -232,9 +232,9 @@ function populateShowcaseTemplates() {
   var STATUS_HTML =
     '<span class="sas-time">9:41</span>' +
     '<div class="sas-icons">' +
-      '<svg viewBox="0 0 24 24" fill="#fff"><rect x="1" y="14" width="3" height="6" rx="1"/><rect x="6" y="10" width="3" height="10" rx="1"/><rect x="11" y="6" width="3" height="14" rx="1"/></svg>' +
-      '<svg viewBox="0 0 24 24"><path d="M1.5 8.5a13 13 0 0 1 21 0" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><path d="M5 12.5a9 9 0 0 1 14 0" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><circle cx="12" cy="17" r="2" fill="#fff"/></svg>' +
-      '<svg viewBox="0 0 24 24"><rect x="2" y="7" width="16" height="10" rx="2" fill="none" stroke="#fff" stroke-width="1.5"/><rect x="3.5" y="8.5" width="11" height="7" rx="1" fill="#4ade80"/><path d="M19 10v4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>' +
+    '<svg viewBox="0 0 24 24" fill="#fff"><rect x="1" y="14" width="3" height="6" rx="1"/><rect x="6" y="10" width="3" height="10" rx="1"/><rect x="11" y="6" width="3" height="14" rx="1"/></svg>' +
+    '<svg viewBox="0 0 24 24"><path d="M1.5 8.5a13 13 0 0 1 21 0" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><path d="M5 12.5a9 9 0 0 1 14 0" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><circle cx="12" cy="17" r="2" fill="#fff"/></svg>' +
+    '<svg viewBox="0 0 24 24"><rect x="2" y="7" width="16" height="10" rx="2" fill="none" stroke="#fff" stroke-width="1.5"/><rect x="3.5" y="8.5" width="11" height="7" rx="1" fill="#4ade80"/><path d="M19 10v4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>' +
     '</div>';
 
   document.querySelectorAll('[data-sas-status]').forEach(function (el) {
@@ -278,7 +278,7 @@ bootstrapSite();
     track.appendChild(clone);
   }
 
-  const API_BASE  = (window.SIMPHONIA_API && window.SIMPHONIA_API.base) || 'https://api.simphonia.pt';
+  const API_BASE = (window.SIMPHONIA_API && window.SIMPHONIA_API.base) || 'https://api.simphonia.pt';
 
   // getGuestToken() is provided by js/auth.js (loaded before main.js) via window.getGuestToken
   var getGuestToken = window.getGuestToken;
@@ -300,12 +300,12 @@ bootstrapSite();
   }
 
   // ── Auto-scroll + drag-to-scroll ──────────────────────────
-  const SPEED        = 0.6;    // px per animation frame
+  const SPEED = 0.6;    // px per animation frame
   const RESUME_DELAY = 3000;   // ms before auto-scroll resumes
-  let paused       = false;
-  let resumeTimer  = null;
-  let isDragging   = false;
-  let dragStartX   = 0;
+  let paused = false;
+  let resumeTimer = null;
+  let isDragging = false;
+  let dragStartX = 0;
   let dragStartScroll = 0;
 
   function scheduleResume() {
@@ -373,9 +373,9 @@ bootstrapSite();
 
   // ── Desktop: drag-to-scroll ─────────────────────────────────
   strip.addEventListener('mousedown', function (e) {
-    isDragging      = true;
-    paused          = true;
-    dragStartX      = e.clientX;
+    isDragging = true;
+    paused = true;
+    dragStartX = e.clientX;
     dragStartScroll = strip.scrollLeft;
     cancelResume();
     e.preventDefault();
@@ -383,7 +383,7 @@ bootstrapSite();
 
   document.addEventListener('mousemove', function (e) {
     if (!isDragging) return;
-    const dx   = e.clientX - dragStartX;
+    const dx = e.clientX - dragStartX;
     const half = strip.scrollWidth / 2;
     let next = dragStartScroll - dx;
     if (half > 0) next = ((next % half) + half) % half;
@@ -528,7 +528,7 @@ function initCursor() {
     cx += (tx - cx) * 0.14;
     cy += (ty - cy) * 0.14;
     cursor.style.left = cx + 'px';
-    cursor.style.top  = cy + 'px';
+    cursor.style.top = cy + 'px';
 
     // Keep running only while the cursor is still catching up (> 0.1 px delta).
     if (Math.abs(tx - cx) > 0.1 || Math.abs(ty - cy) > 0.1) {
@@ -562,6 +562,7 @@ function initCursor() {
   // Single pointerover listener replaces separate mouseover + mouseout,
   // halving the number of document-level event listeners.
   document.addEventListener('pointerover', (e) => {
+    if (!e.target || typeof e.target.closest !== 'function') return;
     cursor.classList.toggle('cursor--hover', !!e.target.closest(SEL));
   });
 }
@@ -593,19 +594,19 @@ function initStars() {
   );
 
   function resize() {
-    w = canvas.width  = window.innerWidth;
+    w = canvas.width = window.innerWidth;
     h = canvas.height = window.innerHeight;
   }
 
   function populate() {
     resize();
     stars = Array.from({ length: N }, () => ({
-      x:  Math.random() * w,
-      y:  Math.random() * h,
-      r:  Math.random() * 1.2 + 0.2,
+      x: Math.random() * w,
+      y: Math.random() * h,
+      r: Math.random() * 1.2 + 0.2,
       vx: (Math.random() - 0.5) * 0.14,
       vy: (Math.random() - 0.5) * 0.14,
-      a:  Math.random() * 0.55 + 0.2,
+      a: Math.random() * 0.55 + 0.2,
     }));
   }
 
@@ -658,7 +659,7 @@ function initStars() {
   });
 
   let resizeTimer = null;
-  window.addEventListener('resize', function() {
+  window.addEventListener('resize', function () {
     clearTimeout(resizeTimer);
     resizeTimer = setTimeout(resize, 150);
   }, { passive: true });
@@ -747,13 +748,13 @@ function initHeroTyping() {
     'Always Online.',
   ];
 
-  const TYPING_SPEED   = 100;   // ms per character (typing)
-  const DELETING_SPEED  = 50;   // ms per character (deleting)
-  const PAUSE_DURATION  = 2000; // ms pause after fully typed
+  const TYPING_SPEED = 100;   // ms per character (typing)
+  const DELETING_SPEED = 50;   // ms per character (deleting)
+  const PAUSE_DURATION = 2000; // ms pause after fully typed
 
   let phraseIndex = 0;
-  let charIndex   = 0;
-  let isDeleting  = false;
+  let charIndex = 0;
+  let isDeleting = false;
 
   function tick() {
     const phrase = phrases[phraseIndex];

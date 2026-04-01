@@ -330,6 +330,7 @@ function _magneticButtons() {
   var activeBtn = null; // track which button the mouse is currently inside
 
   document.addEventListener('mousemove', function (e) {
+    if (!e.target || typeof e.target.closest !== 'function') return;
     var btn = e.target.closest(SEL);
     if (!btn) {
       // If the mouse left a magnetic button, spring it back
@@ -347,6 +348,7 @@ function _magneticButtons() {
   }, { passive: true });
 
   document.addEventListener('mouseout', function (e) {
+    if (!e.target || typeof e.target.closest !== 'function') return;
     var btn = e.target.closest(SEL);
     if (!btn) return;
     gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.4)' });
