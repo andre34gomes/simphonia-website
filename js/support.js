@@ -2,10 +2,10 @@
  * Simphonia — Support Page
  *
  * Responsibilities:
- *   1. Two-panel FAQ (render, switch, keyboard navigation)
+ *   1. Two-panel FAQ (render, switch, keyboard navigation, category groups)
  *   2. FAQ live search with debounce + clear button
  *   3. Contact form with per-field validation + API submission
- *   4. loadFaqs(): tries API first, falls back to static FAQ_ITEMS
+ *   4. loadFaqs(): fetches /api/v1/faqs — categories with question/answer items
  */
 
 'use strict';
@@ -16,67 +16,34 @@
 var API_BASE      = (window.SIMPHONIA_API && window.SIMPHONIA_API.base) || 'https://api.simphonia.pt';
 var getGuestToken = window.getGuestToken;
 
-/* ─────────────────────────────────────────────────────────────
-   Static FAQ data (fallback when API is unavailable)
-   ───────────────────────────────────────────────────────────── */
-var FAQ_ITEMS = [
-  {
-    q: 'What is an eSIM?',
-    keywords: 'esim what is digital sim embedded',
-    a: 'An eSIM (embedded SIM) is a digital SIM built into your smartphone. It lets you activate a cellular data plan without inserting a physical SIM card. You can store multiple eSIM profiles on one device and switch between them instantly.',
-  },
-  {
-    q: 'Is my phone compatible with eSIM?',
-    keywords: 'compatible phone device support iphone samsung pixel',
-    a: 'Most modern smartphones released after 2018 support eSIM.<br><br><strong>Apple:</strong> iPhone XS, XR and all later models<br><strong>Samsung:</strong> Galaxy S20, Note 20 and later<br><strong>Google:</strong> Pixel 3 and later<br><strong>Others:</strong> Huawei P40+, Motorola Razr, Oppo Find X3+',
-  },
-  {
-    q: 'How do I install my eSIM?',
-    keywords: 'install setup qr code scan how activate settings',
-    a: 'After purchasing a plan, your QR code appears in the Simphonia app. Go to your phone\u2019s <strong>Settings \u2192 Cellular/Mobile Data \u2192 Add eSIM</strong> and scan the QR code. Follow the on-screen prompts \u2014 the whole process takes about 1 minute. We recommend installing while on WiFi, before you travel.',
-  },
-  {
-    q: 'Do I need to remove my physical SIM?',
-    keywords: 'physical sim keep number dual remove',
-    a: 'No! eSIM works alongside your physical SIM (Dual SIM). Keep your regular number active for calls and texts, and use Simphonia for mobile data. You can set the eSIM as your default data line in your phone\u2019s settings.',
-  },
-  {
-    q: 'When does my eSIM plan start?',
-    keywords: 'activate when start begin use plan days',
-    a: 'Your plan starts when you connect to a network at your destination and begin using data. Install the eSIM before you travel \u2014 it activates automatically on arrival. No wasted days!',
-  },
-  {
-    q: 'Can I top up or extend my plan?',
-    keywords: 'top up extend renew data more add',
-    a: 'Yes! Open the Simphonia app, go to your active eSIM and tap <strong>\u201cTop Up\u201d</strong>. Additional data is added instantly. You can also purchase a brand-new plan for the same or a different destination at any time.',
-  },
-  {
-    q: 'What speeds can I expect?',
-    keywords: 'speed 4g 5g lte data slow fast network',
-    a: 'Simphonia connects you to premium local networks in each country. Most plans offer <strong>4G/LTE</strong> speeds, and <strong>5G</strong> is available in select destinations. Actual speeds depend on local network conditions, your device model, and your physical location.',
-  },
-  {
-    q: 'What is your refund policy?',
-    keywords: 'refund cancel money back return policy',
-    a: 'If you haven\u2019t activated your eSIM (not yet connected to a network), you can request a full refund within <strong>30 days</strong> of purchase. Once data has been used, refunds are evaluated case-by-case. Contact our support team and we\u2019ll make it right.',
-  },
-  {
-    q: 'Can I use hotspot / tethering?',
-    keywords: 'hotspot tethering share data wifi personal',
-    a: 'Most Simphonia plans support personal hotspot/tethering, allowing you to share your data connection with laptops or tablets. Check the plan details page before purchase \u2014 hotspot support is clearly marked for every plan.',
-  },
-  {
-    q: 'Can I make calls and send texts?',
-    keywords: 'call text sms voice phone whatsapp',
-    a: 'Our eSIM plans are <strong>data-only</strong>. You can make calls and send messages using apps like WhatsApp, FaceTime, Telegram, or Signal over your data connection. Your physical SIM keeps your regular number active for traditional calls and SMS.',
-  },
-];
 
 /* ─────────────────────────────────────────────────────────────
    State
    ───────────────────────────────────────────────────────────── */
+// faqData: flat array of { q, a, category } — built from API categories
 var faqData     = [];
 var activeIndex = 0;
+
+/* ─────────────────────────────────────────────────────────────
+   Normalise API response → flat item list
+   ───────────────────────────────────────────────────────────── */
+function normaliseFaqResponse(data) {
+  // API returns: [ { code, category, items: [ { question, answer } ] } ]
+  if (!Array.isArray(data)) return [];
+  var flat = [];
+  data.forEach(function (cat) {
+    var catLabel = cat.category || cat.code || '';
+    var items    = Array.isArray(cat.items) ? cat.items : [];
+    items.forEach(function (item) {
+      flat.push({
+        q:        item.question || '',
+        a:        item.answer   || '',
+        category: catLabel,
+      });
+    });
+  });
+  return flat;
+}
 
 /* ─────────────────────────────────────────────────────────────
    FAQ Panel — render
@@ -87,12 +54,23 @@ function renderNav(items) {
 
   nav.innerHTML = '';
 
+  var lastCategory = null;
+
   items.forEach(function (item, i) {
-    var btn            = document.createElement('button');
-    btn.type           = 'button';
-    btn.className      = 'faq-panel__q' + (i === 0 ? ' is-active' : '');
+    // Insert a category label when the category changes
+    if (item.category && item.category !== lastCategory) {
+      lastCategory = item.category;
+      var label       = document.createElement('div');
+      label.className = 'faq-panel__category';
+      label.textContent = item.category;
+      nav.appendChild(label);
+    }
+
+    var btn                = document.createElement('button');
+    btn.type               = 'button';
+    btn.className          = 'faq-panel__q' + (i === 0 ? ' is-active' : '');
     btn.dataset.index      = i;
-    btn.dataset.searchText = (item.q + ' ' + (item.keywords || '')).toLowerCase();
+    btn.dataset.searchText = (item.q + ' ' + (item.category || '')).toLowerCase();
     btn.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
     btn.innerHTML =
       '<span class="faq-panel__q-num">' + String(i + 1).padStart(2, '0') + '</span>' +
@@ -126,10 +104,12 @@ function renderDisplay(index) {
   var numEl  = document.getElementById('fpd-num');
   var qEl    = document.getElementById('fpd-q');
   var bodyEl = document.getElementById('fpd-body');
+  var catEl  = document.getElementById('fpd-category');
 
   if (numEl)  numEl.textContent = String(index + 1).padStart(2, '0');
   if (qEl)    qEl.textContent   = item.q;
   if (bodyEl) bodyEl.innerHTML  = '<p>' + item.a + '</p>';
+  if (catEl)  { catEl.textContent = item.category || ''; catEl.hidden = !item.category; }
 }
 
 function switchFaq(index) {
@@ -155,13 +135,61 @@ function switchFaq(index) {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Load FAQs — API first, static fallback
+   FAQ Panel — loading / error states
+   ───────────────────────────────────────────────────────────── */
+function showFaqLoading() {
+  var nav = document.getElementById('faq-panel-nav');
+  var display = document.getElementById('faq-display-inner');
+  if (nav) nav.innerHTML = '';
+  if (display) {
+    display.innerHTML =
+      '<div class="faq-panel__state">' +
+        '<svg class="faq-panel__state-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">' +
+          '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>' +
+          '<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>' +
+        '</svg>' +
+        '<p class="faq-panel__state-desc">Loading\u2026</p>' +
+      '</div>';
+  }
+}
+
+function showFaqError(lang) {
+  var nav = document.getElementById('faq-panel-nav');
+  var display = document.getElementById('faq-display-inner');
+  if (nav) nav.innerHTML = '';
+  if (display) {
+    display.innerHTML =
+      '<div class="faq-panel__state faq-panel__state--error">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+          '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>' +
+        '</svg>' +
+        '<h3 class="faq-panel__state-title">Unable to Load FAQs</h3>' +
+        '<p class="faq-panel__state-desc">We couldn\u2019t reach our servers right now.<br>Check your connection and try again.</p>' +
+        '<button class="btn btn--outline btn--sm" id="faq-retry">' +
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+            '<polyline points="23 4 23 10 17 10"/>' +
+            '<path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>' +
+          '</svg>' +
+          'Try Again' +
+        '</button>' +
+      '</div>';
+    var retryBtn = document.getElementById('faq-retry');
+    if (retryBtn) retryBtn.addEventListener('click', function () { loadFaqs(lang); });
+  }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   Load FAQs — API only, no static fallback
+   GET /api/v1/faqs?lang={lang}
+   Response: [ { code, category, items: [ { question, answer } ] } ]
    ───────────────────────────────────────────────────────────── */
 function loadFaqs(lang) {
-  var url     = API_BASE + '/api/v1/faq?lang=' + (lang || 'en');
+  var url     = API_BASE + '/api/v1/faqs?lang=' + (lang || 'en');
   var headers = { 'Accept': 'application/json' };
   var abortCtrl = new AbortController();
   var timeoutId = setTimeout(function () { abortCtrl.abort(); }, 10000);
+
+  showFaqLoading();
 
   var tokenPromise = (typeof getGuestToken === 'function')
     ? Promise.resolve().then(function () { return getGuestToken(); }).catch(function () { return null; })
@@ -177,13 +205,12 @@ function loadFaqs(lang) {
       return res.json();
     })
     .then(function (data) {
-      var items = Array.isArray(data) ? data
-                : (data && Array.isArray(data.items) ? data.items : null);
-      if (!items || items.length === 0) throw new Error('Empty FAQ response');
+      var items = normaliseFaqResponse(Array.isArray(data) ? data : (data && data.data ? data.data : []));
+      if (!items.length) throw new Error('Empty FAQ response');
       initPanel(items);
     })
     .catch(function () {
-      initPanel(FAQ_ITEMS);
+      showFaqError(lang);
     })
     .finally(function () {
       clearTimeout(timeoutId);

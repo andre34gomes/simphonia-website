@@ -379,6 +379,23 @@ textarea.form-input {
 
 .faq-panel__q[hidden] { display: none; }
 
+/* Category group label in the nav */
+.faq-panel__category {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: 0.875rem 1.125rem 0.25rem;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* First category label needs no top padding */
+.faq-panel__category:first-child {
+  padding-top: 0.25rem;
+}
+
 .faq-panel__display {
   background: var(--bg-elevated);
   border: 1px solid var(--border-default);
@@ -420,6 +437,18 @@ textarea.form-input {
   margin: 0;
 }
 
+/* Category badge above the question in the display panel */
+.faq-panel__display-cat {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.8;
+  margin-bottom: -0.125rem;
+}
+
 .faq-panel__display-body {
   font-size: 0.9375rem;
   line-height: 1.8;
@@ -446,6 +475,48 @@ textarea.form-input {
 .faq-panel__display-cta:hover {
   gap: 0.625rem;
   color: var(--accent-light);
+}
+
+/* FAQ loading / error state */
+.faq-panel__state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.875rem;
+  padding: 2rem 1rem;
+  text-align: center;
+}
+
+.faq-panel__state svg {
+  width: 2.5rem;
+  height: 2.5rem;
+  color: var(--text-tertiary);
+  flex-shrink: 0;
+}
+
+.faq-panel__state--error svg { color: var(--accent); }
+
+@keyframes faq-spin {
+  to { transform: rotate(360deg); }
+}
+
+.faq-panel__state-spin {
+  animation: faq-spin 1.2s linear infinite;
+}
+
+.faq-panel__state-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.faq-panel__state-desc {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0;
 }
 
 /* ══════════════════════════════════════════════════════════
