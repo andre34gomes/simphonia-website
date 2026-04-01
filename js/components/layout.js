@@ -413,7 +413,7 @@ function injectAnnouncementBanner() {
   // Only show on homepage
   const path = window.location.pathname;
   const isHome = path === '/' || path === '/index.html' ||
-    (!['destinations','how-it-works','about','support','privacy','terms']
+    (!['destinations', 'how-it-works', 'about', 'support', 'privacy', 'terms']
       .some(p => path.includes('/' + p)));
   if (!isHome) return;
 

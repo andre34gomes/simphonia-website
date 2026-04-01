@@ -268,13 +268,14 @@ function _footerReveal() {
     triggered = true;
     gsap.to(elements, {
       clipPath: 'inset(0 0 0% 0)',
-      duration: 0.6,
+      duration: 0.61,
       stagger: 0.08,
       ease: 'power2.out',
       overwrite: 'auto'
     });
   }
 
+  // Primary mechanism: ScrollTrigger
   ScrollTrigger.create({
     trigger: footer,
     start: 'top bottom',
@@ -285,18 +286,35 @@ function _footerReveal() {
     }
   });
 
-  // Critical fallback: if already in view on load, trigger after a short delay
-  if (footer.getBoundingClientRect().top < window.innerHeight * 1.1) {
-    setTimeout(trigger, 400);
+  // Secondary mechanism: Proactive scroll monitoring (for fast scrolling)
+  var scrollCheck = function () {
+    if (triggered) {
+      window.removeEventListener('scroll', scrollCheck);
+      return;
+    }
+    var rect = footer.getBoundingClientRect();
+    if (rect.top < window.innerHeight) {
+      trigger();
+      window.removeEventListener('scroll', scrollCheck);
+    }
+  };
+  window.addEventListener('scroll', scrollCheck, { passive: true });
+
+  // Fallback: If already in view or very close on load
+  function initialCheck() {
+    if (triggered) return;
+    if (footer.getBoundingClientRect().top < window.innerHeight * 1.05) {
+      trigger();
+    }
   }
+  initialCheck();
+  setTimeout(initialCheck, 150);
+  setTimeout(initialCheck, 400);
 
   // Absolute safety net
   setTimeout(function () {
-    if (!triggered) {
-      triggered = true;
-      gsap.set(elements, { clipPath: 'inset(0 0 0% 0)' });
-    }
-  }, 2500);
+    if (!triggered) trigger();
+  }, 1200);
 }
 
 // ── MAGNETIC BUTTONS ─────────────────────────────────────

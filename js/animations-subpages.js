@@ -238,20 +238,39 @@ function _ctaSectionReveal() {
     if (!inner) return;
 
     var revealChildren = inner.querySelectorAll('.reveal, .reveal--scale');
+    var triggered = false;
 
-    gsap.fromTo(inner,
-      { clipPath: 'inset(0 0 100% 0)', y: 12 },
-      {
+    function trigger() {
+      if (triggered) return;
+      triggered = true;
+      gsap.to(inner, {
         clipPath: 'inset(0 0 0% 0)', y: 0,
         duration: 0.6, ease: 'power2.out', overwrite: 'auto',
-        scrollTrigger: { trigger: cta, start: 'top 82%', once: true },
         onStart: function () {
           revealChildren.forEach(function (child) {
             gsap.set(child, { clipPath: 'none', y: 0 });
           });
         },
+      });
+    }
+
+    // Set initial state
+    gsap.set(inner, { clipPath: 'inset(0 0 100% 0)', y: 12 });
+
+    ScrollTrigger.create({
+      trigger: cta,
+      start: 'top 85%',
+      once: true,
+      onEnter: trigger,
+      onRefresh: function (self) {
+        if (self.isActive && !triggered) trigger();
       }
-    );
+    });
+
+    // Check if potentially already in view on load
+    if (cta.getBoundingClientRect().top < window.innerHeight * 0.95) {
+      setTimeout(trigger, 100);
+    }
   });
 }
 

@@ -13,15 +13,14 @@
 /* ─────────────────────────────────────────────────────────────
    API config
    ───────────────────────────────────────────────────────────── */
-var API_BASE      = (window.SIMPHONIA_API && window.SIMPHONIA_API.base) || 'https://api.simphonia.pt';
+var API_BASE = (window.SIMPHONIA_API && window.SIMPHONIA_API.base) || 'https://api.simphonia.pt';
 var getGuestToken = window.getGuestToken;
 
 
 /* ─────────────────────────────────────────────────────────────
-   State
+   State & Statics
    ───────────────────────────────────────────────────────────── */
-// faqData: flat array of { q, a, category } — built from API categories
-var faqData     = [];
+var faqData = [];
 var activeIndex = 0;
 
 /* ─────────────────────────────────────────────────────────────
@@ -33,11 +32,12 @@ function normaliseFaqResponse(data) {
   var flat = [];
   data.forEach(function (cat) {
     var catLabel = cat.category || cat.code || '';
-    var items    = Array.isArray(cat.items) ? cat.items : [];
+    var items = Array.isArray(cat.items) ? cat.items : [];
     items.forEach(function (item) {
+      if (!item.question || !item.answer) return;
       flat.push({
-        q:        item.question || '',
-        a:        item.answer   || '',
+        q: item.question,
+        a: item.answer,
         category: catLabel,
       });
     });
@@ -60,16 +60,16 @@ function renderNav(items) {
     // Insert a category label when the category changes
     if (item.category && item.category !== lastCategory) {
       lastCategory = item.category;
-      var label       = document.createElement('div');
+      var label = document.createElement('div');
       label.className = 'faq-panel__category';
       label.textContent = item.category;
       nav.appendChild(label);
     }
 
-    var btn                = document.createElement('button');
-    btn.type               = 'button';
-    btn.className          = 'faq-panel__q' + (i === 0 ? ' is-active' : '');
-    btn.dataset.index      = i;
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'faq-panel__q' + (i === 0 ? ' is-active' : '');
+    btn.dataset.index = i;
     btn.dataset.searchText = (item.q + ' ' + (item.category || '')).toLowerCase();
     btn.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
     btn.innerHTML =
@@ -83,16 +83,16 @@ function renderNav(items) {
 }
 
 function handleNavKeydown(e) {
-  var btns    = Array.from(e.currentTarget.querySelectorAll('.faq-panel__q:not([hidden])'));
+  var btns = Array.from(e.currentTarget.querySelectorAll('.faq-panel__q:not([hidden])'));
   var focused = document.activeElement;
-  var idx     = btns.indexOf(focused);
+  var idx = btns.indexOf(focused);
   if (idx === -1) return;
 
   var next = -1;
-  if      (e.key === 'ArrowDown') next = (idx + 1) % btns.length;
-  else if (e.key === 'ArrowUp')   next = (idx - 1 + btns.length) % btns.length;
-  else if (e.key === 'Home')      next = 0;
-  else if (e.key === 'End')       next = btns.length - 1;
+  if (e.key === 'ArrowDown') next = (idx + 1) % btns.length;
+  else if (e.key === 'ArrowUp') next = (idx - 1 + btns.length) % btns.length;
+  else if (e.key === 'Home') next = 0;
+  else if (e.key === 'End') next = btns.length - 1;
 
   if (next !== -1) { e.preventDefault(); btns[next].focus(); }
 }
@@ -101,15 +101,15 @@ function renderDisplay(index) {
   var item = faqData[index];
   if (!item) return;
 
-  var numEl  = document.getElementById('fpd-num');
-  var qEl    = document.getElementById('fpd-q');
+  var numEl = document.getElementById('fpd-num');
+  var qEl = document.getElementById('fpd-q');
   var bodyEl = document.getElementById('fpd-body');
-  var catEl  = document.getElementById('fpd-category');
+  var catEl = document.getElementById('fpd-category');
 
-  if (numEl)  numEl.textContent = String(index + 1).padStart(2, '0');
-  if (qEl)    qEl.textContent   = item.q;
-  if (bodyEl) bodyEl.innerHTML  = '<p>' + item.a + '</p>';
-  if (catEl)  { catEl.textContent = item.category || ''; catEl.hidden = !item.category; }
+  if (numEl) numEl.textContent = String(index + 1).padStart(2, '0');
+  if (qEl) qEl.textContent = item.q;
+  if (bodyEl) bodyEl.innerHTML = '<p>' + item.a + '</p>';
+  if (catEl) { catEl.textContent = item.category || ''; catEl.hidden = !item.category; }
 }
 
 function switchFaq(index) {
@@ -140,15 +140,18 @@ function switchFaq(index) {
 function showFaqLoading() {
   var nav = document.getElementById('faq-panel-nav');
   var display = document.getElementById('faq-display-inner');
+  var panel = document.getElementById('faq-panel');
+  if (panel) panel.classList.add('faq-panel--state');
+
   if (nav) nav.innerHTML = '';
   if (display) {
     display.innerHTML =
       '<div class="faq-panel__state">' +
-        '<svg class="faq-panel__state-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">' +
-          '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>' +
-          '<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>' +
-        '</svg>' +
-        '<p class="faq-panel__state-desc">Loading\u2026</p>' +
+      '<svg class="faq-panel__state-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">' +
+      '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>' +
+      '<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>' +
+      '</svg>' +
+      '<p class="faq-panel__state-desc">Loading\u2026</p>' +
       '</div>';
   }
 }
@@ -156,22 +159,25 @@ function showFaqLoading() {
 function showFaqError(lang) {
   var nav = document.getElementById('faq-panel-nav');
   var display = document.getElementById('faq-display-inner');
+  var panel = document.getElementById('faq-panel');
+  if (panel) panel.classList.add('faq-panel--state');
+
   if (nav) nav.innerHTML = '';
   if (display) {
     display.innerHTML =
       '<div class="faq-panel__state faq-panel__state--error">' +
-        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-          '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>' +
-        '</svg>' +
-        '<h3 class="faq-panel__state-title">Unable to Load FAQs</h3>' +
-        '<p class="faq-panel__state-desc">We couldn\u2019t reach our servers right now.<br>Check your connection and try again.</p>' +
-        '<button class="btn btn--outline btn--sm" id="faq-retry">' +
-          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-            '<polyline points="23 4 23 10 17 10"/>' +
-            '<path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>' +
-          '</svg>' +
-          'Try Again' +
-        '</button>' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>' +
+      '</svg>' +
+      '<h3 class="faq-panel__state-title">Unable to Load FAQs</h3>' +
+      '<p class="faq-panel__state-desc">We couldn\u2019t reach our servers right now.<br>Check your connection and try again.</p>' +
+      '<button class="btn btn--outline btn--sm" id="faq-retry">' +
+      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+      '<polyline points="23 4 23 10 17 10"/>' +
+      '<path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>' +
+      '</svg>' +
+      'Try Again' +
+      '</button>' +
       '</div>';
     var retryBtn = document.getElementById('faq-retry');
     if (retryBtn) retryBtn.addEventListener('click', function () { loadFaqs(lang); });
@@ -184,7 +190,7 @@ function showFaqError(lang) {
    Response: [ { code, category, items: [ { question, answer } ] } ]
    ───────────────────────────────────────────────────────────── */
 function loadFaqs(lang) {
-  var url     = API_BASE + '/api/v1/faqs?lang=' + (lang || 'en');
+  var url = API_BASE + '/api/v1/faqs?lang=' + (lang || 'en');
   var headers = { 'Accept': 'application/json' };
   var abortCtrl = new AbortController();
   var timeoutId = setTimeout(function () { abortCtrl.abort(); }, 10000);
@@ -209,7 +215,8 @@ function loadFaqs(lang) {
       if (!items.length) throw new Error('Empty FAQ response');
       initPanel(items);
     })
-    .catch(function () {
+    .catch(function (err) {
+      console.warn('[faq] API failed:', err.message);
       showFaqError(lang);
     })
     .finally(function () {
@@ -218,8 +225,12 @@ function loadFaqs(lang) {
 }
 
 function initPanel(items) {
-  faqData     = items;
+  faqData = items;
   activeIndex = 0;
+
+  var panel = document.getElementById('faq-panel');
+  if (panel) panel.classList.remove('faq-panel--state');
+
   renderNav(items);
   renderDisplay(0);
   initFaqSearch();
@@ -232,7 +243,7 @@ function debounce(fn, ms) {
   var id;
   return function () {
     clearTimeout(id);
-    var ctx  = this;
+    var ctx = this;
     var args = arguments;
     id = setTimeout(function () { fn.apply(ctx, args); }, ms);
   };
@@ -248,11 +259,11 @@ function initFaqSearch() {
 
   inputs.forEach(function (input) {
     // Inject clear button
-    var clearBtn       = document.createElement('button');
-    clearBtn.type      = 'button';
+    var clearBtn = document.createElement('button');
+    clearBtn.type = 'button';
     clearBtn.className = 'search-bar__clear';
     clearBtn.setAttribute('aria-label', 'Clear search');
-    clearBtn.hidden    = true;
+    clearBtn.hidden = true;
     clearBtn.innerHTML =
       '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">' +
       '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
@@ -282,20 +293,20 @@ function initFaqSearch() {
 }
 
 function filterFaq(query) {
-  var btns      = document.querySelectorAll('.faq-panel__q');
-  var panelEl   = document.getElementById('faq-panel');
+  var btns = document.querySelectorAll('.faq-panel__q');
+  var panelEl = document.getElementById('faq-panel');
   var noResults = document.getElementById('faq-no-results');
-  var visible   = 0;
+  var visible = 0;
 
   btns.forEach(function (btn) {
-    var text  = btn.dataset.searchText || btn.querySelector('.faq-panel__q-text').textContent.toLowerCase();
+    var text = btn.dataset.searchText || btn.querySelector('.faq-panel__q-text').textContent.toLowerCase();
     var match = !query || text.includes(query);
     btn.hidden = !match;
     if (match) visible++;
   });
 
   var isEmpty = visible === 0;
-  if (panelEl)   panelEl.style.display   = isEmpty ? 'none' : '';
+  if (panelEl) panelEl.style.display = isEmpty ? 'none' : '';
   if (noResults) noResults.style.display = isEmpty ? 'block' : 'none';
 
   // If the active item is now hidden, switch to the first visible one
@@ -330,8 +341,8 @@ function setFieldError(fieldId, message) {
   var errorEl = document.getElementById(errorId);
 
   if (!errorEl) {
-    errorEl           = document.createElement('span');
-    errorEl.id        = errorId;
+    errorEl = document.createElement('span');
+    errorEl.id = errorId;
     errorEl.className = 'field-error';
     errorEl.setAttribute('aria-live', 'polite');
     field.parentElement.appendChild(errorEl);
@@ -340,7 +351,7 @@ function setFieldError(fieldId, message) {
   }
 
   errorEl.textContent = message;
-  errorEl.hidden      = !message;
+  errorEl.hidden = !message;
   field.classList.toggle('form-input--error', Boolean(message));
   field.setAttribute('aria-invalid', message ? 'true' : 'false');
 }
@@ -353,9 +364,9 @@ function showFormFeedback(form, type, message) {
     el.setAttribute('role', 'alert');
     form.appendChild(el);
   }
-  el.className   = 'form-feedback form-feedback--' + type;
+  el.className = 'form-feedback form-feedback--' + type;
   el.textContent = (type === 'success' ? '\u2713 ' : '\u26A0 ') + message;
-  el.hidden      = false;
+  el.hidden = false;
   if (type === 'success') setTimeout(function () { el.hidden = true; }, 8000);
 }
 
@@ -381,9 +392,9 @@ function initCharCounter(textareaId, maxLength) {
 
   textarea.setAttribute('maxlength', maxLength);
 
-  var counter         = document.createElement('span');
-  counter.id          = textareaId + '-counter';
-  counter.className   = 'char-counter';
+  var counter = document.createElement('span');
+  counter.id = textareaId + '-counter';
+  counter.className = 'char-counter';
   counter.setAttribute('aria-live', 'polite');
   counter.setAttribute('aria-atomic', 'true');
   counter.textContent = '0 / ' + maxLength;
@@ -393,7 +404,7 @@ function initCharCounter(textareaId, maxLength) {
   textarea.setAttribute('aria-describedby', existing ? existing + ' ' + counter.id : counter.id);
 
   textarea.addEventListener('input', function () {
-    var len             = textarea.value.length;
+    var len = textarea.value.length;
     counter.textContent = len + ' / ' + maxLength;
     counter.classList.toggle('char-counter--warn', len > maxLength * 0.9);
   });
@@ -403,8 +414,8 @@ function initContactForm() {
   var form = document.getElementById('contact-form');
   if (!form) return;
 
-  var submitBtn          = form.querySelector('button[type="submit"]');
-  var lastSubmitTime     = 0;
+  var submitBtn = form.querySelector('button[type="submit"]');
+  var lastSubmitTime = 0;
   var SUBMIT_COOLDOWN_MS = 30000;
 
   addFieldListeners(form);
@@ -424,11 +435,11 @@ function initContactForm() {
     var honeypot = document.getElementById('contact-website');
     if (honeypot && honeypot.value) { form.reset(); return; }
 
-    var nameEl    = document.getElementById('contact-name');
-    var emailEl   = document.getElementById('contact-email');
+    var nameEl = document.getElementById('contact-name');
+    var emailEl = document.getElementById('contact-email');
     var subjectEl = document.getElementById('contact-subject');
-    var msgEl     = document.getElementById('contact-message');
-    var valid     = true;
+    var msgEl = document.getElementById('contact-message');
+    var valid = true;
 
     if (!nameEl || !nameEl.value.trim()) {
       setFieldError('contact-name', 'Please enter your name.');
@@ -447,8 +458,8 @@ function initContactForm() {
     }
     if (!valid) return;
 
-    var origLabel       = submitBtn.textContent;
-    submitBtn.disabled  = true;
+    var origLabel = submitBtn.textContent;
+    submitBtn.disabled = true;
     submitBtn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span> Sending\u2026';
 
     var tokenPromise = (typeof getGuestToken === 'function')
@@ -466,15 +477,15 @@ function initContactForm() {
         var timeoutId = setTimeout(function () { abortCtrl.abort(); }, 15000);
 
         return fetch(API_BASE + '/api/v1/support/contact', {
-          method:  'POST',
+          method: 'POST',
           headers: {
             'Content-Type': 'application/json',
             'Authorization': 'Bearer ' + token,
           },
           signal: abortCtrl.signal,
           body: JSON.stringify({
-            name:    nameEl.value.trim(),
-            email:   emailEl.value.trim(),
+            name: nameEl.value.trim(),
+            email: emailEl.value.trim(),
             subject: subjectEl ? subjectEl.value.trim() : '',
             message: msgEl.value.trim(),
           }),
@@ -486,8 +497,8 @@ function initContactForm() {
           showFormFeedback(form, 'success', "Message sent! We\u2019ll get back to you within 24 hours.");
           form.reset();
           form.querySelectorAll('[id$="-counter"]').forEach(function (el) {
-            var parts      = el.textContent.split('/');
-            var max        = parts[1] ? parts[1].trim() : '5000';
+            var parts = el.textContent.split('/');
+            var max = parts[1] ? parts[1].trim() : '5000';
             el.textContent = '0 / ' + max;
             el.classList.remove('char-counter--warn');
           });
@@ -505,7 +516,7 @@ function initContactForm() {
       })
       .then(function () {
         // finally
-        submitBtn.disabled    = false;
+        submitBtn.disabled = false;
         submitBtn.textContent = origLabel;
       });
   });
