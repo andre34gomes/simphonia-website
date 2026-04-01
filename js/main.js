@@ -437,9 +437,7 @@ bootstrapSite();
       }
     })
     .catch(function (err) {
-      // Backend unavailable (e.g. local dev without the server running) —
-      // the fallback list already loaded above, so this is non-critical.
-      console.warn('[marquee] API unavailable, using static fallback destinations:', err.message);
+      console.warn('[marquee] Could not load destinations from API:', err.message);
     });
 }());
 
