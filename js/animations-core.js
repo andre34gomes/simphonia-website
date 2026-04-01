@@ -256,70 +256,47 @@ function _footerReveal() {
   var footer = document.querySelector('.footer');
   if (!footer) return;
 
-  var brand = footer.querySelector('.footer__brand');
-  var cols = footer.querySelectorAll('.footer__col');
-  var bottom = footer.querySelector('.footer__bottom');
+  var elements = footer.querySelectorAll('.footer__brand, .footer__col, .footer__bottom');
+  if (!elements.length) return;
 
-  var targets = [];
-  if (brand) targets.push(brand);
-  cols.forEach(function (c) { targets.push(c); });
-  if (bottom) targets.push(bottom);
-  if (!targets.length) return;
+  // Initial state: hidden
+  gsap.set(elements, { clipPath: 'inset(0 0 100% 0)' });
 
-  var revealed = false;
-
-  function forceShow() {
-    if (revealed) return;
-    revealed = true;
-    targets.forEach(function (t) { t.style.clipPath = 'inset(0 0 0% 0)'; });
-  }
-
-  // Set the initial hidden state via JS (not CSS)
-  gsap.set(targets, { clipPath: 'inset(0 0 100% 0)' });
-
-  var tl = gsap.timeline({ paused: true });
-  if (brand) {
-    tl.to(brand,
-      { clipPath: 'inset(0 0 0% 0)', duration: 0.48, ease: 'power2.out' }, 0);
-  }
-  if (cols.length) {
-    tl.to(cols,
-      { clipPath: 'inset(0 0 0% 0)', duration: 0.44, stagger: 0.07, ease: 'power2.out' }, 0.08);
-  }
-  if (bottom) {
-    tl.to(bottom,
-      { clipPath: 'inset(0 0 0% 0)', duration: 0.4, ease: 'power2.out' }, 0.26);
+  var triggered = false;
+  function trigger() {
+    if (triggered) return;
+    triggered = true;
+    gsap.to(elements, {
+      clipPath: 'inset(0 0 0% 0)',
+      duration: 0.6,
+      stagger: 0.08,
+      ease: 'power2.out',
+      overwrite: 'auto'
+    });
   }
 
   ScrollTrigger.create({
     trigger: footer,
     start: 'top bottom',
     once: true,
-    onEnter: function () {
-      if (revealed) return;
-      revealed = true;
-      tl.play();
-    },
+    onEnter: trigger,
+    onRefresh: function (self) {
+      if (self.isActive && !triggered) trigger();
+    }
   });
 
-  // Check after layout settles (window load) — footer might already be in view
-  function checkAndReveal() {
-    if (revealed) return;
-    if (footer.getBoundingClientRect().top < window.innerHeight * 1.05) {
-      revealed = true;
-      tl.play();
+  // Critical fallback: if already in view on load, trigger after a short delay
+  if (footer.getBoundingClientRect().top < window.innerHeight * 1.1) {
+    setTimeout(trigger, 400);
+  }
+
+  // Absolute safety net
+  setTimeout(function () {
+    if (!triggered) {
+      triggered = true;
+      gsap.set(elements, { clipPath: 'inset(0 0 0% 0)' });
     }
-  }
-
-  checkAndReveal();
-  if (document.readyState === 'complete') {
-    setTimeout(checkAndReveal, 150);
-  } else {
-    window.addEventListener('load', function () { setTimeout(checkAndReveal, 150); }, { once: true });
-  }
-
-  // Absolute safety net: force footer visible after 2 seconds no matter what
-  setTimeout(forceShow, 2000);
+  }, 2500);
 }
 
 // ── MAGNETIC BUTTONS ─────────────────────────────────────
