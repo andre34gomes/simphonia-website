@@ -5,54 +5,21 @@
  *   1. Two-panel FAQ (render, switch, keyboard navigation)
  *   2. FAQ live search with debounce + clear button
  *   3. Contact form with per-field validation + API submission
- *
- * Loaded as <script type="module"> — deferred automatically, DOM is ready.
+ *   4. loadFaqs(): tries API first, falls back to static FAQ_ITEMS
  */
 
 'use strict';
 
 /* ─────────────────────────────────────────────────────────────
-   API config — auto-detects dev vs production
+   API config
    ───────────────────────────────────────────────────────────── */
-const IS_DEV =
-  window.location.hostname === 'localhost' ||
-  window.location.hostname === '127.0.0.1' ||
-  window.location.hostname.startsWith('192.168.');
-
-const API_BASE   = IS_DEV ? 'http://localhost:3000' : 'https://api.simphonia.pt';
-const TOKEN_KEY  = 'simphonia_guest_token';
-const EXPIRY_KEY = 'simphonia_guest_expiry';
-
-async function getGuestToken() {
-  // NOTE: localStorage is used (not sessionStorage) to share the guest token
-  // across pages and tabs — consistent with main.js. Guest tokens are
-  // low-sensitivity (no user data) and carry their own expiry timestamp.
-  const stored = localStorage.getItem(TOKEN_KEY);
-  const expiry  = Number(localStorage.getItem(EXPIRY_KEY) || 0);
-  if (stored && Date.now() < expiry - 60_000) return stored;
-
-  try {
-    const res = await fetch(API_BASE + '/api/v1/auth/guest', { method: 'POST' });
-    if (!res.ok) return null;
-
-    const envelope = await res.json();
-    // Handle both { data: { token, expiresIn } } and { token, expiresIn } shapes
-    const { token, expiresIn } = envelope.data ?? envelope;
-    if (!token) return null;
-
-    const expiresInNum = Number(expiresIn);
-    localStorage.setItem(TOKEN_KEY,  token);
-    localStorage.setItem(EXPIRY_KEY, String(isFinite(expiresInNum) ? Date.now() + expiresInNum * 1000 : 0));
-    return token;
-  } catch {
-    return null;
-  }
-}
+var API_BASE      = (window.SIMPHONIA_API && window.SIMPHONIA_API.base) || 'https://api.simphonia.pt';
+var getGuestToken = window.getGuestToken;
 
 /* ─────────────────────────────────────────────────────────────
-   FAQ data
+   Static FAQ data (fallback when API is unavailable)
    ───────────────────────────────────────────────────────────── */
-const FAQ_DATA = [
+var FAQ_ITEMS = [
   {
     q: 'What is an eSIM?',
     keywords: 'esim what is digital sim embedded',
@@ -106,20 +73,26 @@ const FAQ_DATA = [
 ];
 
 /* ─────────────────────────────────────────────────────────────
-   FAQ Panel
+   State
    ───────────────────────────────────────────────────────────── */
-let activeIndex = 0;
+var faqData     = [];
+var activeIndex = 0;
 
-function renderNav() {
-  const nav = document.getElementById('faq-panel-nav');
+/* ─────────────────────────────────────────────────────────────
+   FAQ Panel — render
+   ───────────────────────────────────────────────────────────── */
+function renderNav(items) {
+  var nav = document.getElementById('faq-panel-nav');
   if (!nav) return;
 
   nav.innerHTML = '';
-  FAQ_DATA.forEach(function (item, i) {
-    const btn = document.createElement('button');
-    btn.className        = 'faq-panel__q' + (i === 0 ? ' is-active' : '');
-    btn.dataset.index    = i;
-    btn.dataset.keywords = item.keywords;
+
+  items.forEach(function (item, i) {
+    var btn            = document.createElement('button');
+    btn.type           = 'button';
+    btn.className      = 'faq-panel__q' + (i === 0 ? ' is-active' : '');
+    btn.dataset.index      = i;
+    btn.dataset.searchText = (item.q + ' ' + (item.keywords || '')).toLowerCase();
     btn.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
     btn.innerHTML =
       '<span class="faq-panel__q-num">' + String(i + 1).padStart(2, '0') + '</span>' +
@@ -132,34 +105,39 @@ function renderNav() {
 }
 
 function handleNavKeydown(e) {
-  const btns    = Array.from(e.currentTarget.querySelectorAll('.faq-panel__q:not([hidden])'));
-  const focused = document.activeElement;
-  const idx     = btns.indexOf(focused);
+  var btns    = Array.from(e.currentTarget.querySelectorAll('.faq-panel__q:not([hidden])'));
+  var focused = document.activeElement;
+  var idx     = btns.indexOf(focused);
   if (idx === -1) return;
 
-  let next = -1;
+  var next = -1;
   if      (e.key === 'ArrowDown') next = (idx + 1) % btns.length;
   else if (e.key === 'ArrowUp')   next = (idx - 1 + btns.length) % btns.length;
   else if (e.key === 'Home')      next = 0;
   else if (e.key === 'End')       next = btns.length - 1;
 
-  if (next !== -1) {
-    e.preventDefault();
-    btns[next].focus();
-  }
+  if (next !== -1) { e.preventDefault(); btns[next].focus(); }
 }
 
 function renderDisplay(index) {
-  const item = FAQ_DATA[index];
-  document.getElementById('fpd-num').textContent = String(index + 1).padStart(2, '0');
-  document.getElementById('fpd-q').textContent   = item.q;
-  document.getElementById('fpd-body').innerHTML  = '<p>' + item.a + '</p>';
+  var item = faqData[index];
+  if (!item) return;
+
+  var numEl  = document.getElementById('fpd-num');
+  var qEl    = document.getElementById('fpd-q');
+  var bodyEl = document.getElementById('fpd-body');
+
+  if (numEl)  numEl.textContent = String(index + 1).padStart(2, '0');
+  if (qEl)    qEl.textContent   = item.q;
+  if (bodyEl) bodyEl.innerHTML  = '<p>' + item.a + '</p>';
 }
 
 function switchFaq(index) {
   if (index === activeIndex) return;
 
-  const inner = document.getElementById('faq-display-inner');
+  var inner = document.getElementById('faq-display-inner');
+  if (!inner) return;
+
   inner.classList.add('is-switching');
 
   setTimeout(function () {
@@ -167,7 +145,7 @@ function switchFaq(index) {
     renderDisplay(index);
 
     document.querySelectorAll('.faq-panel__q').forEach(function (btn) {
-      const isActive = parseInt(btn.dataset.index, 10) === index;
+      var isActive = parseInt(btn.dataset.index, 10) === index;
       btn.classList.toggle('is-active', isActive);
       btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
@@ -177,82 +155,152 @@ function switchFaq(index) {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   FAQ Search (debounced)
+   Load FAQs — API first, static fallback
+   ───────────────────────────────────────────────────────────── */
+function loadFaqs(lang) {
+  var url     = API_BASE + '/api/v1/faq?lang=' + (lang || 'en');
+  var headers = { 'Accept': 'application/json' };
+  var abortCtrl = new AbortController();
+  var timeoutId = setTimeout(function () { abortCtrl.abort(); }, 10000);
+
+  var tokenPromise = (typeof getGuestToken === 'function')
+    ? Promise.resolve().then(function () { return getGuestToken(); }).catch(function () { return null; })
+    : Promise.resolve(null);
+
+  tokenPromise
+    .then(function (token) {
+      if (token) headers['Authorization'] = 'Bearer ' + token;
+      return fetch(url, { headers: headers, signal: abortCtrl.signal });
+    })
+    .then(function (res) {
+      if (!res || !res.ok) throw new Error('FAQ fetch failed: ' + (res ? res.status : 'network'));
+      return res.json();
+    })
+    .then(function (data) {
+      var items = Array.isArray(data) ? data
+                : (data && Array.isArray(data.items) ? data.items : null);
+      if (!items || items.length === 0) throw new Error('Empty FAQ response');
+      initPanel(items);
+    })
+    .catch(function () {
+      initPanel(FAQ_ITEMS);
+    })
+    .finally(function () {
+      clearTimeout(timeoutId);
+    });
+}
+
+function initPanel(items) {
+  faqData     = items;
+  activeIndex = 0;
+  renderNav(items);
+  renderDisplay(0);
+  initFaqSearch();
+}
+
+/* ─────────────────────────────────────────────────────────────
+   FAQ Search (debounced, synced across both search inputs)
    ───────────────────────────────────────────────────────────── */
 function debounce(fn, ms) {
-  let id;
+  var id;
   return function () {
     clearTimeout(id);
-    const ctx  = this;
-    const args = arguments;
+    var ctx  = this;
+    var args = arguments;
     id = setTimeout(function () { fn.apply(ctx, args); }, ms);
   };
 }
 
 function initFaqSearch() {
-  const input     = document.getElementById('faq-search');
-  const noResults = document.getElementById('faq-no-results');
-  const panelEl   = document.getElementById('faq-panel');
-  if (!input || !noResults || !panelEl) return;
+  var inputs = [
+    document.getElementById('hero-faq-search'),
+    document.getElementById('faq-search'),
+  ].filter(Boolean);
 
-  // Inject clear (×) button
-  const clearBtn = document.createElement('button');
-  clearBtn.type      = 'button';
-  clearBtn.className = 'search-bar__clear';
-  clearBtn.setAttribute('aria-label', 'Clear search');
-  clearBtn.hidden    = true;
-  clearBtn.innerHTML =
-    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">' +
-    '<path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg>';
-  input.parentElement.appendChild(clearBtn);
+  if (!inputs.length) return;
 
-  const filter = debounce(function () {
-    const query = input.value.toLowerCase().trim();
-    const btns  = document.querySelectorAll('.faq-panel__q');
-    let visible = 0;
+  inputs.forEach(function (input) {
+    // Inject clear button
+    var clearBtn       = document.createElement('button');
+    clearBtn.type      = 'button';
+    clearBtn.className = 'search-bar__clear';
+    clearBtn.setAttribute('aria-label', 'Clear search');
+    clearBtn.hidden    = true;
+    clearBtn.innerHTML =
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">' +
+      '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+    input.parentElement.appendChild(clearBtn);
 
-    btns.forEach(function (btn) {
-      const text  = btn.querySelector('.faq-panel__q-text').textContent.toLowerCase();
-      const kw    = (btn.dataset.keywords || '').toLowerCase();
-      const match = !query || text.includes(query) || kw.includes(query);
-      btn.hidden  = !match;
-      if (match) visible++;
+    clearBtn.addEventListener('click', function () {
+      inputs.forEach(function (inp) { inp.value = ''; });
+      inputs.forEach(function (inp) {
+        var cb = inp.parentElement.querySelector('.search-bar__clear');
+        if (cb) cb.hidden = true;
+      });
+      filterFaq('');
+      input.focus();
     });
 
-    const isEmpty           = visible === 0;
-    panelEl.style.display   = isEmpty ? 'none' : '';
-    noResults.style.display = isEmpty ? 'block' : 'none';
+    input.addEventListener('input', debounce(function () {
+      var query = input.value.trim().toLowerCase();
+      // Sync value to the other input
+      inputs.forEach(function (inp) {
+        if (inp !== input) inp.value = input.value;
+        var cb = inp.parentElement.querySelector('.search-bar__clear');
+        if (cb) cb.hidden = inp.value === '';
+      });
+      filterFaq(query);
+    }, 200));
+  });
+}
 
-    if (query && !isEmpty) {
-      const first = Array.from(btns).find(function (b) { return !b.hidden; });
-      if (first) switchFaq(parseInt(first.dataset.index, 10));
+function filterFaq(query) {
+  var btns      = document.querySelectorAll('.faq-panel__q');
+  var panelEl   = document.getElementById('faq-panel');
+  var noResults = document.getElementById('faq-no-results');
+  var visible   = 0;
+
+  btns.forEach(function (btn) {
+    var text  = btn.dataset.searchText || btn.querySelector('.faq-panel__q-text').textContent.toLowerCase();
+    var match = !query || text.includes(query);
+    btn.hidden = !match;
+    if (match) visible++;
+  });
+
+  var isEmpty = visible === 0;
+  if (panelEl)   panelEl.style.display   = isEmpty ? 'none' : '';
+  if (noResults) noResults.style.display = isEmpty ? 'block' : 'none';
+
+  // If the active item is now hidden, switch to the first visible one
+  if (!isEmpty) {
+    var visibleBtns = Array.from(btns).filter(function (b) { return !b.hidden; });
+    var stillActive = visibleBtns.some(function (b) {
+      return parseInt(b.dataset.index, 10) === activeIndex;
+    });
+    if (!stillActive && visibleBtns.length) {
+      var newIdx = parseInt(visibleBtns[0].dataset.index, 10);
+      activeIndex = newIdx;
+      renderDisplay(newIdx);
+      visibleBtns.forEach(function (b, i) {
+        var isFirst = i === 0;
+        b.classList.toggle('is-active', isFirst);
+        b.setAttribute('aria-pressed', isFirst ? 'true' : 'false');
+      });
     }
-  }, 200);
-
-  input.addEventListener('input', function () {
-    clearBtn.hidden = input.value === '';
-    filter();
-  });
-
-  clearBtn.addEventListener('click', function () {
-    input.value     = '';
-    clearBtn.hidden = true;
-    input.dispatchEvent(new Event('input'));
-    input.focus();
-  });
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────
    Contact Form
    ───────────────────────────────────────────────────────────── */
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function setFieldError(fieldId, message) {
-  const field = document.getElementById(fieldId);
+  var field = document.getElementById(fieldId);
   if (!field) return;
 
-  const errorId = fieldId + '-error';
-  let errorEl   = document.getElementById(errorId);
+  var errorId = fieldId + '-error';
+  var errorEl = document.getElementById(errorId);
 
   if (!errorEl) {
     errorEl           = document.createElement('span');
@@ -260,7 +308,7 @@ function setFieldError(fieldId, message) {
     errorEl.className = 'field-error';
     errorEl.setAttribute('aria-live', 'polite');
     field.parentElement.appendChild(errorEl);
-    const existing = field.getAttribute('aria-describedby');
+    var existing = field.getAttribute('aria-describedby');
     field.setAttribute('aria-describedby', existing ? existing + ' ' + errorId : errorId);
   }
 
@@ -271,25 +319,20 @@ function setFieldError(fieldId, message) {
 }
 
 function showFormFeedback(form, type, message) {
-  let el = form.querySelector('.form-feedback');
+  var el = form.querySelector('.form-feedback');
   if (!el) {
     el = document.createElement('div');
     el.className = 'form-feedback';
     el.setAttribute('role', 'alert');
     form.appendChild(el);
   }
-
   el.className   = 'form-feedback form-feedback--' + type;
   el.textContent = (type === 'success' ? '\u2713 ' : '\u26A0 ') + message;
   el.hidden      = false;
-
-  if (type === 'success') {
-    setTimeout(function () { el.hidden = true; }, 8000);
-  }
+  if (type === 'success') setTimeout(function () { el.hidden = true; }, 8000);
 }
 
 function addFieldListeners(form) {
-  // Text / email / textarea — input + blur
   form.querySelectorAll('.form-input[required]:not(select)').forEach(function (field) {
     field.addEventListener('input', function () {
       if (field.value.trim()) setFieldError(field.id, '');
@@ -302,163 +345,149 @@ function addFieldListeners(form) {
       }
     });
   });
-
-  // Select elements — change event
-  form.querySelectorAll('select.form-input[required]').forEach(function (field) {
-    field.addEventListener('change', function () {
-      if (field.value) setFieldError(field.id, '');
-    });
-  });
 }
 
 function initCharCounter(textareaId, maxLength) {
-  if (maxLength === undefined) maxLength = 1000;
-  const textarea = document.getElementById(textareaId);
+  if (maxLength === undefined) maxLength = 5000;
+  var textarea = document.getElementById(textareaId);
   if (!textarea) return;
 
   textarea.setAttribute('maxlength', maxLength);
 
-  const counter     = document.createElement('span');
-  counter.id        = textareaId + '-counter';
-  counter.className = 'char-counter';
+  var counter         = document.createElement('span');
+  counter.id          = textareaId + '-counter';
+  counter.className   = 'char-counter';
   counter.setAttribute('aria-live', 'polite');
   counter.setAttribute('aria-atomic', 'true');
   counter.textContent = '0 / ' + maxLength;
   textarea.parentElement.appendChild(counter);
 
-  const existing = textarea.getAttribute('aria-describedby');
-  textarea.setAttribute(
-    'aria-describedby',
-    existing ? existing + ' ' + counter.id : counter.id,
-  );
+  var existing = textarea.getAttribute('aria-describedby');
+  textarea.setAttribute('aria-describedby', existing ? existing + ' ' + counter.id : counter.id);
 
   textarea.addEventListener('input', function () {
-    const len           = textarea.value.length;
+    var len             = textarea.value.length;
     counter.textContent = len + ' / ' + maxLength;
     counter.classList.toggle('char-counter--warn', len > maxLength * 0.9);
   });
 }
 
 function initContactForm() {
-  const form = document.getElementById('contact-form');
+  var form = document.getElementById('contact-form');
   if (!form) return;
 
-  const submitBtn = form.querySelector('button[type="submit"]');
-  let lastSubmitTime = 0;
-  const SUBMIT_COOLDOWN_MS = 30_000; // 30-second cooldown between submissions
+  var submitBtn          = form.querySelector('button[type="submit"]');
+  var lastSubmitTime     = 0;
+  var SUBMIT_COOLDOWN_MS = 30000;
 
   addFieldListeners(form);
   initCharCounter('contact-message', 5000);
 
-  form.addEventListener('submit', async function (e) {
+  form.addEventListener('submit', function (e) {
     e.preventDefault();
 
-    // Client-side cooldown to prevent rapid re-submissions
-    const now = Date.now();
+    var now = Date.now();
     if (now - lastSubmitTime < SUBMIT_COOLDOWN_MS) {
-      const remaining = Math.ceil((SUBMIT_COOLDOWN_MS - (now - lastSubmitTime)) / 1000);
+      var remaining = Math.ceil((SUBMIT_COOLDOWN_MS - (now - lastSubmitTime)) / 1000);
       showFormFeedback(form, 'error', 'Please wait ' + remaining + ' seconds before sending another message.');
       return;
     }
 
-    // Honeypot check — bots fill hidden fields, real users don't
-    const honeypot = document.getElementById('contact-website');
-    if (honeypot && honeypot.value) {
-      // Silently pretend success to avoid tipping off the bot
-      form.reset();
-      return;
-    }
+    // Honeypot
+    var honeypot = document.getElementById('contact-website');
+    if (honeypot && honeypot.value) { form.reset(); return; }
 
-    const nameEl    = document.getElementById('contact-name');
-    const emailEl   = document.getElementById('contact-email');
-    const subjectEl = document.getElementById('contact-subject');
-    const msgEl     = document.getElementById('contact-message');
+    var nameEl    = document.getElementById('contact-name');
+    var emailEl   = document.getElementById('contact-email');
+    var subjectEl = document.getElementById('contact-subject');
+    var msgEl     = document.getElementById('contact-message');
+    var valid     = true;
 
-    let valid = true;
-
-    if (!nameEl.value.trim()) {
+    if (!nameEl || !nameEl.value.trim()) {
       setFieldError('contact-name', 'Please enter your name.');
       valid = false;
     }
-    if (!emailEl.value.trim()) {
+    if (!emailEl || !emailEl.value.trim()) {
       setFieldError('contact-email', 'Please enter your email address.');
       valid = false;
     } else if (!EMAIL_RE.test(emailEl.value.trim())) {
       setFieldError('contact-email', 'Please enter a valid email address.');
       valid = false;
     }
-    if (!subjectEl.value) {
-      setFieldError('contact-subject', 'Please select a subject.');
-      valid = false;
-    }
-    if (!msgEl.value.trim()) {
+    if (!msgEl || !msgEl.value.trim()) {
       setFieldError('contact-message', 'Please describe your issue or question.');
       valid = false;
     }
     if (!valid) return;
 
-    const origLabel     = submitBtn.textContent;
+    var origLabel       = submitBtn.textContent;
     submitBtn.disabled  = true;
     submitBtn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span> Sending\u2026';
 
-    try {
-      // Token is optional — endpoint is @PermitAll; we try for rate-limit purposes
-      const token = await getGuestToken();
+    var tokenPromise = (typeof getGuestToken === 'function')
+      ? Promise.resolve().then(function () { return getGuestToken(); }).catch(function () { return null; })
+      : Promise.resolve(null);
 
-      const headers = { 'Content-Type': 'application/json' };
-      if (token) headers['Authorization'] = 'Bearer ' + token;
+    tokenPromise
+      .then(function (token) {
+        if (!token) {
+          showFormFeedback(form, 'error', 'Unable to connect to the server. Please try again later or email us at support@simphonia.pt.');
+          return Promise.reject('no-token');
+        }
 
-      const res = await fetch(API_BASE + '/api/v1/support/contact', {
-        method:  'POST',
-        headers: headers,
-        body: JSON.stringify({
-          name:    nameEl.value.trim(),
-          email:   emailEl.value.trim(),
-          subject: subjectEl.value,
-          message: msgEl.value.trim(),
-        }),
+        var abortCtrl = new AbortController();
+        var timeoutId = setTimeout(function () { abortCtrl.abort(); }, 15000);
+
+        return fetch(API_BASE + '/api/v1/support/contact', {
+          method:  'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + token,
+          },
+          signal: abortCtrl.signal,
+          body: JSON.stringify({
+            name:    nameEl.value.trim(),
+            email:   emailEl.value.trim(),
+            subject: subjectEl ? subjectEl.value.trim() : '',
+            message: msgEl.value.trim(),
+          }),
+        }).finally(function () { clearTimeout(timeoutId); });
+      })
+      .then(function (res) {
+        if (res.ok) {
+          lastSubmitTime = Date.now();
+          showFormFeedback(form, 'success', "Message sent! We\u2019ll get back to you within 24 hours.");
+          form.reset();
+          form.querySelectorAll('[id$="-counter"]').forEach(function (el) {
+            var parts      = el.textContent.split('/');
+            var max        = parts[1] ? parts[1].trim() : '5000';
+            el.textContent = '0 / ' + max;
+            el.classList.remove('char-counter--warn');
+          });
+        } else {
+          return res.json().catch(function () { return {}; }).then(function (body) {
+            showFormFeedback(form, 'error',
+              (body && body.message) || 'Something went wrong. Please try again or email us at support@simphonia.pt.');
+          });
+        }
+      })
+      .catch(function (err) {
+        if (err === 'no-token') return; // already shown a message above
+        console.error('[contact-form]', err);
+        showFormFeedback(form, 'error', 'Something went wrong. Please try again or email us at support@simphonia.pt.');
+      })
+      .then(function () {
+        // finally
+        submitBtn.disabled    = false;
+        submitBtn.textContent = origLabel;
       });
-
-      if (res.ok) {
-        lastSubmitTime = Date.now();
-        showFormFeedback(form, 'success', "Message sent! We'll get back to you within 24 hours.");
-        form.reset();
-
-        // Reset select placeholder styling
-        if (subjectEl) subjectEl.value = '';
-
-        // Reset character counters
-        form.querySelectorAll('[id$="-counter"]').forEach(function (el) {
-          const parts    = el.textContent.split('/');
-          const max      = parts[1] ? parts[1].trim() : '5000';
-          el.textContent = '0 / ' + max;
-          el.classList.remove('char-counter--warn');
-        });
-      } else {
-        const body = await res.json().catch(function () { return {}; });
-        const msg  = (body && body.message) || 'Something went wrong. Please try again or email us at support@simphonia.pt.';
-        console.error('[contact-form] Server error', res.status, body);
-        showFormFeedback(form, 'error', msg);
-      }
-    } catch (err) {
-      console.error('[contact-form]', err);
-      showFormFeedback(
-        form,
-        'error',
-        'Something went wrong. Please try again or email us at support@simphonia.pt.',
-      );
-    } finally {
-      submitBtn.disabled    = false;
-      submitBtn.textContent = origLabel;
-    }
   });
 }
 
 /* ─────────────────────────────────────────────────────────────
    Boot
    ───────────────────────────────────────────────────────────── */
-renderNav();
-renderDisplay(0);
-initFaqSearch();
+var browserLang = (navigator.language || 'en').split('-')[0].toLowerCase();
+loadFaqs(browserLang);
 initContactForm();
 

@@ -43,6 +43,11 @@
   border-radius: var(--radius-sm);
 }
 
+[data-theme="light"] .origin-block__img-tag {
+  background: rgba(254, 249, 238, 0.82);
+  color: var(--accent-dark);
+}
+
 .origin-block__body h2 {
   margin-top: var(--space-md);
 }

@@ -3,7 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+    font-src 'self' https://fonts.gstatic.com;
+    img-src 'self' data: https:;
+    connect-src 'self' https://api.simphonia.pt http://localhost:*;
+    upgrade-insecure-requests;
+  ">
   <title>Terms of Service — Simphonia eSIM</title>
   <meta name="description" content="Simphonia's terms of service. Read our terms and conditions for using the Simphonia eSIM service.">
   <meta name="theme-color" content="#121212">
@@ -30,7 +38,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap"
+        media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap">
+  </noscript>
   <link rel="stylesheet" href="../css/base.css">
   <link rel="stylesheet" href="../css/legal.css">
 </head>
@@ -39,7 +51,7 @@
   <main id="main-content">
 
     <section class="legal-hero">
-      <div class="container" style="position:relative;z-index:1;">
+      <div class="container rel-z1">
         <span class="label reveal">Legal</span>
         <h1 class="reveal">Terms of<br><span class="text-gradient">Service</span></h1>
         <p class="reveal">Last updated: March 22, 2026</p>
@@ -80,7 +92,7 @@
             <p>These Terms of Service ("Terms") govern your use of the Simphonia mobile application and website (the "Service") operated by Simphonia ("we", "us", "our"). By accessing or using the Service, you agree to be bound by these Terms.</p>
 
             <h2 id="acceptance">1. Acceptance of Terms</h2>
-            <p>By creating an account, making a purchase, or otherwise using the Service, you acknowledge that you have read, understood, and agree to be bound by these Terms and our <a href="../privacy/" style="color:var(--accent);">Privacy Policy</a>. If you do not agree, do not use the Service.</p>
+            <p>By creating an account, making a purchase, or otherwise using the Service, you acknowledge that you have read, understood, and agree to be bound by these Terms and our <a href="../privacy/" class="link-accent">Privacy Policy</a>. If you do not agree, do not use the Service.</p>
 
             <h2 id="description">2. Description of Service</h2>
             <p>Simphonia provides a platform for purchasing and managing eSIM (embedded SIM) data plans for use while traveling internationally. The Service includes:</p>
@@ -159,8 +171,7 @@
             <h2 id="contact">13. Contact</h2>
             <p>For questions about these Terms, contact us at:</p>
             <ul>
-              <li>Email: <a href="mailto:legal@simphonia.pt" style="color:var(--accent);">legal@simphonia.pt</a></li>
-              <li>Support: <a href="../support/" style="color:var(--accent);">simphonia.pt/support</a></li>
+              <li>Email: <a href="mailto:support@simphonia.pt" class="link-accent">support@simphonia.pt</a></li>
             </ul>
 
             <!-- Bottom CTA -->
@@ -179,37 +190,18 @@
 
   </main>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-  <script defer src="../js/components/layout.js?v=20260326-10"></script>
-  <script defer src="../js/animations.js?v=20260326-10"></script>
-  <script defer src="../js/main.js?v=20260326-10"></script>
-
-  <script>
-    // Highlight active TOC link on scroll
-    (function() {
-      const links = document.querySelectorAll('.legal-toc__link');
-      const sections = Array.from(links)
-        .map(l => document.querySelector(l.getAttribute('href')))
-        .filter(Boolean);
-
-      const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-height')) || 72;
-
-      function update() {
-        let current = sections[0];
-        sections.forEach(s => {
-          if (s.getBoundingClientRect().top <= navH + 40) current = s;
-        });
-        links.forEach(l => {
-          l.classList.toggle('legal-toc__link--active',
-            l.getAttribute('href') === '#' + current.id);
-        });
-      }
-
-      window.addEventListener('scroll', update, { passive: true });
-      update();
-    })();
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+          integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+          crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+          integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
+          crossorigin="anonymous" defer></script>
+  <script defer src="../js/cdn-fallback.js"></script>
+  <script defer src="../js/components/layout.js?v=20260331"></script>
+  <script defer src="../js/animations-core.js?v=20260331"></script>
+  <script defer src="../js/animations-subpages.js?v=20260331"></script>
+  <script defer src="../js/main.js?v=20260401"></script>
+  <!-- Legal TOC scroll-spy is handled by initLegalToc() in main.js -->
 </body>
 </html>
 

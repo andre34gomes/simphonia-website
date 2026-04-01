@@ -12,7 +12,12 @@
  *  – prefers-reduced-motion bail-out
  */
 
+let _globeInitialized = false;
+let _globeRenderer = null;
+
 function initGlobe(containerId = 'globe-container') {
+  if (_globeInitialized) return;
+
   const container = document.getElementById(containerId);
   if (!container || window.innerWidth < 768) return;
 
@@ -39,6 +44,9 @@ function initGlobe(containerId = 'globe-container') {
   renderer.setSize(container.clientWidth, container.clientHeight);
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
   container.appendChild(renderer.domElement);
+
+  _globeRenderer = renderer;
+  _globeInitialized = true;
 
   // --- Globe Geometry (32 segments — visually identical to 48 at 0.08 opacity) ---
   const globeRadius = 4;
@@ -165,31 +173,50 @@ function initGlobe(containerId = 'globe-container') {
   let targetRotX = 0;
   let targetRotY = 0;
 
-  document.addEventListener('mousemove', (e) => {
+  function onMouseMove(e) {
     mouseX = (e.clientX - window.innerWidth / 2) * 0.001;
     mouseY = (e.clientY - window.innerHeight / 2) * 0.001;
-  });
+  }
+  document.addEventListener('mousemove', onMouseMove, { passive: true });
 
   // --- Visibility & intersection state ---
   // Pause the render loop when the tab is hidden OR the globe is off-screen.
   let visible = true;
   let tabActive = true;
 
-  document.addEventListener('visibilitychange', () => {
+  function onVisibilityChange() {
     tabActive = !document.hidden;
-  });
+    if (tabActive && visible) startAnimate();
+    else stopAnimate();
+  }
+  document.addEventListener('visibilitychange', onVisibilityChange);
 
   const io = new IntersectionObserver(([entry]) => {
     visible = entry.isIntersecting;
+    if (visible && tabActive) startAnimate();
+    else stopAnimate();
   }, { threshold: 0.05 });
   io.observe(container);
 
   // --- Animation Loop ---
   let animId;
-  function animate() {
-    animId = requestAnimationFrame(animate);
 
-    // Skip rendering when the tab is hidden or the globe is scrolled out of view
+  function startAnimate() {
+    if (animId) return; // already running
+    animId = requestAnimationFrame(animate);
+  }
+
+  function stopAnimate() {
+    if (animId) {
+      cancelAnimationFrame(animId);
+      animId = null;
+    }
+  }
+
+  function animate() {
+    animId = null; // clear before scheduling next
+
+    // Stop loop entirely when the tab is hidden or the globe is scrolled out of view
     if (!tabActive || !visible) return;
 
     // Auto rotation
@@ -206,24 +233,67 @@ function initGlobe(containerId = 'globe-container') {
     particles.rotation.x += 0.0001;
 
     renderer.render(scene, camera);
+    animId = requestAnimationFrame(animate);
   }
 
-  animate();
+  startAnimate();
 
-  // --- Resize ---
+  // --- Resize (debounced to avoid thrashing during drag-resizes) ---
+  let resizeTimer = null;
   function onResize() {
-    camera.aspect = container.clientWidth / container.clientHeight;
-    camera.updateProjectionMatrix();
-    renderer.setSize(container.clientWidth, container.clientHeight);
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function () {
+      camera.aspect = container.clientWidth / container.clientHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(container.clientWidth, container.clientHeight);
+    }, 150);
   }
   window.addEventListener('resize', onResize, { passive: true });
+
+  // Cleanup on page unload to prevent WebGL context leaks
+  window.addEventListener('pagehide', function() {
+    stopAnimate();
+    clearTimeout(resizeTimer);
+    // Dispose all Three.js geometries and materials to free GPU memory
+    // (mirrors the SPA cleanup below so full-page navigations also release resources)
+    scene.traverse(function (obj) {
+      if (obj.geometry) obj.geometry.dispose();
+      if (obj.material) {
+        if (Array.isArray(obj.material)) {
+          obj.material.forEach(function (m) { m.dispose(); });
+        } else {
+          obj.material.dispose();
+        }
+      }
+    });
+    if (_globeRenderer) {
+      _globeRenderer.dispose();
+      _globeRenderer = null;
+      _globeInitialized = false;
+    }
+  });
 
   // Cleanup (in case of SPA navigation)
   return () => {
     cancelAnimationFrame(animId);
     io.disconnect();
+    document.removeEventListener('mousemove', onMouseMove);
+    document.removeEventListener('visibilitychange', onVisibilityChange);
     window.removeEventListener('resize', onResize);
+    // Dispose Three.js resources to free GPU memory
+    scene.traverse((obj) => {
+      if (obj.geometry) obj.geometry.dispose();
+      if (obj.material) {
+        if (Array.isArray(obj.material)) {
+          obj.material.forEach((m) => m.dispose());
+        } else {
+          obj.material.dispose();
+        }
+      }
+    });
     renderer.dispose();
     container.removeChild(renderer.domElement);
+    _globeRenderer = null;
+    _globeInitialized = false;
   };
 }

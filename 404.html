@@ -2,20 +2,50 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Page Not Found — Simphonia eSIM</title>
   <meta name="description" content="The page you're looking for doesn't exist. Let's get you back on track.">
   <meta name="theme-color" content="#121212">
   <meta name="robots" content="noindex, follow">
+  <!-- CSP: mirrors index.html policy for consistency -->
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+    font-src 'self' https://fonts.gstatic.com;
+    img-src 'self' data: https:;
+    connect-src 'self' https://api.simphonia.pt http://localhost:*;
+    upgrade-insecure-requests;
+  ">
   <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
   <link rel="shortcut icon" href="./assets/favicon.svg">
   <link rel="mask-icon" href="./assets/favicon.svg" color="#D4AF37">
   <script src="js/theme-init.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="./css/base.css">
-  <link rel="stylesheet" href="./css/home.css">
+  <!-- Async font loading — non-blocking, matches index.html pattern -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap"
+        media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap">
+  </noscript>
+
+  <!-- Critical inline CSS for instant first paint -->
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--accent:#D4AF37;--bg-primary:#121212;--text-primary:#FFFFFF;--font-body:'Inter',system-ui,-apple-system,sans-serif;--nav-height:72px}
+    [data-theme="light"]{--bg-primary:#FEF9EE;--text-primary:#1C1814}
+    @media(prefers-color-scheme:light){html:not([data-theme]){--bg-primary:#FEF9EE;--text-primary:#1C1814}}
+    html{-webkit-text-size-adjust:100%}
+    body{background-color:var(--bg-primary);color:var(--text-primary);font-family:var(--font-body);font-size:16px;line-height:1.6;overflow-x:clip;-webkit-font-smoothing:antialiased}
+    a{text-decoration:none;color:inherit}
+  </style>
+
+  <!-- Non-blocking CSS -->
+  <link rel="stylesheet" href="./css/base.css" media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="./css/base.css">
+  </noscript>
   <style>
     /* ── 404 Page ── */
     .error-section {
@@ -147,10 +177,17 @@
 
   </main>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script defer src="./js/components/layout.js?v=20260326-10"></script>
-  <script defer src="./js/animations.js?v=20260326-10"></script>
-  <script defer src="./js/main.js?v=20260326-10"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+          integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+          crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+          integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
+          crossorigin="anonymous" defer></script>
+  <script defer src="./js/cdn-fallback.js"></script>
+  <script defer src="./js/components/layout.js?v=20260331"></script>
+  <script defer src="./js/animations-core.js?v=20260331"></script>
+  <script defer src="./js/animations-subpages.js?v=20260331"></script>
+  <script defer src="./js/main.js?v=20260401"></script>
 
 </body>
 </html>

@@ -3,7 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+    font-src 'self' https://fonts.gstatic.com;
+    img-src 'self' data: https:;
+    connect-src 'self' https://api.simphonia.pt http://localhost:*;
+    upgrade-insecure-requests;
+  ">
   <title>Privacy Policy — Simphonia eSIM</title>
   <meta name="description" content="Simphonia's privacy policy. Learn how we collect, use, and protect your personal information.">
   <meta name="theme-color" content="#121212">
@@ -30,7 +38,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap"
+        media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap">
+  </noscript>
   <link rel="stylesheet" href="../css/base.css">
   <link rel="stylesheet" href="../css/legal.css">
 </head>
@@ -39,7 +51,7 @@
   <main id="main-content">
 
     <section class="legal-hero">
-      <div class="container" style="position:relative;z-index:1;">
+      <div class="container rel-z1">
         <span class="label reveal">Legal</span>
         <h1 class="reveal">Privacy<br><span class="text-gradient">Policy</span></h1>
         <p class="reveal">Last updated: March 22, 2026</p>
@@ -153,8 +165,7 @@
             <h2 id="contact">11. Contact Us</h2>
             <p>If you have questions about this Privacy Policy or wish to exercise your rights, contact us at:</p>
             <ul>
-              <li>Email: <a href="mailto:privacy@simphonia.pt" style="color:var(--accent);">privacy@simphonia.pt</a></li>
-              <li>Support: <a href="../support/" style="color:var(--accent);">simphonia.pt/support</a></li>
+              <li>Email: <a href="mailto:support@simphonia.pt" class="link-accent">support@simphonia.pt</a></li>
             </ul>
 
             <!-- Bottom CTA -->
@@ -173,11 +184,17 @@
 
   </main>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-  <script defer src="../js/components/layout.js?v=20260326-10"></script>
-  <script defer src="../js/animations.js?v=20260326-10"></script>
-  <script defer src="../js/main.js?v=20260326-10"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+          integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+          crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+          integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
+          crossorigin="anonymous" defer></script>
+  <script defer src="../js/cdn-fallback.js"></script>
+  <script defer src="../js/components/layout.js?v=20260331"></script>
+  <script defer src="../js/animations-core.js?v=20260331"></script>
+  <script defer src="../js/animations-subpages.js?v=20260331"></script>
+  <script defer src="../js/main.js?v=20260401"></script>
 
   <script>
     // Highlight active TOC link on scroll

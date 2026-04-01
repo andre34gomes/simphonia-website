@@ -6,7 +6,7 @@
  * + globe.js) have already run.
  */
 
-const LAYOUT_ASSET_VERSION = '20260326-10';
+const LAYOUT_ASSET_VERSION = '20260331';
 const REQUIRED_LAYOUT_APIS = [
   'initTheme',
   'injectShell',
@@ -109,6 +109,27 @@ function revealGsapFallbacks() {
     });
   });
 
+  // Showcase section: reveal only the first panel and first screen so content
+  // is visible if GSAP (or ScrollTrigger) never initialises. Revealing all
+  // Showcase section: ensure first panel/screen is visible if GSAP fails
+  document.querySelectorAll('.showcase-sticky__panel[data-panel="0"]').forEach(function (el) {
+    el.style.opacity = '1';
+    el.style.transform = 'none';
+    el.style.pointerEvents = 'auto';
+  });
+  document.querySelectorAll('.sas-screen[data-screen="0"]').forEach(function (el) {
+    el.style.opacity = '1';
+    el.style.pointerEvents = 'auto';
+  });
+
+  // CTA section buttons are hidden by _ctaButtonEntrance() via GSAP clipPath.
+  // If the user never scrolls that far, make sure they're always visible.
+  document.querySelectorAll('.cta-section .btn').forEach(function (el) {
+    el.style.opacity = '1';
+    el.style.clipPath = 'none';
+    el.style.transform = 'none';
+  });
+
   // Footer elements
   document.querySelectorAll('.footer__brand, .footer__col, .footer__bottom')
     .forEach(function (el) {
@@ -125,57 +146,116 @@ function revealGsapFallbacks() {
 }
 
 async function bootstrapSite() {
-  const layoutReady = await ensureLayoutBootstrap();
+  try {
+    const layoutReady = await ensureLayoutBootstrap();
 
-  if (!layoutReady) {
-    console.error('[main] Shared layout bootstrap is unavailable. Check js/components/layout.js and clear any stale cached asset.');
-    return;
+    if (!layoutReady) {
+      console.error('[main] Shared layout bootstrap is unavailable. Check js/components/layout.js and clear any stale cached asset.');
+      revealGsapFallbacks();
+      return;
+    }
+
+    // 0. Apply theme immediately (prevents flash)
+    window.initTheme();
+
+    // 1. Inject shared shell (skip-link, bg-noise, stars, cursor)
+    window.injectShell();
+
+    // 3. Inject shared nav + footer
+    window.injectNav();
+    window.injectFooter();
+
+    // 4. Inject noscript fallback
+    window.injectNoscript();
+
+    // 5. Inject progressive enhancement utilities
+    window.injectScrollProgress();
+    window.injectMobileCTA();
+    window.injectBackToTop();
+    window.injectCookieBanner();
+
+    // 5b. Announcement banner (homepage only, session-dismissible)
+    if (typeof window.injectAnnouncementBanner === 'function') {
+      window.injectAnnouncementBanner();
+    }
+
+    // 6. Custom cursor
+    initCursor();
+
+    // 6b. Populate deduplicated showcase templates (hero bg, status bars, nav bars)
+    populateShowcaseTemplates();
+
+    // 7. Star background canvas
+    if (document.getElementById('stars-canvas')) initStars();
+
+    // 8. Three.js globe (hero page only)
+    if (document.getElementById('globe-container')) initGlobe('globe-container');
+
+    // 9. GSAP scroll animations — has internal retry loop for CDN timing safety
+    initAnimations();
+
+    // 9b. Hero typing effect — starts after hero entrance animation completes
+    if (document.getElementById('typing-text')) {
+      setTimeout(initHeroTyping, 1200);
+    }
+
+    // 10. Safety net — if GSAP still hasn't loaded after 5 s, ensure everything visible
+    setTimeout(revealGsapFallbacks, 5000);
+
+    // 11. Native anchor navigation + focus polish
+    initSmoothScroll();
+
+    // 12. Legal page table-of-contents active-link tracker
+    initLegalToc();
+
+  } catch (err) {
+    console.error('[main] Bootstrap failed:', err);
+    // Ensure content is visible even if bootstrap errors out
+    revealGsapFallbacks();
+  }
+}
+
+// ============================================================
+// Showcase Template Populator — clones hero bg, stamps shared UI
+// ============================================================
+function populateShowcaseTemplates() {
+  // ── Clone hero background into showcase section ──
+  var heroBg = document.querySelector('.hero-postcard__bg:not(.hero-postcard__bg--showcase)');
+  var showcaseBg = document.getElementById('showcase-bg');
+  if (heroBg && showcaseBg) {
+    Array.from(heroBg.children).forEach(function (child) {
+      showcaseBg.appendChild(child.cloneNode(true));
+    });
   }
 
-  // 0. Apply theme immediately (prevents flash)
-  window.initTheme();
+  // ── Stamp iOS status bar into every [data-sas-status] placeholder ──
+  var STATUS_HTML =
+    '<span class="sas-time">9:41</span>' +
+    '<div class="sas-icons">' +
+      '<svg viewBox="0 0 24 24" fill="#fff"><rect x="1" y="14" width="3" height="6" rx="1"/><rect x="6" y="10" width="3" height="10" rx="1"/><rect x="11" y="6" width="3" height="14" rx="1"/></svg>' +
+      '<svg viewBox="0 0 24 24"><path d="M1.5 8.5a13 13 0 0 1 21 0" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><path d="M5 12.5a9 9 0 0 1 14 0" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/><circle cx="12" cy="17" r="2" fill="#fff"/></svg>' +
+      '<svg viewBox="0 0 24 24"><rect x="2" y="7" width="16" height="10" rx="2" fill="none" stroke="#fff" stroke-width="1.5"/><rect x="3.5" y="8.5" width="11" height="7" rx="1" fill="#4ade80"/><path d="M19 10v4" stroke="#fff" stroke-width="2" stroke-linecap="round"/></svg>' +
+    '</div>';
 
-  // 1. Inject shared shell (skip-link, bg-noise, stars, cursor)
-  window.injectShell();
+  document.querySelectorAll('[data-sas-status]').forEach(function (el) {
+    el.innerHTML = STATUS_HTML;
+  });
 
-  // 3. Inject shared nav + footer
-  window.injectNav();
-  window.injectFooter();
+  // ── Stamp bottom nav bar into every [data-sas-nav] placeholder ──
+  var NAV_ITEMS = [
+    { icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>', label: 'Home', idx: 0 },
+    { icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>', label: 'Browse', idx: 1 },
+    { icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="17" r="1" fill="currentColor"/></svg>', label: 'My eSIMs', idx: 2 },
+    { icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>', label: 'Profile', idx: 3 },
+  ];
 
-  // 4. Inject noscript fallback
-  window.injectNoscript();
-
-  // 5. Inject progressive enhancement utilities
-  window.injectScrollProgress();
-  window.injectMobileCTA();
-  window.injectBackToTop();
-  window.injectCookieBanner();
-
-  // 6. Custom cursor
-  initCursor();
-
-  // 7. Star background canvas
-  if (document.getElementById('stars-canvas')) initStars();
-
-  // 8. Three.js globe (hero page only)
-  if (document.getElementById('globe-container')) initGlobe('globe-container');
-
-  // 9. GSAP scroll animations — has internal retry loop for CDN timing safety
-  initAnimations();
-
-  // 9b. Hero typing effect — starts after hero entrance animation completes
-  if (document.getElementById('typing-text')) {
-    setTimeout(initHeroTyping, 1200);
-  }
-
-  // 10. Safety net — if GSAP still hasn't loaded after 5 s, ensure everything visible
-  setTimeout(revealGsapFallbacks, 5000);
-
-  // 11. Native anchor navigation + focus polish
-  initSmoothScroll();
-
-  // 12. Legal page table-of-contents active-link tracker
-  initLegalToc();
+  document.querySelectorAll('[data-sas-nav]').forEach(function (el) {
+    var activeIdx = parseInt(el.getAttribute('data-sas-nav'), 10);
+    el.innerHTML = NAV_ITEMS.map(function (item) {
+      var cls = item.idx === activeIdx ? 'sas-nav-item sas-nav-item--on' : 'sas-nav-item';
+      return '<div class="' + cls + '"><span class="sas-nav-icon">' + item.icon + '</span>' + item.label + '</div>';
+    }).join('');
+  });
 }
 
 bootstrapSite();
@@ -188,46 +268,27 @@ bootstrapSite();
   const strip = document.querySelector('.hero__destinations-strip');
   if (!strip) return;
 
-  const API_BASE  = 'https://api.simphonia.pt';
-  const TOKEN_KEY = 'simphonia_guest_token';
-  const EXPIRY_KEY = 'simphonia_guest_expiry';
-  const EXPIRY_MARGIN_MS = 60000;
-
-  // ── Helpers ────────────────────────────────────────────────
-  function flagEmoji(code) {
-    if (!code || code.length < 2) return '';
-    return Array.from(code.toUpperCase().slice(0, 2))
-      .map(function (c) { return String.fromCodePoint(c.charCodeAt(0) + 127397); })
-      .join('');
+  // Clone the marquee list for the seamless infinite scroll loop
+  // (previously duplicated in HTML, now created dynamically to reduce payload)
+  const track = strip.querySelector('.marquee-track');
+  const originalList = track && track.querySelector('.marquee-list');
+  if (originalList && track.querySelectorAll('.marquee-list').length < 2) {
+    const clone = originalList.cloneNode(true);
+    clone.setAttribute('aria-hidden', 'true');
+    track.appendChild(clone);
   }
 
-  function getGuestToken() {
-    const stored = localStorage.getItem(TOKEN_KEY);
-    const expiry = Number(localStorage.getItem(EXPIRY_KEY) || 0);
-    if (stored && Date.now() < expiry - EXPIRY_MARGIN_MS) {
-      return Promise.resolve(stored);
-    }
-    return fetch(API_BASE + '/api/v1/auth/guest', { method: 'POST' })
-      .then(function (res) {
-        if (!res.ok) throw new Error('Guest auth failed: ' + res.status);
-        return res.json();
-      })
-      .then(function (envelope) {
-        const data = envelope.data || envelope;
-        if (!data.token) throw new Error('No token in guest auth response');
-        const expiresIn = Number(data.expiresIn);
-        localStorage.setItem(TOKEN_KEY,  data.token);
-        localStorage.setItem(EXPIRY_KEY, isFinite(expiresIn) ? Date.now() + expiresIn * 1000 : 0);
-        return data.token;
-      });
-  }
+  const API_BASE  = (window.SIMPHONIA_API && window.SIMPHONIA_API.base) || 'https://api.simphonia.pt';
+
+  // getGuestToken() is provided by js/auth.js (loaded before main.js) via window.getGuestToken
+  var getGuestToken = window.getGuestToken;
 
   function populateLists(countries) {
     const lists = strip.querySelectorAll('.marquee-list');
     if (!lists.length || !countries.length) return;
 
     const html = countries.map(function (d) {
-      const flag = flagEmoji(d.countryCode);
+      const flag = window.flagEmoji(d.countryCode);
       const name = d.countryName || d.countryCode;
       return '<li class="marquee-item"><span class="marquee-item__flag">' + flag + '</span>' + name + '</li>';
     }).join('');
@@ -257,7 +318,18 @@ bootstrapSite();
     resumeTimer = null;
   }
 
+  let animating = false;
+
+  function startLoop() {
+    if (!animating) {
+      animating = true;
+      requestAnimationFrame(loop);
+    }
+  }
+
   function loop() {
+    if (!animating) return;
+
     if (!document.hidden) {
       // Normalization runs every frame — keeps the seamless loop intact
       // even when the user has manually scrolled past the reset point.
@@ -272,6 +344,21 @@ bootstrapSite();
     }
 
     requestAnimationFrame(loop);
+  }
+
+  // Only run the animation loop when the strip is visible on screen.
+  if ('IntersectionObserver' in window) {
+    var stripObserver = new IntersectionObserver(function (entries) {
+      if (entries[0].isIntersecting) {
+        startLoop();
+      } else {
+        animating = false;
+      }
+    });
+    stripObserver.observe(strip);
+  } else {
+    // Fallback for older browsers — always animate
+    startLoop();
   }
 
   // ── Desktop: hover pauses; leaving restarts the 3 s timer ──
@@ -324,17 +411,20 @@ bootstrapSite();
     scheduleResume();
   });
 
-  requestAnimationFrame(loop);
+  // Initial animation start is handled by the IntersectionObserver above.
+  // Fallback startLoop() is also handled there for browsers without IO support.
 
   // ── API fetch ──────────────────────────────────────────────
   const lang = (navigator.language || 'en').split('-')[0];
 
   getGuestToken()
     .then(function (token) {
+      var controller = new AbortController();
+      var tid = setTimeout(function () { controller.abort(); }, 10000);
       return fetch(
-        API_BASE + '/api/v1/countries?currency=EUR&lang=' + lang,
-        { headers: { Authorization: 'Bearer ' + token } }
-      );
+        API_BASE + '/api/v1/countries/all?currency=EUR&lang=' + lang,
+        { headers: { Authorization: 'Bearer ' + token }, signal: controller.signal }
+      ).finally(function () { clearTimeout(tid); });
     })
     .then(function (res) {
       if (!res.ok) throw new Error('Countries fetch failed: ' + res.status);
@@ -347,8 +437,9 @@ bootstrapSite();
       }
     })
     .catch(function (err) {
-      // Keep the static fallback items on error — no visible disruption
-      console.warn('[marquee] Could not load destinations from API:', err);
+      // Backend unavailable (e.g. local dev without the server running) —
+      // the fallback list already loaded above, so this is non-critical.
+      console.warn('[marquee] API unavailable, using static fallback destinations:', err.message);
     });
 }());
 
@@ -371,20 +462,55 @@ function initLegalToc() {
     getComputedStyle(document.documentElement).getPropertyValue('--nav-height'), 10
   ) || 72;
 
-  function update() {
-    let current = sections[0];
-    sections.forEach(s => {
-      if (s.getBoundingClientRect().top <= navH + 40) current = s;
-    });
+  function setActive(id) {
     links.forEach(l => {
       l.classList.toggle(
         'legal-toc__link--active',
-        l.getAttribute('href') === '#' + current.id
+        l.getAttribute('href') === '#' + id
       );
     });
   }
 
-  window.addEventListener('scroll', update, { passive: true });
+  function update() {
+    // Use a viewport-relative threshold (35 % of window height) so a section
+    // heading that is visibly in the upper portion of the screen gets highlighted.
+    // The minimum is navH + 28 so that a click-to-anchor scroll (which lands the
+    // heading at scroll-margin-top ≈ navH + 24 px) still activates the correct
+    // item immediately.
+    const threshold = Math.max(navH + 28, window.innerHeight * 0.35);
+
+    let current = sections[0];
+    for (let i = 0; i < sections.length; i++) {
+      if (sections[i].getBoundingClientRect().top <= threshold) {
+        current = sections[i];
+      }
+    }
+    setActive(current.id);
+  }
+
+  // Click handler: immediately highlight the correct link and, after
+  // the browser finishes the anchor scroll, re-sync the scroll spy.
+  links.forEach(l => {
+    l.addEventListener('click', () => {
+      const hash = l.getAttribute('href');
+      if (hash) setActive(hash.slice(1));
+      // Re-run after the scroll settles to keep the spy in sync
+      setTimeout(update, 120);
+    });
+  });
+
+  let ticking = false;
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(function () {
+        update();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
   update();
 }
 
@@ -433,11 +559,10 @@ function initCursor() {
     'input', 'textarea', 'select',
   ].join(',');
 
-  document.addEventListener('mouseover', (e) => {
-    if (e.target.closest(SEL)) cursor.classList.add('cursor--hover');
-  });
-  document.addEventListener('mouseout', (e) => {
-    if (e.target.closest(SEL)) cursor.classList.remove('cursor--hover');
+  // Single pointerover listener replaces separate mouseover + mouseout,
+  // halving the number of document-level event listeners.
+  document.addEventListener('pointerover', (e) => {
+    cursor.classList.toggle('cursor--hover', !!e.target.closest(SEL));
   });
 }
 
@@ -485,10 +610,23 @@ function initStars() {
   }
 
   let rafId = null;
+  let isCanvasVisible = true;
+
+  function startDraw() {
+    if (rafId) return; // already running
+    rafId = requestAnimationFrame(draw);
+  }
+
+  function stopDraw() {
+    if (rafId) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
+    }
+  }
 
   function draw() {
-    rafId = requestAnimationFrame(draw);
-    if (document.hidden) return; // don't paint while the tab is invisible
+    rafId = null; // clear before scheduling next
+    if (document.hidden || !isCanvasVisible) return; // stop loop when hidden
 
     ctx.clearRect(0, 0, w, h);
     for (const s of stars) {
@@ -501,11 +639,31 @@ function initStars() {
       ctx.fillStyle = 'rgba(' + starRgb + ',' + s.a + ')';
       ctx.fill();
     }
+    rafId = requestAnimationFrame(draw);
   }
 
-  window.addEventListener('resize', resize, { passive: true });
+  // Pause the rAF loop when the canvas scrolls out of view to save CPU
+  if ('IntersectionObserver' in window) {
+    new IntersectionObserver(function (entries) {
+      isCanvasVisible = entries[0].isIntersecting;
+      if (isCanvasVisible && !document.hidden) startDraw();
+      else stopDraw();
+    }, { threshold: 0 }).observe(canvas);
+  }
+
+  // Also pause/resume on tab visibility change
+  document.addEventListener('visibilitychange', function () {
+    if (!document.hidden && isCanvasVisible) startDraw();
+    else stopDraw();
+  });
+
+  let resizeTimer = null;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(resize, 150);
+  }, { passive: true });
   populate();
-  draw();
+  startDraw();
 }
 
 // ============================================================
@@ -544,9 +702,42 @@ function initSmoothScroll() {
 // ============================================================
 // Hero Typing Effect — mirrors Flutter TypingPlaceholder
 // ============================================================
+let _heroTypingActive = false;
+let _heroTypingTimer = null;
+
+// Cancel hero typing timer on page hide (bfcache / tab close)
+window.addEventListener('pagehide', function () {
+  if (_heroTypingTimer) {
+    clearTimeout(_heroTypingTimer);
+    _heroTypingTimer = null;
+  }
+  _heroTypingActive = false;
+});
+
+// Pause typing when tab is hidden, resume when visible
+var _heroTypingPausedByVisibility = false;
+var _heroTypingTickFn = null;
+
+document.addEventListener('visibilitychange', function () {
+  if (document.hidden) {
+    // Pause: clear the pending timer
+    if (_heroTypingTimer) {
+      clearTimeout(_heroTypingTimer);
+      _heroTypingTimer = null;
+      _heroTypingPausedByVisibility = true;
+    }
+  } else if (_heroTypingPausedByVisibility && _heroTypingActive && _heroTypingTickFn) {
+    // Resume: schedule the next tick immediately
+    _heroTypingPausedByVisibility = false;
+    _heroTypingTimer = setTimeout(_heroTypingTickFn, 100);
+  }
+});
+
 function initHeroTyping() {
   const el = document.getElementById('typing-text');
   if (!el) return;
+  if (_heroTypingActive) return;
+  _heroTypingActive = true;
 
   const phrases = [
     'Wherever You Go.',
@@ -563,7 +754,6 @@ function initHeroTyping() {
   let phraseIndex = 0;
   let charIndex   = 0;
   let isDeleting  = false;
-  let timer       = null;
 
   function tick() {
     const phrase = phrases[phraseIndex];
@@ -573,10 +763,10 @@ function initHeroTyping() {
       if (charIndex < phrase.length) {
         charIndex++;
         el.textContent = phrase.substring(0, charIndex);
-        timer = setTimeout(tick, TYPING_SPEED);
+        _heroTypingTimer = setTimeout(tick, TYPING_SPEED);
       } else {
         // Finished typing — pause then start deleting
-        timer = setTimeout(function () {
+        _heroTypingTimer = setTimeout(function () {
           isDeleting = true;
           tick();
         }, PAUSE_DURATION);
@@ -586,16 +776,17 @@ function initHeroTyping() {
       if (charIndex > 0) {
         charIndex--;
         el.textContent = phrase.substring(0, charIndex);
-        timer = setTimeout(tick, DELETING_SPEED);
+        _heroTypingTimer = setTimeout(tick, DELETING_SPEED);
       } else {
         // Finished deleting — move to next phrase
         isDeleting = false;
         phraseIndex = (phraseIndex + 1) % phrases.length;
-        timer = setTimeout(tick, TYPING_SPEED);
+        _heroTypingTimer = setTimeout(tick, TYPING_SPEED);
       }
     }
   }
 
+  _heroTypingTickFn = tick;
   tick();
 }
 

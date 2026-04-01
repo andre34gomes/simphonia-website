@@ -10,10 +10,10 @@
     Referrer-Policy              = "strict-origin-when-cross-origin"
     Permissions-Policy           = "camera=(), microphone=(), geolocation=(), payment=(self)"
     Strict-Transport-Security    = "max-age=31536000; includeSubDomains; preload"
-    # CSP: script-src allows self + cdnjs CDN. No inline scripts exist,
-    # so 'unsafe-inline' is NOT needed for script-src (strong XSS protection).
-    # style-src still uses 'unsafe-inline' for dynamic class toggling.
-    Content-Security-Policy      = "default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://images.unsplash.com https://api.simphonia.pt data: blob:; connect-src 'self' https://api.simphonia.pt; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;"
+    # CSP: script-src allows self + cdnjs CDN. unsafe-inline is needed
+    # for the theme-init script and stylesheet onload handlers.
+    # style-src uses 'unsafe-inline' for dynamic class toggling and critical CSS.
+    Content-Security-Policy      = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://images.unsplash.com https://api.simphonia.pt data: blob:; connect-src 'self' https://api.simphonia.pt; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;"
 
 # ── Redirects ─────────────────────────────────────────────────
 [[redirects]]

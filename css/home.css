@@ -10,22 +10,22 @@
    this variable so they always match at every breakpoint.
    ============================================== */
 :root {
-  --phone-width: clamp(228px, 20.9vw, 276px);
+  --phone-width: clamp(248px, 22vw, 296px);
 }
 @media (max-width: 1100px) {
-  :root { --phone-width: clamp(209px, 19vw, 247px); }
+  :root { --phone-width: clamp(228px, 21vw, 268px); }
 }
 @media (max-width: 960px) {
-  :root { --phone-width: clamp(190px, 39.9vw, 247px); }
+  :root { --phone-width: min(276px, 39.9svh); }
 }
 @media (max-width: 768px) {
-  :root { --phone-width: clamp(181px, 38vw, 228px); }
+  :root { --phone-width: min(266px, 39.9svh); }
 }
 @media (max-width: 480px) {
-  :root { --phone-width: clamp(171px, 47.5vw, 219px); }
+  :root { --phone-width: min(247px, 38svh); }
 }
 @media (max-width: 360px) {
-  :root { --phone-width: clamp(162px, 47.5vw, 200px); }
+  :root { --phone-width: min(228px, 36svh); }
 }
 
 /* ==============================================
@@ -894,6 +894,9 @@
 
   .hero-postcard__orb--2 { display: none; }
 
+  /* Hide all remaining orbs on small phones — filter:blur() is too expensive */
+  .hero-postcard__orb { display: none; }
+
   /* Destinations strip — tighter */
   .hero__destinations-strip {
     padding: 0.375rem 0;
@@ -1397,6 +1400,7 @@
   height: 100%;
   width: 68%;
   border-radius: 2px;
+  background: linear-gradient(90deg, var(--accent), rgba(212, 175, 55, 0.55));
   animation: data-pulse 3s ease-in-out infinite;
 }
 
@@ -1474,19 +1478,57 @@
   z-index: 2;
   padding: 0;
   min-height: 100dvh;
+  overflow: visible;
+  isolation: isolate;
+}
+
+/* Decorative background — cloned from the hero by JS at runtime */
+.showcase-sticky__bg {
+  /* retained for reference; .hero-postcard__bg is used instead */
+}
+
+/* ── Showcase background overrides ──
+   The hero's base class has contain:layout paint + a left-biased gradient
+   (at 20% 50%) that fades to --bg-primary. Both are wrong for the showcase:
+   - contain:layout breaks position:absolute resolution inside GSAP's pin-spacer
+   - the left-biased gradient is invisible on narrow screens (fades to body colour)
+   - the hero overlay fades hard to --bg-primary, washing everything out
+   Fix: remove containment, centre the gradient, soften the overlay. */
+.hero-postcard__bg.hero-postcard__bg--showcase {
+  contain: none;
+  background: radial-gradient(ellipse 140% 100% at 50% 50%,
+    rgba(30, 25, 18, 1) 0%, var(--bg-primary) 75%);
+}
+.hero-postcard__bg--showcase .hero-postcard__bg-overlay {
+  background: radial-gradient(ellipse 90% 70% at 50% 50%,
+    transparent 0%, rgba(18, 18, 18, 0.35) 100%);
+}
+[data-theme="light"] .hero-postcard__bg.hero-postcard__bg--showcase {
+  background: radial-gradient(ellipse 140% 100% at 50% 50%,
+    rgba(254, 249, 238, 1) 0%, var(--bg-primary) 75%);
+}
+[data-theme="light"] .hero-postcard__bg--showcase .hero-postcard__bg-overlay {
+  background: radial-gradient(ellipse 90% 70% at 50% 50%,
+    transparent 0%, rgba(254, 249, 238, 0.3) 100%);
 }
 
 /* Viewport-filling stage — GSAP pins this element to the viewport while the section scrolls */
 .showcase-sticky__scene {
+  position: relative;
   height: 100vh;
   height: 100dvh;
   display: flex;
   align-items: center;
-  overflow: hidden;
+  /* Allow portal ring/glow to bleed outside the 100dvh boundary on desktop.
+     On mobile (≤960px) this is overridden to overflow: clip. */
+  overflow: visible;
+  z-index: 1;
 }
 
-
+/* Ensure inner content sits above the background */
 .showcase-sticky__inner {
+  position: relative;
+  z-index: 2;
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 4rem;
@@ -1551,11 +1593,12 @@
 ───────────────────────────────────────── */
 .showcase-panels-stage {
   position: relative;
+  /* min-height gives the left column enough height on desktop so it matches the
+     phone column height; on mobile this is overridden by the breakpoint rules. */
   min-height: 380px;
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
+  /* Note: children are position:absolute so display:flex has no layout effect.
+     We keep perspective here for the GSAP 3D scale transitions on the panels. */
   perspective: 900px;
   perspective-origin: 50% 50%;
 }
@@ -1567,13 +1610,24 @@
   right: 0;
   opacity: 0;
   pointer-events: none;
-  will-change: transform, opacity;
   transform-style: preserve-3d;
   /* GSAP drives opacity + translateY/scale — no CSS transition */
 }
 
+/* CSS fallback: show first panel/screen before GSAP initialises them.
+   GSAP immediately overrides these with inline styles once it runs,
+   so there is no double-flash — this only covers the brief gap between
+   HTML parse and deferred script execution. */
+.showcase-sticky__panel[data-panel="0"] {
+  opacity: 1;
+}
+.sas-screen[data-screen="0"] {
+  opacity: 1;
+}
+
 .showcase-sticky__panel.is-active {
   pointer-events: auto;
+  will-change: transform, opacity;
 }
 
 /* ─────────────────────────────────────────
@@ -3087,6 +3141,8 @@ section[id] {
   grid-auto-rows: auto;
   grid-auto-flow: dense;
   gap: var(--space-md);
+  /* Isolate layout recalculations during batch reveal animations */
+  contain: layout style;
 }
 
 .feat-card {
@@ -3205,6 +3261,19 @@ section[id] {
    RESPONSIVE — Home Page
    ============================================== */
 
+/* ── Desktop short viewports (laptops, landscape tablets ≥ 961px wide) ── */
+@media (min-width: 961px) and (max-height: 820px) {
+  /* Constrain the showcase phone so its height never pushes the inner container
+     so high that the top of the phone slides behind the fixed nav bar.
+     Reserved: nav_height(72px) + 80px breathing room on each side = 224px total. */
+  .showcase-sticky__phone .iphone-mockup {
+    width: min(
+      var(--phone-width),
+      max(0px, calc((100dvh - var(--nav-height, 72px) - 80px) * 290 / 594))
+    );
+  }
+}
+
 /* ── Large desktops / narrow desktops ── */
 @media (max-width: 1100px) {
   .hero__split { grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.9fr); gap: 2rem; }
@@ -3220,47 +3289,68 @@ section[id] {
   .metrics-strip__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-md); }
 
   /* ── Showcase — vertical layout (phone top, panels bottom), animations preserved ── */
+
   .showcase-sticky__scene {
     height: 100vh;
     height: 100dvh;
-    flex-direction: column;   /* stack inner vertically so flex:1 works on height */
+    flex-direction: column;
     align-items: stretch;
+    /* overflow: clip (not hidden) — clips decorative overflow without establishing a BFC
+       or scroll container, which is important for GSAP panel y-transition animations
+       and for position:fixed pinning to work relative to the viewport. */
+    overflow: clip;
   }
   .showcase-sticky__inner {
     grid-template-columns: 1fr;
-    /* Phone row (order:1 → visual row 1): sized by its content (phone aspect-ratio).
-       Text row (order:2 → visual row 2): fills all remaining height. */
-    grid-template-rows: auto 1fr;
+    grid-template-rows: 1fr auto;
     gap: 0;
-    /* flex:1 fills scene height reliably in column-flex context on all browsers */
     flex: 1 1 0;
     min-height: 0;
     align-items: stretch;
-    padding-top: calc(var(--nav-height, 64px) + clamp(0.25rem, 0.8dvh, 0.75rem));
-    padding-bottom: calc(clamp(0.75rem, 1.5dvh, 1.25rem) + env(safe-area-inset-bottom, 0px));
+    padding-top: calc(var(--nav-height, 64px) + clamp(0.5rem, 1.5dvh, 1rem));
+    padding-bottom: calc(clamp(1rem, 2.5dvh, 2rem) + env(safe-area-inset-bottom, 0px));
     box-sizing: border-box;
   }
-  /* Phone row */
+  /* Phone row — phone uses --phone-width (shared with hero), centred */
   .showcase-sticky__phone {
     order: 1;
     padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
+    overflow: hidden;          /* only clip the phone if it overflows, not the text */
+    min-height: 0;
   }
-  /* Text row — vertically centred within the remaining viewport height */
+  /* Constrain phone height so it fits inside the phone row on all tablet viewports.
+     Formula: (available_height_for_phone) × (phone_aspect_ratio width/height)
+     where available_height ≈ 100dvh - nav - top_padding - bottom_padding - text_area.
+     The 240px estimate covers: segments (12px) + gap (14px) + panels-stage (≥160px) + spare.
+     max(0px, ...) guards against negative calc values on very short viewports (landscape phones). */
+  .showcase-sticky__phone .iphone-mockup {
+    width: min(
+      var(--phone-width),
+      max(0px, calc((100dvh - var(--nav-height, 64px) - 240px - 2.5rem) * 290 / 594))
+    );
+  }
+  /* Reset the hero phone-wrap's decorative translateX so the phone is perfectly
+     centred inside the showcase's centered flex column on mobile. */
+  .showcase-sticky__phone .hero__phone-wrap {
+    transform: none;
+  }
+  /* Text row — no clipping, allows GSAP y-animations to show */
   .showcase-sticky__left {
     order: 2;
-    padding: 0;                      /* symmetrical: flex centering handles offsets */
+    padding: 0;
+    /* Note: flex:0 0 auto has no effect here — parent is a CSS Grid, not flexbox.
+       The left column's height is controlled by grid-template-rows: 1fr auto. */
     position: relative;
     z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;         /* centre segments + stage inside the 1fr row */
-    gap: clamp(0.375rem, 1dvh, 0.75rem);
-    min-height: 0;
-    overflow: hidden;
+    justify-content: flex-start;
+    gap: clamp(0.5rem, 1.2dvh, 0.875rem);
+    overflow: visible;
   }
   .showcase-segments {
     width: 100%;
@@ -3270,20 +3360,20 @@ section[id] {
     flex-shrink: 0;
   }
   .showcase-segment { height: 2.5px; }
-  /* Stage: constrained height so absolute panels don't create a huge empty box */
+  /* Stage: tall enough for all text content to be visible */
   .showcase-panels-stage {
     width: 100%;
-    flex: none;                      /* do NOT grow; use explicit height */
-    /* Fits the text content (~140px) with a little breathing room */
-    min-height: clamp(140px, 20dvh, 200px);
+    flex: none;
+    min-height: clamp(160px, 24dvh, 220px);
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     position: relative;
+    overflow: visible;
   }
-  /* Panels: push content down slightly so it feels centred in the stage */
+  /* Panels: no extra top padding needed, use stage alignment */
   .showcase-sticky__panel {
-    padding-top: clamp(0.5rem, 1.5dvh, 1.25rem);
+    padding-top: 0;
   }
   .showcase-panel__ghost-num { display: none; }
 
@@ -3311,50 +3401,32 @@ section[id] {
   }
   .dest-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .dest-grid-card { max-height: 360px; }
-}
 
-/* ── Tablet portrait (768–960px) ── */
-@media (max-width: 960px) {
+  /* ── Hero V2 — single-column layout ── */
   .hero--v2 { height: auto; min-height: auto; padding-bottom: 0; padding-top: calc(var(--nav-height) + var(--space-xl)); }
   .hero--v2 > .container { flex: unset; }
-
   .hero__badge-chip { display: none; }
-
   .hero__split {
     grid-template-columns: 1fr;
     gap: var(--space-xl);
     padding: 2rem 0 1.5rem;
     text-align: center;
   }
-
   .hero__text {
     display: flex; flex-direction: column; align-items: center;
   }
-
-  .hero__h1 { font-size: clamp(2.25rem, 7vw, 4.5rem); }
+  .hero__h1 { font-size: clamp(1.75rem, 8vw, 3rem); }
   .hero__h1 .line-1 { white-space: normal; }
   .hero__h1 .line-2 { white-space: nowrap; justify-content: center; }
-  .hero__desc { max-width: 540px; text-align: center; }
-  .hero--v2 { height: auto; min-height: auto; padding-bottom: 0; }
-  .hero__trust-points { justify-content: center; }
-
+  .hero__desc { max-width: 100%; font-size: 1rem; text-align: center; margin-bottom: var(--space-xl); }
+  .hero__trust-points { justify-content: center; gap: var(--space-md); }
+  .hero__trust-sep { display: none; }
   .hero__visual {
     padding: 0; height: auto;
     min-height: 420px;
     overflow: visible; align-items: flex-start;
   }
-
-  .hero--v2 .iphone-mockup {
-    height: auto;
-    width: min(276px, 39.9svh);
-    flex-shrink: 0;
-  }
-
   .hero__scroll { display: none; }
-
-  .hero__h1 { font-size: clamp(2rem, 6vw, 4rem); }
-
-  .hero__desc { max-width: 100%; font-size: 1rem; margin-bottom: var(--space-xl); }
   .hero__actions {
     grid-template-columns: 1fr;
     width: 100%;
@@ -3367,20 +3439,13 @@ section[id] {
     min-height: 4.5rem;
     padding-inline: 1.25rem;
   }
-  .hero__trust-points { justify-content: center; gap: var(--space-md); }
-  .hero__trust-sep { display: none; }
-
   .marquee-item { padding: 0 1.25rem; font-size: 0.8125rem; }
   .marquee-strip::before, .marquee-strip::after { width: 60px; }
-  .hero__h1 { font-size: clamp(1.75rem, 8vw, 3rem); }
   .dest-scroller__item { padding: 0.5rem 1rem; font-size: 0.8125rem; }
   .dest-scroller-section { padding: var(--space-3xl) 0; }
-
   .steps--cards { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
-  .feature-grid--new { grid-template-columns: 1fr; }
+  .feature-grid--new { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
   .feat-card--wide { grid-column: span 1; }
-
-  .dest-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 /* ── Phones / small tablets ── */
@@ -3405,35 +3470,7 @@ section[id] {
   .feature-card--large { grid-column: span 1; grid-template-columns: 1fr; }
 
   .hero__visual { height: auto; min-height: 370px; overflow: visible; }
-  .hero--v2 .iphone-mockup { height: auto; width: min(266px, 39.9svh); }
   .hero__h1 { font-size: clamp(2rem, 8.5vw, 3.5rem); }
-  .hero__desc { max-width: 100%; font-size: 1rem; margin-bottom: var(--space-xl); }
-  .hero__actions {
-    grid-template-columns: 1fr;
-    width: 100%;
-    max-width: 360px;
-  }
-  .hero__actions .btn,
-  .hero__actions .store-badge {
-    width: 100%;
-    justify-content: center;
-    min-height: 4.5rem;
-    padding-inline: 1.25rem;
-  }
-  .hero__trust-points { justify-content: center; gap: var(--space-md); }
-  .hero__trust-sep { display: none; }
-
-  .marquee-item { padding: 0 1.25rem; font-size: 0.8125rem; }
-  .marquee-strip::before, .marquee-strip::after { width: 60px; }
-  .hero__h1 { font-size: clamp(1.75rem, 8vw, 3rem); }
-  .dest-scroller__item { padding: 0.5rem 1rem; font-size: 0.8125rem; }
-  .dest-scroller-section { padding: var(--space-3xl) 0; }
-
-  .steps--cards { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
-  .feature-grid--new { grid-template-columns: 1fr; }
-  .feat-card--wide { grid-column: span 1; }
-
-  .dest-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 
 /* ── Small phones ── */
@@ -3443,7 +3480,6 @@ section[id] {
   .trust-bar__stat { flex: 1 1 100%; }
 
   .hero__visual { height: auto; min-height: 300px; overflow: visible; }
-  .hero--v2 .iphone-mockup { height: auto; width: min(247px, 38svh); }
 
   /* Destinations — single column, landscape cards */
   .dest-grid { grid-template-columns: 1fr; }
@@ -3483,22 +3519,17 @@ section[id] {
 
   /* Showcase — phone-sized improvements */
   .showcase-panel__title { font-size: clamp(1.5rem, 6vw, 1.875rem); }
-  .showcase-panel__desc  { font-size: clamp(0.875rem, 2.5vw, 1rem); max-width: 300px; line-height: 1.6; }
+  .showcase-panel__desc  { font-size: clamp(0.8125rem, 2.3vw, 0.9375rem); max-width: 300px; line-height: 1.6; }
   .showcase-sticky__panel h3 { font-size: 1.0625rem; }
   .showcase-sticky__panel p  { font-size: 0.875rem; }
-  .showcase-panel__icon {
-    width: 42px; height: 42px;
-    font-size: 1.125rem;
-    margin-bottom: var(--space-sm);
-  }
   .showcase-segments { max-width: 170px; }
-  /* More breathing room above phone; safe-area at bottom for iOS home indicator */
   .showcase-sticky__inner {
-    padding-top: calc(var(--nav-height, 64px) + clamp(0.75rem, 3dvh, 2rem));
-    padding-bottom: calc(clamp(0.5rem, 1dvh, 1rem) + env(safe-area-inset-bottom, 0px));
+    padding-top: calc(var(--nav-height, 64px) + clamp(0.5rem, 2dvh, 1.25rem));
+    padding-bottom: calc(clamp(0.75rem, 1.5dvh, 1.25rem) + env(safe-area-inset-bottom, 0px));
   }
-  /* Do NOT set .showcase-sticky__phone padding here —
-     the 960px breathing-room top value (clamp 0.5rem,2.5dvh,1.5rem) must apply */
+  .showcase-panels-stage {
+    min-height: clamp(150px, 22dvh, 200px);
+  }
   .iphone-mockup {
     border-radius: 34px;
     border-width: 4px;
@@ -3534,6 +3565,32 @@ section[id] {
   }
 }
 
+/* ── Landscape phones — showcase phone is too tall to display meaningfully ── */
+@media (max-height: 500px) and (orientation: landscape) {
+  /* Hide the phone on landscape phones — the viewport is too short to show
+     both the phone mockup and the text panels without severe clipping.
+     Users can rotate to portrait to see the full experience. */
+  .showcase-sticky__phone { display: none; }
+
+  /* Expand the text column to fill the full width */
+  .showcase-sticky__inner {
+    grid-template-rows: 1fr;
+    place-items: center;
+  }
+  .showcase-sticky__left {
+    order: 1;
+    max-width: 560px;
+    margin: 0 auto;
+    text-align: center;
+    align-items: center;
+  }
+  .showcase-panel__title { text-align: center; }
+  .showcase-panel__desc { text-align: center; max-width: 480px; }
+  .showcase-panels-stage {
+    min-height: clamp(120px, 18dvh, 180px);
+  }
+}
+
 /* ── Very small screens (SE, Galaxy S, etc.) ── */
 @media (max-width: 360px) {
   .hero__h1 { font-size: 2.15rem; }
@@ -3546,11 +3603,19 @@ section[id] {
   }
 
   .showcase-sticky__panel {
-    padding: 0.75rem var(--space-md) 0; /* conserve vertical space on tiny screens */
+    padding: 0 var(--space-md);
   }
-
+  /* Tighter constraint for very small screens: text area is smaller so we can
+     use 210px as the reserved height (segments + stage min-height at this breakpoint). */
+  .showcase-sticky__phone .iphone-mockup {
+    width: min(
+      var(--phone-width),
+      max(0px, calc((100dvh - var(--nav-height, 64px) - 210px - 2.5rem) * 290 / 594))
+    );
+  }
   .showcase-segments { max-width: 160px; }
-  .showcase-panel__title { font-size: clamp(1.3125rem, 5.5vw, 1.5rem); }
+  .showcase-panels-stage { min-height: clamp(145px, 21dvh, 185px); }
+  .showcase-panel__title { font-size: clamp(1.25rem, 5.5vw, 1.5rem); }
   .showcase-panel__desc  { max-width: 270px; font-size: 0.8125rem; }
 
   .dest-grid-card {

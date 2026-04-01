@@ -14,7 +14,13 @@
       "src": "/assets/favicon.svg",
       "type": "image/svg+xml",
       "sizes": "any",
-      "purpose": "any maskable"
+      "purpose": "any"
+    },
+    {
+      "src": "/assets/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "maskable"
     }
   ],
   "related_applications": [
@@ -29,7 +35,6 @@
     }
   ],
   "prefer_related_applications": true,
-  "screenshots": [],
   "shortcuts": [
     {
       "name": "Browse Destinations",

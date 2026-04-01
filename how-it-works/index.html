@@ -3,7 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+    font-src 'self' https://fonts.gstatic.com;
+    img-src 'self' data: https:;
+    connect-src 'self' https://api.simphonia.pt http://localhost:*;
+    upgrade-insecure-requests;
+  ">
   <title>How It Works — Simphonia eSIM</title>
   <meta name="description" content="Get connected in 3 simple steps. Choose your destination, buy instantly, and travel connected with Simphonia eSIM.">
   <meta name="theme-color" content="#121212">
@@ -28,19 +36,53 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/base.css">
-  <link rel="stylesheet" href="../css/how-it-works.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap"
+        media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap">
+  </noscript>
+  <!-- Critical CSS: above-the-fold rules inlined for fast first paint -->
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--accent:#D4AF37;--bg-primary:#121212;--text-primary:#FFFFFF;--font-body:'Inter',system-ui,-apple-system,sans-serif;--nav-height:72px}
+    [data-theme="light"]{--bg-primary:#FEF9EE;--text-primary:#1C1814}
+    @media(prefers-color-scheme:light){html:not([data-theme]){--bg-primary:#FEF9EE;--text-primary:#1C1814}}
+    html{-webkit-text-size-adjust:100%}
+    body{background-color:var(--bg-primary);color:var(--text-primary);font-family:var(--font-body);font-size:16px;line-height:1.6;overflow-x:clip;-webkit-font-smoothing:antialiased}
+    img{max-width:100%;height:auto;display:block}
+    a{text-decoration:none;color:inherit}
+    .container{max-width:1200px;margin:0 auto;padding:0 clamp(1rem,4vw,2.5rem)}
+  </style>
+
+  <!-- Full stylesheets: preload as style, apply on load for non-blocking render -->
+  <link rel="stylesheet" href="../css/base.css" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="../css/how-it-works.css" media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/how-it-works.css">
+  </noscript>
+
+  <!-- Structured Data: Breadcrumb -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Simphonia", "item": "https://simphonia.pt/" },
+      { "@type": "ListItem", "position": 2, "name": "How It Works", "item": "https://simphonia.pt/how-it-works/" }
+    ]
+  }
+  </script>
 </head>
 <body>
 
   <main id="main-content">
 
     <!-- Hero -->
-    <section class="about-hero">
-      <div class="container" style="position:relative;z-index:1;">
+    <section class="about-hero" aria-labelledby="hiw-heading">
+      <div class="container rel-z1">
         <span class="label reveal">How It Works</span>
-        <h1 class="reveal">Connected in<br><span class="text-gradient">Under 2 Minutes</span></h1>
+        <h1 class="reveal" id="hiw-heading">Connected in<br><span class="text-gradient">Under 2 Minutes</span></h1>
         <p class="reveal">No stores to visit, no SIM cards to swap, no contracts to sign.<br>Just seamless global connectivity in three steps.</p>
       </div>
       <div class="hero__scroll" aria-hidden="true">
@@ -50,11 +92,11 @@
     </section>
 
     <!-- Steps Timeline -->
-    <section class="section" id="steps">
+    <section class="section" id="steps" aria-labelledby="steps-heading">
       <div class="container">
         <div class="section-header reveal">
           <span class="label">The Process</span>
-          <h2>Three Steps to Connected</h2>
+          <h2 id="steps-heading">Three Steps to Connected</h2>
           <p>No store visits, no waiting, no physical SIM swap required.</p>
         </div>
 
@@ -66,7 +108,7 @@
           <div class="timeline__step timeline__step--left">
             <div class="timeline__card">
               <div class="timeline__card-img">
-                <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=800" alt="Browsing destination plans" loading="lazy">
+                <img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=800" alt="Browsing destination plans" width="800" height="533" loading="lazy" decoding="async">
               </div>
               <div class="timeline__card-body">
                 <span class="label">Step 1</span>
@@ -95,7 +137,7 @@
             </div>
             <div class="timeline__card">
               <div class="timeline__card-img">
-                <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=800" alt="Secure checkout on phone" loading="lazy">
+                <img src="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?auto=format&fit=crop&q=80&w=800" alt="Secure checkout on phone" width="800" height="533" loading="lazy" decoding="async">
               </div>
               <div class="timeline__card-body">
                 <span class="label">Step 2</span>
@@ -114,7 +156,7 @@
           <div class="timeline__step timeline__step--left">
             <div class="timeline__card">
               <div class="timeline__card-img">
-                <img src="https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?auto=format&fit=crop&q=80&w=800" alt="Traveler connected abroad" loading="lazy">
+                <img src="https://images.unsplash.com/photo-1516738901171-8eb4fc13bd20?auto=format&fit=crop&q=80&w=800" alt="Traveler connected abroad" width="800" height="533" loading="lazy" decoding="async">
               </div>
               <div class="timeline__card-body">
                 <span class="label">Step 3</span>
@@ -141,12 +183,12 @@
     <!-- CTA -->
     <section class="section cta-section">
       <div class="cta-section__bg" aria-hidden="true"></div>
-      <div class="container" style="position:relative;z-index:2;">
+      <div class="container rel-z1">
         <div class="reveal text-center">
           <h2>
             Ready to Get Started?
           </h2>
-          <p style="font-size:1.125rem;max-width:480px;margin:0 auto var(--space-2xl);">Explore our destinations and find the perfect eSIM plan for your next trip.</p>
+          <p>Explore our destinations and find the perfect eSIM plan for your next trip.</p>
           <div class="flex flex-center gap-md">
             <a href="../destinations/" class="btn btn--primary btn--lg">Browse Destinations</a>
             <a href="../" class="btn btn--outline btn--lg">Back to Home</a>
@@ -157,11 +199,17 @@
 
   </main>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-  <script defer src="../js/components/layout.js?v=20260326-10"></script>
-  <script defer src="../js/animations.js?v=20260326-10"></script>
-  <script defer src="../js/main.js?v=20260326-10"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+          integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+          crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+          integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
+          crossorigin="anonymous" defer></script>
+  <script defer src="../js/cdn-fallback.js"></script>
+  <script defer src="../js/components/layout.js?v=20260331"></script>
+  <script defer src="../js/animations-core.js?v=20260331"></script>
+  <script defer src="../js/animations-subpages.js?v=20260331"></script>
+  <script defer src="../js/main.js?v=20260401"></script>
 
 </body>
 </html>

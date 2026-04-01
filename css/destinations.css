@@ -6,13 +6,8 @@
    ============================================================ */
 
 /* Hero */
-.destinations-hero {
-  padding-top: calc(var(--nav-height) + var(--space-3xl));
-  padding-bottom: var(--space-3xl);
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
+/* Hero — viewport-filling styles inherited from base.css shared hero rules.
+   Only page-specific overrides live here. */
 
 .destinations-hero > .container {
   padding-inline: clamp(2rem, 8vw, 6rem);
@@ -47,36 +42,10 @@
 }
 
 
-/* Search clear button */
-.search-bar__clear {
-  position: absolute;
-  right: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 28px;
-  height: 28px;
-  border-radius: var(--radius-full);
-  color: var(--text-tertiary);
-  background: var(--glass-bg, rgba(255,255,255,0.06));
-  border: 1px solid var(--border-subtle);
-  cursor: pointer;
-  transition: color        var(--duration-fast),
-              background   var(--duration-fast),
-              border-color var(--duration-fast);
-  padding: 0;
-}
-
-.search-bar__clear:hover {
-  color: var(--text-primary);
-  border-color: var(--border-default);
-}
 
 /* Filter Tabs */
 .filter-tabs {
-  display: flex;
+  display: none;
   justify-content: center;
   gap: var(--space-sm);
   flex-wrap: wrap;
@@ -160,7 +129,6 @@
               border-color 0.4s var(--ease-out);
   transform-style: preserve-3d;
   position: relative;
-  cursor: pointer;
   animation: cardIn 0.4s var(--ease-out, ease-out) both;
 }
 
@@ -182,10 +150,9 @@
 
 .dest-card:hover {
   border-color: var(--border-accent);
-  transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 24px 70px rgba(0,0,0,0.25),
-              0 0 0 1px var(--border-accent),
-              0 0 40px rgba(212, 175, 55, 0.09);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 48px rgba(0,0,0,0.18),
+              0 0 0 1px var(--border-accent);
 }
 
 .dest-card:hover::after { opacity: 1; }
@@ -194,7 +161,7 @@
 .dest-card__img-wrap {
   position: relative;
   overflow: hidden;
-  height: 160px;
+  height: 180px;
 }
 
 .dest-card__img {
@@ -205,15 +172,16 @@
   display: block;
 }
 
-.dest-card:hover .dest-card__img { transform: scale(1.08); }
+.dest-card:hover .dest-card__img { transform: scale(1.05); }
 
 .dest-card__body {
-  padding: var(--space-md) var(--space-lg);
+  padding: var(--space-md) var(--space-lg) var(--space-lg);
 }
 
 .dest-card__name {
-  font-size: 1rem;
+  font-size: 1.0625rem;
   font-weight: 600;
+  line-height: 1.3;
 }
 
 /* Plans count line */
@@ -221,28 +189,6 @@
   font-size: 0.875rem;
   color: var(--text-tertiary);
   margin-top: 0.25rem;
-}
-
-/* Footer row: price + cta link */
-.dest-card__footer {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: var(--space-sm);
-}
-
-.dest-card__cta {
-  display: flex;
-  align-items: center;
-  gap: 0.25rem;
-  font-size: 0.75rem;
-  color: var(--text-tertiary);
-  transition: color var(--duration-fast);
-}
-
-.dest-card:hover .dest-card__cta,
-.dest-card:focus-within .dest-card__cta {
-  color: var(--accent);
 }
 
 /* Popular badge inside card name */
@@ -291,9 +237,117 @@
 /* ── Loading / error states (rendered by JS into dest-grid) ── */
 .dest-state {
   grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  padding: var(--space-3xl) 0;
+  padding: var(--space-4xl) var(--space-xl);
   color: var(--text-tertiary);
+  min-height: 320px;
+}
+
+/* ── Error variant: glass card with icon + message + retry ── */
+.dest-state--error {
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--radius-xl);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  gap: var(--space-md);
+  padding: var(--space-4xl) var(--space-2xl);
+  transition: border-color var(--duration-normal) var(--ease-out);
+}
+
+.dest-state--error:hover {
+  border-color: var(--border-accent);
+}
+
+/* Animated globe icon container */
+.dest-state__icon {
+  width: 72px;
+  height: 72px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--accent-subtle);
+  border: 1px solid var(--border-accent);
+  margin-bottom: var(--space-sm);
+  animation: state-icon-breathe 3s ease-in-out infinite;
+}
+
+.dest-state__icon svg {
+  width: 36px;
+  height: 36px;
+  stroke: var(--accent);
+  opacity: 0.85;
+}
+
+@keyframes state-icon-breathe {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(212,175,55,0); }
+  50%      { transform: scale(1.04); box-shadow: 0 0 24px rgba(212,175,55,0.12); }
+}
+
+.dest-state__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  line-height: 1.3;
+  letter-spacing: -0.01em;
+}
+
+.dest-state__desc {
+  font-size: 0.9375rem;
+  color: var(--text-secondary);
+  line-height: 1.65;
+  max-width: 360px;
+}
+
+.dest-state__retry {
+  margin-top: var(--space-sm);
+  gap: 0.5rem;
+}
+
+.dest-state__retry:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-subtle);
+}
+
+/* Spinning refresh icon inside the retry button on click */
+.dest-state__retry:active svg {
+  animation: spin 0.6s linear;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dest-state__icon { animation: none; }
+  .dest-state__retry:active svg { animation: none; }
+}
+
+@media (max-width: 480px) {
+  .dest-state {
+    padding: var(--space-3xl) var(--space-md);
+    min-height: 260px;
+  }
+
+  .dest-state__icon {
+    width: 60px;
+    height: 60px;
+  }
+
+  .dest-state__icon svg {
+    width: 30px;
+    height: 30px;
+  }
+
+  .dest-state__title {
+    font-size: 1.125rem;
+  }
+
+  .dest-state__desc {
+    font-size: 0.875rem;
+  }
 }
 
 .dest-state__spinner {
@@ -301,11 +355,31 @@
   display: inline-block;
 }
 
+/* Loading variant — spinning globe icon */
+.dest-state--loading {
+  gap: var(--space-lg);
+}
+
+.dest-state__icon--spin {
+  animation: spin 2.5s linear infinite;
+  border: 1px solid var(--border-subtle);
+}
+
+.dest-state__icon--spin svg {
+  stroke: var(--text-tertiary);
+  opacity: 0.6;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dest-state__icon--spin { animation: none; }
+}
+
 /* Card starting-price line */
 .dest-card__price {
   font-size: 0.8125rem;
-  color: var(--text-tertiary);
-  margin-top: 0.25rem;
+  color: var(--text-secondary, var(--text-tertiary));
+  margin-top: 0.375rem;
+  font-weight: 500;
 }
 
 /* ==============================================
@@ -319,12 +393,24 @@
   .filter-tabs { gap: 0.375rem; }
   .filter-tab { padding: 0.5rem 1rem; font-size: 0.8125rem; }
   .dest-grid { gap: var(--space-md); }
-  .dest-card__img-wrap { height: 140px; }
-  .dest-card__body { padding: var(--space-sm) var(--space-md); }
+  .dest-card__img-wrap { height: 150px; }
+  .dest-card__body { padding: var(--space-sm) var(--space-md) var(--space-md); }
 }
 
 @media (max-width: 480px) {
-  .filter-tab { width: 100%; text-align: center; }
+  .filter-tabs {
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding-bottom: var(--space-xs);
+  }
+  .filter-tabs::-webkit-scrollbar { display: none; }
+  .filter-tab {
+    flex-shrink: 0;
+    scroll-snap-align: start;
+  }
 }
 
 /* ── Loading spinner ── */

@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
+Disallow: /api/
 
 # Block build artefacts and internal resources
 Disallow: /build/

@@ -24,9 +24,9 @@ html {
      on the root element makes <html> the scroll container instead of <body>,
      which breaks GSAP ScrollTrigger position readings and causes scroll to
      stutter or freeze when changing direction.
-     Anchor offset for the fixed nav is handled via scroll-padding-top. */
+     Anchor offset: accounts for fixed nav + announcement banner (if shown). */
   -webkit-text-size-adjust: 100%;
-  scroll-padding-top: calc(var(--nav-height, 72px) + 0.5rem);
+  scroll-padding-top: calc(var(--nav-height, 72px) + var(--announcement-h, 0px) + 0.5rem);
 }
 
 body {
@@ -76,6 +76,11 @@ button {
   background: none;
 }
 
+/* Eliminate 300ms tap delay on mobile and prevent double-tap-zoom on controls */
+a, button, input, select, textarea, [role="button"], summary {
+  touch-action: manipulation;
+}
+
 input, textarea, select {
   font-family: inherit;
   font-size: inherit;
@@ -102,6 +107,28 @@ input, textarea, select {
 /* ==============================================
    2. TOKENS (CSS Custom Properties)
    ============================================== */
+
+/* System preference fallback — applies light-mode tokens before JS sets
+   data-theme. Once theme-init.js runs it adds [data-theme], which takes
+   specificity precedence and this block becomes inert. */
+@media (prefers-color-scheme: light) {
+  html:not([data-theme]) {
+    --bg-primary: #FEF9EE;
+    --bg-secondary: #FBF4E4;
+    --bg-tertiary: #F5EDD5;
+    --bg-elevated: #FFFFFF;
+    --text-primary: #1C1814;
+    --text-secondary: #78716C;
+    --text-tertiary: #A8A29E;
+    --text-inverse: #1A1816;
+    --glass-bg: rgba(255, 255, 255, 0.50);
+    --glass-border: rgba(100, 65, 15, 0.08);
+    --nav-scrolled-bg: rgba(254, 249, 238, 0.92);
+    --wordmark-color: #1C1814;
+    --star-color: 28, 24, 20;
+  }
+}
+
 :root {
   /* Brand — shared across themes */
   --accent: #D4AF37;
@@ -120,7 +147,9 @@ input, textarea, select {
   --text-primary: #FFFFFF;
   --text-secondary: #D1CDC7;
   --text-tertiary: #7D756D;
-  --text-inverse: #1A1816;
+  /* White text on the gold accent background — expected for a dark-theme UI
+     (btn--primary, active filter tabs, etc. all use this token). */
+  --text-inverse: #FFFFFF;
 
   /* Glass */
   --glass-bg: rgba(255, 255, 255, 0.04);
@@ -195,7 +224,9 @@ input, textarea, select {
   --text-primary: #1C1814;
   --text-secondary: #78716C;
   --text-tertiary: #A8A29E;
-  --text-inverse: #FFFFFF;
+  /* Dark text on gold accent (buttons, active tabs) — same as dark-mode value.
+     White-on-gold would only be ~1.8:1 contrast; this gives ~5:1. */
+  --text-inverse: #1A1816;
 
   --glass-bg: rgba(255, 255, 255, 0.50);
   --glass-border: rgba(100, 65, 15, 0.08);
@@ -279,33 +310,6 @@ p {
   color: var(--accent);
 }
 
-.btn--primary::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -120%;
-  width: 55%;
-  height: 100%;
-  background: linear-gradient(
-    105deg,
-    transparent 20%,
-    rgba(255, 255, 255, 0.12) 45%,
-    rgba(255, 255, 255, 0.18) 50%,
-    rgba(255, 255, 255, 0.12) 55%,
-    transparent 80%
-  );
-  pointer-events: none;
-  transition: none;
-}
-
-.btn--primary:hover::after {
-  animation: btn-shimmer 0.65s ease-out forwards;
-}
-
-@keyframes btn-shimmer {
-  to { left: 200%; }
-}
-
 /* ==============================================
    4. LAYOUT UTILITIES
    ============================================== */
@@ -344,9 +348,9 @@ p {
   padding-top: var(--space-2xl);
 }
 
-/* Anchor scroll offset — ensures fixed nav doesn't cover targets */
+/* Anchor scroll offset — ensures fixed nav + announcement banner don't cover targets */
 section[id] {
-  scroll-margin-top: calc(var(--nav-height) + 1rem);
+  scroll-margin-top: calc(var(--nav-height) + var(--announcement-h, 0px) + 1rem);
 }
 
 .section--gradient {
@@ -443,12 +447,12 @@ section[id] {
 .btn--primary {
   background: var(--accent);
   color: var(--text-inverse);
-  box-shadow: 0 0 0 0 var(--accent-glow);
+  box-shadow: 0 0 16px rgba(212, 175, 55, 0.18);
 }
 
 .btn--primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 8px 30px var(--accent-glow);
+  box-shadow: 0 0 28px rgba(212, 175, 55, 0.30);
 }
 
 .btn--primary:active {
@@ -712,6 +716,17 @@ body.theme-transition .footer,
 body.theme-transition .glass-card,
 body.theme-transition .section--alt,
 body.theme-transition .hero-postcard__bg,
+body.theme-transition .mobile-cta-bar,
+body.theme-transition .back-to-top,
+body.theme-transition .cookie-banner__content,
+body.theme-transition .faq-item,
+body.theme-transition .faq-panel__display,
+body.theme-transition .legal-toc,
+body.theme-transition .origin-block__img-tag,
+body.theme-transition .search-bar__input,
+body.theme-transition input,
+body.theme-transition textarea,
+body.theme-transition select,
 body.theme-transition h1,
 body.theme-transition h2,
 body.theme-transition h3,
@@ -791,6 +806,39 @@ body.theme-transition .btn {
   height: 18px;
 }
 
+/* Search clear button (shared: destinations, support) */
+.search-bar__clear {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border-radius: var(--radius-full);
+  color: var(--text-tertiary);
+  background: var(--glass-bg, rgba(255, 255, 255, 0.06));
+  border: 1px solid var(--border-subtle);
+  cursor: pointer;
+  transition: color        var(--duration-fast),
+              background   var(--duration-fast),
+              border-color var(--duration-fast);
+}
+
+.search-bar__clear svg {
+  width: 0.75rem;
+  height: 0.75rem;
+  pointer-events: none;
+}
+
+.search-bar__clear:hover {
+  color: var(--text-primary);
+  border-color: var(--border-default);
+}
+
 /* --- FAQ Accordion (shared: how-it-works, support) --- */
 .faq-list {
   max-width: 780px;
@@ -845,11 +893,17 @@ body.theme-transition .btn {
   flex-shrink: 0;
   width: 18px;
   height: 18px;
+  /* stroke matches --text-tertiary in dark mode (#7D756D) */
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%237D756D' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   background-repeat: no-repeat;
   background-position: center;
   background-size: contain;
   transition: transform 0.3s var(--ease-out);
+}
+
+/* Light mode: use --text-tertiary value for light theme (#A8A29E) */
+[data-theme="light"] .faq-item summary::after {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23A8A29E' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
 }
 
 .faq-item[open] > summary {
@@ -875,9 +929,7 @@ body.theme-transition .btn {
   padding: var(--space-5xl) 0;
   position: relative;
   overflow: hidden;
-  min-height: 100dvh;
-  display: flex;
-  flex-direction: column;
+  /* min-height, display, flex-direction inherited from .section */
   align-items: center;
   justify-content: center;
 }
@@ -944,8 +996,9 @@ body.theme-transition .btn {
   flex-shrink: 0;
 }
 
-/* --- Inner-page Hero (shared: about, support, legal, how-it-works) --- */
+/* --- Inner-page Hero (shared: about, support, legal, destinations, how-it-works) --- */
 .about-hero,
+.destinations-hero,
 .support-hero,
 .legal-hero {
   padding-top: calc(var(--nav-height) + var(--space-3xl));
@@ -961,6 +1014,7 @@ body.theme-transition .btn {
 }
 
 .about-hero > .container,
+.destinations-hero > .container,
 .support-hero > .container,
 .legal-hero > .container {
   position: relative;
@@ -1328,10 +1382,10 @@ body.theme-transition .btn {
 /* ── Close button — absolutely positioned, mirrors hamburger corner ── */
 .nav__mobile-close {
   position: absolute;
-  top: calc((var(--nav-height) - 42px) / 2);
-  right: calc(0.875rem + 8px - (42px - 24px) / 2); /* align with hamburger */
-  width: 42px;
-  height: 42px;
+  top: calc((var(--nav-height) - 44px) / 2);
+  right: calc(0.875rem + 8px - (44px - 24px) / 2); /* align with hamburger */
+  width: 44px;
+  height: 44px;
   border-radius: 50%;
   border: 1px solid var(--border-default);
   background: var(--glass-bg);
@@ -1681,12 +1735,16 @@ html.gsap-ready .reveal--scale {
   clip-path: inset(0 0 100% 0);
 }
 
-/* Footer elements — clipped until GSAP wipes them in */
-html.gsap-ready .footer__brand,
-html.gsap-ready .footer__col,
-html.gsap-ready .footer__bottom {
-  clip-path: inset(0 0 100% 0);
+/* _genericReveals() intentionally skips .cta-section children, so we must
+   reset the pre-clip here — otherwise the CTA content is permanently hidden. */
+html.gsap-ready .cta-section .reveal {
+  clip-path: none;
 }
+
+/* Footer elements — GSAP animates them in via _footerReveal(), but the
+   initial clip is set by JS (gsap.fromTo) rather than CSS.  This avoids
+   a permanently invisible footer when the ScrollTrigger never fires
+   (e.g. on short pages, or when the section is already in view). */
 
 /* Reduced motion */
 @media (prefers-reduced-motion: reduce) {
@@ -1809,6 +1867,17 @@ html.gsap-ready .footer__bottom {
   .glass-card:hover {
     transform: none;
   }
+
+  /* Step & feature cards — disable hover lift on touch to prevent sticky hover */
+  .step-card:hover {
+    transform: none;
+  }
+  .feat-card:hover {
+    transform: none;
+  }
+  .dest-grid-card:hover img {
+    transform: none;
+  }
 }
 
 @media (max-width: 768px) {
@@ -1881,9 +1950,9 @@ html.gsap-ready .footer__bottom {
     font-size: 0.875rem;
   }
 
-  /* Search bar — smaller on phones */
+  /* Search bar — smaller on phones but at least 16px to prevent iOS auto-zoom */
   .search-bar__input {
-    font-size: 0.9375rem;
+    font-size: 1rem;
   }
 }
 
@@ -1927,8 +1996,8 @@ html.gsap-ready .footer__bottom {
     gap: var(--space-sm);
   }
   .cta-section .flex .btn {
-    max-width: 280px;
-    padding: 0.75rem 1.5rem;
+    max-width: 100%;
+    padding: 0.875rem 1.5rem;
     font-size: 0.875rem;
   }
 }
@@ -2244,7 +2313,7 @@ html.gsap-ready .feature-grid--new {
   background: var(--accent);
   border-color: var(--accent);
   color: var(--text-inverse);
-  box-shadow: 0 8px 24px var(--accent-glow);
+  box-shadow: 0 0 24px rgba(212, 175, 55, 0.28);
   transform: translateY(-2px) scale(1);
 }
 
@@ -2257,6 +2326,16 @@ html.gsap-ready .feature-grid--new {
   .mobile-cta-bar--visible ~ .back-to-top,
   body:has(.mobile-cta-bar--visible) .back-to-top {
     bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Shift cookie banner above the mobile CTA bar so buttons stay accessible */
+  body:has(.mobile-cta-bar--visible) .cookie-banner {
+    bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* When both CTA bar and cookie banner are visible, push back-to-top above both */
+  body:has(.mobile-cta-bar--visible):has(.cookie-banner--visible) .back-to-top {
+    bottom: calc(11rem + env(safe-area-inset-bottom, 0px));
   }
 }
 
@@ -2339,6 +2418,8 @@ html.gsap-ready .feature-grid--new {
   .cookie-banner__content {
     gap: var(--space-md);
     padding: var(--space-md) var(--space-lg);
+    flex-wrap: nowrap;
+    flex-direction: column;
   }
 
   .cookie-banner__icon {
@@ -2347,7 +2428,13 @@ html.gsap-ready .feature-grid--new {
 
   .cookie-banner__actions {
     width: 100%;
-    justify-content: flex-end;
+    flex-direction: column;
+    gap: var(--space-xs);
+  }
+
+  .cookie-banner__actions .btn {
+    width: 100%;
+    justify-content: center;
   }
 }
 
@@ -2367,6 +2454,7 @@ html.gsap-ready .feature-grid--new {
   pointer-events: none;
   box-shadow: 0 0 8px rgba(212, 175, 55, 0.5);
   transition: transform 0.05s linear;
+  will-change: transform; /* continuously animated during scroll */
 }
 
 /* ==============================================
@@ -2439,11 +2527,11 @@ html.gsap-ready .feature-grid--new {
 
 .announcement-banner__close {
   position: absolute;
-  right: var(--space-md);
+  right: var(--space-sm);
   top: 50%;
   transform: translateY(-50%);
-  width: 28px;
-  height: 28px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;

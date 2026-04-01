@@ -193,6 +193,13 @@
   border-radius: var(--radius-lg);
 }
 
+/* .legal-prose a forces color:var(--accent) on all links — override for buttons
+   so the primary-button text colour is preserved (white on gold / dark on gold). */
+.legal-prose .legal-cta a.btn {
+  color: var(--text-inverse);
+  text-decoration: none;
+}
+
 .legal-cta__text h4 {
   font-size: 1.0625rem;
   font-weight: 700;

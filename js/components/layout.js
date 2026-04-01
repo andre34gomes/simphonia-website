@@ -8,6 +8,40 @@ const THEME_KEY = 'simphonia-theme';
 const NAV_COLLAPSE_WIDTH = 960;
 
 // ────────────────────────────────────────
+// Shared utility: Country code → flag emoji
+// ────────────────────────────────────────
+window.flagEmoji = function(code) {
+  if (!code || code.length < 2) return '';
+  return Array.from(code.toUpperCase().slice(0, 2))
+    .map(function(c) { return String.fromCodePoint(c.charCodeAt(0) + 127397); })
+    .join('');
+};
+
+// ────────────────────────────────────────
+// Shared utility: HTML escape (XSS prevention)
+// ────────────────────────────────────────
+window.escHTML = function(str) {
+  var d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+};
+
+// ────────────────────────────────────────
+// Shared utility: API base URL detection
+// ────────────────────────────────────────
+window.SIMPHONIA_API = Object.freeze({
+  base: (function () {
+    var h = location.hostname;
+    // Local development: use local backend
+    if (h === 'localhost' || h === '127.0.0.1' || h === '0.0.0.0') {
+      return 'http://localhost:3000';
+    }
+    // Production / staging
+    return 'https://api.simphonia.pt';
+  })(),
+});
+
+// ────────────────────────────────────────
 // Shared scroll coordinator
 // ────────────────────────────────────────
 
@@ -122,12 +156,19 @@ function applyTheme(theme) {
 }
 
 /** Toggle between light / dark. */
+let _themeTransitionTimer = null;
 function toggleTheme() {
-  // Enable smooth transition class
+  // Clear any pending timer from a previous rapid toggle before creating a new one
+  if (_themeTransitionTimer) {
+    clearTimeout(_themeTransitionTimer);
+    _themeTransitionTimer = null;
+  }
   document.body.classList.add('theme-transition');
   applyTheme(currentTheme() === 'dark' ? 'light' : 'dark');
-  // Remove transition class after animation completes
-  setTimeout(() => document.body.classList.remove('theme-transition'), 400);
+  _themeTransitionTimer = setTimeout(() => {
+    document.body.classList.remove('theme-transition');
+    _themeTransitionTimer = null;
+  }, 400);
 }
 
 /** Call once, early — before DOM paint when possible. */
@@ -326,10 +367,24 @@ function injectScrollProgress() {
   bar.setAttribute('aria-label', 'Page scroll progress');
   document.body.appendChild(bar);
 
+  // Cache document height — reading scrollHeight forces a layout reflow,
+  // so we only recompute on resize (not on every scroll tick).
+  let docH = document.documentElement.scrollHeight - window.innerHeight;
+
+  let resizeTick = false;
+  window.addEventListener('resize', () => {
+    if (!resizeTick) {
+      resizeTick = true;
+      requestAnimationFrame(() => {
+        docH = document.documentElement.scrollHeight - window.innerHeight;
+        resizeTick = false;
+      });
+    }
+  }, { passive: true });
+
   let ticking = false;
   const update = () => {
-    const docH = document.documentElement.scrollHeight - window.innerHeight;
-    const pct  = docH > 0 ? Math.min(100, (window.scrollY / docH) * 100) : 0;
+    const pct = docH > 0 ? Math.min(100, (window.scrollY / docH) * 100) : 0;
     bar.style.transform = `scaleX(${pct / 100})`;
     bar.setAttribute('aria-valuenow', Math.round(pct));
     ticking = false;
@@ -379,9 +434,20 @@ function injectAnnouncementBanner() {
   // We'll insert the banner as first child of body after nav is set.
   document.body.appendChild(banner);
 
+  // Measure banner height and expose as CSS variable so scroll-padding-top,
+  // and any other layout that needs to account for the banner, can adapt.
+  requestAnimationFrame(() => {
+    const h = banner.offsetHeight;
+    if (h > 0) {
+      document.documentElement.style.setProperty('--announcement-h', h + 'px');
+    }
+  });
+
   document.getElementById('announcement-close')?.addEventListener('click', () => {
     try { sessionStorage.setItem(BANNER_KEY, '1'); } catch (_) {}
     banner.classList.add('announcement-banner--closing');
+    // Clear the CSS variable so scroll-padding returns to its default
+    document.documentElement.style.setProperty('--announcement-h', '0px');
     setTimeout(() => banner.remove(), 350);
   });
 }
@@ -467,7 +533,9 @@ function activeClass(slug) {
     const knownPages = ['destinations', 'how-it-works', 'support', 'about', 'privacy', 'terms'];
     return knownPages.includes(last) ? '' : 'nav__link--active';
   }
-  return path.includes('/' + slug) ? 'nav__link--active' : '';
+  // Exact segment match: /slug, /slug/, or /slug/index.html — not substring matches
+  const pattern = new RegExp('(^|/)' + slug + '(/|/index\\.html|$)');
+  return pattern.test(path) ? 'nav__link--active' : '';
 }
 
 /**
@@ -823,6 +891,7 @@ if (typeof window !== 'undefined') {
     getStoredTheme,
     initBackToTop: injectBackToTop,
     initTheme,
+    injectAnnouncementBanner,
     injectBackToTop,
     injectCookieBanner,
     injectFooter,

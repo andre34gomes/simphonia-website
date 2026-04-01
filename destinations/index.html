@@ -3,7 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+    font-src 'self' https://fonts.gstatic.com;
+    img-src 'self' data: https:;
+    connect-src 'self' https://api.simphonia.pt http://localhost:*;
+    upgrade-insecure-requests;
+  ">
   <title>Destinations — Simphonia eSIM</title>
   <meta name="description" content="Browse eSIM plans for 200+ countries and regions. Find the perfect data plan for your next trip.">
   <meta name="theme-color" content="#121212">
@@ -28,9 +36,44 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="../css/base.css">
-  <link rel="stylesheet" href="../css/destinations.css">
+  <link rel="dns-prefetch" href="https://api.simphonia.pt">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap"
+        media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap">
+  </noscript>
+  <!-- Critical CSS: above-the-fold rules inlined for fast first paint -->
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--accent:#D4AF37;--bg-primary:#121212;--text-primary:#FFFFFF;--font-body:'Inter',system-ui,-apple-system,sans-serif;--nav-height:72px}
+    [data-theme="light"]{--bg-primary:#FEF9EE;--text-primary:#1C1814}
+    @media(prefers-color-scheme:light){html:not([data-theme]){--bg-primary:#FEF9EE;--text-primary:#1C1814}}
+    html{-webkit-text-size-adjust:100%}
+    body{background-color:var(--bg-primary);color:var(--text-primary);font-family:var(--font-body);font-size:16px;line-height:1.6;overflow-x:clip;-webkit-font-smoothing:antialiased}
+    img{max-width:100%;height:auto;display:block}
+    a{text-decoration:none;color:inherit}
+    .container{max-width:1200px;margin:0 auto;padding:0 clamp(1rem,4vw,2.5rem)}
+  </style>
+
+  <!-- Full stylesheets: preload as style, apply on load for non-blocking render -->
+  <link rel="stylesheet" href="../css/base.css" media="print" onload="this.media='all'">
+  <link rel="stylesheet" href="../css/destinations.css" media="print" onload="this.media='all'">
+  <noscript>
+    <link rel="stylesheet" href="../css/base.css">
+    <link rel="stylesheet" href="../css/destinations.css">
+  </noscript>
+
+  <!-- Structured Data: Breadcrumb -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Simphonia", "item": "https://simphonia.pt/" },
+      { "@type": "ListItem", "position": 2, "name": "Destinations", "item": "https://simphonia.pt/destinations/" }
+    ]
+  }
+  </script>
 </head>
 <body>
 
@@ -38,7 +81,7 @@
   <main id="main-content">
 
     <!-- Hero -->
-    <section class="about-hero" id="destinations" aria-labelledby="destinations-heading">
+    <section class="destinations-hero" id="destinations" aria-labelledby="destinations-heading">
       <div class="container">
         <span class="label reveal">Destinations</span>
         <h1 class="reveal" id="destinations-heading">Explore<br><span class="text-gradient">200+ Countries</span></h1>
@@ -65,7 +108,7 @@
             <svg class="search-bar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
             </svg>
-            <input type="text" class="search-bar__input" id="dest-search" placeholder="Search countries…" aria-label="Search countries" autocomplete="off" spellcheck="false">
+            <input type="search" class="search-bar__input" id="dest-search" placeholder="Search countries…" aria-label="Search countries" autocomplete="off" spellcheck="false" inputmode="search" enterkeyhint="search">
             <button class="search-bar__clear" id="dest-search-clear" aria-label="Clear search" hidden>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M18 6 6 18M6 6l12 12"/></svg>
             </button>
@@ -109,304 +152,19 @@
 
   </main>
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" defer></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js" defer></script>
-  <script defer src="../js/components/layout.js?v=20260326-10"></script>
-  <script defer src="../js/animations.js?v=20260326-10"></script>
-  <script defer src="../js/main.js?v=20260326-10"></script>
-  <script type="module">
-    // ── Config ──────────────────────────────────────────────────────────────
-    const API_BASE = 'https://api.simphonia.pt';
-    const CURRENCY = 'EUR';
-    const LANG     = (navigator.language || 'en').split('-')[0];
-
-    const REGION_LABELS = {
-      AFRICA:        'Africa',
-      ASIA:          'Asia',
-      CARIBBEAN:     'Caribbean',
-      EUROPE:        'Europe',
-      EU_UK:         'EU & UK',
-      LATIN_AMERICA: 'Latin America',
-      MENA:          'Middle East & Africa',
-      NORTH_AMERICA: 'North America',
-      OCEANIA:       'Oceania',
-    };
-
-    // ── Guest-token management ────────────────────────────────────────────────
-    const TOKEN_KEY   = 'simphonia_guest_token';
-    const EXPIRY_KEY  = 'simphonia_guest_expiry';
-    // Refresh 60 s before actual expiry to avoid edge-case 401s
-    const EXPIRY_MARGIN_MS = 60_000;
-
-    async function getGuestToken() {
-      const stored = localStorage.getItem(TOKEN_KEY);
-      const expiry = Number(localStorage.getItem(EXPIRY_KEY) || 0);
-
-      if (stored && Date.now() < expiry - EXPIRY_MARGIN_MS) {
-        return stored;
-      }
-
-      const res = await fetch(`${API_BASE}/api/v1/auth/guest`, { method: 'POST' });
-      if (!res.ok) throw new Error(`Guest auth failed: ${res.status}`);
-
-      const envelope = await res.json();
-      const { token, expiresIn } = envelope.data ?? envelope;
-
-      if (!token) throw new Error('No token in guest auth response');
-      const expiresInNum = Number(expiresIn);
-      localStorage.setItem(TOKEN_KEY,  token);
-      localStorage.setItem(EXPIRY_KEY, isFinite(expiresInNum) ? Date.now() + expiresInNum * 1000 : 0);
-
-      return token;
-    }
-
-    // ── Helpers ───────────────────────────────────────────────────────────────
-    function flagEmoji(code) {
-      if (!code || code.length < 2) return '';
-      return [...code.toUpperCase().slice(0, 2)]
-        .map(c => String.fromCodePoint(c.charCodeAt(0) + 127397))
-        .join('');
-    }
-
-    function resolveImage(url) {
-      if (!url) return null;
-      if (url.startsWith('http') || url.startsWith('//')) return url;
-      return API_BASE + (url.startsWith('/') ? url : '/' + url);
-    }
-
-    /** Escape HTML special chars to prevent XSS when interpolating API data into innerHTML. */
-    function esc(str) {
-      const d = document.createElement('div');
-      d.textContent = str;
-      return d.innerHTML;
-    }
-
-    async function apiFetch(path, _retried = false) {
-      const token = await getGuestToken();
-      const res = await fetch(`${API_BASE}${path}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      // On 401, clear cached token, obtain a fresh one, and retry once
-      if (res.status === 401 && !_retried) {
-        localStorage.removeItem(TOKEN_KEY);
-        localStorage.removeItem(EXPIRY_KEY);
-        return apiFetch(path, true);
-      }
-
-      if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-      const envelope = await res.json();
-      return envelope.data ?? envelope;
-    }
-    const regionTabsContainer = document.getElementById('region-tabs');
-    const grid            = document.getElementById('dest-grid');
-    const noResults       = document.getElementById('no-results');
-    const noResultsQ      = document.getElementById('no-results-query');
-    const countEl         = document.getElementById('dest-count');
-    const searchInput     = document.getElementById('dest-search');
-    const clearBtn        = document.getElementById('dest-search-clear');
-    const noResultsClear  = document.getElementById('no-results-clear');
-
-    // ── State ─────────────────────────────────────────────────────────────────
-    let allCountries      = [];   // full list, loaded once on init
-    let displayedCountries = [];  // current filtered list (by region)
-    let activeRegionCode  = null; // null = "All"
-
-    // ── DOM refs ─────────────────────────────────────────────────────────────
-    function setLoading(on) {
-      if (on) {
-        grid.innerHTML = `
-          <div class="dest-state">
-            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"
-                 class="dest-state__spinner" aria-hidden="true">
-              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4
-                       M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
-            </svg>
-            <p class="mt-md">Loading destinations…</p>
-          </div>`;
-        countEl.textContent = '';
-        noResults.style.display = 'none';
-      }
-    }
-
-    function showFetchError() {
-      grid.innerHTML = `
-        <div class="dest-state">
-          <p>Could not load destinations.</p>
-          <button class="btn btn--ghost btn--sm mt-md" id="dest-retry">Try again</button>
-        </div>`;
-      document.getElementById('dest-retry')?.addEventListener('click', () => {
-        if (activeRegionCode) {
-          loadCountriesForRegion(activeRegionCode);
-        } else {
-          loadAllCountries();
-        }
-      });
-    }
-
-    // ── Render grid ───────────────────────────────────────────────────────────
-    function renderGrid(items) {
-      grid.innerHTML = '';
-      const total = displayedCountries.length;
-      const query = searchInput.value.trim();
-
-      noResults.style.display  = items.length === 0 ? 'flex' : 'none';
-      noResultsQ.textContent   = query
-        ? `\u201C${query}\u201D`
-        : (REGION_LABELS[activeRegionCode] ?? activeRegionCode ?? 'selected filter');
-
-      countEl.textContent = items.length === 0
-        ? ''
-        : items.length === total
-          ? `${total} countries`
-          : `${items.length} of ${total} countries`;
-
-      const frag = document.createDocumentFragment();
-      items.forEach((d, i) => {
-        const code  = d.countryCode ?? '';
-        const name  = d.countryName || code;
-        const flag  = flagEmoji(code);
-        const img   = resolveImage(d.imageUrl);
-
-        const card = document.createElement('div');
-        card.className = 'dest-card';
-        card.tabIndex  = 0;
-        card.setAttribute('role', 'article');
-        const safeName = esc(name);
-        card.setAttribute('aria-label', name);
-        card.style.animationDelay = `${Math.min(i, 12) * 40}ms`;
-        card.innerHTML = `
-          <div class="dest-card__img-wrap">
-            ${img
-              ? `<img src="${esc(img)}" alt="${safeName}" class="dest-card__img" loading="lazy" decoding="async">`
-              : `<div class="dest-card__img"
-                      style="background:linear-gradient(135deg,var(--bg-elevated),var(--border-subtle));"
-                      aria-hidden="true"></div>`}
-            ${d.discount ? `<span class="dest-card__discount">-${parseInt(d.discount, 10)}%</span>` : ''}
-          </div>
-          <div class="dest-card__body">
-            <div class="dest-card__name">${flag ? flag + '\u00A0' : ''}${safeName}</div>
-            ${d.startingPrice ? `<div class="dest-card__price">From €${Number(d.startingPrice).toFixed(2)}</div>` : ''}
-            <div class="dest-card__footer">
-              <span class="dest-card__cta">View plans
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
-              </span>
-            </div>
-          </div>`;
-        card.addEventListener('click', () => {
-          window.location.href = '../#download';
-        });
-        card.addEventListener('keydown', e => {
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
-        });
-        frag.appendChild(card);
-      });
-      grid.appendChild(frag);
-    }
-
-    // ── Filter + search ───────────────────────────────────────────────────────
-    function applySearch() {
-      const query = searchInput.value.toLowerCase().trim();
-      clearBtn.hidden = !query;
-      const filtered = query
-        ? displayedCountries.filter(d =>
-            (d.countryName || d.countryCode || '').toLowerCase().includes(query))
-        : displayedCountries;
-      renderGrid(filtered);
-    }
-
-    // ── API calls ─────────────────────────────────────────────────────────────
-    async function loadAllCountries() {
-      setLoading(true);
-      try {
-        allCountries      = await apiFetch(`/api/v1/countries?currency=${CURRENCY}&lang=${LANG}`);
-        displayedCountries = allCountries;
-        applySearch();
-      } catch (err) {
-        console.error('[destinations] Failed to load countries:', err);
-        showFetchError();
-      }
-    }
-
-    async function loadCountriesForRegion(regionCode) {
-      setLoading(true);
-      try {
-        displayedCountries = await apiFetch(
-          `/api/v1/regions/${regionCode}/countries?currency=${CURRENCY}&lang=${LANG}`
-        );
-        applySearch();
-      } catch (err) {
-        console.error('[destinations] Failed to load region countries:', err);
-        showFetchError();
-      }
-    }
-
-    async function buildRegionTabs() {
-      try {
-        const regions = await apiFetch(`/api/v1/regions?currency=${CURRENCY}`);
-        regions.forEach(r => {
-          const label = REGION_LABELS[r.regionCode] ?? r.regionCode;
-          const btn   = document.createElement('button');
-          btn.className    = 'filter-tab';
-          btn.dataset.region = r.regionCode;
-          btn.textContent  = label;
-          regionTabsContainer.appendChild(btn);
-        });
-      } catch (err) {
-        console.error('[destinations] Failed to load regions:', err);
-      }
-    }
-
-    // ── Event listeners ───────────────────────────────────────────────────────
-    regionTabsContainer.addEventListener('click', e => {
-      const tab = e.target.closest('.filter-tab');
-      if (!tab) return;
-
-      regionTabsContainer.querySelectorAll('.filter-tab')
-        .forEach(t => t.classList.remove('filter-tab--active'));
-      tab.classList.add('filter-tab--active');
-
-      const code = tab.dataset.region;
-      activeRegionCode = code === 'all' ? null : code;
-      searchInput.value = '';
-      clearBtn.hidden   = true;
-
-      if (!activeRegionCode) {
-        displayedCountries = allCountries;
-        applySearch();
-      } else {
-        loadCountriesForRegion(activeRegionCode);
-      }
-    });
-
-    let searchDebounce = null;
-    searchInput.addEventListener('input', () => {
-      clearTimeout(searchDebounce);
-      searchDebounce = setTimeout(applySearch, 200);
-    });
-
-    clearBtn.addEventListener('click', () => {
-      searchInput.value = '';
-      clearBtn.hidden   = true;
-      searchInput.focus();
-      applySearch();
-    });
-
-    noResultsClear.addEventListener('click', () => {
-      searchInput.value = '';
-      clearBtn.hidden   = true;
-      regionTabsContainer.querySelectorAll('.filter-tab')
-        .forEach(t => t.classList.remove('filter-tab--active'));
-      regionTabsContainer.querySelector('.filter-tab').classList.add('filter-tab--active');
-      activeRegionCode   = null;
-      displayedCountries = allCountries;
-      applySearch();
-    });
-
-    // ── Bootstrap ─────────────────────────────────────────────────────────────
-    buildRegionTabs();
-    loadAllCountries();
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+          integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+          crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+          integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
+          crossorigin="anonymous" defer></script>
+  <script defer src="../js/cdn-fallback.js"></script>
+  <script defer src="../js/components/layout.js?v=20260331"></script>
+  <script defer src="../js/auth.js?v=20260331"></script>
+  <script defer src="../js/animations-core.js?v=20260331"></script>
+  <script defer src="../js/animations-subpages.js?v=20260331"></script>
+  <script defer src="../js/main.js?v=20260401"></script>
+  <script defer src="../js/destinations-page.js?v=20260331"></script>
 
 
 </body>
