@@ -43,11 +43,11 @@ function _hero() {
         { clipPath: 'inset(0 0 0% 0)', duration: 0.55 }, 0.1)
       .fromTo('.hero__h1 .line-2',
         { clipPath: 'inset(0 0 100% 0)' },
-        { clipPath: 'inset(0 0 0% 0)', duration: 0.5  }, 0.38)
-      .fromTo('.hero__desc',       { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.5  }, 0.55)
-      .fromTo('.hero__actions',    { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.45 }, 0.65)
+        { clipPath: 'inset(0 0 0% 0)', duration: 0.5 }, 0.38)
+      .fromTo('.hero__desc', { autoAlpha: 0, y: 14 }, { autoAlpha: 1, y: 0, duration: 0.5 }, 0.55)
+      .fromTo('.hero__actions', { autoAlpha: 0, y: 12 }, { autoAlpha: 1, y: 0, duration: 0.45 }, 0.65)
       .fromTo('.hero__trust-points', { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.4 }, 0.75)
-      .to('.iphone-mockup',        { autoAlpha: 1, x: 0, duration: 1.0, ease: 'power2.out' }, 0.1);
+      .to('.iphone-mockup', { autoAlpha: 1, x: 0, duration: 1.0, ease: 'power2.out' }, 0.1);
 
     return;
   }
@@ -79,10 +79,11 @@ function _stepCards() {
 function _featureCards() {
   _batchReveal('.feat-card',
     { y: 12 },
-    { y: 0, duration: 0.48, ease: 'power2.out', stagger: 0.08,
-      onComplete: function() {
-        this.targets().forEach(function(card) {
-          setTimeout(function() {
+    {
+      y: 0, duration: 0.48, ease: 'power2.out', stagger: 0.08,
+      onComplete: function () {
+        this.targets().forEach(function (card) {
+          setTimeout(function () {
             card.classList.add('pulse-reveal');
             card.addEventListener('animationend', function onEnd() {
               card.classList.remove('pulse-reveal');
@@ -106,18 +107,18 @@ function _stickyShowcase() {
   var section = document.querySelector('.showcase-sticky');
   if (!section) return;
 
-  var scene   = section.querySelector('.showcase-sticky__scene');
-  var stage   = document.getElementById('showcasePanelsStage');
-  var segsEl  = document.getElementById('showcaseSegments');
+  var scene = section.querySelector('.showcase-sticky__scene');
+  var stage = document.getElementById('showcasePanelsStage');
+  var segsEl = document.getElementById('showcaseSegments');
   if (!scene || !stage) return;
 
-  var panels     = stage.querySelectorAll('.showcase-sticky__panel');
+  var panels = stage.querySelectorAll('.showcase-sticky__panel');
   var panelCount = panels.length;
   if (!panelCount) return;
 
   var segFills = [];
   if (segsEl) {
-    segsEl.querySelectorAll('.showcase-segment').forEach(function(seg) {
+    segsEl.querySelectorAll('.showcase-segment').forEach(function (seg) {
       var fill = document.createElement('div');
       fill.className = 'showcase-segment__fill';
       seg.appendChild(fill);
@@ -125,12 +126,12 @@ function _stickyShowcase() {
     });
   }
 
-  panels.forEach(function(p) {
+  panels.forEach(function (p) {
     gsap.set(p, { position: 'absolute', opacity: 0, y: 40 });
   });
 
   var lastActive = -1;
-  var screens    = section.querySelectorAll('.sas-screen');
+  var screens = section.querySelectorAll('.sas-screen');
 
   // Recalculate on resize so slide distances stay correct after orientation changes.
   var isMobileShowcase = window.innerWidth <= 960;
@@ -148,12 +149,12 @@ function _stickyShowcase() {
   }, { passive: true });
 
   var panelChildren = [];
-  panels.forEach(function(p) {
+  panels.forEach(function (p) {
     panelChildren.push({
       ghost: p.querySelector('.showcase-panel__ghost-num'),
-      meta:  p.querySelector('.showcase-panel__meta'),
+      meta: p.querySelector('.showcase-panel__meta'),
       title: p.querySelector('.showcase-panel__title'),
-      desc:  p.querySelector('.showcase-panel__desc'),
+      desc: p.querySelector('.showcase-panel__desc'),
     });
   });
 
@@ -166,12 +167,12 @@ function _stickyShowcase() {
     var forward = newIdx > prevIdx;
     var panelDelay = prevIdx >= 0 ? 0.1 : 0;
 
-    var slideOut  = isMobileShowcase ? 28 : 60;
-    var slideIn   = isMobileShowcase ? 32 : 68;
+    var slideOut = isMobileShowcase ? 28 : 60;
+    var slideIn = isMobileShowcase ? 32 : 68;
     var firstSlide = isMobileShowcase ? 16 : 28;
-    var innerMeta  = isMobileShowcase ? 8  : 14;
+    var innerMeta = isMobileShowcase ? 8 : 14;
     var innerTitle = isMobileShowcase ? 14 : 24;
-    var innerDesc  = isMobileShowcase ? 10 : 20;
+    var innerDesc = isMobileShowcase ? 10 : 20;
 
     panels.forEach(function (p, i) {
       gsap.killTweensOf(p);
@@ -203,19 +204,19 @@ function _stickyShowcase() {
 
     gsap.set(panels[newIdx], { y: fromY, scale: 0.95 });
     if (ch.ghost) gsap.set(ch.ghost, { opacity: 0, x: forward ? 36 : -36 });
-    if (ch.meta)  gsap.set(ch.meta,  { opacity: 0, y: forward ? innerMeta : -innerMeta });
+    if (ch.meta) gsap.set(ch.meta, { opacity: 0, y: forward ? innerMeta : -innerMeta });
     if (ch.title) gsap.set(ch.title, { opacity: 0, y: forward ? innerTitle : -innerTitle });
-    if (ch.desc)  gsap.set(ch.desc,  { opacity: 0, y: forward ? innerDesc : -innerDesc });
+    if (ch.desc) gsap.set(ch.desc, { opacity: 0, y: forward ? innerDesc : -innerDesc });
 
     gsap.to(panels[newIdx], {
       opacity: 1, y: 0, scale: 1, duration: 0.72, delay: panelDelay, ease: 'expo.out',
     });
 
     var eD = panelDelay + 0.08;
-    if (ch.ghost) gsap.to(ch.ghost, { opacity: 0.045, x: 0, duration: 0.85, delay: eD,        ease: 'expo.out' });
-    if (ch.meta)  gsap.to(ch.meta,  { opacity: 1,     y: 0, duration: 0.5,  delay: eD + 0.04, ease: 'power3.out' });
-    if (ch.title) gsap.to(ch.title, { opacity: 1,     y: 0, duration: 0.72, delay: eD + 0.10, ease: 'expo.out' });
-    if (ch.desc)  gsap.to(ch.desc,  { opacity: 1,     y: 0, duration: 0.65, delay: eD + 0.18, ease: 'power3.out' });
+    if (ch.ghost) gsap.to(ch.ghost, { opacity: 0.045, x: 0, duration: 0.85, delay: eD, ease: 'expo.out' });
+    if (ch.meta) gsap.to(ch.meta, { opacity: 1, y: 0, duration: 0.5, delay: eD + 0.04, ease: 'power3.out' });
+    if (ch.title) gsap.to(ch.title, { opacity: 1, y: 0, duration: 0.72, delay: eD + 0.10, ease: 'expo.out' });
+    if (ch.desc) gsap.to(ch.desc, { opacity: 1, y: 0, duration: 0.65, delay: eD + 0.18, ease: 'power3.out' });
 
     if (screens.length) {
       gsap.fromTo(screens[newIdx],
@@ -227,14 +228,14 @@ function _stickyShowcase() {
   }
 
   function updateSegs(progress) {
-    var p      = Math.min(Math.max(progress, 0), 1);
-    var raw    = p * panelCount;
+    var p = Math.min(Math.max(progress, 0), 1);
+    var raw = p * panelCount;
     var active = Math.min(Math.floor(raw), panelCount - 1);
-    var frac   = Math.min(raw - active, 1);
+    var frac = Math.min(raw - active, 1);
     segFills.forEach(function (fill, i) {
-      fill.style.width = i < active   ? '100%'
-                       : i === active ? (frac * 100).toFixed(1) + '%'
-                       : '0%';
+      fill.style.width = i < active ? '100%'
+        : i === active ? (frac * 100).toFixed(1) + '%'
+          : '0%';
     });
   }
 
@@ -248,7 +249,7 @@ function _stickyShowcase() {
       end: '+=' + (panelCount * 100) + '%',
       scrub: 0.6,
       anticipatePin: 1,
-      onUpdate: function(self) {
+      onUpdate: function (self) {
         var p = self.progress;
         var idx = Math.min(Math.floor(p * panelCount), panelCount - 1);
 
@@ -258,10 +259,10 @@ function _stickyShowcase() {
 
         updateSegs(p);
       },
-      onLeave: function() {
+      onLeave: function () {
         window.showcaseScrollComplete = true;
       },
-      onLeaveBack: function() {
+      onLeaveBack: function () {
         if (window.showcaseScrollComplete && typeof window.highlightDownloadBtns === 'function') {
           setTimeout(window.highlightDownloadBtns, 300);
         }
@@ -297,14 +298,14 @@ function _featCardIconPulse() {
   var icons = document.querySelectorAll('.feat-card__icon');
   if (!icons.length) return;
 
-  icons.forEach(function(icon) {
+  icons.forEach(function (icon) {
     gsap.fromTo(icon,
       { boxShadow: '0 0 0 0 rgba(212, 175, 55, 0)' },
       {
         boxShadow: '0 0 24px 4px rgba(212, 175, 55, 0.2)',
         duration: 1.2, ease: 'power2.out',
         scrollTrigger: { trigger: icon, start: 'top 85%', once: true },
-        onComplete: function() {
+        onComplete: function () {
           gsap.to(icon, { boxShadow: '0 0 12px 0 rgba(212, 175, 55, 0.08)', duration: 1, ease: 'power2.inOut' });
         },
       }
@@ -317,15 +318,17 @@ function _stepCardIconHover() {
   if (!window.matchMedia('(hover: hover)').matches) return;
   if (!document.querySelector('.step-card')) return;
 
-  document.addEventListener('mouseenter', function(e) {
+  document.addEventListener('mouseenter', function (e) {
+    if (!e.target || typeof e.target.closest !== 'function') return;
     var card = e.target.closest('.step-card');
     if (!card) return;
     var icon = card.querySelector('.step-card__icon');
     if (!icon) return;
     gsap.fromTo(icon,
       { y: 0, scale: 1 },
-      { y: -6, scale: 1.1, duration: 0.25, ease: 'power2.out',
-        onComplete: function() {
+      {
+        y: -6, scale: 1.1, duration: 0.25, ease: 'power2.out',
+        onComplete: function () {
           gsap.to(icon, { y: 0, scale: 1, duration: 0.45, ease: 'elastic.out(1, 0.5)' });
         }
       }
@@ -335,7 +338,7 @@ function _stepCardIconHover() {
 
 // ── 35. CTA BUTTON ENTRANCE ──────────────────────────────
 function _ctaButtonEntrance() {
-  document.querySelectorAll('.cta-section .btn').forEach(function(btn, i) {
+  document.querySelectorAll('.cta-section .btn').forEach(function (btn, i) {
     gsap.fromTo(btn,
       { clipPath: 'inset(0 0 100% 0)', y: 10 },
       {

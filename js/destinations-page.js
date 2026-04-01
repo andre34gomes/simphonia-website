@@ -11,18 +11,18 @@
 // ── Config (single source of truth: layout.js → window.SIMPHONIA_API) ──
 const API_BASE = (window.SIMPHONIA_API && window.SIMPHONIA_API.base) || 'https://api.simphonia.pt';
 const CURRENCY = 'EUR';
-const LANG     = (navigator.language || 'en').split('-')[0];
+const LANG = (navigator.language || 'en').split('-')[0];
 
 const REGION_LABELS = {
-  AFRICA:        'Africa',
-  ASIA:          'Asia',
-  CARIBBEAN:     'Caribbean',
-  EUROPE:        'Europe',
-  EU_UK:         'EU & UK',
+  AFRICA: 'Africa',
+  ASIA: 'Asia',
+  CARIBBEAN: 'Caribbean',
+  EUROPE: 'Europe',
+  EU_UK: 'EU & UK',
   LATIN_AMERICA: 'Latin America',
-  MENA:          'Middle East & Africa',
+  MENA: 'Middle East & Africa',
   NORTH_AMERICA: 'North America',
-  OCEANIA:       'Oceania',
+  OCEANIA: 'Oceania',
 };
 
 // ── Guest-token: reuse shared auth.js via window.getGuestToken ────────
@@ -75,35 +75,35 @@ async function apiFetch(path, _retried) {
 
 // ── DOM refs ─────────────────────────────────────────────────────────────
 const regionTabsContainer = document.getElementById('region-tabs');
-const grid            = document.getElementById('dest-grid');
-const noResults       = document.getElementById('no-results');
-const noResultsQ      = document.getElementById('no-results-query');
-const countEl         = document.getElementById('dest-count');
-const searchInput     = document.getElementById('dest-search');
-const clearBtn        = document.getElementById('dest-search-clear');
-const noResultsClear  = document.getElementById('no-results-clear');
+const grid = document.getElementById('dest-grid');
+const noResults = document.getElementById('no-results');
+const noResultsQ = document.getElementById('no-results-query');
+const countEl = document.getElementById('dest-count');
+const searchInput = document.getElementById('dest-search');
+const clearBtn = document.getElementById('dest-search-clear');
+const noResultsClear = document.getElementById('no-results-clear');
 
 // ── State ─────────────────────────────────────────────────────────────────
-let allCountries      = [];   // full list, loaded once on init
+let allCountries = [];   // full list, loaded once on init
 let displayedCountries = [];  // current filtered list (by region)
-let activeRegionCode  = null; // null = "All"
+let activeRegionCode = null; // null = "All"
 // Request counter: incremented before each fetch so stale responses can be
 // detected and discarded, preventing race conditions on rapid tab clicks.
-let _fetchSeq         = 0;
+let _fetchSeq = 0;
 
 // ── Loading / error states ───────────────────────────────────────────────
 function setLoading(on) {
   if (on) {
     grid.innerHTML =
       '<div class="dest-state dest-state--loading">' +
-        '<div class="dest-state__icon dest-state__icon--spin">' +
-          '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">' +
-            '<circle cx="12" cy="12" r="10"/>' +
-            '<line x1="2" y1="12" x2="22" y2="12"/>' +
-            '<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>' +
-          '</svg>' +
-        '</div>' +
-        '<p class="dest-state__desc">Loading destinations\u2026</p>' +
+      '<div class="dest-state__icon dest-state__icon--spin">' +
+      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">' +
+      '<circle cx="12" cy="12" r="10"/>' +
+      '<line x1="2" y1="12" x2="22" y2="12"/>' +
+      '<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>' +
+      '</svg>' +
+      '</div>' +
+      '<p class="dest-state__desc">Loading destinations\u2026</p>' +
       '</div>';
     countEl.textContent = '';
     noResults.style.display = 'none';
@@ -113,22 +113,22 @@ function setLoading(on) {
 function showFetchError() {
   grid.innerHTML =
     '<div class="dest-state dest-state--error">' +
-      '<div class="dest-state__icon">' +
-        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-          '<circle cx="12" cy="12" r="10"/>' +
-          '<line x1="2" y1="12" x2="22" y2="12"/>' +
-          '<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>' +
-        '</svg>' +
-      '</div>' +
-      '<h3 class="dest-state__title">Unable to Load Destinations</h3>' +
-      '<p class="dest-state__desc">We couldn\u2019t reach our servers right now.<br>Check your connection and try again.</p>' +
-      '<button class="btn btn--outline btn--sm dest-state__retry" id="dest-retry">' +
-        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-          '<polyline points="23 4 23 10 17 10"/>' +
-          '<path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>' +
-        '</svg>' +
-        'Try Again' +
-      '</button>' +
+    '<div class="dest-state__icon">' +
+    '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<circle cx="12" cy="12" r="10"/>' +
+    '<line x1="2" y1="12" x2="22" y2="12"/>' +
+    '<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>' +
+    '</svg>' +
+    '</div>' +
+    '<h3 class="dest-state__title">Unable to Load Destinations</h3>' +
+    '<p class="dest-state__desc">We couldn\u2019t reach our servers right now.<br>Check your connection and try again.</p>' +
+    '<button class="btn btn--outline btn--sm dest-state__retry" id="dest-retry">' +
+    '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
+    '<polyline points="23 4 23 10 17 10"/>' +
+    '<path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>' +
+    '</svg>' +
+    'Try Again' +
+    '</button>' +
     '</div>';
   var retryBtn = document.getElementById('dest-retry');
   if (retryBtn) {
@@ -148,8 +148,8 @@ function renderGrid(items) {
   var total = displayedCountries.length;
   var query = searchInput.value.trim();
 
-  noResults.style.display  = items.length === 0 ? 'flex' : 'none';
-  noResultsQ.textContent   = query
+  noResults.style.display = items.length === 0 ? 'flex' : 'none';
+  noResultsQ.textContent = query
     ? '\u201C' + query + '\u201D'
     : (REGION_LABELS[activeRegionCode] || activeRegionCode || 'selected filter');
 
@@ -161,10 +161,10 @@ function renderGrid(items) {
 
   var frag = document.createDocumentFragment();
   items.forEach(function (d, i) {
-    var code  = d.countryCode || '';
-    var name  = d.countryName || code;
-    var flag  = flagEmoji(code);
-    var img   = resolveImage(d.imageUrl);
+    var code = d.countryCode || '';
+    var name = d.countryName || code;
+    var flag = flagEmoji(code);
+    var img = resolveImage(d.imageUrl);
 
     var card = document.createElement('div');
     card.className = 'dest-card';
@@ -174,14 +174,14 @@ function renderGrid(items) {
     card.style.animationDelay = Math.min(i, 12) * 40 + 'ms';
     card.innerHTML =
       '<div class="dest-card__img-wrap">' +
-        (img
-          ? '<img src="' + esc(img) + '" alt="' + safeName + '" class="dest-card__img" loading="lazy" decoding="async">'
-          : '<div class="dest-card__img" style="background:linear-gradient(135deg,var(--bg-elevated),var(--border-subtle));" aria-hidden="true"></div>') +
-        (d.discount ? '<span class="dest-card__discount">-' + parseInt(d.discount, 10) + '%</span>' : '') +
+      (img
+        ? '<img src="' + esc(img) + '" alt="' + safeName + '" class="dest-card__img" loading="lazy" decoding="async">'
+        : '<div class="dest-card__img" style="background:linear-gradient(135deg,var(--bg-elevated),var(--border-subtle));" aria-hidden="true"></div>') +
+      (d.discount ? '<span class="dest-card__discount">-' + parseInt(d.discount, 10) + '%</span>' : '') +
       '</div>' +
       '<div class="dest-card__body">' +
-        '<div class="dest-card__name">' + (flag || '') + safeName + '</div>' +
-        (d.startingPrice ? '<div class="dest-card__price">From \u20AC' + Number(d.startingPrice).toFixed(2) + '</div>' : '') +
+      '<div class="dest-card__name">' + (flag || '') + safeName + '</div>' +
+      (d.startingPrice ? '<div class="dest-card__price">From \u20AC' + Number(d.startingPrice).toFixed(2) + '</div>' : '') +
       '</div>';
     frag.appendChild(card);
   });
@@ -194,8 +194,8 @@ function applySearch() {
   clearBtn.hidden = !query;
   var filtered = query
     ? displayedCountries.filter(function (d) {
-        return (d.countryName || d.countryCode || '').toLowerCase().includes(query);
-      })
+      return (d.countryName || d.countryCode || '').toLowerCase().includes(query);
+    })
     : displayedCountries;
   renderGrid(filtered);
 }
@@ -207,7 +207,7 @@ async function loadAllCountries() {
   try {
     const data = await apiFetch('/api/v1/countries/all?currency=' + CURRENCY + '&lang=' + LANG);
     if (seq !== _fetchSeq) return; // discard stale response
-    allCountries       = data;
+    allCountries = data;
     displayedCountries = allCountries;
     applySearch();
   } catch (err) {
@@ -239,10 +239,10 @@ async function buildRegionTabs() {
     var regions = await apiFetch('/api/v1/regions?currency=' + CURRENCY);
     regions.forEach(function (r) {
       var label = REGION_LABELS[r.regionCode] || r.regionCode;
-      var btn   = document.createElement('button');
-      btn.className    = 'filter-tab';
+      var btn = document.createElement('button');
+      btn.className = 'filter-tab';
       btn.dataset.region = r.regionCode;
-      btn.textContent  = label;
+      btn.textContent = label;
       regionTabsContainer.appendChild(btn);
     });
   } catch (err) {
@@ -252,6 +252,7 @@ async function buildRegionTabs() {
 
 // ── Event listeners ───────────────────────────────────────────────────────
 regionTabsContainer.addEventListener('click', function (e) {
+  if (!e.target || typeof e.target.closest !== 'function') return;
   var tab = e.target.closest('.filter-tab');
   if (!tab) return;
 
@@ -262,7 +263,7 @@ regionTabsContainer.addEventListener('click', function (e) {
   var code = tab.dataset.region;
   activeRegionCode = code === 'all' ? null : code;
   searchInput.value = '';
-  clearBtn.hidden   = true;
+  clearBtn.hidden = true;
 
   if (!activeRegionCode) {
     displayedCountries = allCountries;
@@ -280,22 +281,22 @@ searchInput.addEventListener('input', function () {
 
 clearBtn.addEventListener('click', function () {
   searchInput.value = '';
-  clearBtn.hidden   = true;
+  clearBtn.hidden = true;
   searchInput.focus();
   applySearch();
 });
 
 noResultsClear.addEventListener('click', function () {
   searchInput.value = '';
-  clearBtn.hidden   = true;
+  clearBtn.hidden = true;
   regionTabsContainer.querySelectorAll('.filter-tab')
     .forEach(function (t) { t.classList.remove('filter-tab--active'); });
   // Activate the "All" tab by its data-region value instead of assuming it is
   // the first child (order may change if tabs are dynamically reordered).
   const allTab = regionTabsContainer.querySelector('.filter-tab[data-region="all"]')
-              || regionTabsContainer.querySelector('.filter-tab');
+    || regionTabsContainer.querySelector('.filter-tab');
   if (allTab) allTab.classList.add('filter-tab--active');
-  activeRegionCode   = null;
+  activeRegionCode = null;
   displayedCountries = allCountries;
   applySearch();
 });
