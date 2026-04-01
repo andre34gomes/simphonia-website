@@ -79,7 +79,10 @@ function renderNav(items) {
     nav.appendChild(btn);
   });
 
-  nav.addEventListener('keydown', handleNavKeydown);
+  if (!nav._keydownBound) {
+    nav.addEventListener('keydown', handleNavKeydown);
+    nav._keydownBound = true;
+  }
 }
 
 function handleNavKeydown(e) {
@@ -305,6 +308,21 @@ function filterFaq(query) {
     if (match) visible++;
   });
 
+  // Hide category labels whose questions are all hidden
+  var catLabels = document.querySelectorAll('.faq-panel__category');
+  catLabels.forEach(function (label) {
+    var next = label.nextElementSibling;
+    var hasVisibleQ = false;
+    while (next && !next.classList.contains('faq-panel__category')) {
+      if (next.classList.contains('faq-panel__q') && !next.hidden) {
+        hasVisibleQ = true;
+        break;
+      }
+      next = next.nextElementSibling;
+    }
+    label.hidden = !hasVisibleQ;
+  });
+
   var isEmpty = visible === 0;
   if (panelEl) panelEl.style.display = isEmpty ? 'none' : '';
   if (noResults) noResults.style.display = isEmpty ? 'block' : 'none';
@@ -454,6 +472,10 @@ function initContactForm() {
     }
     if (!msgEl || !msgEl.value.trim()) {
       setFieldError('contact-message', 'Please describe your issue or question.');
+      valid = false;
+    }
+    if (subjectEl && !subjectEl.value) {
+      setFieldError('contact-subject', 'Please select a topic.');
       valid = false;
     }
     if (!valid) return;

@@ -21,6 +21,7 @@
     upgrade-insecure-requests;
   ">
   <link rel="canonical" href="https://simphonia.pt/">
+  <link rel="alternate" hreflang="en" href="https://simphonia.pt/">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="shortcut icon" href="assets/favicon.svg">
   <link rel="mask-icon" href="assets/favicon.svg" color="#D4AF37">
@@ -46,13 +47,15 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://flagcdn.com">
+  <link rel="dns-prefetch" href="https://api.simphonia.pt">
   <!-- Google Fonts: loaded asynchronously so it never blocks rendering.
        The critical CSS above already provides the system-font fallback stack,
        so text is readable before the web-font arrives. -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap"
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Pacifico&display=optional"
         media="print" onload="this.media='all'">
   <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Pacifico&display=optional">
   </noscript>
 
   <!-- Critical CSS: above-the-fold rules inlined for fast first paint -->
@@ -69,16 +72,11 @@
     img{max-width:100%;height:auto;display:block}
     a{text-decoration:none;color:inherit}
     .container{max-width:1200px;margin:0 auto;padding:0 clamp(1rem,4vw,2.5rem)}
-    .hero--v2{min-height:100vh;min-height:100svh;display:flex;align-items:center;position:relative;overflow:hidden;padding-top:calc(var(--nav-height) + 2rem)}
   </style>
 
-  <!-- Full stylesheets: preload as style, apply on load for non-blocking render -->
-  <link rel="stylesheet" href="css/base.css" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="css/home.css" media="print" onload="this.media='all'">
-  <noscript>
-    <link rel="stylesheet" href="css/base.css">
-    <link rel="stylesheet" href="css/home.css">
-  </noscript>
+  <!-- Full stylesheets: render-blocking to prevent flash of unstyled content -->
+  <link rel="stylesheet" href="css/base.css">
+  <link rel="stylesheet" href="css/home.css">
 
   <!-- Structured Data -->
   <script type="application/ld+json">
@@ -109,6 +107,8 @@
   </script>
 </head>
 <body>
+  <!-- Skip-link: placed in HTML so screen readers see it before JS loads -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
 
   <main id="main-content">
 
@@ -135,7 +135,7 @@
         <div class="hero-postcard__copy">
 
           <h1 class="hero-postcard__h1 hero-fade-up" id="hero-heading" style="--delay:0ms">
-            Stay Connected,<br><span class="text-gradient"><span class="hero-postcard__typing-wrap"><span id="typing-text"></span><span class="typing-cursor" aria-hidden="true"></span></span></span>
+            Stay Connected,<br><span class="text-gradient"><span class="hero-postcard__typing-wrap"><span id="typing-text" role="status" aria-live="polite" aria-atomic="true"></span><span class="typing-cursor" aria-hidden="true"></span></span></span>
           </h1>
 
           <!-- Accent divider -->
@@ -189,6 +189,12 @@
 
       </div>
 
+
+      <!-- Scroll indicator -->
+      <div class="hero__scroll hero-fade-up" style="--delay:520ms" aria-hidden="true">
+        <div class="hero__scroll-line"></div>
+        <span>Scroll</span>
+      </div>
 
       <!-- Destination marquee -->
       <div class="hero__destinations-strip" aria-hidden="true">
@@ -430,7 +436,7 @@
                       <div class="showcase-app__title">My eSIMs</div>
                       <div class="showcase-app__sub">Active Plans</div>
                       <div class="showcase-app__esim-card">
-                        <div class="showcase-app__esim-top"><span class="showcase-app__country">🇵🇹 Portugal</span><span class="showcase-app__active-badge"><span class="showcase-app__active-dot"></span>Active</span></div>
+                        <div class="showcase-app__esim-top"><span class="showcase-app__country"><img src="https://flagcdn.com/20x15/pt.png" srcset="https://flagcdn.com/40x30/pt.png 2x" width="20" height="15" alt="PT" class="flag-img" loading="lazy"> Portugal</span><span class="showcase-app__active-badge"><span class="showcase-app__active-dot"></span>Active</span></div>
                         <div class="showcase-app__data-label">Data Usage</div>
                         <div class="showcase-app__data-bar"><div class="showcase-app__data-fill"></div></div>
                         <div class="showcase-app__data-row"><span class="showcase-app__data-used">1.6 GB used</span><span class="showcase-app__data-left">3.4 GB left</span></div>
@@ -496,10 +502,7 @@
 
   </main>
 
-  <!-- Scripts — Three.js and GSAP via CDN with local fallback, deferred -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"
-          integrity="sha512-dLxUelApnYxpLt6K2iomGngnHO83iUvZytA3YjDUCjT0HDOHKXnVYdf3hU4JjM8uEhxf9nD1/ey98U3t2vZ0qQ=="
-          crossorigin="anonymous" defer></script>
+  <!-- Scripts — GSAP via CDN with local fallback, deferred -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
           integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
           crossorigin="anonymous" defer></script>
@@ -509,15 +512,21 @@
   <!-- CDN fallback: load local copies if CDN is unavailable -->
   <script defer src="js/cdn-fallback.js"></script>
   <noscript>
-    <style>.hero-postcard__orb,.globe-canvas{display:none}</style>
+    <style>.hero-postcard__orb{display:none}</style>
   </noscript>
-  <script defer src="js/components/layout.js?v=20260331"></script>
-  <script defer src="js/auth.js?v=20260331"></script>
-  <script defer src="js/animations-core.js?v=20260331"></script>
-  <script defer src="js/animations-home.js?v=20260331"></script>
-  <script defer src="js/globe.js?v=20260331"></script>
+  <script defer src="js/components/layout.js?v=20260401"></script>
+  <script defer src="js/auth.js?v=20260401"></script>
+  <script defer src="js/animations-core.js?v=20260401"></script>
+  <script defer src="js/animations-home.js?v=20260401"></script>
   <script defer src="js/main.js?v=20260401"></script>
-
+  <!-- PWA Service Worker registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', function () {
+        navigator.serviceWorker.register('/sw.js').catch(function () {});
+      });
+    }
+  </script>
 
 
 </body>

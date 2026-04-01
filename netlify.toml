@@ -13,7 +13,7 @@
     # CSP: script-src allows self + cdnjs CDN. unsafe-inline is needed
     # for the theme-init script and stylesheet onload handlers.
     # style-src uses 'unsafe-inline' for dynamic class toggling and critical CSS.
-    Content-Security-Policy      = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://images.unsplash.com https://api.simphonia.pt data: blob:; connect-src 'self' https://api.simphonia.pt; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;"
+    Content-Security-Policy      = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://images.unsplash.com https://api.simphonia.pt https://flagcdn.com data: blob:; connect-src 'self' https://api.simphonia.pt; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;"
 
 # ── Redirects ─────────────────────────────────────────────────
 [[redirects]]
@@ -34,11 +34,6 @@
 [[redirects]]
   from = "/pages/about.html"
   to = "/about/"
-  status = 301
-
-[[redirects]]
-  from = "/pages/compatibility.html"
-  to = "/compatibility/"
   status = 301
 
 [[redirects]]

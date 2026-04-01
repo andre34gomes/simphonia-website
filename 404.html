@@ -17,17 +17,17 @@
     connect-src 'self' https://api.simphonia.pt http://localhost:*;
     upgrade-insecure-requests;
   ">
-  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg">
-  <link rel="shortcut icon" href="./assets/favicon.svg">
-  <link rel="mask-icon" href="./assets/favicon.svg" color="#D4AF37">
-  <script src="js/theme-init.js"></script>
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="shortcut icon" href="/assets/favicon.svg">
+  <link rel="mask-icon" href="/assets/favicon.svg" color="#D4AF37">
+  <script src="/js/theme-init.js"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <!-- Async font loading — non-blocking, matches index.html pattern -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap"
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Pacifico&display=optional"
         media="print" onload="this.media='all'">
   <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Pacifico&display=optional">
   </noscript>
 
   <!-- Critical inline CSS for instant first paint -->
@@ -41,11 +41,8 @@
     a{text-decoration:none;color:inherit}
   </style>
 
-  <!-- Non-blocking CSS -->
-  <link rel="stylesheet" href="./css/base.css" media="print" onload="this.media='all'">
-  <noscript>
-    <link rel="stylesheet" href="./css/base.css">
-  </noscript>
+  <!-- Full stylesheet: render-blocking to prevent flash of unstyled content -->
+  <link rel="stylesheet" href="/css/base.css">
   <style>
     /* ── 404 Page ── */
     .error-section {
@@ -145,10 +142,11 @@
   </style>
 </head>
 <body>
+  <a href="#main-content" class="skip-link">Skip to main content</a>
 
   <main id="main-content">
 
-    <section class="error-section">
+    <section class="error-section" aria-labelledby="error-title-heading">
       <!-- Glow orbs -->
       <div class="error-section__orb" style="width:600px;height:600px;background:rgba(212,175,55,0.08);top:-15%;left:-15%;filter:blur(140px);"></div>
       <div class="error-section__orb" style="width:450px;height:450px;background:rgba(80,50,200,0.05);bottom:-10%;right:-10%;filter:blur(120px);"></div>
@@ -156,21 +154,25 @@
 
       <div class="container">
         <span class="error-code" aria-hidden="true">404</span>
-        <h1 class="error-title">Page Not Found</h1>
+        <h1 class="error-title" id="error-title-heading">Page Not Found</h1>
         <p class="error-desc">
           Looks like this destination isn't on our eSIM network yet.<br>
           Let's get you back to somewhere familiar.
         </p>
 
         <div class="error-actions">
-          <a href="./" class="btn btn--primary btn--lg">Go Home</a>
-          <a href="./destinations/" class="btn btn--ghost btn--lg">Browse Destinations</a>
+          <a href="/" class="btn btn--primary btn--lg">Go Home</a>
+          <a href="/destinations/" class="btn btn--ghost btn--lg">Browse Destinations</a>
+          <button class="btn btn--ghost btn--lg" id="copy-404-link" aria-label="Copy this page URL to clipboard">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            <span id="copy-404-label">Copy Link</span>
+          </button>
         </div>
 
         <nav class="error-links" aria-label="Quick links">
-          <a href="./how-it-works/">How It Works</a>
-          <a href="./support/">Support</a>
-          <a href="./about/">About</a>
+          <a href="/how-it-works/">How It Works</a>
+          <a href="/support/">Support</a>
+          <a href="/about/">About</a>
         </nav>
       </div>
     </section>
@@ -183,11 +185,45 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
           integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
           crossorigin="anonymous" defer></script>
-  <script defer src="./js/cdn-fallback.js"></script>
-  <script defer src="./js/components/layout.js?v=20260331"></script>
-  <script defer src="./js/animations-core.js?v=20260331"></script>
-  <script defer src="./js/animations-subpages.js?v=20260331"></script>
-  <script defer src="./js/main.js?v=20260401"></script>
+  <script defer src="/js/cdn-fallback.js"></script>
+  <script defer src="/js/components/layout.js?v=20260401"></script>
+  <script defer src="/js/auth.js?v=20260401"></script>
+  <script defer src="/js/animations-core.js?v=20260401"></script>
+  <script defer src="/js/animations-subpages.js?v=20260401"></script>
+  <script defer src="/js/main.js?v=20260401"></script>
+  <script>if('serviceWorker'in navigator)window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})});</script>
+  <!-- Copy-link button for reporting broken URLs -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      var btn = document.getElementById('copy-404-link');
+      var label = document.getElementById('copy-404-label');
+      if (!btn || !label) return;
+      btn.addEventListener('click', function () {
+        var url = window.location.href;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(url).then(function () {
+            label.textContent = 'Copied!';
+            setTimeout(function () { label.textContent = 'Copy Link'; }, 2000);
+          }).catch(function () {
+            label.textContent = 'Failed';
+            setTimeout(function () { label.textContent = 'Copy Link'; }, 2000);
+          });
+        } else {
+          /* Fallback for older browsers */
+          var ta = document.createElement('textarea');
+          ta.value = url;
+          ta.style.position = 'fixed';
+          ta.style.opacity = '0';
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand('copy'); label.textContent = 'Copied!'; }
+          catch (_) { label.textContent = 'Failed'; }
+          document.body.removeChild(ta);
+          setTimeout(function () { label.textContent = 'Copy Link'; }, 2000);
+        }
+      });
+    });
+  </script>
 
 </body>
 </html>

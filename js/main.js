@@ -2,11 +2,11 @@
  * Simphonia Website — Main Entry Point
  *
  * Loaded as <script defer>. By the time this executes, the DOM is fully
- * parsed AND all prior <script defer> (CDN libs + layout.js + animations.js
- * + globe.js) have already run.
+ * parsed AND all prior <script defer> (CDN libs + layout.js + animations.js)
+ * have already run.
  */
 
-const LAYOUT_ASSET_VERSION = '20260331';
+const LAYOUT_ASSET_VERSION = '20260401';
 const REQUIRED_LAYOUT_APIS = [
   'initTheme',
   'injectShell',
@@ -86,8 +86,9 @@ function revealGsapFallbacks() {
 
   // Hero-specific elements set to autoAlpha:0 by _hero()
   [
-    '.hero__h1 .line-1', '.hero__h1 .line-2',
-    '.hero__desc', '.hero__actions', '.hero__trust-points', '.iphone-mockup',
+    '.iphone-mockup',
+    // Hero-postcard elements
+    '.hero-postcard__copy', '.hero-postcard__phone-area',
     // Sub-page hero elements
     '.about-hero h1', '.about-hero p', '.about-hero .label',
     '.destinations-hero h1', '.destinations-hero p', '.destinations-hero .label',
@@ -187,9 +188,6 @@ async function bootstrapSite() {
 
     // 7. Star background canvas
     if (document.getElementById('stars-canvas')) initStars();
-
-    // 8. Three.js globe (hero page only)
-    if (document.getElementById('globe-container')) initGlobe('globe-container');
 
     // 9. GSAP scroll animations — has internal retry loop for CDN timing safety
     initAnimations();
@@ -297,6 +295,9 @@ bootstrapSite();
       if (i > 0) ul.setAttribute('aria-hidden', 'true');
       ul.innerHTML = html;
     });
+
+    // Reveal the strip now that it has real API data
+    strip.style.display = '';
   }
 
   // ── Auto-scroll + drag-to-scroll ──────────────────────────
@@ -414,31 +415,46 @@ bootstrapSite();
   // Initial animation start is handled by the IntersectionObserver above.
   // Fallback startLoop() is also handled there for browsers without IO support.
 
-  // ── API fetch ──────────────────────────────────────────────
+  // ── API fetch with retry ──────────────────────────────────
   const lang = (navigator.language || 'en').split('-')[0];
 
-  getGuestToken()
-    .then(function (token) {
-      var controller = new AbortController();
-      var tid = setTimeout(function () { controller.abort(); }, 10000);
-      return fetch(
-        API_BASE + '/api/v1/countries/all?currency=EUR&lang=' + lang,
-        { headers: { Authorization: 'Bearer ' + token }, signal: controller.signal }
-      ).finally(function () { clearTimeout(tid); });
-    })
-    .then(function (res) {
-      if (!res.ok) throw new Error('Countries fetch failed: ' + res.status);
-      return res.json();
-    })
-    .then(function (envelope) {
-      const countries = envelope.data || envelope;
-      if (Array.isArray(countries) && countries.length) {
-        populateLists(countries);
-      }
-    })
-    .catch(function (err) {
-      console.warn('[marquee] Could not load destinations from API:', err.message);
-    });
+  // Hide the marquee strip until the API populates it with real data.
+  // No hardcoded fallback — if the API is unreachable, the strip stays hidden.
+  strip.style.display = 'none';
+
+  var RETRY_COUNT = 2;
+  var RETRY_DELAY = 3000; // ms
+
+  function fetchCountries(attempt) {
+    attempt = attempt || 0;
+    getGuestToken()
+      .then(function (token) {
+        var controller = new AbortController();
+        var tid = setTimeout(function () { controller.abort(); }, 10000);
+        return fetch(
+          API_BASE + '/api/v1/countries/all?currency=EUR&lang=' + lang,
+          { headers: { Authorization: 'Bearer ' + token }, signal: controller.signal }
+        ).finally(function () { clearTimeout(tid); });
+      })
+      .then(function (res) {
+        if (!res.ok) throw new Error('Countries fetch failed: ' + res.status);
+        return res.json();
+      })
+      .then(function (envelope) {
+        const countries = envelope.data || envelope;
+        if (Array.isArray(countries) && countries.length) {
+          populateLists(countries);
+        }
+      })
+      .catch(function (err) {
+        console.warn('[marquee] Attempt ' + (attempt + 1) + ' failed:', err.message);
+        if (attempt < RETRY_COUNT) {
+          setTimeout(function () { fetchCountries(attempt + 1); }, RETRY_DELAY * (attempt + 1));
+        }
+      });
+  }
+
+  fetchCountries();
 }());
 
 // ============================================================
@@ -571,12 +587,15 @@ function initCursor() {
 function initStars() {
   const canvas = document.getElementById('stars-canvas');
   if (!canvas) return;
-  // Skip on mobile where CSS hides the canvas (display:none → no offsetParent)
-  if (!canvas.offsetParent && getComputedStyle(canvas).display === 'none') return;
+  // Skip on tablets/mobiles — CSS hides the canvas at ≤960px (display:none)
+  // and running the animation on hidden elements wastes battery and CPU.
+  if (window.innerWidth <= 960) return;
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  // Fallback: also check computed style in case CSS wasn't loaded yet
+  if (getComputedStyle(canvas).display === 'none') return;
 
   const ctx = canvas.getContext('2d');
-  const N = window.innerWidth < 768 ? 80 : 120;
+  const N = window.innerWidth < 1280 ? 80 : 120;
   let w, h, stars = [];
 
   // Cache the star colour so we don't hit getComputedStyle every frame.
@@ -700,43 +719,22 @@ function initSmoothScroll() {
 
 // ============================================================
 // Hero Typing Effect — mirrors Flutter TypingPlaceholder
+// All state is encapsulated inside initHeroTyping() to avoid
+// polluting the global scope.
 // ============================================================
-let _heroTypingActive = false;
-let _heroTypingTimer = null;
-
-// Cancel hero typing timer on page hide (bfcache / tab close)
-window.addEventListener('pagehide', function () {
-  if (_heroTypingTimer) {
-    clearTimeout(_heroTypingTimer);
-    _heroTypingTimer = null;
-  }
-  _heroTypingActive = false;
-});
-
-// Pause typing when tab is hidden, resume when visible
-var _heroTypingPausedByVisibility = false;
-var _heroTypingTickFn = null;
-
-document.addEventListener('visibilitychange', function () {
-  if (document.hidden) {
-    // Pause: clear the pending timer
-    if (_heroTypingTimer) {
-      clearTimeout(_heroTypingTimer);
-      _heroTypingTimer = null;
-      _heroTypingPausedByVisibility = true;
-    }
-  } else if (_heroTypingPausedByVisibility && _heroTypingActive && _heroTypingTickFn) {
-    // Resume: schedule the next tick immediately
-    _heroTypingPausedByVisibility = false;
-    _heroTypingTimer = setTimeout(_heroTypingTickFn, 100);
-  }
-});
-
 function initHeroTyping() {
   const el = document.getElementById('typing-text');
   if (!el) return;
-  if (_heroTypingActive) return;
-  _heroTypingActive = true;
+
+  // Guard: only initialise once even if called multiple times
+  if (el.dataset.typingActive === 'true') return;
+  el.dataset.typingActive = 'true';
+
+  // ── local state (no longer on window) ──
+  let active = true;
+  let timer = null;
+  let pausedByVisibility = false;
+  let tickFn = null;
 
   const phrases = [
     'Wherever You Go.',
@@ -760,32 +758,59 @@ function initHeroTyping() {
     if (!isDeleting) {
       // Typing
       if (charIndex < phrase.length) {
+        // Suppress aria-live during typing to prevent per-letter announcements
+        if (charIndex === 0) el.setAttribute('aria-live', 'off');
         charIndex++;
         el.textContent = phrase.substring(0, charIndex);
-        _heroTypingTimer = setTimeout(tick, TYPING_SPEED);
+        timer = setTimeout(tick, TYPING_SPEED);
       } else {
-        // Finished typing — pause then start deleting
-        _heroTypingTimer = setTimeout(function () {
+        // Finished typing — re-enable aria-live so the full phrase is announced
+        el.setAttribute('aria-live', 'polite');
+        // Pause then start deleting
+        timer = setTimeout(function () {
           isDeleting = true;
           tick();
         }, PAUSE_DURATION);
       }
     } else {
-      // Deleting
+      // Deleting — suppress announcements
+      if (charIndex === phrase.length) el.setAttribute('aria-live', 'off');
       if (charIndex > 0) {
         charIndex--;
         el.textContent = phrase.substring(0, charIndex);
-        _heroTypingTimer = setTimeout(tick, DELETING_SPEED);
+        timer = setTimeout(tick, DELETING_SPEED);
       } else {
         // Finished deleting — move to next phrase
         isDeleting = false;
         phraseIndex = (phraseIndex + 1) % phrases.length;
-        _heroTypingTimer = setTimeout(tick, TYPING_SPEED);
+        timer = setTimeout(tick, TYPING_SPEED);
       }
     }
   }
 
-  _heroTypingTickFn = tick;
+  tickFn = tick;
+
+  // Pause typing when tab is hidden, resume on becoming visible
+  document.addEventListener('visibilitychange', function onVisibility() {
+    if (!active) {
+      document.removeEventListener('visibilitychange', onVisibility);
+      return;
+    }
+    if (document.hidden) {
+      if (timer) { clearTimeout(timer); timer = null; pausedByVisibility = true; }
+    } else if (pausedByVisibility && tickFn) {
+      pausedByVisibility = false;
+      timer = setTimeout(tickFn, 100);
+    }
+  });
+
+  // Clean up on page hide (bfcache / tab close)
+  window.addEventListener('pagehide', function onPageHide() {
+    active = false;
+    if (timer) { clearTimeout(timer); timer = null; }
+    window.removeEventListener('pagehide', onPageHide);
+  }, { once: true });
+
   tick();
 }
 

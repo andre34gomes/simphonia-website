@@ -35,7 +35,6 @@
   function runFallbacks() {
     loadFallback('gsap',          '/js/vendor/gsap.min.js');
     loadFallback('ScrollTrigger', '/js/vendor/ScrollTrigger.min.js');
-    loadFallback('THREE',         '/js/vendor/three.min.js');
   }
 
   // Try as early as DOMContentLoaded for faster recovery if CDN is down;

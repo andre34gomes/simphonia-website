@@ -16,6 +16,7 @@
   <meta name="description" content="Browse eSIM plans for 200+ countries and regions. Find the perfect data plan for your next trip.">
   <meta name="theme-color" content="#121212">
   <link rel="canonical" href="https://simphonia.pt/destinations/">
+  <link rel="alternate" hreflang="en" href="https://simphonia.pt/destinations/">
   <meta property="og:title" content="Destinations — Simphonia eSIM">
   <meta property="og:description" content="Browse eSIM plans for 200+ countries and regions. Find the perfect data plan for your next trip.">
   <meta property="og:type" content="website">
@@ -37,10 +38,11 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="dns-prefetch" href="https://api.simphonia.pt">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap"
+  <link rel="dns-prefetch" href="https://flagcdn.com">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Pacifico&display=optional"
         media="print" onload="this.media='all'">
   <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Pacifico&display=optional">
   </noscript>
   <!-- Critical CSS: above-the-fold rules inlined for fast first paint -->
   <style>
@@ -55,13 +57,9 @@
     .container{max-width:1200px;margin:0 auto;padding:0 clamp(1rem,4vw,2.5rem)}
   </style>
 
-  <!-- Full stylesheets: preload as style, apply on load for non-blocking render -->
-  <link rel="stylesheet" href="../css/base.css" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="../css/destinations.css" media="print" onload="this.media='all'">
-  <noscript>
-    <link rel="stylesheet" href="../css/base.css">
-    <link rel="stylesheet" href="../css/destinations.css">
-  </noscript>
+  <!-- Full stylesheets: render-blocking to prevent flash of unstyled content -->
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/destinations.css">
 
   <!-- Structured Data: Breadcrumb -->
   <script type="application/ld+json">
@@ -76,7 +74,7 @@
   </script>
 </head>
 <body>
-
+  <a href="#main-content" class="skip-link">Skip to main content</a>
 
   <main id="main-content">
 
@@ -159,13 +157,12 @@
           integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
           crossorigin="anonymous" defer></script>
   <script defer src="../js/cdn-fallback.js"></script>
-  <script defer src="../js/components/layout.js?v=20260331"></script>
-  <script defer src="../js/auth.js?v=20260331"></script>
-  <script defer src="../js/animations-core.js?v=20260331"></script>
-  <script defer src="../js/animations-subpages.js?v=20260331"></script>
+  <script defer src="../js/components/layout.js?v=20260401"></script>
+  <script defer src="../js/auth.js?v=20260401"></script>
+  <script defer src="../js/animations-core.js?v=20260401"></script>
+  <script defer src="../js/animations-subpages.js?v=20260401"></script>
   <script defer src="../js/main.js?v=20260401"></script>
-  <script defer src="../js/destinations-page.js?v=20260331"></script>
-
-
+  <script defer src="../js/destinations-page.js?v=20260401"></script>
+  <script>if('serviceWorker'in navigator)window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})});</script>
 </body>
 </html>

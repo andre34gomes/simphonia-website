@@ -25,11 +25,12 @@ window.flagEmoji = function(code) {
 
 // ────────────────────────────────────────
 // Shared utility: HTML escape (XSS prevention)
+// Reuses a single cached element to avoid DOM allocation per call.
 // ────────────────────────────────────────
+var _escDiv = document.createElement('div');
 window.escHTML = function(str) {
-  var d = document.createElement('div');
-  d.textContent = str;
-  return d.innerHTML;
+  _escDiv.textContent = str;
+  return _escDiv.innerHTML;
 };
 
 // ────────────────────────────────────────
@@ -196,12 +197,16 @@ function initTheme() {
 function injectShell() {
   const frag = document.createDocumentFragment();
 
-  // Skip link
-  const skip = document.createElement('a');
-  skip.href = '#main-content';
-  skip.className = 'skip-link';
-  skip.textContent = 'Skip to main content';
-  frag.appendChild(skip);
+  // Skip link — only inject if not already present in the HTML markup
+  // (all pages now include a static skip-link for screen readers that load
+  //  before JS; this guard prevents a duplicate when JS also runs)
+  if (!document.querySelector('.skip-link')) {
+    const skip = document.createElement('a');
+    skip.href = '#main-content';
+    skip.className = 'skip-link';
+    skip.textContent = 'Skip to main content';
+    frag.appendChild(skip);
+  }
 
   // Background noise
   const noise = document.createElement('div');
@@ -263,8 +268,24 @@ function injectBackToTop() {
   document.body.appendChild(btn);
 
   btn.addEventListener('click', () => {
+    btn.classList.add('back-to-top--scrolling');
     window.scrollTo({ top: 0, behavior: 'smooth' });
     btn.blur();
+
+    // Remove scrolling state when scroll finishes
+    function onScrollEnd() {
+      btn.classList.remove('back-to-top--scrolling');
+      window.removeEventListener('scrollend', onScrollEnd);
+    }
+
+    if ('onscrollend' in window) {
+      window.addEventListener('scrollend', onScrollEnd, { once: true });
+    } else {
+      // Fallback for browsers without scrollend event
+      setTimeout(function () {
+        btn.classList.remove('back-to-top--scrolling');
+      }, 800);
+    }
   });
 
   // ── Single shared scroll listener for both mobileCTA and backToTop ──
@@ -402,60 +423,11 @@ function injectScrollProgress() {
 }
 
 /**
- * Injects a dismissible announcement banner just below the nav.
- * Only shown on the homepage (root path).
- * Dismissed state is persisted in sessionStorage so it stays gone for the session.
+ * Announcement banner — disabled.
+ * The function signature is retained so callers don't throw.
  */
 function injectAnnouncementBanner() {
-  const BANNER_KEY = 'simphonia-banner-v1';
-  try { if (sessionStorage.getItem(BANNER_KEY)) return; } catch (_) {}
-
-  // Only show on homepage
-  const path = window.location.pathname;
-  const isHome = path === '/' || path === '/index.html' ||
-    (!['destinations', 'how-it-works', 'about', 'support', 'privacy', 'terms']
-      .some(p => path.includes('/' + p)));
-  if (!isHome) return;
-
-  const base = getBasePath();
-  const banner = document.createElement('div');
-  banner.className = 'announcement-banner';
-  banner.id = 'announcement-banner';
-  banner.setAttribute('role', 'banner');
-  banner.innerHTML = `
-    <div class="announcement-banner__inner">
-      <span class="announcement-banner__icon" aria-hidden="true">🚀</span>
-      <span class="announcement-banner__text">
-        Simphonia is launching soon — <a href="${base}destinations/" class="announcement-banner__link">browse plans early</a> and be first in line.
-      </span>
-      <button class="announcement-banner__close" id="announcement-close" aria-label="Dismiss announcement">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" aria-hidden="true">
-          <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
-        </svg>
-      </button>
-    </div>
-  `;
-  // Insert after nav (which will be prepended), so insert at body start for now;
-  // layout.js injects nav first via prepend, then footer append.
-  // We'll insert the banner as first child of body after nav is set.
-  document.body.appendChild(banner);
-
-  // Measure banner height and expose as CSS variable so scroll-padding-top,
-  // and any other layout that needs to account for the banner, can adapt.
-  requestAnimationFrame(() => {
-    const h = banner.offsetHeight;
-    if (h > 0) {
-      document.documentElement.style.setProperty('--announcement-h', h + 'px');
-    }
-  });
-
-  document.getElementById('announcement-close')?.addEventListener('click', () => {
-    try { sessionStorage.setItem(BANNER_KEY, '1'); } catch (_) {}
-    banner.classList.add('announcement-banner--closing');
-    // Clear the CSS variable so scroll-padding returns to its default
-    document.documentElement.style.setProperty('--announcement-h', '0px');
-    setTimeout(() => banner.remove(), 350);
-  });
+  // Banner removed — no-op
 }
 
 /**
@@ -466,7 +438,7 @@ function injectNoscript() {
   const style = document.createElement('style');
   style.textContent =
     '.reveal,.reveal--left,.reveal--right,.reveal--scale{opacity:1;visibility:visible;transform:none}' +
-    '#globe-container,#stars-canvas,.cursor{display:none}' +
+    '#stars-canvas,.cursor{display:none}' +
     '.mobile-cta-bar,.back-to-top,.cookie-banner{display:none}' +
     '.footer__brand,.footer__col,.footer__bottom{opacity:1;visibility:visible;transform:none}';
   ns.appendChild(style);

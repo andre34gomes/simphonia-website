@@ -414,6 +414,24 @@
     flex-shrink: 0;
     scroll-snap-align: start;
   }
+  .dest-card__name { font-size: 0.9375rem; }
+}
+
+/* Galaxy Fold / foldable phones */
+@media (max-width: 300px) {
+  .dest-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-sm);
+  }
+  .dest-card__img-wrap { height: 120px; }
+  .dest-card__body { padding: var(--space-sm); }
+  .dest-card__name { font-size: 0.875rem; }
+  .dest-card__plans { font-size: 0.75rem; }
+  .dest-card__price { font-size: 0.75rem; }
+  .filter-tab {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.75rem;
+  }
 }
 
 /* ── Loading spinner ── */

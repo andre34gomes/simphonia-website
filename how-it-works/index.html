@@ -16,6 +16,7 @@
   <meta name="description" content="Get connected in 3 simple steps. Choose your destination, buy instantly, and travel connected with Simphonia eSIM.">
   <meta name="theme-color" content="#121212">
   <link rel="canonical" href="https://simphonia.pt/how-it-works/">
+  <link rel="alternate" hreflang="en" href="https://simphonia.pt/how-it-works/">
   <meta property="og:title" content="How It Works — Simphonia eSIM">
   <meta property="og:description" content="Get connected in 3 simple steps. Choose your destination, buy instantly, and travel connected with Simphonia eSIM.">
   <meta property="og:type" content="website">
@@ -36,10 +37,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap"
+  <link rel="dns-prefetch" href="https://api.simphonia.pt">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Pacifico&display=optional"
         media="print" onload="this.media='all'">
   <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Pacifico&display=optional">
   </noscript>
   <!-- Critical CSS: above-the-fold rules inlined for fast first paint -->
   <style>
@@ -54,13 +56,9 @@
     .container{max-width:1200px;margin:0 auto;padding:0 clamp(1rem,4vw,2.5rem)}
   </style>
 
-  <!-- Full stylesheets: preload as style, apply on load for non-blocking render -->
-  <link rel="stylesheet" href="../css/base.css" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="../css/how-it-works.css" media="print" onload="this.media='all'">
-  <noscript>
-    <link rel="stylesheet" href="../css/base.css">
-    <link rel="stylesheet" href="../css/how-it-works.css">
-  </noscript>
+  <!-- Full stylesheets: render-blocking to prevent flash of unstyled content -->
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/how-it-works.css">
 
   <!-- Structured Data: Breadcrumb -->
   <script type="application/ld+json">
@@ -73,8 +71,60 @@
     ]
   }
   </script>
+
+  <!-- FAQ Structured Data — generates rich results in Google Search -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "How do I get started with Simphonia?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Download the Simphonia app, choose your destination, and purchase a plan. Your eSIM QR code is generated instantly — no physical SIM card or store visit required."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I install my eSIM after purchase?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "After purchase, open Settings on your phone, go to Cellular or Mobile Data, tap Add eSIM, and scan the QR code shown in the Simphonia app. Your eSIM will activate automatically when you arrive at your destination."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need to remove my existing SIM card?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Your physical SIM card stays in your phone. The eSIM runs alongside it, so you can keep your home number active while using local data abroad."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How many countries does Simphonia cover?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Simphonia offers eSIM plans for 200+ countries and regions worldwide, including Europe, Asia, the Americas, Africa, and the Middle East."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "What payment methods are accepted?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Simphonia accepts Apple Pay, Google Pay, and all major credit and debit cards. Checkout takes under 30 seconds."
+        }
+      }
+    ]
+  }
+  </script>
 </head>
 <body>
+  <!-- Skip-link: placed in HTML so screen readers see it before JS loads -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
 
   <main id="main-content">
 
@@ -206,11 +256,11 @@
           integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
           crossorigin="anonymous" defer></script>
   <script defer src="../js/cdn-fallback.js"></script>
-  <script defer src="../js/components/layout.js?v=20260331"></script>
-  <script defer src="../js/animations-core.js?v=20260331"></script>
-  <script defer src="../js/animations-subpages.js?v=20260331"></script>
+  <script defer src="../js/components/layout.js?v=20260401"></script>
+  <script defer src="../js/animations-core.js?v=20260401"></script>
+  <script defer src="../js/animations-subpages.js?v=20260401"></script>
   <script defer src="../js/main.js?v=20260401"></script>
-
+  <script>if('serviceWorker'in navigator)window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})});</script>
 </body>
 </html>
 

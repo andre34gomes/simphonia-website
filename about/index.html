@@ -16,6 +16,7 @@
   <meta name="description" content="Learn about Simphonia's mission to make global connectivity accessible, affordable, and effortless for every traveler.">
   <meta name="theme-color" content="#121212">
   <link rel="canonical" href="https://simphonia.pt/about/">
+  <link rel="alternate" hreflang="en" href="https://simphonia.pt/about/">
   <meta property="og:title" content="About — Simphonia eSIM">
   <meta property="og:description" content="Learn about Simphonia's mission to make global connectivity accessible, affordable, and effortless for every traveler.">
   <meta property="og:type" content="website">
@@ -36,10 +37,11 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap"
+  <link rel="dns-prefetch" href="https://api.simphonia.pt">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Pacifico&display=optional"
         media="print" onload="this.media='all'">
   <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Pacifico&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Pacifico&display=optional">
   </noscript>
   <!-- Critical CSS: above-the-fold rules inlined for fast first paint -->
   <style>
@@ -54,13 +56,9 @@
     .container{max-width:1200px;margin:0 auto;padding:0 clamp(1rem,4vw,2.5rem)}
   </style>
 
-  <!-- Full stylesheets: preload as style, apply on load for non-blocking render -->
-  <link rel="stylesheet" href="../css/base.css" media="print" onload="this.media='all'">
-  <link rel="stylesheet" href="../css/about.css" media="print" onload="this.media='all'">
-  <noscript>
-    <link rel="stylesheet" href="../css/base.css">
-    <link rel="stylesheet" href="../css/about.css">
-  </noscript>
+  <!-- Full stylesheets: render-blocking to prevent flash of unstyled content -->
+  <link rel="stylesheet" href="../css/base.css">
+  <link rel="stylesheet" href="../css/about.css">
 
   <!-- Structured Data: Breadcrumb -->
   <script type="application/ld+json">
@@ -73,9 +71,26 @@
     ]
   }
   </script>
+  <!-- Organization structured data — helps Google Knowledge Panel -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    "name": "Simphonia",
+    "url": "https://simphonia.pt",
+    "description": "Global eSIM service — instant connectivity for travelers in 200+ countries. No roaming fees, no SIM swaps, no contracts.",
+    "foundingDate": "2024",
+    "founder": { "@type": "Person", "name": "André Gomes" },
+    "areaServed": "Worldwide",
+    "sameAs": [
+      "https://apps.apple.com/app/simphonia",
+      "https://play.google.com/store/apps/details?id=com.simphonia.app"
+    ]
+  }
+  </script>
 </head>
 <body>
-
+  <a href="#main-content" class="skip-link">Skip to main content</a>
 
   <main id="main-content">
 
@@ -95,15 +110,15 @@
     <!-- Story -->
     <section class="section" id="story" aria-labelledby="story-heading">
       <div class="container">
-        <div class="origin-block reveal">
-          <div class="origin-block__img">
+        <div class="about-story reveal">
+          <div class="about-story__img">
             <img src="https://images.unsplash.com/photo-1488646953014-85cb44e25828?auto=format&fit=crop&q=80&w=1000" alt="Traveler looking at a departure board" width="1000" height="667" loading="lazy" decoding="async" fetchpriority="low">
-            <div class="origin-block__img-tag" aria-hidden="true">Est. 2024</div>
+            <div class="about-story__img-tag" aria-hidden="true">Est. 2024</div>
           </div>
-          <div class="origin-block__body">
+          <div class="about-story__body">
             <span class="label">Our Story</span>
             <h2 id="story-heading">Born From a<br><span class="text-gradient">Travel Frustration</span></h2>
-            <blockquote class="origin-block__quote">
+            <blockquote class="about-story__quote">
               "I landed in Tokyo at midnight with zero mobile data. No maps, no ride, no translation. That one trip changed everything."
             </blockquote>
             <p>
@@ -112,18 +127,18 @@
             <p>
               Founded in 2024, we set out to make global connectivity instant and accessible for every traveler. Today, Simphonia covers 200+ countries with one-tap eSIM activation, transparent pricing, and 24/7 AI-powered support.
             </p>
-            <div class="origin-block__stats">
-              <div class="origin-block__stat">
-                <span class="origin-block__stat-val">200+</span>
-                <span class="origin-block__stat-label">Countries</span>
+            <div class="about-story__stats">
+              <div class="about-story__stat">
+                <span class="about-story__stat-val">200+</span>
+                <span class="about-story__stat-label">Countries</span>
               </div>
-              <div class="origin-block__stat">
-                <span class="origin-block__stat-val">&lt;2min</span>
-                <span class="origin-block__stat-label">To Connect</span>
+              <div class="about-story__stat">
+                <span class="about-story__stat-val">&lt;2min</span>
+                <span class="about-story__stat-label">To Connect</span>
               </div>
-              <div class="origin-block__stat">
-                <span class="origin-block__stat-val">24/7</span>
-                <span class="origin-block__stat-label">AI Support</span>
+              <div class="about-story__stat">
+                <span class="about-story__stat-val">24/7</span>
+                <span class="about-story__stat-label">AI Support</span>
               </div>
             </div>
           </div>
@@ -205,11 +220,11 @@
           integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
           crossorigin="anonymous" defer></script>
   <script defer src="../js/cdn-fallback.js"></script>
-  <script defer src="../js/components/layout.js?v=20260331"></script>
-  <script defer src="../js/animations-core.js?v=20260331"></script>
-  <script defer src="../js/animations-subpages.js?v=20260331"></script>
+  <script defer src="../js/components/layout.js?v=20260401"></script>
+  <script defer src="../js/animations-core.js?v=20260401"></script>
+  <script defer src="../js/animations-subpages.js?v=20260401"></script>
   <script defer src="../js/main.js?v=20260401"></script>
-
+  <script>if('serviceWorker'in navigator)window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})});</script>
 </body>
 </html>
 

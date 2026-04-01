@@ -4,29 +4,29 @@
    SIMPHONIA — About Page Stylesheet
    ============================================================ */
 
-/* ── Origin / Story block — two-column image + text ── */
-.origin-block {
+/* ── Story block — two-column image + text ── */
+.about-story {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: clamp(3rem, 6vw, 6rem);
   align-items: center;
 }
 
-.origin-block__img {
+.about-story__img {
   position: relative;
   border-radius: var(--radius-lg);
   overflow: hidden;
   aspect-ratio: 4 / 3;
 }
 
-.origin-block__img img {
+.about-story__img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
   display: block;
 }
 
-.origin-block__img-tag {
+.about-story__img-tag {
   position: absolute;
   bottom: 1rem;
   left: 1rem;
@@ -43,16 +43,16 @@
   border-radius: var(--radius-sm);
 }
 
-[data-theme="light"] .origin-block__img-tag {
+[data-theme="light"] .about-story__img-tag {
   background: rgba(254, 249, 238, 0.82);
   color: var(--accent-dark);
 }
 
-.origin-block__body h2 {
+.about-story__body h2 {
   margin-top: var(--space-md);
 }
 
-.origin-block__quote {
+.about-story__quote {
   margin: var(--space-xl) 0;
   padding: var(--space-lg) var(--space-xl);
   border-left: 3px solid var(--accent);
@@ -64,17 +64,17 @@
   line-height: 1.7;
 }
 
-.origin-block__body p {
+.about-story__body p {
   margin-top: var(--space-lg);
   font-size: 1.0625rem;
   line-height: 1.8;
 }
 
-.origin-block__body p + p {
+.about-story__body p + p {
   margin-top: var(--space-md);
 }
 
-.origin-block__stats {
+.about-story__stats {
   display: flex;
   gap: var(--space-2xl);
   margin-top: var(--space-2xl);
@@ -82,7 +82,7 @@
   border-top: 1px solid var(--border-subtle);
 }
 
-.origin-block__stat-val {
+.about-story__stat-val {
   display: block;
   font-size: 1.75rem;
   font-weight: 800;
@@ -91,7 +91,7 @@
   line-height: 1;
 }
 
-.origin-block__stat-label {
+.about-story__stat-label {
   display: block;
   font-size: 0.75rem;
   font-weight: 500;
@@ -313,7 +313,7 @@
    RESPONSIVE — About Page
    ============================================== */
 @media (max-width: 768px) {
-  .origin-block {
+  .about-story {
     grid-template-columns: 1fr;
   }
   .team-card { padding: var(--space-xl) var(--space-2xl); }
@@ -324,23 +324,6 @@
 
 @media (max-width: 480px) {
   .team-card { padding: var(--space-lg); min-width: 200px; }
-}
-
-/* ==============================================
-   STORY SECTION — About Page
-   ============================================== */
-.about-story__body h2 {
-  margin-top: var(--space-md);
-}
-
-.about-story__body p {
-  margin-top: var(--space-lg);
-  font-size: 1.0625rem;
-  line-height: 1.8;
-}
-
-.about-story__body p + p {
-  margin-top: var(--space-md);
 }
 
 /* ==============================================
@@ -360,4 +343,3 @@
   font-size: 1.125rem;
   line-height: 1.8;
 }
-

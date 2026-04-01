@@ -10,7 +10,10 @@
 
 /* ==============================================
    1. RESET & BASE
-   ============================================== */
+   ==============================================
+   Note: The reset rules below are intentionally duplicated in the inline
+   critical CSS of each HTML page (<style> in <head>) to prevent FOUC.
+   This file re-declares them for completeness when loaded standalone. */
 *,
 *::before,
 *::after {
@@ -36,7 +39,6 @@ body {
   font-size: 16px;
   line-height: 1.6;
   overflow-x: clip;   /* clip ≠ hidden: does NOT create a scroll container */
-  max-width: 100vw;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -76,9 +78,31 @@ button {
   background: none;
 }
 
+/* Focus-visible: show outlines only for keyboard navigation, not mouse/touch */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
 /* Eliminate 300ms tap delay on mobile and prevent double-tap-zoom on controls */
 a, button, input, select, textarea, [role="button"], summary {
   touch-action: manipulation;
+}
+
+/* Ensure minimum 44×44px tap targets on mobile for WCAG 2.5.5 compliance */
+@media (pointer: coarse) {
+  .nav__link,
+  .footer__col a,
+  .footer__socials a,
+  .faq-item summary {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
 }
 
 input, textarea, select {
@@ -333,9 +357,11 @@ p {
   flex-direction: column;
   justify-content: center;
   /* Skip layout/paint for off-screen sections — browser renders them
-     only when they approach the viewport, reducing initial load work. */
+     only when they approach the viewport, reducing initial load work.
+     contain-intrinsic-size: 600px is a stable placeholder height; using
+     100dvh caused CLS because the browser re-measured on every scroll. */
   content-visibility: auto;
-  contain-intrinsic-size: auto 100dvh;
+  contain-intrinsic-size: auto 600px;
 }
 
 
@@ -448,6 +474,7 @@ section[id] {
   position: relative;
   overflow: hidden;
   max-width: 100%;
+  text-overflow: ellipsis;
   transition: transform    var(--duration-normal) var(--ease-out),
               box-shadow   var(--duration-normal) var(--ease-out),
               border-color var(--duration-normal) var(--ease-out),
@@ -774,8 +801,9 @@ body.theme-transition .btn {
   contain: strict;
 }
 
-/* Stars canvas is expensive on mobile — skip it entirely */
-@media (max-width: 768px) {
+/* Stars canvas is expensive on mobile / tablet — skip it entirely.
+   960px matches the nav collapse breakpoint and covers all tablets. */
+@media (max-width: 960px) {
   #stars-canvas { display: none; }
 }
 
@@ -940,7 +968,9 @@ body.theme-transition .btn {
   padding: var(--space-5xl) 0;
   position: relative;
   overflow: hidden;
-  /* min-height, display, flex-direction inherited from .section */
+  /* Override .section's min-height:100dvh — CTA content is short and
+     shouldn't force a full viewport height (creates excessive whitespace) */
+  min-height: auto;
   align-items: center;
   justify-content: center;
 }
@@ -1266,6 +1296,10 @@ body.theme-transition .btn {
   padding: 8px;
   cursor: pointer;
   z-index: 1001;
+  /* Minimum 44×44px touch target for WCAG 2.5.5 */
+  min-width: 44px;
+  min-height: 44px;
+  justify-content: center;
 }
 
 .nav__hamburger span {
@@ -1340,6 +1374,8 @@ body.theme-transition .btn {
   display: flex;
   flex-direction: column;
   overflow: hidden;
+  overflow-y: auto;   /* Allow vertical scroll in landscape if content overflows */
+  -webkit-overflow-scrolling: touch;
   /* clip-path on the parent handles the reveal — no slide transform needed */
   transform: none;
   transition: none;
@@ -1787,9 +1823,35 @@ html.gsap-ready .cta-section .reveal {
     transform: none !important;
   }
 
-  #stars-canvas,
-  #globe-container {
+  #stars-canvas {
     display: none;
+  }
+}
+
+/* High contrast — increase border visibility and text contrast */
+@media (prefers-contrast: more) {
+  :root {
+    --glass-border: rgba(255, 255, 255, 0.25);
+    --border-subtle: rgba(255, 255, 255, 0.2);
+    --border-default: rgba(255, 255, 255, 0.3);
+    --text-secondary: #E8E4DE;
+    --text-tertiary: #B0A89E;
+  }
+  [data-theme="light"] {
+    --glass-border: rgba(100, 65, 15, 0.25);
+    --border-subtle: rgba(100, 65, 15, 0.2);
+    --border-default: rgba(100, 65, 15, 0.3);
+    --text-secondary: #4A4540;
+    --text-tertiary: #6E6860;
+  }
+  .btn--outline {
+    border-width: 2px;
+  }
+  .glass-card,
+  .feat-card,
+  .step-card,
+  .faq-item {
+    border-width: 2px;
   }
 }
 
@@ -2034,6 +2096,44 @@ html.gsap-ready .cta-section .reveal {
   }
 
   h2 { font-size: 1.5rem; }
+
+  /* CTA section — prevent button overflow on very small phones */
+  .cta-section .flex .btn {
+    padding: 0.75rem 1rem;
+    font-size: 0.8125rem;
+    min-width: 0;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+}
+
+/* ── Galaxy Fold / foldable phones (outer screen ≈ 280px) ── */
+@media (max-width: 300px) {
+  :root {
+    --section-padding: clamp(1.5rem, 5vw, 2.5rem);
+  }
+  .container { padding: 0 0.625rem; }
+  .nav { padding: 0 0.5rem; }
+  h1 { font-size: 1.75rem; }
+  h2 { font-size: 1.25rem; }
+  .section-header p { font-size: 0.8125rem; }
+  .section-header h2 { margin-bottom: var(--space-xs); }
+  .btn--lg {
+    padding: 0.75rem 1rem;
+    font-size: 0.8125rem;
+  }
+  .cta-section h2 { font-size: 1.25rem; }
+  .cta-section p { font-size: 0.8125rem; }
+  .cta-section .flex .btn {
+    padding: 0.625rem 0.75rem;
+    font-size: 0.75rem;
+  }
+  .footer__col a { font-size: 0.8125rem; }
+  .footer__brand p { font-size: 0.8125rem; }
+  /* Prevent mobile menu link text from overflowing */
+  .nav__mobile-link-text {
+    font-size: clamp(1.5rem, 6vw, 1.875rem);
+  }
 }
 
 /* Cursor only on pointer devices */
@@ -2251,7 +2351,7 @@ html.gsap-ready .feature-grid--new {
   left: 0;
   right: 0;
   z-index: 900;
-  padding: var(--space-sm) var(--space-md) calc(var(--space-sm) + env(safe-area-inset-bottom, 0px));
+  padding: var(--space-sm) var(--space-md) calc(var(--space-sm) + max(env(safe-area-inset-bottom, 0px), 0px));
   background: var(--bg-secondary);
   border-top: 1px solid var(--border-subtle);
   gap: var(--space-sm);
@@ -2307,6 +2407,8 @@ html.gsap-ready .feature-grid--new {
               color 0.3s var(--ease-out),
               box-shadow 0.3s var(--ease-out);
   box-shadow: var(--shadow-sm);
+  /* Prevent the button from being partially off-screen on narrow phones */
+  max-width: calc(100vw - 1rem);
 }
 
 .back-to-top svg {
@@ -2332,16 +2434,70 @@ html.gsap-ready .feature-grid--new {
   transform: translateY(0) scale(0.97);
 }
 
+/* Animated state while smooth-scrolling to top */
+.back-to-top--scrolling {
+  background: var(--accent) !important;
+  border-color: var(--accent) !important;
+  color: var(--text-inverse) !important;
+  box-shadow: 0 0 28px rgba(212, 175, 55, 0.35) !important;
+  animation: back-to-top-pulse 0.6s ease-in-out;
+}
+
+.back-to-top--scrolling svg {
+  animation: back-to-top-arrow 0.6s ease-out;
+}
+
+@keyframes back-to-top-pulse {
+  0%   { transform: translateY(0) scale(1); }
+  30%  { transform: translateY(-4px) scale(1.1); }
+  100% { transform: translateY(0) scale(1); }
+}
+
+@keyframes back-to-top-arrow {
+  0%   { transform: translateY(0); }
+  40%  { transform: translateY(-6px); }
+  100% { transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .back-to-top--scrolling { animation: none; }
+  .back-to-top--scrolling svg { animation: none; }
+}
+
+/* Smaller back-to-top on very narrow phones */
+@media (max-width: 480px) {
+  .back-to-top {
+    right: 1rem;
+    bottom: 1.5rem;
+    width: 40px;
+    height: 40px;
+  }
+  .back-to-top svg {
+    width: 18px;
+    height: 18px;
+  }
+}
+
+@media (max-width: 360px) {
+  .back-to-top {
+    right: 0.75rem;
+    width: 38px;
+    height: 38px;
+  }
+}
+
 /* Shift up when mobile CTA bar is visible on small screens */
 @media (max-width: 768px) {
+  /* :has() fallback — adjacent-sibling selector for browsers without :has() support */
   .mobile-cta-bar--visible ~ .back-to-top,
   body:has(.mobile-cta-bar--visible) .back-to-top {
-    bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+    bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
   }
 
   /* Shift cookie banner above the mobile CTA bar so buttons stay accessible */
+  .mobile-cta-bar--visible ~ .cookie-banner,
   body:has(.mobile-cta-bar--visible) .cookie-banner {
-    bottom: calc(4.5rem + env(safe-area-inset-bottom, 0px));
+    bottom: calc(5rem + env(safe-area-inset-bottom, 0px));
   }
 
   /* When both CTA bar and cookie banner are visible, push back-to-top above both */
@@ -2559,65 +2715,7 @@ html.gsap-ready .feature-grid--new {
   background: var(--glass-hover);
 }
 
-/* ==============================================
-   STORE BADGES (shared)
-   ============================================== */
-.store-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-md);
-  padding: 0.875rem 1.5rem;
-  background: var(--bg-elevated);
-  border: 1px solid var(--border-default);
-  border-radius: var(--radius-lg);
-  color: var(--text-primary);
-  text-decoration: none;
-  min-width: 180px;
-  transition: transform    var(--duration-normal) var(--ease-out),
-              box-shadow   var(--duration-normal) var(--ease-out),
-              border-color var(--duration-normal) var(--ease-out),
-              background   var(--duration-normal) var(--ease-out);
-}
-
-.store-badge:hover {
-  border-color: var(--accent);
-  background: var(--glass-accent);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(212,175,55,0.15);
-}
-
-.store-badge__icon {
-  width: 26px; height: 26px;
-  display: block;
-  background-color: currentColor;
-  fill: var(--text-primary);
-  flex-shrink: 0;
-  transition: fill var(--duration-normal), background-color var(--duration-normal);
-}
-
-.store-badge:hover .store-badge__icon {
-  fill: var(--accent);
-  background-color: var(--accent);
-}
-
-.store-badge__text { display: flex; flex-direction: column; gap: 2px; }
-.store-badge__sub { font-size: 0.6875rem; color: var(--text-tertiary); font-weight: 400; }
-.store-badge__main { font-size: 1rem; font-weight: 700; color: var(--text-primary); }
-
-@media (max-width: 768px) {
-  .store-badge { width: 100%; max-width: 260px; justify-content: center; }
-}
-
 @media (max-width: 480px) {
-  .store-badge {
-    min-width: 140px;
-    padding: 0.625rem 1rem;
-    gap: var(--space-sm);
-    border-radius: var(--radius-md);
-  }
-  .store-badge__icon  { width: 22px; height: 22px; }
-  .store-badge__main  { font-size: 0.875rem; }
-  .store-badge__sub   { font-size: 0.5625rem; }
 
   .announcement-banner__inner { padding: 0.5rem var(--space-xl) 0.5rem var(--space-md); }
   .announcement-banner__text  { font-size: 0.8125rem; }

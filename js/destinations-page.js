@@ -175,12 +175,13 @@ function renderGrid(items) {
     card.innerHTML =
       '<div class="dest-card__img-wrap">' +
       (img
-        ? '<img src="' + esc(img) + '" alt="' + safeName + '" class="dest-card__img" loading="lazy" decoding="async">'
+        ? '<img src="' + esc(img) + '" alt="' + safeName + '" class="dest-card__img" width="400" height="180" loading="lazy" decoding="async">'
         : '<div class="dest-card__img" style="background:linear-gradient(135deg,var(--bg-elevated),var(--border-subtle));" aria-hidden="true"></div>') +
       (d.discount ? '<span class="dest-card__discount">-' + parseInt(d.discount, 10) + '%</span>' : '') +
       '</div>' +
       '<div class="dest-card__body">' +
       '<div class="dest-card__name">' + (flag || '') + safeName + '</div>' +
+      (d.planCount ? '<div class="dest-card__plans">' + d.planCount + ' plans available</div>' : '') +
       (d.startingPrice ? '<div class="dest-card__price">From \u20AC' + Number(d.startingPrice).toFixed(2) + '</div>' : '') +
       '</div>';
     frag.appendChild(card);
@@ -245,6 +246,10 @@ async function buildRegionTabs() {
       btn.textContent = label;
       regionTabsContainer.appendChild(btn);
     });
+    // Show the tabs container now that it has content
+    if (regions.length) {
+      regionTabsContainer.style.display = 'flex';
+    }
   } catch (err) {
     console.error('[destinations] Failed to load regions:', err);
   }
@@ -277,6 +282,16 @@ var searchDebounce = null;
 searchInput.addEventListener('input', function () {
   clearTimeout(searchDebounce);
   searchDebounce = setTimeout(applySearch, 200);
+});
+
+// Escape key clears search; Enter key prevents form submission flash
+searchInput.addEventListener('keydown', function (e) {
+  if (e.key === 'Escape' && searchInput.value) {
+    e.preventDefault();
+    searchInput.value = '';
+    clearBtn.hidden = true;
+    applySearch();
+  }
 });
 
 clearBtn.addEventListener('click', function () {

@@ -33,8 +33,14 @@
    * @returns {Promise<string>}
    */
   async function getGuestToken() {
-    var stored = sessionStorage.getItem(TOKEN_KEY);
-    var expiry = Number(sessionStorage.getItem(EXPIRY_KEY) || 0);
+    var stored, expiry;
+    try {
+      stored = sessionStorage.getItem(TOKEN_KEY);
+      expiry = Number(sessionStorage.getItem(EXPIRY_KEY) || 0);
+    } catch (_) {
+      stored = null;
+      expiry = 0;
+    }
     if (stored && Date.now() < expiry - EXPIRY_MARGIN_MS) return stored;
 
     if (_pendingFetch) return _pendingFetch;
@@ -51,10 +57,12 @@
         if (!token) throw new Error('Guest auth returned no token');
 
         var expiresInNum = Number(expiresIn);
-        sessionStorage.setItem(TOKEN_KEY, token);
-        sessionStorage.setItem(EXPIRY_KEY, String(
-          isFinite(expiresInNum) ? Date.now() + expiresInNum * 1000 : 0
-        ));
+        try {
+          sessionStorage.setItem(TOKEN_KEY, token);
+          sessionStorage.setItem(EXPIRY_KEY, String(
+            isFinite(expiresInNum) ? Date.now() + expiresInNum * 1000 : 0
+          ));
+        } catch (_) { /* Private browsing — token still usable for this request chain */ }
         return token;
       } catch (e) {
         throw e instanceof Error ? e : new Error('Guest token acquisition failed');

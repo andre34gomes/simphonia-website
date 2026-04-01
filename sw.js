@@ -1,0 +1,165 @@
+/**
+ * Simphonia PWA Service Worker — Network-first with offline shell cache
+ *
+ * Strategy:
+ *  - HTML pages: network-first (always serve fresh; fall back to cache if offline)
+ *  - CSS / JS / fonts: stale-while-revalidate (instant load + background refresh)
+ *  - API calls: network-only (never cache dynamic data)
+ *
+ * Cache versioning: bump CACHE_VERSION when deploying breaking asset changes.
+ */
+
+const CACHE_VERSION = 'simphonia-v4';
+
+const ASSET_VERSION = '20260401';
+
+// Core shell assets cached on install
+const PRECACHE_URLS = [
+  '/',
+  '/index.html',
+  '/404.html',
+  '/about/',
+  '/destinations/',
+  '/how-it-works/',
+  '/support/',
+  '/privacy/',
+  '/terms/',
+  '/css/about.css',
+  '/css/base.css',
+  '/css/destinations.css',
+  '/css/home.css',
+  '/css/how-it-works.css',
+  '/css/legal.css',
+  '/css/support.css',
+  '/js/animations-core.js',
+  '/js/animations-home.js',
+  '/js/animations-subpages.js',
+  '/js/auth.js',
+  '/js/cdn-fallback.js',
+  '/js/destinations-page.js',
+  '/js/globe.js',
+  '/js/main.js',
+  '/js/support.js',
+  '/js/theme-init.js',
+  '/js/components/layout.js',
+  '/assets/apple.svg',
+  '/assets/favicon.svg',
+  '/assets/google.svg',
+  '/assets/iphone-frame.svg',
+  '/assets/logo-mark.svg',
+  '/manifest.json',
+];
+
+// Origins that should never be cached (API data, CDN scripts, flag images)
+const NEVER_CACHE_ORIGINS = [
+  'https://api.simphonia.pt',
+  'http://localhost:',
+  'https://cdnjs.cloudflare.com',
+  'https://flagcdn.com',
+];
+
+// ─── Install: pre-cache core shell ───────────────────────────────────────────
+self.addEventListener('install', function (event) {
+  event.waitUntil(
+    caches.open(CACHE_VERSION).then(function (cache) {
+      // Use individual cache.add() calls so one failure doesn't abort the whole install
+      return Promise.allSettled(
+        PRECACHE_URLS.map(function (url) {
+          return cache.add(url).catch(function (err) {
+            console.warn('[SW] Pre-cache skipped:', url, err.message);
+          });
+        })
+      );
+    }).then(function () {
+      // Activate immediately — don't wait for existing tab to close
+      return self.skipWaiting();
+    })
+  );
+});
+
+// ─── Activate: clean up old caches ───────────────────────────────────────────
+self.addEventListener('activate', function (event) {
+  event.waitUntil(
+    caches.keys().then(function (keys) {
+      return Promise.all(
+        keys.filter(function (k) { return k !== CACHE_VERSION; })
+            .map(function (k) { return caches.delete(k); })
+      );
+    }).then(function () {
+      return self.clients.claim();
+    })
+  );
+});
+
+// ─── Fetch: routing logic ─────────────────────────────────────────────────────
+self.addEventListener('fetch', function (event) {
+  var req = event.request;
+
+  // Ignore non-GET requests and browser-extension requests
+  if (req.method !== 'GET') return;
+  if (!req.url.startsWith('http')) return;
+
+  // Never intercept API calls or third-party CDN requests
+  var isExternal = NEVER_CACHE_ORIGINS.some(function (origin) {
+    return req.url.includes(origin);
+  });
+  if (isExternal) return;
+
+  // Determine strategy based on destination
+  var url = new URL(req.url);
+  var isHTML = req.headers.get('Accept') && req.headers.get('Accept').includes('text/html');
+  var isAsset = /\.(css|js|woff2?|ttf|svg|png|jpg|jpeg|gif|webp|ico)(\?|$)/.test(url.pathname);
+
+  if (isHTML) {
+    // HTML: network-first — always try to fetch fresh; serve cache if offline
+    event.respondWith(networkFirst(req));
+  } else if (isAsset) {
+    // CSS/JS/Fonts: stale-while-revalidate — instant from cache + refresh in background
+    event.respondWith(staleWhileRevalidate(req));
+  }
+  // Everything else: browser default (no interception)
+});
+
+// ─── Strategy: Network-first ─────────────────────────────────────────────────
+function networkFirst(req) {
+  return fetch(req).then(function (networkResponse) {
+    if (networkResponse.ok) {
+      var clone = networkResponse.clone();
+      caches.open(CACHE_VERSION).then(function (cache) {
+        cache.put(req, clone);
+      });
+    }
+    return networkResponse;
+  }).catch(function () {
+    return caches.match(req).then(function (cached) {
+      return cached || caches.match('/index.html');
+    });
+  });
+}
+
+// ─── Strategy: Stale-while-revalidate ────────────────────────────────────────
+function staleWhileRevalidate(req) {
+  return caches.open(CACHE_VERSION).then(function (cache) {
+    return cache.match(req).then(function (cached) {
+      var networkPromise = fetch(req).then(function (networkResponse) {
+        if (networkResponse.ok) {
+          cache.put(req, networkResponse.clone());
+        }
+        return networkResponse;
+      }).catch(function (err) {
+        // If we have a stale copy, swallow the error — stale is fine.
+        // If not, re-throw so the browser shows its default offline error.
+        if (cached) return undefined;
+        throw err;
+      });
+
+      return cached || networkPromise;
+    });
+  });
+}
+
+
+
+
+
+
