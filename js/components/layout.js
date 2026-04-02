@@ -394,23 +394,11 @@ function injectScrollProgress() {
   bar.setAttribute('aria-label', 'Page scroll progress');
   document.body.appendChild(bar);
 
-  // Cache document height — reading scrollHeight forces a layout reflow,
-  // so we only recompute on resize (not on every scroll tick).
-  let docH = document.documentElement.scrollHeight - window.innerHeight;
-
-  let resizeTick = false;
-  window.addEventListener('resize', () => {
-    if (!resizeTick) {
-      resizeTick = true;
-      requestAnimationFrame(() => {
-        docH = document.documentElement.scrollHeight - window.innerHeight;
-        resizeTick = false;
-      });
-    }
-  }, { passive: true });
-
   let ticking = false;
   const update = () => {
+    // Recompute the full scrollable height every tick so that lazy-loaded
+    // images, dynamic content and the footer are always accounted for.
+    const docH = document.documentElement.scrollHeight - window.innerHeight;
     const pct = docH > 0 ? Math.min(100, (window.scrollY / docH) * 100) : 0;
     bar.style.transform = `scaleX(${pct / 100})`;
     bar.setAttribute('aria-valuenow', Math.round(pct));
@@ -418,6 +406,11 @@ function injectScrollProgress() {
   };
 
   window.addEventListener('scroll', () => {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+
+  // Also update on resize so orientation changes are covered.
+  window.addEventListener('resize', () => {
     if (!ticking) { ticking = true; requestAnimationFrame(update); }
   }, { passive: true });
 }
@@ -518,7 +511,7 @@ function activeClass(slug) {
 
 /**
  * Returns the best app store URL for the current user agent.
- * iOS/iPadOS → App Store, Android → Play Store, all others → home page #download section.
+ * iOS/iPadOS → App Store, Android → Play Store, all others → home page (highlights download buttons).
  */
 function getDownloadUrl(base) {
   const ua = navigator.userAgent || '';
@@ -528,8 +521,8 @@ function getDownloadUrl(base) {
   if (/android/i.test(ua)) {
     return 'https://play.google.com/store/apps/details?id=com.simphonia.app';
   }
-  // Desktop / unknown — scroll to the download section on the home page
-  return base + '#download';
+  // Desktop / unknown — navigate to the home page (click handler will highlight download btns)
+  return base;
 }
 
 function injectNav() {
@@ -584,12 +577,7 @@ function injectNav() {
     </div>
   `;
 
-  /* ── Mobile menu overlay ──
-     Created as a DIRECT child of <body> (NOT inside .nav) so that
-     .nav--scrolled's backdrop-filter cannot create a new containing
-     block that traps position:fixed descendants.  This guarantees
-     the overlay always covers the full viewport regardless of
-     scroll position. */
+  /* ── Mobile menu overlay ── */
   const mobileMenu = document.createElement('div');
   mobileMenu.className = 'nav__mobile';
   mobileMenu.id = 'mobile-menu';
@@ -649,7 +637,15 @@ function injectNav() {
     </div>
   `;
 
-  document.body.prepend(nav);
+  // If a static nav placeholder exists, replace it with the JS-enhanced version.
+  // This prevents a flash of missing nav — the static HTML nav shows immediately
+  // while JS loads, then JS replaces it with the fully interactive version.
+  var existingNav = document.getElementById('navbar');
+  if (existingNav) {
+    existingNav.replaceWith(nav);
+  } else {
+    document.body.prepend(nav);
+  }
   // Append mobile menu as a sibling of nav, direct child of body
   document.body.appendChild(mobileMenu);
   initNavBehavior();
@@ -684,10 +680,8 @@ function initNavBehavior() {
         // Already on home page — no reload needed
         e.preventDefault();
         window.scrollTo({ top: 0, behavior: 'smooth' });
-        // Highlight after scroll settles — only if showcase was already completed
-        if (window.showcaseScrollComplete) {
-          setTimeout(highlightDownloadBtns, 400);
-        }
+        // Highlight download buttons after scroll settles
+        setTimeout(highlightDownloadBtns, 400);
       } else {
         // On another page — navigate to root, flag highlight for next load
         try { sessionStorage.setItem('hl-download', '1'); } catch (_) {}

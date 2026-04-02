@@ -49,14 +49,10 @@
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="dns-prefetch" href="https://flagcdn.com">
   <link rel="dns-prefetch" href="https://api.simphonia.pt">
-  <!-- Google Fonts: loaded asynchronously so it never blocks rendering.
-       The critical CSS above already provides the system-font fallback stack,
-       so text is readable before the web-font arrives. -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Pacifico&display=optional"
-        media="print" onload="this.media='all'">
-  <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Pacifico&display=optional">
-  </noscript>
+  <!-- Google Fonts: render-blocking so text displays with the correct font immediately.
+       Preconnect hints above ensure DNS+TLS starts early. display=swap guarantees
+       text is always visible (with fallback) even if .woff2 files are slow. -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Pacifico&display=swap">
 
   <!-- Critical CSS: above-the-fold rules inlined for fast first paint -->
   <style>
@@ -109,6 +105,25 @@
 <body>
   <!-- Skip-link: placed in HTML so screen readers see it before JS loads -->
   <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Static nav — visible immediately, replaced by JS-enhanced version when layout.js loads -->
+  <nav class="nav" id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav__inner">
+      <a href="./" class="nav__logo" aria-label="Simphonia Home">
+        <span class="nav__logo-icon" aria-hidden="true"><img src="assets/logo-mark.svg" class="nav__logo-icon-image" alt="" width="40" height="40"></span>
+        <span class="nav__logo-wordmark">Simphonia</span>
+      </a>
+      <div class="nav__links">
+        <a href="./destinations/" class="nav__link">Destinations</a>
+        <a href="./how-it-works/" class="nav__link">How It Works</a>
+        <a href="./support/" class="nav__link">Support</a>
+        <a href="./about/" class="nav__link">About</a>
+      </div>
+      <div class="nav__actions">
+        <a href="./" class="btn btn--primary btn--sm nav__download-btn">Download App</a>
+      </div>
+    </div>
+  </nav>
 
   <main id="main-content">
 

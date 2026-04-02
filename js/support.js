@@ -22,6 +22,11 @@ var getGuestToken = window.getGuestToken;
    ───────────────────────────────────────────────────────────── */
 var faqData = [];
 var activeIndex = 0;
+var FAQ_MOBILE_BP = 860;
+
+function isMobileLayout() {
+  return window.innerWidth <= FAQ_MOBILE_BP;
+}
 
 /* ─────────────────────────────────────────────────────────────
    Normalise API response → flat item list
@@ -74,9 +79,26 @@ function renderNav(items) {
     btn.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
     btn.innerHTML =
       '<span class="faq-panel__q-num">' + String(i + 1).padStart(2, '0') + '</span>' +
-      '<span class="faq-panel__q-text">' + item.q + '</span>';
+      '<span class="faq-panel__q-text">' + item.q + '</span>' +
+      '<svg class="faq-panel__q-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>';
     btn.addEventListener('click', function () { switchFaq(i); });
     nav.appendChild(btn);
+
+    // Inline answer container for mobile accordion
+    var answer = document.createElement('div');
+    answer.className = 'faq-panel__inline-answer';
+    answer.id = 'faq-inline-' + i;
+    answer.setAttribute('aria-hidden', 'true');
+    answer.innerHTML =
+      '<div class="faq-panel__inline-answer-inner">' +
+        (item.category ? '<span class="faq-panel__display-cat">' + item.category + '</span>' : '') +
+        '<p>' + item.a + '</p>' +
+        '<a href="#contact" class="faq-panel__display-cta">' +
+          'Still need help? Contact us ' +
+          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>' +
+        '</a>' +
+      '</div>';
+    nav.appendChild(answer);
   });
 
   if (!nav._keydownBound) {
@@ -116,16 +138,54 @@ function renderDisplay(index) {
 }
 
 function switchFaq(index) {
-  if (index === activeIndex) return;
+  var mobile = isMobileLayout();
 
-  var inner = document.getElementById('faq-display-inner');
-  if (!inner) return;
+  // On mobile, allow toggling the same item to collapse it
+  if (mobile && index === activeIndex) {
+    var activeAnswer = document.getElementById('faq-inline-' + index);
+    var activeBtn = document.querySelector('.faq-panel__q[data-index="' + index + '"]');
+    if (activeAnswer && activeAnswer.classList.contains('is-open')) {
+      activeAnswer.classList.remove('is-open');
+      activeAnswer.setAttribute('aria-hidden', 'true');
+      if (activeBtn) {
+        activeBtn.classList.remove('is-active');
+        activeBtn.setAttribute('aria-pressed', 'false');
+      }
+      activeIndex = -1;
+      return;
+    }
+  }
 
-  inner.classList.add('is-switching');
+  if (!mobile && index === activeIndex) return;
 
-  setTimeout(function () {
+  // Collapse all inline answers
+  document.querySelectorAll('.faq-panel__inline-answer.is-open').forEach(function (el) {
+    el.classList.remove('is-open');
+    el.setAttribute('aria-hidden', 'true');
+  });
+
+  // Desktop: animate the display panel
+  if (!mobile) {
+    var inner = document.getElementById('faq-display-inner');
+    if (!inner) return;
+
+    inner.classList.add('is-switching');
+
+    setTimeout(function () {
+      activeIndex = index;
+      renderDisplay(index);
+
+      document.querySelectorAll('.faq-panel__q').forEach(function (btn) {
+        var isActive = parseInt(btn.dataset.index, 10) === index;
+        btn.classList.toggle('is-active', isActive);
+        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      });
+
+      inner.classList.remove('is-switching');
+    }, 180);
+  } else {
+    // Mobile: open inline answer
     activeIndex = index;
-    renderDisplay(index);
 
     document.querySelectorAll('.faq-panel__q').forEach(function (btn) {
       var isActive = parseInt(btn.dataset.index, 10) === index;
@@ -133,8 +193,20 @@ function switchFaq(index) {
       btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
     });
 
-    inner.classList.remove('is-switching');
-  }, 180);
+    var answer = document.getElementById('faq-inline-' + index);
+    if (answer) {
+      answer.classList.add('is-open');
+      answer.setAttribute('aria-hidden', 'false');
+
+      // Smooth scroll the opened question into view
+      var btn = document.querySelector('.faq-panel__q[data-index="' + index + '"]');
+      if (btn) {
+        setTimeout(function () {
+          btn.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 50);
+      }
+    }
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -234,9 +306,32 @@ function initPanel(items) {
   var panel = document.getElementById('faq-panel');
   if (panel) panel.classList.remove('faq-panel--state');
 
+  // Restore display inner HTML (showFaqLoading replaces it with a spinner)
+  var display = document.getElementById('faq-display-inner');
+  if (display) {
+    display.innerHTML =
+      '<div class="faq-panel__display-deco" id="fpd-num" aria-hidden="true">01</div>' +
+      '<span class="faq-panel__display-cat" id="fpd-category" hidden></span>' +
+      '<h3 class="faq-panel__display-q" id="fpd-q"></h3>' +
+      '<div class="faq-panel__display-body" id="fpd-body"></div>' +
+      '<a href="#contact" class="faq-panel__display-cta">' +
+        'Still need help? Contact us ' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>' +
+      '</a>';
+  }
+
   renderNav(items);
   renderDisplay(0);
   initFaqSearch();
+
+  // On mobile, open the first inline answer
+  if (isMobileLayout()) {
+    var firstAnswer = document.getElementById('faq-inline-0');
+    if (firstAnswer) {
+      firstAnswer.classList.add('is-open');
+      firstAnswer.setAttribute('aria-hidden', 'false');
+    }
+  }
 }
 
 /* ─────────────────────────────────────────────────────────────
@@ -306,6 +401,14 @@ function filterFaq(query) {
     var match = !query || text.includes(query);
     btn.hidden = !match;
     if (match) visible++;
+
+    // Also hide/show the inline answer for hidden buttons
+    var idx = btn.dataset.index;
+    var inlineAnswer = document.getElementById('faq-inline-' + idx);
+    if (inlineAnswer && !match) {
+      inlineAnswer.classList.remove('is-open');
+      inlineAnswer.setAttribute('aria-hidden', 'true');
+    }
   });
 
   // Hide category labels whose questions are all hidden

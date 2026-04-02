@@ -39,11 +39,7 @@
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="dns-prefetch" href="https://api.simphonia.pt">
   <link rel="dns-prefetch" href="https://flagcdn.com">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Pacifico&display=optional"
-        media="print" onload="this.media='all'">
-  <noscript>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Pacifico&display=optional">
-  </noscript>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Pacifico&display=swap">
   <!-- Critical CSS: above-the-fold rules inlined for fast first paint -->
   <style>
     *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
@@ -75,6 +71,24 @@
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <nav class="nav" id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="nav__inner">
+      <a href="../" class="nav__logo" aria-label="Simphonia Home">
+        <span class="nav__logo-icon" aria-hidden="true"><img src="../assets/logo-mark.svg" class="nav__logo-icon-image" alt="" width="40" height="40"></span>
+        <span class="nav__logo-wordmark">Simphonia</span>
+      </a>
+      <div class="nav__links">
+        <a href="../destinations/" class="nav__link nav__link--active">Destinations</a>
+        <a href="../how-it-works/" class="nav__link">How It Works</a>
+        <a href="../support/" class="nav__link">Support</a>
+        <a href="../about/" class="nav__link">About</a>
+      </div>
+      <div class="nav__actions">
+        <a href="../" class="btn btn--primary btn--sm nav__download-btn">Download App</a>
+      </div>
+    </div>
+  </nav>
 
   <main id="main-content">
 
