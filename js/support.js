@@ -13,9 +13,9 @@
 /* ─────────────────────────────────────────────────────────────
    API config
    ───────────────────────────────────────────────────────────── */
-var API_BASE = (window.SIMPHONIA_API && window.SIMPHONIA_API.base) || 'https://api.simphonia.pt';
+var API_BASE = (window.SIMPHONIA_API && window.SIMPHONIA_API.base)
+    || 'https://api.simphonia.pt';
 var getGuestToken = window.getGuestToken;
-
 
 /* ─────────────────────────────────────────────────────────────
    State & Statics
@@ -33,13 +33,17 @@ function isMobileLayout() {
    ───────────────────────────────────────────────────────────── */
 function normaliseFaqResponse(data) {
   // API returns: [ { code, category, items: [ { question, answer } ] } ]
-  if (!Array.isArray(data)) return [];
+  if (!Array.isArray(data)) {
+    return [];
+  }
   var flat = [];
   data.forEach(function (cat) {
     var catLabel = cat.category || cat.code || '';
     var items = Array.isArray(cat.items) ? cat.items : [];
     items.forEach(function (item) {
-      if (!item.question || !item.answer) return;
+      if (!item.question || !item.answer) {
+        return;
+      }
       flat.push({
         q: item.question,
         a: item.answer,
@@ -55,7 +59,9 @@ function normaliseFaqResponse(data) {
    ───────────────────────────────────────────────────────────── */
 function renderNav(items) {
   var nav = document.getElementById('faq-panel-nav');
-  if (!nav) return;
+  if (!nav) {
+    return;
+  }
 
   nav.innerHTML = '';
 
@@ -77,14 +83,18 @@ function renderNav(items) {
     btn.dataset.index = i;
     // Include answer text (HTML-stripped) in search index for better discoverability
     var plainAnswer = item.a.replace(/<[^>]*>/g, '');
-    btn.dataset.searchText = (item.q + ' ' + plainAnswer + ' ' + (item.category || '')).toLowerCase();
+    btn.dataset.searchText = (item.q + ' ' + plainAnswer + ' ' + (item.category
+        || '')).toLowerCase();
     btn.setAttribute('aria-expanded', i === 0 ? 'true' : 'false');
     btn.setAttribute('aria-controls', 'faq-inline-' + i);
     btn.innerHTML =
-      '<span class="faq-panel__q-num">' + String(i + 1).padStart(2, '0') + '</span>' +
-      '<span class="faq-panel__q-text">' + item.q + '</span>' +
-      '<svg class="faq-panel__q-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>';
-    btn.addEventListener('click', function () { switchFaq(i); });
+        '<span class="faq-panel__q-num">' + String(i + 1).padStart(2, '0')
+        + '</span>' +
+        '<span class="faq-panel__q-text">' + item.q + '</span>' +
+        '<svg class="faq-panel__q-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>';
+    btn.addEventListener('click', function () {
+      switchFaq(i);
+    });
     nav.appendChild(btn);
 
     // Inline answer container for mobile accordion
@@ -93,14 +103,16 @@ function renderNav(items) {
     answer.id = 'faq-inline-' + i;
     answer.setAttribute('aria-hidden', 'true');
     answer.innerHTML =
-      '<div class="faq-panel__inline-answer-inner">' +
-        (item.category ? '<span class="faq-panel__display-cat">' + item.category + '</span>' : '') +
+        '<div class="faq-panel__inline-answer-inner">' +
+        (item.category ? '<span class="faq-panel__display-cat">' + item.category
+            + '</span>' : '') +
         '<p>' + item.a + '</p>' +
         '<a href="#contact" class="faq-panel__display-cta">' +
-          'Still need help? Contact us ' +
-          '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>' +
+        'Still need help? Contact us ' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>'
+        +
         '</a>' +
-      '</div>';
+        '</div>';
     nav.appendChild(answer);
   });
 
@@ -111,33 +123,55 @@ function renderNav(items) {
 }
 
 function handleNavKeydown(e) {
-  var btns = Array.from(e.currentTarget.querySelectorAll('.faq-panel__q:not([hidden])'));
+  var btns = Array.from(
+      e.currentTarget.querySelectorAll('.faq-panel__q:not([hidden])'));
   var focused = document.activeElement;
   var idx = btns.indexOf(focused);
-  if (idx === -1) return;
+  if (idx === -1) {
+    return;
+  }
 
   var next = -1;
-  if (e.key === 'ArrowDown') next = (idx + 1) % btns.length;
-  else if (e.key === 'ArrowUp') next = (idx - 1 + btns.length) % btns.length;
-  else if (e.key === 'Home') next = 0;
-  else if (e.key === 'End') next = btns.length - 1;
+  if (e.key === 'ArrowDown') {
+    next = (idx + 1) % btns.length;
+  } else if (e.key === 'ArrowUp') {
+    next = (idx - 1 + btns.length) % btns.length;
+  } else if (e.key === 'Home') {
+    next = 0;
+  } else if (e.key === 'End') {
+    next = btns.length - 1;
+  }
 
-  if (next !== -1) { e.preventDefault(); btns[next].focus(); }
+  if (next !== -1) {
+    e.preventDefault();
+    btns[next].focus();
+  }
 }
 
 function renderDisplay(index) {
   var item = faqData[index];
-  if (!item) return;
+  if (!item) {
+    return;
+  }
 
   var numEl = document.getElementById('fpd-num');
   var qEl = document.getElementById('fpd-q');
   var bodyEl = document.getElementById('fpd-body');
   var catEl = document.getElementById('fpd-category');
 
-  if (numEl) numEl.textContent = String(index + 1).padStart(2, '0');
-  if (qEl) qEl.textContent = item.q;
-  if (bodyEl) bodyEl.innerHTML = '<p>' + item.a + '</p>';
-  if (catEl) { catEl.textContent = item.category || ''; catEl.hidden = !item.category; }
+  if (numEl) {
+    numEl.textContent = String(index + 1).padStart(2, '0');
+  }
+  if (qEl) {
+    qEl.textContent = item.q;
+  }
+  if (bodyEl) {
+    bodyEl.innerHTML = '<p>' + item.a + '</p>';
+  }
+  if (catEl) {
+    catEl.textContent = item.category || '';
+    catEl.hidden = !item.category;
+  }
 }
 
 function switchFaq(index) {
@@ -146,7 +180,8 @@ function switchFaq(index) {
   // On mobile, allow toggling the same item to collapse it
   if (mobile && index === activeIndex) {
     var activeAnswer = document.getElementById('faq-inline-' + index);
-    var activeBtn = document.querySelector('.faq-panel__q[data-index="' + index + '"]');
+    var activeBtn = document.querySelector(
+        '.faq-panel__q[data-index="' + index + '"]');
     if (activeAnswer && activeAnswer.classList.contains('is-open')) {
       activeAnswer.classList.remove('is-open');
       activeAnswer.setAttribute('aria-hidden', 'true');
@@ -159,18 +194,23 @@ function switchFaq(index) {
     }
   }
 
-  if (!mobile && index === activeIndex) return;
+  if (!mobile && index === activeIndex) {
+    return;
+  }
 
   // Collapse all inline answers
-  document.querySelectorAll('.faq-panel__inline-answer.is-open').forEach(function (el) {
-    el.classList.remove('is-open');
-    el.setAttribute('aria-hidden', 'true');
-  });
+  document.querySelectorAll('.faq-panel__inline-answer.is-open').forEach(
+      function (el) {
+        el.classList.remove('is-open');
+        el.setAttribute('aria-hidden', 'true');
+      });
 
   // Desktop: animate the display panel
   if (!mobile) {
     var inner = document.getElementById('faq-display-inner');
-    if (!inner) return;
+    if (!inner) {
+      return;
+    }
 
     inner.classList.add('is-switching');
 
@@ -202,10 +242,11 @@ function switchFaq(index) {
       answer.setAttribute('aria-hidden', 'false');
 
       // Smooth scroll the opened question into view
-      var btn = document.querySelector('.faq-panel__q[data-index="' + index + '"]');
+      var btn = document.querySelector(
+          '.faq-panel__q[data-index="' + index + '"]');
       if (btn) {
         setTimeout(function () {
-          btn.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          btn.scrollIntoView({behavior: 'smooth', block: 'start'});
         }, 50);
       }
     }
@@ -219,18 +260,26 @@ function showFaqLoading() {
   var nav = document.getElementById('faq-panel-nav');
   var display = document.getElementById('faq-display-inner');
   var panel = document.getElementById('faq-panel');
-  if (panel) panel.classList.add('faq-panel--state');
+  if (panel) {
+    panel.classList.add('faq-panel--state');
+  }
 
-  if (nav) nav.innerHTML = '';
+  if (nav) {
+    nav.innerHTML = '';
+  }
   if (display) {
     display.innerHTML =
-      '<div class="faq-panel__state">' +
-      '<svg class="faq-panel__state-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">' +
-      '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>' +
-      '<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>' +
-      '</svg>' +
-      '<p class="faq-panel__state-desc">Loading\u2026</p>' +
-      '</div>';
+        '<div class="faq-panel__state">' +
+        '<svg class="faq-panel__state-spin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">'
+        +
+        '<circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/>'
+        +
+        '<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>'
+        +
+        '</svg>' +
+        '<p class="faq-panel__state-desc">' + (typeof window.t === 'function'
+            ? window.t('support.faq.loading') : 'Loading\u2026') + '</p>' +
+        '</div>';
   }
 }
 
@@ -238,27 +287,44 @@ function showFaqError(lang) {
   var nav = document.getElementById('faq-panel-nav');
   var display = document.getElementById('faq-display-inner');
   var panel = document.getElementById('faq-panel');
-  if (panel) panel.classList.add('faq-panel--state');
+  if (panel) {
+    panel.classList.add('faq-panel--state');
+  }
 
-  if (nav) nav.innerHTML = '';
+  if (nav) {
+    nav.innerHTML = '';
+  }
   if (display) {
     display.innerHTML =
-      '<div class="faq-panel__state faq-panel__state--error">' +
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-      '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>' +
-      '</svg>' +
-      '<h3 class="faq-panel__state-title">Unable to Load FAQs</h3>' +
-      '<p class="faq-panel__state-desc">We couldn\u2019t reach our servers right now.<br>Check your connection and try again.</p>' +
-      '<button class="btn btn--outline btn--sm" id="faq-retry">' +
-      '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
-      '<polyline points="23 4 23 10 17 10"/>' +
-      '<path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>' +
-      '</svg>' +
-      'Try Again' +
-      '</button>' +
-      '</div>';
+        '<div class="faq-panel__state faq-panel__state--error">' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+        +
+        '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>'
+        +
+        '</svg>' +
+        '<h3 class="faq-panel__state-title">' + (typeof window.t === 'function'
+            ? window.t('support.faq.errorTitle') : 'Unable to Load FAQs') + '</h3>'
+        +
+        '<p class="faq-panel__state-desc">' + (typeof window.t === 'function'
+            ? window.t('support.faq.errorDesc').replace('\n', '<br>')
+            : 'We couldn\u2019t reach our servers right now.<br>Check your connection and try again.')
+        + '</p>' +
+        '<button class="btn btn--outline btn--sm" id="faq-retry">' +
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
+        +
+        '<polyline points="23 4 23 10 17 10"/>' +
+        '<path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>' +
+        '</svg>' +
+        (typeof window.t === 'function' ? window.t('support.faq.tryAgain')
+            : 'Try Again') +
+        '</button>' +
+        '</div>';
     var retryBtn = document.getElementById('faq-retry');
-    if (retryBtn) retryBtn.addEventListener('click', function () { loadFaqs(lang); });
+    if (retryBtn) {
+      retryBtn.addEventListener('click', function () {
+        loadFaqs(lang);
+      });
+    }
   }
 }
 
@@ -268,38 +334,51 @@ function showFaqError(lang) {
    Response: [ { code, category, items: [ { question, answer } ] } ]
    ───────────────────────────────────────────────────────────── */
 function loadFaqs(lang) {
-  var url = API_BASE + '/api/v1/faqs?lang=' + (lang || 'en');
-  var headers = { 'Accept': 'application/json' };
+  var resolvedLang = lang || window.SIMPHONIA_LANG || 'en';
+  var url = API_BASE + '/api/v1/faqs?lang=' + resolvedLang;
+  var headers = {'Accept': 'application/json'};
   var abortCtrl = new AbortController();
-  var timeoutId = setTimeout(function () { abortCtrl.abort(); }, 10000);
+  var timeoutId = setTimeout(function () {
+    abortCtrl.abort();
+  }, 10000);
 
   showFaqLoading();
 
   var tokenPromise = (typeof getGuestToken === 'function')
-    ? getGuestToken().catch(function () { return null; })
-    : Promise.resolve(null);
+      ? getGuestToken().catch(function () {
+        return null;
+      })
+      : Promise.resolve(null);
 
   tokenPromise
-    .then(function (token) {
-      if (token) headers['Authorization'] = 'Bearer ' + token;
-      return fetch(url, { headers: headers, signal: abortCtrl.signal });
-    })
-    .then(function (res) {
-      if (!res || !res.ok) throw new Error('FAQ fetch failed: ' + (res ? res.status : 'network'));
-      return res.json();
-    })
-    .then(function (data) {
-      var items = normaliseFaqResponse(Array.isArray(data) ? data : (data && data.data ? data.data : []));
-      if (!items.length) throw new Error('Empty FAQ response');
-      initPanel(items);
-    })
-    .catch(function (err) {
-      console.warn('[faq] API failed:', err.message);
-      showFaqError(lang);
-    })
-    .finally(function () {
-      clearTimeout(timeoutId);
-    });
+      .then(function (token) {
+        if (token) {
+          headers['Authorization'] = 'Bearer ' + token;
+        }
+        return fetch(url, {headers: headers, signal: abortCtrl.signal});
+      })
+      .then(function (res) {
+        if (!res || !res.ok) {
+          throw new Error(
+              'FAQ fetch failed: ' + (res ? res.status : 'network'));
+        }
+        return res.json();
+      })
+      .then(function (data) {
+        var items = normaliseFaqResponse(
+            Array.isArray(data) ? data : (data && data.data ? data.data : []));
+        if (!items.length) {
+          throw new Error('Empty FAQ response');
+        }
+        initPanel(items);
+      })
+      .catch(function (err) {
+        console.warn('[faq] API failed:', err.message);
+        showFaqError(lang);
+      })
+      .finally(function () {
+        clearTimeout(timeoutId);
+      });
 }
 
 function initPanel(items) {
@@ -307,20 +386,25 @@ function initPanel(items) {
   activeIndex = 0;
 
   var panel = document.getElementById('faq-panel');
-  if (panel) panel.classList.remove('faq-panel--state');
+  if (panel) {
+    panel.classList.remove('faq-panel--state');
+  }
 
   // Restore display inner HTML (showFaqLoading replaces it with a spinner)
   var display = document.getElementById('faq-display-inner');
   if (display) {
     display.innerHTML =
-      '<div class="faq-panel__display-deco" id="fpd-num" aria-hidden="true">01</div>' +
-      '<span class="faq-panel__display-cat" id="fpd-category" hidden></span>' +
-      '<h3 class="faq-panel__display-q" id="fpd-q"></h3>' +
-      '<div class="faq-panel__display-body" id="fpd-body"></div>' +
-      '<a href="#contact" class="faq-panel__display-cta">' +
+        '<div class="faq-panel__display-deco" id="fpd-num" aria-hidden="true">01</div>'
+        +
+        '<span class="faq-panel__display-cat" id="fpd-category" hidden></span>'
+        +
+        '<h3 class="faq-panel__display-q" id="fpd-q"></h3>' +
+        '<div class="faq-panel__display-body" id="fpd-body"></div>' +
+        '<a href="#contact" class="faq-panel__display-cta">' +
         'Still need help? Contact us ' +
-        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>' +
-      '</a>';
+        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>'
+        +
+        '</a>';
   }
 
   renderNav(items);
@@ -346,7 +430,9 @@ function debounce(fn, ms) {
     clearTimeout(id);
     var ctx = this;
     var args = arguments;
-    id = setTimeout(function () { fn.apply(ctx, args); }, ms);
+    id = setTimeout(function () {
+      fn.apply(ctx, args);
+    }, ms);
   };
 }
 
@@ -356,11 +442,15 @@ function initFaqSearch() {
     document.getElementById('faq-search'),
   ].filter(Boolean);
 
-  if (!inputs.length) return;
+  if (!inputs.length) {
+    return;
+  }
 
   inputs.forEach(function (input) {
     // Skip if clear button already injected (e.g. on FAQ retry)
-    if (input.parentElement.querySelector('.search-bar__clear')) return;
+    if (input.parentElement.querySelector('.search-bar__clear')) {
+      return;
+    }
 
     // Inject clear button
     var clearBtn = document.createElement('button');
@@ -369,15 +459,20 @@ function initFaqSearch() {
     clearBtn.setAttribute('aria-label', 'Clear search');
     clearBtn.hidden = true;
     clearBtn.innerHTML =
-      '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">' +
-      '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">'
+        +
+        '<line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>';
     input.parentElement.appendChild(clearBtn);
 
     clearBtn.addEventListener('click', function () {
-      inputs.forEach(function (inp) { inp.value = ''; });
+      inputs.forEach(function (inp) {
+        inp.value = '';
+      });
       inputs.forEach(function (inp) {
         var cb = inp.parentElement.querySelector('.search-bar__clear');
-        if (cb) cb.hidden = true;
+        if (cb) {
+          cb.hidden = true;
+        }
       });
       filterFaq('');
       input.focus();
@@ -387,9 +482,13 @@ function initFaqSearch() {
       var query = input.value.trim().toLowerCase();
       // Sync value to the other input
       inputs.forEach(function (inp) {
-        if (inp !== input) inp.value = input.value;
+        if (inp !== input) {
+          inp.value = input.value;
+        }
         var cb = inp.parentElement.querySelector('.search-bar__clear');
-        if (cb) cb.hidden = inp.value === '';
+        if (cb) {
+          cb.hidden = inp.value === '';
+        }
       });
       filterFaq(query);
     }, 200));
@@ -403,10 +502,13 @@ function filterFaq(query) {
   var visible = 0;
 
   btns.forEach(function (btn) {
-    var text = btn.dataset.searchText || btn.querySelector('.faq-panel__q-text').textContent.toLowerCase();
+    var text = btn.dataset.searchText || btn.querySelector(
+        '.faq-panel__q-text').textContent.toLowerCase();
     var match = !query || text.includes(query);
     btn.hidden = !match;
-    if (match) visible++;
+    if (match) {
+      visible++;
+    }
 
     // Also hide/show the inline answer for hidden buttons
     var idx = btn.dataset.index;
@@ -433,12 +535,18 @@ function filterFaq(query) {
   });
 
   var isEmpty = visible === 0;
-  if (panelEl) panelEl.style.display = isEmpty ? 'none' : '';
-  if (noResults) noResults.style.display = isEmpty ? 'block' : 'none';
+  if (panelEl) {
+    panelEl.style.display = isEmpty ? 'none' : '';
+  }
+  if (noResults) {
+    noResults.style.display = isEmpty ? 'block' : 'none';
+  }
 
   // If the active item is now hidden, switch to the first visible one
   if (!isEmpty) {
-    var visibleBtns = Array.from(btns).filter(function (b) { return !b.hidden; });
+    var visibleBtns = Array.from(btns).filter(function (b) {
+      return !b.hidden;
+    });
     var stillActive = visibleBtns.some(function (b) {
       return parseInt(b.dataset.index, 10) === activeIndex;
     });
@@ -462,7 +570,9 @@ var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function setFieldError(fieldId, message) {
   var field = document.getElementById(fieldId);
-  if (!field) return;
+  if (!field) {
+    return;
+  }
 
   var errorId = fieldId + '-error';
   var errorEl = document.getElementById(errorId);
@@ -474,7 +584,8 @@ function setFieldError(fieldId, message) {
     errorEl.setAttribute('aria-live', 'polite');
     field.parentElement.appendChild(errorEl);
     var existing = field.getAttribute('aria-describedby');
-    field.setAttribute('aria-describedby', existing ? existing + ' ' + errorId : errorId);
+    field.setAttribute('aria-describedby',
+        existing ? existing + ' ' + errorId : errorId);
   }
 
   errorEl.textContent = message;
@@ -494,28 +605,44 @@ function showFormFeedback(form, type, message) {
   el.className = 'form-feedback form-feedback--' + type;
   el.textContent = (type === 'success' ? '\u2713 ' : '\u26A0 ') + message;
   el.hidden = false;
-  if (type === 'success') setTimeout(function () { el.hidden = true; }, 8000);
+  if (type === 'success') {
+    setTimeout(function () {
+      el.hidden = true;
+    }, 8000);
+  }
 }
 
 function addFieldListeners(form) {
-  form.querySelectorAll('.form-input[required]:not(select)').forEach(function (field) {
-    field.addEventListener('input', function () {
-      if (field.value.trim()) setFieldError(field.id, '');
-    });
-    field.addEventListener('blur', function () {
-      if (!field.value.trim()) {
-        setFieldError(field.id, 'This field is required.');
-      } else if (field.type === 'email' && !EMAIL_RE.test(field.value.trim())) {
-        setFieldError(field.id, 'Please enter a valid email address.');
-      }
-    });
-  });
+  form.querySelectorAll('.form-input[required]:not(select)').forEach(
+      function (field) {
+        field.addEventListener('input', function () {
+          if (field.value.trim()) {
+            setFieldError(field.id, '');
+          }
+        });
+        field.addEventListener('blur', function () {
+          var _t = typeof window.t === 'function' ? window.t.bind(window)
+              : function (k) {
+                return k;
+              };
+          if (!field.value.trim()) {
+            setFieldError(field.id, _t('support.contact.errorRequired'));
+          } else if (field.type === 'email' && !EMAIL_RE.test(
+              field.value.trim())) {
+            setFieldError(field.id, _t('support.contact.errorEmail'));
+          }
+        });
+      });
 }
 
 function initCharCounter(textareaId, maxLength) {
-  if (maxLength === undefined) maxLength = 5000;
+  if (maxLength === undefined) {
+    maxLength = 5000;
+  }
   var textarea = document.getElementById(textareaId);
-  if (!textarea) return;
+  if (!textarea) {
+    return;
+  }
 
   textarea.setAttribute('maxlength', maxLength);
 
@@ -528,7 +655,8 @@ function initCharCounter(textareaId, maxLength) {
   textarea.parentElement.appendChild(counter);
 
   var existing = textarea.getAttribute('aria-describedby');
-  textarea.setAttribute('aria-describedby', existing ? existing + ' ' + counter.id : counter.id);
+  textarea.setAttribute('aria-describedby',
+      existing ? existing + ' ' + counter.id : counter.id);
 
   textarea.addEventListener('input', function () {
     var len = textarea.value.length;
@@ -539,7 +667,9 @@ function initCharCounter(textareaId, maxLength) {
 
 function initContactForm() {
   var form = document.getElementById('contact-form');
-  if (!form) return;
+  if (!form) {
+    return;
+  }
 
   var submitBtn = form.querySelector('button[type="submit"]');
   var lastSubmitTime = 0;
@@ -552,15 +682,24 @@ function initContactForm() {
     e.preventDefault();
 
     var now = Date.now();
+    var _t = typeof window.t === 'function' ? window.t.bind(window)
+        : function (k) {
+          return k;
+        };
     if (now - lastSubmitTime < SUBMIT_COOLDOWN_MS) {
-      var remaining = Math.ceil((SUBMIT_COOLDOWN_MS - (now - lastSubmitTime)) / 1000);
-      showFormFeedback(form, 'error', 'Please wait ' + remaining + ' seconds before sending another message.');
+      var remaining = Math.ceil(
+          (SUBMIT_COOLDOWN_MS - (now - lastSubmitTime)) / 1000);
+      showFormFeedback(form, 'error',
+          _t('support.contact.errorCooldown').replace('{seconds}', remaining));
       return;
     }
 
     // Honeypot
     var honeypot = document.getElementById('contact-website');
-    if (honeypot && honeypot.value) { form.reset(); return; }
+    if (honeypot && honeypot.value) {
+      form.reset();
+      return;
+    }
 
     var nameEl = document.getElementById('contact-name');
     var emailEl = document.getElementById('contact-email');
@@ -569,94 +708,140 @@ function initContactForm() {
     var valid = true;
 
     if (!nameEl || !nameEl.value.trim()) {
-      setFieldError('contact-name', 'Please enter your name.');
+      setFieldError('contact-name', _t('support.contact.errorNameRequired'));
       valid = false;
     }
     if (!emailEl || !emailEl.value.trim()) {
-      setFieldError('contact-email', 'Please enter your email address.');
+      setFieldError('contact-email', _t('support.contact.errorEmailRequired'));
       valid = false;
     } else if (!EMAIL_RE.test(emailEl.value.trim())) {
-      setFieldError('contact-email', 'Please enter a valid email address.');
+      setFieldError('contact-email', _t('support.contact.errorEmail'));
       valid = false;
     }
     if (!msgEl || !msgEl.value.trim()) {
-      setFieldError('contact-message', 'Please describe your issue or question.');
+      setFieldError('contact-message',
+          _t('support.contact.errorMessageRequired'));
       valid = false;
     }
     if (subjectEl && !subjectEl.value) {
-      setFieldError('contact-subject', 'Please select a topic.');
+      setFieldError('contact-subject',
+          _t('support.contact.errorSubjectRequired'));
       valid = false;
     }
-    if (!valid) return;
+    if (!valid) {
+      return;
+    }
 
     var origLabel = submitBtn.textContent;
     submitBtn.disabled = true;
-    submitBtn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span> Sending\u2026';
+    submitBtn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span> '
+        + _t('support.contact.sending');
 
     var tokenPromise = (typeof getGuestToken === 'function')
-      ? getGuestToken().catch(function () { return null; })
-      : Promise.resolve(null);
+        ? getGuestToken().catch(function () {
+          return null;
+        })
+        : Promise.resolve(null);
 
     tokenPromise
-      .then(function (token) {
-        if (!token) {
-          showFormFeedback(form, 'error', 'Unable to connect to the server. Please try again later or email us at support@simphonia.pt.');
-          return Promise.reject('no-token');
-        }
+        .then(function (token) {
+          if (!token) {
+            showFormFeedback(form, 'error', _t('support.contact.errorNoToken'));
+            return Promise.reject('no-token');
+          }
 
-        var abortCtrl = new AbortController();
-        var timeoutId = setTimeout(function () { abortCtrl.abort(); }, 15000);
+          var abortCtrl = new AbortController();
+          var timeoutId = setTimeout(function () {
+            abortCtrl.abort();
+          }, 15000);
 
-        return fetch(API_BASE + '/api/v1/support/contact', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'Authorization': 'Bearer ' + token,
-          },
-          signal: abortCtrl.signal,
-          body: JSON.stringify({
-            name: nameEl.value.trim(),
-            email: emailEl.value.trim(),
-            subject: subjectEl ? subjectEl.value.trim() : '',
-            message: msgEl.value.trim(),
-          }),
-        }).finally(function () { clearTimeout(timeoutId); });
-      })
-      .then(function (res) {
-        if (res.ok) {
-          lastSubmitTime = Date.now();
-          showFormFeedback(form, 'success', "Message sent! We\u2019ll get back to you within 24 hours.");
-          form.reset();
-          form.querySelectorAll('[id$="-counter"]').forEach(function (el) {
-            var parts = el.textContent.split('/');
-            var max = parts[1] ? parts[1].trim() : '5000';
-            el.textContent = '0 / ' + max;
-            el.classList.remove('char-counter--warn');
+          return fetch(API_BASE + '/api/v1/support/contact', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token,
+            },
+            signal: abortCtrl.signal,
+            body: JSON.stringify({
+              name: nameEl.value.trim(),
+              email: emailEl.value.trim(),
+              subject: subjectEl ? subjectEl.value.trim() : '',
+              message: msgEl.value.trim(),
+            }),
+          }).finally(function () {
+            clearTimeout(timeoutId);
           });
-        } else {
-          return res.json().catch(function () { return {}; }).then(function (body) {
-            showFormFeedback(form, 'error',
-              (body && body.message) || 'Something went wrong. Please try again or email us at support@simphonia.pt.');
-          });
-        }
-      })
-      .catch(function (err) {
-        if (err === 'no-token') return; // already shown a message above
-        console.error('[contact-form]', err);
-        showFormFeedback(form, 'error', 'Something went wrong. Please try again or email us at support@simphonia.pt.');
-      })
-      .then(function () {
-        // finally
-        submitBtn.disabled = false;
-        submitBtn.textContent = origLabel;
-      });
+        })
+        .then(function (res) {
+          if (res.ok) {
+            lastSubmitTime = Date.now();
+            showFormFeedback(form, 'success',
+                _t('support.contact.successMessage'));
+            form.reset();
+            form.querySelectorAll('[id$="-counter"]').forEach(function (el) {
+              var parts = el.textContent.split('/');
+              var max = parts[1] ? parts[1].trim() : '5000';
+              el.textContent = '0 / ' + max;
+              el.classList.remove('char-counter--warn');
+            });
+          } else {
+            return res.json().catch(function () {
+              return {};
+            }).then(function (body) {
+              showFormFeedback(form, 'error',
+                  (body && body.message) || _t('support.contact.errorGeneric'));
+            });
+          }
+        })
+        .catch(function (err) {
+          if (err === 'no-token') {
+            return;
+          } // already shown a message above
+          console.error('[contact-form]', err);
+          showFormFeedback(form, 'error', _t('support.contact.errorGeneric'));
+        })
+        .then(function () {
+          // finally
+          submitBtn.disabled = false;
+          submitBtn.textContent = origLabel;
+        });
   });
 }
 
 /* ─────────────────────────────────────────────────────────────
    Boot
    ───────────────────────────────────────────────────────────── */
-var browserLang = (navigator.language || 'en').split('-')[0].toLowerCase();
-loadFaqs(browserLang);
+var _currentSupportLang = window.SIMPHONIA_LANG || (navigator.language
+    || 'en').split('-')[0].toLowerCase();
+loadFaqs(_currentSupportLang);
 initContactForm();
 
+// Reload FAQs when language changes
+document.addEventListener('simphonia:langchange', function (e) {
+  var newLang = (e.detail && e.detail.lang) || window.SIMPHONIA_LANG || 'en';
+  if (newLang !== _currentSupportLang) {
+    _currentSupportLang = newLang;
+    // Clear old FAQ data so stale content is removed immediately
+    faqData = [];
+    activeIndex = 0;
+    // Clear search inputs
+    var searchInputs = [
+      document.getElementById('hero-faq-search'),
+      document.getElementById('faq-search'),
+    ].filter(Boolean);
+    searchInputs.forEach(function (inp) {
+      inp.value = '';
+    });
+    // Hide no-results if visible
+    var noResults = document.getElementById('faq-no-results');
+    if (noResults) {
+      noResults.style.display = 'none';
+    }
+    var panelEl = document.getElementById('faq-panel');
+    if (panelEl) {
+      panelEl.style.display = '';
+    }
+    // Reload FAQs in new language (shows loading spinner)
+    loadFaqs(newLang);
+  }
+});

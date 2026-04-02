@@ -1,0 +1,320 @@
+{
+  "lang": {
+    "select": "भाषा",
+    "names": {
+      "en": "English",
+      "pt": "Português",
+      "es": "Español",
+      "fr": "Français",
+      "de": "Deutsch",
+      "it": "Italiano",
+      "nl": "Nederlands",
+      "ja": "日本語",
+      "zh": "中文",
+      "ko": "한국어",
+      "ar": "العربية",
+      "ru": "Русский",
+      "tr": "Türkçe",
+      "pl": "Polski",
+      "uk": "Українська",
+      "hi": "हिन्दी",
+      "id": "Bahasa Indonesia",
+      "vi": "Tiếng Việt",
+      "cs": "Čeština",
+      "hu": "Magyar",
+      "fa": "فارسی"
+    }
+  },
+  "nav": {
+    "destinations": "गंतव्य",
+    "howItWorks": "यह कैसे काम करता है",
+    "support": "सहायता",
+    "about": "हमारे बारे में",
+    "downloadApp": "ऐप डाउनलोड करें",
+    "skipToMain": "मुख्य सामग्री पर जाएं",
+    "toggleTheme": "लाइट/डार्क मोड",
+    "openMenu": "मेनू खोलें",
+    "closeMenu": "मेनू बंद करें"
+  },
+  "footer": {
+    "tagline": "जहां भी जाएं, जुड़े रहें। आधुनिक यात्रियों के लिए वैश्विक eSIM कवरेज।",
+    "product": "उत्पाद",
+    "company": "कंपनी",
+    "legal": "कानूनी",
+    "aboutUs": "हमारे बारे में",
+    "contact": "संपर्क",
+    "privacyPolicy": "गोपनीयता नीति",
+    "termsOfService": "सेवा की शर्तें",
+    "copyright": "सर्वाधिकार सुरक्षित।"
+  },
+  "cookie": {
+    "text": "हम आपके अनुभव को बेहतर बनाने और साइट ट्रैफ़िक का विश्लेषण करने के लिए कुकीज़ का उपयोग करते हैं। स्वीकार करें पर क्लिक करके, आप हमारी",
+    "privacyPolicy": "गोपनीयता नीति",
+    "decline": "अस्वीकार करें",
+    "accept": "सभी स्वीकार करें"
+  },
+  "mobileCta": {
+    "browsePlans": "प्लान देखें",
+    "howItWorks": "यह कैसे काम करता है"
+  },
+  "backToTop": "ऊपर जाएं",
+  "scroll": "स्क्रॉल करें",
+  "common": {
+    "tryAgain": "पुनः प्रयास करें",
+    "loading": "लोड हो रहा है…",
+    "from": "से",
+    "plansAvailable": "प्लान उपलब्ध"
+  },
+  "home": {
+    "hero": {
+      "headline": "जुड़े रहें,",
+      "typingPhrases": [
+        "जहां भी जाएं।",
+        "बिना सीमाओं के।",
+        "पूरी दुनिया में।",
+        "सेकंड में तैयार।",
+        "हमेशा ऑनलाइन।"
+      ],
+      "desc": "Simphonia डाउनलोड करें, अपना गंतव्य चुनें और उतरते ही ऑनलाइन रहें — कोई SIM कार्ड नहीं, कोई रोमिंग शुल्क नहीं, कोई तनाव नहीं।",
+      "trustFreeDownload": "मुफ्त डाउनलोड",
+      "trust200Countries": "200+ देश",
+      "trustInstantActivation": "तत्काल सक्रियण",
+      "downloadOnThe": "Download on the",
+      "appStore": "App Store",
+      "googlePlay": "Google Play"
+    },
+    "howItWorks": {
+      "label": "यह कैसे काम करता है",
+      "heading": "",
+      "subheading": "",
+      "learnMore": "और जानें",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": ""
+    },
+    "features": {
+      "label": "Features",
+      "heading": "",
+      "subheading": "",
+      "instantActivation": "Instant Activation",
+      "instantActivationDesc": "",
+      "zeroRoaming": "Zero Roaming",
+      "zeroRoamingDesc": "",
+      "countries200": "200+ Countries",
+      "countries200Desc": "",
+      "flexiblePlans": "Flexible Plans",
+      "flexiblePlansDesc": "",
+      "aiSupport": "AI Support 24/7",
+      "aiSupportDesc": "",
+      "allDevices": "All Devices",
+      "allDevicesDesc": ""
+    },
+    "showcase": {
+      "panel1Step": "01",
+      "panel1Title1": "",
+      "panel1Title2": "",
+      "panel1Desc": "एक नजर में जवाब",
+      "panel2Step": "02",
+      "panel2Title1": "",
+      "panel2Title2": "",
+      "panel2Desc": "",
+      "panel3Step": "03",
+      "panel3Title1": "",
+      "panel3Title2": "",
+      "panel3Desc": "",
+      "panel4Step": "04",
+      "panel4Title1": "",
+      "panel4Title2": "",
+      "panel4Desc": "Simphonia डाउनलोड करें, अपना गंतव्य चुनें और उतरते ही ऑनलाइन रहें — कोई SIM कार्ड नहीं, कोई रोमिंग शुल्क नहीं, कोई तनाव नहीं।"
+    },
+    "cta": {
+      "heading1": "जुड़े रहें,",
+      "heading2": "जुड़े रहें,",
+      "desc": "",
+      "browseDestinations": "सहायता से संपर्क करें",
+      "howItWorks": "यह कैसे काम करता है"
+    }
+  },
+  "destinations": {
+    "hero": {
+      "label": "गंतव्य",
+      "heading1": "एक्सप्लोर करें",
+      "heading2": "200+ देश",
+      "desc": "अपनी अगली यात्रा के लिए सही eSIM प्लान खोजें।"
+    },
+    "grid": {
+      "label": "गंतव्य",
+      "heading": "अपनी अगली यात्रा के लिए सही eSIM प्लान खोजें।",
+      "desc": "",
+      "searchPlaceholder": "देश खोजें…",
+      "clearSearch": "खोज साफ़ करें",
+      "allTab": "सभी"
+    },
+    "count": {
+      "countries": "गंतव्य",
+      "of": "का"
+    },
+    "noResults": {
+      "noCountriesFor": "गंतव्य लोड नहीं हो सके",
+      "clearSearch": "खोज साफ़ करें"
+    },
+    "loading": "गंतव्य लोड हो रहे हैं…",
+    "error": {
+      "title": "गंतव्य लोड नहीं हो सके",
+      "desc": "हम सर्वर तक नहीं पहुंच सके।\nकनेक्शन जांचें और पुनः प्रयास करें।",
+      "tryAgain": "पुनः प्रयास करें"
+    },
+    "cta": {
+      "heading": "अपना गंतव्य नहीं मिला?",
+      "desc": "हम हर हफ्ते नए देश जोड़ रहे हैं।",
+      "contactSupport": "सहायता से संपर्क करें"
+    }
+  },
+  "support": {
+    "hero": {
+      "label": "सहायता",
+      "heading1": "हम कैसे",
+      "heading2": "मदद कर सकते हैं?",
+      "desc": "सामान्य प्रश्नों के उत्तर खोजें या हमारी टीम से संपर्क करें। हम 24/7 यहां हैं।"
+    },
+    "faq": {
+      "label": "सहायता केंद्र",
+      "heading": "एक नजर में जवाब",
+      "desc": "पूरा जवाब पढ़ने के लिए कोई भी प्रश्न चुनें।",
+      "searchPlaceholder": "प्रश्न खोजें…",
+      "loading": "लोड हो रहा है…",
+      "errorTitle": "सहायता केंद्र",
+      "errorDesc": "हम सर्वर तक नहीं पहुंच सके।\nकनेक्शन जांचें और पुनः प्रयास करें।",
+      "tryAgain": "पुनः प्रयास करें",
+      "stillNeedHelp": "अभी भी मदद चाहिए? हमसे संपर्क करें",
+      "noResults": "आपकी खोज से कोई प्रश्न नहीं मिला।",
+      "contactUsDirectly": "सीधे संपर्क करें"
+    },
+    "contact": {
+      "label": "सहायता",
+      "heading": "मदद कर सकते हैं?",
+      "desc": "सामान्य प्रश्नों के उत्तर खोजें या हमारी टीम से संपर्क करें। हम 24/7 यहां हैं।",
+      "nameLabel": "Name",
+      "namePlaceholder": "Your name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "subjectLabel": "Subject",
+      "subjectDefault": "Select a topic…",
+      "subjectGeneral": "General Inquiry",
+      "subjectBilling": "Billing & Payments",
+      "subjectTechnical": "Technical Issue",
+      "subjectEsim": "eSIM Activation",
+      "subjectRefund": "Refund Request",
+      "subjectOther": "Other",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Describe your issue…",
+      "sendMessage": "संदेश भेजें",
+      "sending": "भेजा जा रहा है…",
+      "successMessage": "संदेश भेज दिया गया! हम 24 घंटे के भीतर जवाब देंगे।",
+      "errorRequired": "यह फ़ील्ड आवश्यक है।",
+      "errorEmail": "कृपया एक वैध ईमेल पता दर्ज करें।",
+      "errorNameRequired": "यह फ़ील्ड आवश्यक है।",
+      "errorEmailRequired": "यह फ़ील्ड आवश्यक है।",
+      "errorMessageRequired": "यह फ़ील्ड आवश्यक है।",
+      "errorSubjectRequired": "यह फ़ील्ड आवश्यक है।",
+      "errorCooldown": "Please wait {seconds} seconds.",
+      "errorNoToken": "Unable to connect. Please try again later.",
+      "errorGeneric": "Something went wrong. Please try again."
+    },
+    "channels": {
+      "label": "सहायता",
+      "heading": "मदद कर सकते हैं?",
+      "desc": "",
+      "chat": "In-App Chat",
+      "chatDesc": "",
+      "email": "Email",
+      "emailDesc": "",
+      "social": "Social",
+      "socialDesc": ""
+    }
+  },
+  "about": {
+    "hero": {
+      "label": "हमारे बारे में",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "story": {
+      "label": "",
+      "heading1": "",
+      "heading2": "",
+      "quote": "",
+      "p1": "",
+      "p2": "",
+      "stat1Label": "गंतव्य",
+      "stat2Label": "",
+      "stat3Label": "सहायता"
+    },
+    "values": {
+      "label": "",
+      "heading": "",
+      "v1Title": "",
+      "v1Desc": "",
+      "v2Title": "",
+      "v2Desc": "",
+      "v3Title": "",
+      "v3Desc": "",
+      "v4Title": "",
+      "v4Desc": ""
+    },
+    "team": {
+      "label": "",
+      "heading": "",
+      "role": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "सहायता से संपर्क करें"
+    }
+  },
+  "howItWorks": {
+    "hero": {
+      "label": "यह कैसे काम करता है",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "steps": {
+      "label": "",
+      "heading": "",
+      "desc": "",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step1Check1": "",
+      "step1Check2": "",
+      "step1Check3": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step2Check1": "",
+      "step2Check2": "",
+      "step2Check3": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": "",
+      "step3Check1": "",
+      "step3Check2": "",
+      "step3Check3": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "सहायता से संपर्क करें",
+      "backToHome": ""
+    }
+  }
+}

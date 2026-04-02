@@ -1,0 +1,320 @@
+{
+  "lang": {
+    "select": "言語",
+    "names": {
+      "en": "English",
+      "pt": "Português",
+      "es": "Español",
+      "fr": "Français",
+      "de": "Deutsch",
+      "it": "Italiano",
+      "nl": "Nederlands",
+      "ja": "日本語",
+      "zh": "中文",
+      "ko": "한국어",
+      "ar": "العربية",
+      "ru": "Русский",
+      "tr": "Türkçe",
+      "pl": "Polski",
+      "uk": "Українська",
+      "hi": "हिन्दी",
+      "id": "Bahasa Indonesia",
+      "vi": "Tiếng Việt",
+      "cs": "Čeština",
+      "hu": "Magyar",
+      "fa": "فارسی"
+    }
+  },
+  "nav": {
+    "destinations": "渡航先",
+    "howItWorks": "ご利用方法",
+    "support": "サポート",
+    "about": "会社概要",
+    "downloadApp": "アプリをダウンロード",
+    "skipToMain": "メインコンテンツへ",
+    "toggleTheme": "ライト/ダークモード",
+    "openMenu": "メニューを開く",
+    "closeMenu": "メニューを閉じる"
+  },
+  "footer": {
+    "tagline": "どこにいても繋がり続けよう。現代の旅行者のためのグローバルeSIMカバレッジ。",
+    "product": "製品",
+    "company": "会社",
+    "legal": "法的事項",
+    "aboutUs": "会社概要",
+    "contact": "お問い合わせ",
+    "privacyPolicy": "プライバシーポリシー",
+    "termsOfService": "利用規約",
+    "copyright": "全著作権所有。"
+  },
+  "cookie": {
+    "text": "私たちはサイトのトラフィックを分析し、体験を向上させるためにクッキーを使用します。「同意する」をクリックすることで、当社の",
+    "privacyPolicy": "プライバシーポリシー",
+    "decline": "拒否",
+    "accept": "すべて同意"
+  },
+  "mobileCta": {
+    "browsePlans": "プランを見る",
+    "howItWorks": "ご利用方法"
+  },
+  "backToTop": "トップへ戻る",
+  "scroll": "スクロール",
+  "common": {
+    "tryAgain": "再試行",
+    "loading": "読み込み中…",
+    "from": "から",
+    "plansAvailable": "プランあり"
+  },
+  "home": {
+    "hero": {
+      "headline": "繋がり続けよう、",
+      "typingPhrases": [
+        "どこへでも。",
+        "制限なし。",
+        "世界中で。",
+        "数秒で準備完了。",
+        "常時オンライン。"
+      ],
+      "desc": "Simphoniaをダウンロードして、目的地を選んで、着陸した瞬間からオンラインに — SIMカード不要、ローミング料金なし、ストレスなし。",
+      "trustFreeDownload": "無料ダウンロード",
+      "trust200Countries": "200カ国以上",
+      "trustInstantActivation": "即時アクティベーション",
+      "downloadOnThe": "Download on the",
+      "appStore": "App Store",
+      "googlePlay": "Google Play"
+    },
+    "howItWorks": {
+      "label": "ご利用方法",
+      "heading": "",
+      "subheading": "",
+      "learnMore": "詳細を見る",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": ""
+    },
+    "features": {
+      "label": "Features",
+      "heading": "",
+      "subheading": "",
+      "instantActivation": "Instant Activation",
+      "instantActivationDesc": "",
+      "zeroRoaming": "Zero Roaming",
+      "zeroRoamingDesc": "",
+      "countries200": "200+ Countries",
+      "countries200Desc": "",
+      "flexiblePlans": "Flexible Plans",
+      "flexiblePlansDesc": "",
+      "aiSupport": "AI Support 24/7",
+      "aiSupportDesc": "",
+      "allDevices": "All Devices",
+      "allDevicesDesc": ""
+    },
+    "showcase": {
+      "panel1Step": "01",
+      "panel1Title1": "",
+      "panel1Title2": "",
+      "panel1Desc": "一目でわかる回答",
+      "panel2Step": "02",
+      "panel2Title1": "",
+      "panel2Title2": "",
+      "panel2Desc": "",
+      "panel3Step": "03",
+      "panel3Title1": "",
+      "panel3Title2": "",
+      "panel3Desc": "",
+      "panel4Step": "04",
+      "panel4Title1": "",
+      "panel4Title2": "",
+      "panel4Desc": "Simphoniaをダウンロードして、目的地を選んで、着陸した瞬間からオンラインに — SIMカード不要、ローミング料金なし、ストレスなし。"
+    },
+    "cta": {
+      "heading1": "繋がり続けよう、",
+      "heading2": "繋がり続けよう、",
+      "desc": "",
+      "browseDestinations": "サポートに問い合わせる",
+      "howItWorks": "ご利用方法"
+    }
+  },
+  "destinations": {
+    "hero": {
+      "label": "渡航先",
+      "heading1": "探索",
+      "heading2": "200カ国以上",
+      "desc": "次の旅行に最適なeSIMプランを見つけよう。"
+    },
+    "grid": {
+      "label": "渡航先",
+      "heading": "次の旅行に最適なeSIMプランを見つけよう。",
+      "desc": "",
+      "searchPlaceholder": "国を検索…",
+      "clearSearch": "検索をクリア",
+      "allTab": "すべて"
+    },
+    "count": {
+      "countries": "渡航先",
+      "of": "の"
+    },
+    "noResults": {
+      "noCountriesFor": "渡航先を読み込めません",
+      "clearSearch": "検索をクリア"
+    },
+    "loading": "渡航先を読み込み中…",
+    "error": {
+      "title": "渡航先を読み込めません",
+      "desc": "サーバーに接続できませんでした。\n接続を確認して再試行してください。",
+      "tryAgain": "再試行"
+    },
+    "cta": {
+      "heading": "目的地が見つかりませんか？",
+      "desc": "毎週新しい国を追加しています。",
+      "contactSupport": "サポートに問い合わせる"
+    }
+  },
+  "support": {
+    "hero": {
+      "label": "サポート",
+      "heading1": "どのように",
+      "heading2": "お手伝いできますか？",
+      "desc": "よくある質問への回答を見つけるか、チームにお問い合わせください。24時間365日対応。"
+    },
+    "faq": {
+      "label": "ヘルプセンター",
+      "heading": "一目でわかる回答",
+      "desc": "質問を選択して全文を読む。",
+      "searchPlaceholder": "質問を検索…",
+      "loading": "読み込み中…",
+      "errorTitle": "ヘルプセンター",
+      "errorDesc": "サーバーに接続できませんでした。\n接続を確認して再試行してください。",
+      "tryAgain": "再試行",
+      "stillNeedHelp": "まだお困りですか？お問い合わせ",
+      "noResults": "検索に一致する質問がありません。",
+      "contactUsDirectly": "直接お問い合わせ"
+    },
+    "contact": {
+      "label": "サポート",
+      "heading": "お手伝いできますか？",
+      "desc": "よくある質問への回答を見つけるか、チームにお問い合わせください。24時間365日対応。",
+      "nameLabel": "Name",
+      "namePlaceholder": "Your name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "subjectLabel": "Subject",
+      "subjectDefault": "Select a topic…",
+      "subjectGeneral": "General Inquiry",
+      "subjectBilling": "Billing & Payments",
+      "subjectTechnical": "Technical Issue",
+      "subjectEsim": "eSIM Activation",
+      "subjectRefund": "Refund Request",
+      "subjectOther": "Other",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Describe your issue…",
+      "sendMessage": "メッセージを送る",
+      "sending": "送信中…",
+      "successMessage": "メッセージが送信されました！24時間以内に返信します。",
+      "errorRequired": "このフィールドは必須です。",
+      "errorEmail": "有効なメールアドレスを入力してください。",
+      "errorNameRequired": "このフィールドは必須です。",
+      "errorEmailRequired": "このフィールドは必須です。",
+      "errorMessageRequired": "このフィールドは必須です。",
+      "errorSubjectRequired": "このフィールドは必須です。",
+      "errorCooldown": "Please wait {seconds} seconds.",
+      "errorNoToken": "Unable to connect. Please try again later.",
+      "errorGeneric": "Something went wrong. Please try again."
+    },
+    "channels": {
+      "label": "サポート",
+      "heading": "お手伝いできますか？",
+      "desc": "",
+      "chat": "In-App Chat",
+      "chatDesc": "",
+      "email": "Email",
+      "emailDesc": "",
+      "social": "Social",
+      "socialDesc": ""
+    }
+  },
+  "about": {
+    "hero": {
+      "label": "会社概要",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "story": {
+      "label": "",
+      "heading1": "",
+      "heading2": "",
+      "quote": "",
+      "p1": "",
+      "p2": "",
+      "stat1Label": "渡航先",
+      "stat2Label": "",
+      "stat3Label": "サポート"
+    },
+    "values": {
+      "label": "",
+      "heading": "",
+      "v1Title": "",
+      "v1Desc": "",
+      "v2Title": "",
+      "v2Desc": "",
+      "v3Title": "",
+      "v3Desc": "",
+      "v4Title": "",
+      "v4Desc": ""
+    },
+    "team": {
+      "label": "",
+      "heading": "",
+      "role": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "サポートに問い合わせる"
+    }
+  },
+  "howItWorks": {
+    "hero": {
+      "label": "ご利用方法",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "steps": {
+      "label": "",
+      "heading": "",
+      "desc": "",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step1Check1": "",
+      "step1Check2": "",
+      "step1Check3": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step2Check1": "",
+      "step2Check2": "",
+      "step2Check3": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": "",
+      "step3Check1": "",
+      "step3Check2": "",
+      "step3Check3": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "サポートに問い合わせる",
+      "backToHome": ""
+    }
+  }
+}

@@ -484,8 +484,9 @@
   position: relative;
   display: flex;
   justify-content: center;
-  align-items: center;
+  align-items: flex-end;
   min-height: 0;
+  padding-top: clamp(2rem, 5vh, 5rem);
 }
 
 /* Phone wrap is the sizing anchor for glow + ring */

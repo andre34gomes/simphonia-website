@@ -1,0 +1,315 @@
+{
+  "lang": {
+    "select": "Language",
+    "names": {
+      "en": "English",
+      "pt": "Português",
+      "es": "Español",
+      "fr": "Français",
+      "de": "Deutsch",
+      "it": "Italiano",
+      "nl": "Nederlands",
+      "ja": "日本語",
+      "zh": "中文",
+      "ko": "한국어",
+      "ar": "العربية",
+      "ru": "Русский",
+      "tr": "Türkçe",
+      "pl": "Polski",
+      "uk": "Українська",
+      "hi": "हिन्दी",
+      "id": "Bahasa Indonesia",
+      "vi": "Tiếng Việt",
+      "cs": "Čeština",
+      "hu": "Magyar",
+      "fa": "فارسی"
+    }
+  },
+  "nav": {
+    "destinations": "Destinations",
+    "howItWorks": "How It Works",
+    "support": "Support",
+    "about": "About",
+    "downloadApp": "Download App",
+    "skipToMain": "Skip to main content",
+    "toggleTheme": "Toggle light/dark mode",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "footer": {
+    "tagline": "Stay connected, wherever you go. Global eSIM coverage for modern travelers.",
+    "product": "Product",
+    "company": "Company",
+    "legal": "Legal",
+    "aboutUs": "About Us",
+    "contact": "Contact",
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service",
+    "copyright": "All rights reserved."
+  },
+  "cookie": {
+    "text": "We use cookies to improve your experience and analyse site traffic. By clicking Accept, you agree to our",
+    "privacyPolicy": "Privacy Policy",
+    "decline": "Decline",
+    "accept": "Accept All"
+  },
+  "mobileCta": {
+    "browsePlans": "Browse Plans",
+    "howItWorks": "How It Works"
+  },
+  "backToTop": "Scroll back to top",
+  "scroll": "Scroll",
+  "common": {
+    "tryAgain": "Try Again",
+    "loading": "Loading…",
+    "from": "From",
+    "plansAvailable": "plans available"
+  },
+  "home": {
+    "hero": {
+      "headline": "Stay Connected,",
+      "typingPhrases": ["Wherever You Go.", "Without Limits.", "Across the Globe.", "Ready in Seconds.", "Always Online."],
+      "desc": "Download Simphonia, pick your destination, and stay online the moment you land — no SIM cards, no roaming fees, no stress.",
+      "trustFreeDownload": "Free to download",
+      "trust200Countries": "200+ countries",
+      "trustInstantActivation": "Instant activation",
+      "downloadOnThe": "Download on the",
+      "appStore": "App Store",
+      "googlePlay": "Google Play"
+    },
+    "howItWorks": {
+      "label": "How It Works",
+      "heading": "Connected in Under 2 Minutes",
+      "subheading": "No store visits, no waiting, no physical SIM. Three steps to global connectivity.",
+      "learnMore": "Learn More",
+      "step1Label": "Step 1",
+      "step1Title": "Choose Your Plan",
+      "step1Desc": "Search 200+ countries and regions. Compare plans by data, duration, and price. Filter by destination or browse curated picks for popular travel spots.",
+      "step2Label": "Step 2",
+      "step2Title": "Buy in Seconds",
+      "step2Desc": "Secure checkout in seconds. Your eSIM QR code is generated instantly in the app — no email, no waiting, no physical delivery needed.",
+      "step3Label": "Step 3",
+      "step3Title": "Travel Connected",
+      "step3Desc": "Scan the QR code before departure. Your eSIM activates automatically when you land. Keep your number, drop the roaming fees."
+    },
+    "features": {
+      "label": "Features",
+      "heading": "Everything You Need to Travel Smart",
+      "subheading": "Built for the way modern travelers actually travel.",
+      "instantActivation": "Instant Activation",
+      "instantActivationDesc": "QR code delivered instantly in-app. Go from purchase to online in under 60 seconds, no physical delivery required.",
+      "zeroRoaming": "Zero Roaming Fees",
+      "zeroRoamingDesc": "Connect to local networks at local prices. Save up to 90% compared to traditional carrier roaming charges.",
+      "countries200": "200+ Countries",
+      "countries200Desc": "Global coverage that actually works. Local plans for every destination and every type of trip.",
+      "flexiblePlans": "Flexible Plans",
+      "flexiblePlansDesc": "1 GB for a weekend getaway or unlimited data for a month-long expedition. Buy exactly what you need.",
+      "aiSupport": "AI Support 24/7",
+      "aiSupportDesc": "Instant help from our AI assistant at any hour, in any timezone. Real human agents available when you need them most.",
+      "allDevices": "All Modern Devices",
+      "allDevicesDesc": "Compatible with all eSIM-enabled iPhones, Samsung Galaxy, Google Pixel, and more."
+    },
+    "showcase": {
+      "panel1Step": "Explore",
+      "panel1Title1": "Find your plan",
+      "panel1Title2": "in seconds.",
+      "panel1Desc": "Browse 200+ countries with live filtering and smart recommendations for any trip.",
+      "panel2Step": "Purchase",
+      "panel2Title1": "Buy in under",
+      "panel2Title2": "30 seconds.",
+      "panel2Desc": "Apple Pay, Google Pay, all major cards. Your QR code is ready the moment you pay.",
+      "panel3Step": "Monitor",
+      "panel3Title1": "Know exactly",
+      "panel3Title2": "what's left.",
+      "panel3Desc": "Live data dashboard and smart alerts so you never run out at the wrong moment.",
+      "panel4Step": "Support",
+      "panel4Title1": "Help whenever",
+      "panel4Title2": "you need it.",
+      "panel4Desc": "24/7 AI support in any language, wherever you are in the world."
+    },
+    "cta": {
+      "heading1": "Stay Connected,",
+      "heading2": "Wherever You Go.",
+      "desc": "Explore our destinations and find the perfect eSIM plan for your next adventure.",
+      "browseDestinations": "Browse Destinations",
+      "howItWorks": "How It Works"
+    }
+  },
+  "destinations": {
+    "hero": {
+      "label": "Destinations",
+      "heading1": "Explore",
+      "heading2": "200+ Countries",
+      "desc": "Find the perfect eSIM plan for your next trip. Local coverage worldwide."
+    },
+    "grid": {
+      "label": "Explore",
+      "heading": "Where Will You Go Next?",
+      "desc": "Coverage across 200+ countries and regions. Search or filter to find your destination.",
+      "searchPlaceholder": "Search countries…",
+      "clearSearch": "Clear search",
+      "allTab": "All"
+    },
+    "count": {
+      "countries": "countries",
+      "of": "of"
+    },
+    "noResults": {
+      "noCountriesFor": "No countries found for",
+      "clearSearch": "Clear search"
+    },
+    "loading": "Loading destinations…",
+    "error": {
+      "title": "Unable to Load Destinations",
+      "desc": "We couldn't reach our servers right now.\nCheck your connection and try again.",
+      "tryAgain": "Try Again"
+    },
+    "cta": {
+      "heading": "Can't Find Your Destination?",
+      "desc": "We're adding new countries every week. Check back soon for more destinations.",
+      "contactSupport": "Contact Support"
+    }
+  },
+  "support": {
+    "hero": {
+      "label": "Support",
+      "heading1": "How Can We",
+      "heading2": "Help?",
+      "desc": "Find answers to common questions or get in touch with our team. We're here 24/7."
+    },
+    "faq": {
+      "label": "Help Center",
+      "heading": "Answers at a Glance",
+      "desc": "Select any question to read the full answer.",
+      "searchPlaceholder": "Search questions…",
+      "loading": "Loading…",
+      "errorTitle": "Unable to Load FAQs",
+      "errorDesc": "We couldn't reach our servers right now.\nCheck your connection and try again.",
+      "tryAgain": "Try Again",
+      "stillNeedHelp": "Still need help? Contact us",
+      "noResults": "No questions match your search. Try different keywords or",
+      "contactUsDirectly": "contact us directly"
+    },
+    "contact": {
+      "label": "Contact Us",
+      "heading": "Still Need Help?",
+      "desc": "Our support team is available 24/7. Send us a message and we'll get back to you shortly.",
+      "nameLabel": "Name",
+      "namePlaceholder": "Your name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "subjectLabel": "Subject",
+      "subjectDefault": "Select a topic…",
+      "subjectGeneral": "General Inquiry",
+      "subjectBilling": "Billing & Payments",
+      "subjectTechnical": "Technical Issue",
+      "subjectEsim": "eSIM Activation",
+      "subjectRefund": "Refund Request",
+      "subjectOther": "Other",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Describe your issue or question…",
+      "sendMessage": "Send Message",
+      "sending": "Sending…",
+      "successMessage": "Message sent! We'll get back to you within 24 hours.",
+      "errorRequired": "This field is required.",
+      "errorEmail": "Please enter a valid email address.",
+      "errorNameRequired": "Please enter your name.",
+      "errorEmailRequired": "Please enter your email address.",
+      "errorMessageRequired": "Please describe your issue or question.",
+      "errorSubjectRequired": "Please select a topic.",
+      "errorCooldown": "Please wait {seconds} seconds before sending another message.",
+      "errorNoToken": "Unable to connect to the server. Please try again later or email us at support@simphonia.pt.",
+      "errorGeneric": "Something went wrong. Please try again or email us at support@simphonia.pt."
+    },
+    "channels": {
+      "label": "Other Ways to Reach Us",
+      "heading": "We're Always Available",
+      "desc": "Pick the channel that works best for you.",
+      "chat": "In-App Chat",
+      "chatDesc": "Get instant answers from our AI assistant directly inside the Simphonia app — available 24/7.",
+      "email": "Email",
+      "emailDesc": "Drop us a line any time — we typically respond within a few hours.",
+      "social": "Social",
+      "socialDesc": "Follow us for destination highlights, travel tips, and product updates."
+    }
+  },
+  "about": {
+    "hero": {
+      "label": "About Simphonia",
+      "heading1": "Connecting the World,",
+      "heading2": "One Trip at a Time",
+      "desc": "We believe staying connected while traveling should be effortless, affordable, and available to everyone."
+    },
+    "story": {
+      "label": "Our Story",
+      "heading1": "Born From a",
+      "heading2": "Travel Frustration",
+      "quote": "\"I landed in Tokyo at midnight with zero mobile data. No maps, no ride, no translation. That one trip changed everything.\"",
+      "p1": "That frustration — the overpriced roaming, the hunt for local SIM cards, the confusing carrier shops — became the spark behind Simphonia.",
+      "p2": "Founded in 2024, we set out to make global connectivity instant and accessible for every traveler. Today, Simphonia covers 200+ countries with one-tap eSIM activation, transparent pricing, and 24/7 AI-powered support.",
+      "stat1Label": "Countries",
+      "stat2Label": "To Connect",
+      "stat3Label": "AI Support"
+    },
+    "values": {
+      "label": "Our Values",
+      "heading": "What Drives Us",
+      "v1Title": "Global First",
+      "v1Desc": "We think globally. Every feature, every plan, every decision is made with the world traveler in mind. Coverage without borders.",
+      "v2Title": "Instant Everything",
+      "v2Desc": "Speed matters when you travel. From purchase to activation, everything happens in seconds. No waiting, no delays.",
+      "v3Title": "Radical Transparency",
+      "v3Desc": "No hidden fees, no surprise charges, no fine print. What you see is what you pay. We believe trust is built through honesty.",
+      "v4Title": "Traveler Obsessed",
+      "v4Desc": "Every feature exists because a traveler needed it. We listen, iterate, and ship relentlessly to solve real travel pain points."
+    },
+    "team": {
+      "label": "Our Team",
+      "heading": "The Person Behind Simphonia",
+      "role": "Founder & CEO"
+    },
+    "cta": {
+      "heading": "Be Part of the Journey",
+      "desc": "Explore our destinations and stay connected wherever you travel.",
+      "browseDestinations": "Browse Destinations"
+    }
+  },
+  "howItWorks": {
+    "hero": {
+      "label": "How It Works",
+      "heading1": "Connected in",
+      "heading2": "Under 2 Minutes",
+      "desc": "No stores to visit, no SIM cards to swap, no contracts to sign. Just seamless global connectivity in three steps."
+    },
+    "steps": {
+      "label": "The Process",
+      "heading": "Three Steps to Connected",
+      "desc": "No store visits, no waiting, no physical SIM swap required.",
+      "step1Label": "Step 1",
+      "step1Title": "Choose Your Destination",
+      "step1Desc": "Open Simphonia and browse 200+ countries. Compare plans by data, duration, and price — or let smart filters find the perfect match for your trip.",
+      "step1Check1": "200+ countries and regions",
+      "step1Check2": "Local plans for every destination",
+      "step1Check3": "Smart search & filters",
+      "step2Label": "Step 2",
+      "step2Title": "Purchase in Seconds",
+      "step2Desc": "Checkout in under 30 seconds with Apple Pay, Google Pay, or any major card. Your eSIM QR code is generated instantly — no email, no shipping, no delays.",
+      "step2Check1": "Secure payment processing",
+      "step2Check2": "Instant QR code generation",
+      "step2Check3": "Discount codes supported",
+      "step3Label": "Step 3",
+      "step3Title": "Connect & Travel",
+      "step3Desc": "Scan the QR code in your phone settings before departure. Your eSIM activates automatically when you land — keep your number, drop the roaming fees.",
+      "step3Check1": "Easy QR code installation",
+      "step3Check2": "Auto-connect on arrival",
+      "step3Check3": "Keep your primary number active"
+    },
+    "cta": {
+      "heading": "Ready to Get Started?",
+      "desc": "Explore our destinations and find the perfect eSIM plan for your next trip.",
+      "browseDestinations": "Browse Destinations",
+      "backToHome": "Back to Home"
+    }
+  }
+}
+

@@ -1,0 +1,320 @@
+{
+  "lang": {
+    "select": "Język",
+    "names": {
+      "en": "English",
+      "pt": "Português",
+      "es": "Español",
+      "fr": "Français",
+      "de": "Deutsch",
+      "it": "Italiano",
+      "nl": "Nederlands",
+      "ja": "日本語",
+      "zh": "中文",
+      "ko": "한국어",
+      "ar": "العربية",
+      "ru": "Русский",
+      "tr": "Türkçe",
+      "pl": "Polski",
+      "uk": "Українська",
+      "hi": "हिन्दी",
+      "id": "Bahasa Indonesia",
+      "vi": "Tiếng Việt",
+      "cs": "Čeština",
+      "hu": "Magyar",
+      "fa": "فارسی"
+    }
+  },
+  "nav": {
+    "destinations": "Kierunki",
+    "howItWorks": "Jak to działa",
+    "support": "Wsparcie",
+    "about": "O nas",
+    "downloadApp": "Pobierz aplikację",
+    "skipToMain": "Przejdź do głównej treści",
+    "toggleTheme": "Tryb jasny/ciemny",
+    "openMenu": "Otwórz menu",
+    "closeMenu": "Zamknij menu"
+  },
+  "footer": {
+    "tagline": "Pozostań w kontakcie, gdziekolwiek jesteś. Globalne pokrycie eSIM dla nowoczesnych podróżników.",
+    "product": "Produkt",
+    "company": "Firma",
+    "legal": "Prawne",
+    "aboutUs": "O nas",
+    "contact": "Kontakt",
+    "privacyPolicy": "Polityka prywatności",
+    "termsOfService": "Warunki usługi",
+    "copyright": "Wszelkie prawa zastrzeżone."
+  },
+  "cookie": {
+    "text": "Używamy plików cookie, aby poprawić Twoje doświadczenie i analizować ruch na stronie. Klikając Akceptuj, zgadzasz się z naszą",
+    "privacyPolicy": "Polityką prywatności",
+    "decline": "Odrzuć",
+    "accept": "Akceptuj wszystko"
+  },
+  "mobileCta": {
+    "browsePlans": "Przeglądaj plany",
+    "howItWorks": "Jak to działa"
+  },
+  "backToTop": "Powrót na górę",
+  "scroll": "Przewiń",
+  "common": {
+    "tryAgain": "Spróbuj ponownie",
+    "loading": "Ładowanie…",
+    "from": "Od",
+    "plansAvailable": "planów dostępnych"
+  },
+  "home": {
+    "hero": {
+      "headline": "Pozostań w kontakcie,",
+      "typingPhrases": [
+        "Gdziekolwiek jesteś.",
+        "Bez limitów.",
+        "Na całym świecie.",
+        "Gotowy w sekundy.",
+        "Zawsze online."
+      ],
+      "desc": "Pobierz Simphonię, wybierz cel podróży i pozostań online od chwili lądowania — bez karty SIM, bez opłat roamingowych, bez stresu.",
+      "trustFreeDownload": "Bezpłatne pobieranie",
+      "trust200Countries": "200+ krajów",
+      "trustInstantActivation": "Natychmiastowa aktywacja",
+      "downloadOnThe": "Download on the",
+      "appStore": "App Store",
+      "googlePlay": "Google Play"
+    },
+    "howItWorks": {
+      "label": "Jak to działa",
+      "heading": "",
+      "subheading": "",
+      "learnMore": "Dowiedz się więcej",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": ""
+    },
+    "features": {
+      "label": "Features",
+      "heading": "",
+      "subheading": "",
+      "instantActivation": "Instant Activation",
+      "instantActivationDesc": "",
+      "zeroRoaming": "Zero Roaming",
+      "zeroRoamingDesc": "",
+      "countries200": "200+ Countries",
+      "countries200Desc": "",
+      "flexiblePlans": "Flexible Plans",
+      "flexiblePlansDesc": "",
+      "aiSupport": "AI Support 24/7",
+      "aiSupportDesc": "",
+      "allDevices": "All Devices",
+      "allDevicesDesc": ""
+    },
+    "showcase": {
+      "panel1Step": "01",
+      "panel1Title1": "",
+      "panel1Title2": "",
+      "panel1Desc": "Odpowiedzi w zasięgu wzroku",
+      "panel2Step": "02",
+      "panel2Title1": "",
+      "panel2Title2": "",
+      "panel2Desc": "",
+      "panel3Step": "03",
+      "panel3Title1": "",
+      "panel3Title2": "",
+      "panel3Desc": "",
+      "panel4Step": "04",
+      "panel4Title1": "",
+      "panel4Title2": "",
+      "panel4Desc": "Pobierz Simphonię, wybierz cel podróży i pozostań online od chwili lądowania — bez karty SIM, bez opłat roamingowych, bez stresu."
+    },
+    "cta": {
+      "heading1": "Pozostań w kontakcie,",
+      "heading2": "Pozostań w kontakcie,",
+      "desc": "",
+      "browseDestinations": "Skontaktuj się z pomocą",
+      "howItWorks": "Jak to działa"
+    }
+  },
+  "destinations": {
+    "hero": {
+      "label": "Kierunki",
+      "heading1": "Odkryj",
+      "heading2": "200+ krajów",
+      "desc": "Znajdź idealny plan eSIM na swoją następną podróż."
+    },
+    "grid": {
+      "label": "Kierunki",
+      "heading": "Znajdź idealny plan eSIM na swoją następną podróż.",
+      "desc": "",
+      "searchPlaceholder": "Szukaj krajów…",
+      "clearSearch": "Wyczyść wyszukiwanie",
+      "allTab": "Wszystkie"
+    },
+    "count": {
+      "countries": "kierunki",
+      "of": "z"
+    },
+    "noResults": {
+      "noCountriesFor": "Nie można załadować kierunków",
+      "clearSearch": "Wyczyść wyszukiwanie"
+    },
+    "loading": "Ładowanie kierunków…",
+    "error": {
+      "title": "Nie można załadować kierunków",
+      "desc": "Nie mogliśmy połączyć się z serwerami.\nSprawdź połączenie i spróbuj ponownie.",
+      "tryAgain": "Spróbuj ponownie"
+    },
+    "cta": {
+      "heading": "Nie możesz znaleźć miejsca docelowego?",
+      "desc": "Co tydzień dodajemy nowe kraje.",
+      "contactSupport": "Skontaktuj się z pomocą"
+    }
+  },
+  "support": {
+    "hero": {
+      "label": "Wsparcie",
+      "heading1": "Jak możemy",
+      "heading2": "pomóc?",
+      "desc": "Znajdź odpowiedzi na często zadawane pytania lub skontaktuj się z naszym zespołem. Jesteśmy tutaj 24/7."
+    },
+    "faq": {
+      "label": "Centrum pomocy",
+      "heading": "Odpowiedzi w zasięgu wzroku",
+      "desc": "Wybierz pytanie, aby przeczytać pełną odpowiedź.",
+      "searchPlaceholder": "Szukaj pytań…",
+      "loading": "Ładowanie…",
+      "errorTitle": "Centrum pomocy",
+      "errorDesc": "Nie mogliśmy połączyć się z serwerami.\nSprawdź połączenie i spróbuj ponownie.",
+      "tryAgain": "Spróbuj ponownie",
+      "stillNeedHelp": "Potrzebujesz jeszcze pomocy? Skontaktuj się",
+      "noResults": "Żadne pytania nie pasują do Twojego wyszukiwania.",
+      "contactUsDirectly": "skontaktuj się bezpośrednio"
+    },
+    "contact": {
+      "label": "Wsparcie",
+      "heading": "pomóc?",
+      "desc": "Znajdź odpowiedzi na często zadawane pytania lub skontaktuj się z naszym zespołem. Jesteśmy tutaj 24/7.",
+      "nameLabel": "Name",
+      "namePlaceholder": "Your name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "subjectLabel": "Subject",
+      "subjectDefault": "Select a topic…",
+      "subjectGeneral": "General Inquiry",
+      "subjectBilling": "Billing & Payments",
+      "subjectTechnical": "Technical Issue",
+      "subjectEsim": "eSIM Activation",
+      "subjectRefund": "Refund Request",
+      "subjectOther": "Other",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Describe your issue…",
+      "sendMessage": "Wyślij wiadomość",
+      "sending": "Wysyłanie…",
+      "successMessage": "Wiadomość wysłana! Odpowiemy w ciągu 24 godzin.",
+      "errorRequired": "To pole jest wymagane.",
+      "errorEmail": "Podaj prawidłowy adres e-mail.",
+      "errorNameRequired": "To pole jest wymagane.",
+      "errorEmailRequired": "To pole jest wymagane.",
+      "errorMessageRequired": "To pole jest wymagane.",
+      "errorSubjectRequired": "To pole jest wymagane.",
+      "errorCooldown": "Please wait {seconds} seconds.",
+      "errorNoToken": "Unable to connect. Please try again later.",
+      "errorGeneric": "Something went wrong. Please try again."
+    },
+    "channels": {
+      "label": "Wsparcie",
+      "heading": "pomóc?",
+      "desc": "",
+      "chat": "In-App Chat",
+      "chatDesc": "",
+      "email": "Email",
+      "emailDesc": "",
+      "social": "Social",
+      "socialDesc": ""
+    }
+  },
+  "about": {
+    "hero": {
+      "label": "O nas",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "story": {
+      "label": "",
+      "heading1": "",
+      "heading2": "",
+      "quote": "",
+      "p1": "",
+      "p2": "",
+      "stat1Label": "Kierunki",
+      "stat2Label": "",
+      "stat3Label": "Wsparcie"
+    },
+    "values": {
+      "label": "",
+      "heading": "",
+      "v1Title": "",
+      "v1Desc": "",
+      "v2Title": "",
+      "v2Desc": "",
+      "v3Title": "",
+      "v3Desc": "",
+      "v4Title": "",
+      "v4Desc": ""
+    },
+    "team": {
+      "label": "",
+      "heading": "",
+      "role": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "Skontaktuj się z pomocą"
+    }
+  },
+  "howItWorks": {
+    "hero": {
+      "label": "Jak to działa",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "steps": {
+      "label": "",
+      "heading": "",
+      "desc": "",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step1Check1": "",
+      "step1Check2": "",
+      "step1Check3": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step2Check1": "",
+      "step2Check2": "",
+      "step2Check3": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": "",
+      "step3Check1": "",
+      "step3Check2": "",
+      "step3Check3": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "Skontaktuj się z pomocą",
+      "backToHome": ""
+    }
+  }
+}

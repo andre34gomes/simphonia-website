@@ -1,0 +1,320 @@
+{
+  "lang": {
+    "select": "Bahasa",
+    "names": {
+      "en": "English",
+      "pt": "Português",
+      "es": "Español",
+      "fr": "Français",
+      "de": "Deutsch",
+      "it": "Italiano",
+      "nl": "Nederlands",
+      "ja": "日本語",
+      "zh": "中文",
+      "ko": "한국어",
+      "ar": "العربية",
+      "ru": "Русский",
+      "tr": "Türkçe",
+      "pl": "Polski",
+      "uk": "Українська",
+      "hi": "हिन्दी",
+      "id": "Bahasa Indonesia",
+      "vi": "Tiếng Việt",
+      "cs": "Čeština",
+      "hu": "Magyar",
+      "fa": "فارسی"
+    }
+  },
+  "nav": {
+    "destinations": "Destinasi",
+    "howItWorks": "Cara Kerja",
+    "support": "Dukungan",
+    "about": "Tentang Kami",
+    "downloadApp": "Unduh Aplikasi",
+    "skipToMain": "Lewati ke konten utama",
+    "toggleTheme": "Mode terang/gelap",
+    "openMenu": "Buka menu",
+    "closeMenu": "Tutup menu"
+  },
+  "footer": {
+    "tagline": "Tetap terhubung ke mana pun kamu pergi. Cakupan eSIM global untuk pelancong modern.",
+    "product": "Produk",
+    "company": "Perusahaan",
+    "legal": "Hukum",
+    "aboutUs": "Tentang Kami",
+    "contact": "Kontak",
+    "privacyPolicy": "Kebijakan Privasi",
+    "termsOfService": "Syarat Layanan",
+    "copyright": "Hak cipta dilindungi."
+  },
+  "cookie": {
+    "text": "Kami menggunakan cookie untuk meningkatkan pengalaman Anda dan menganalisis lalu lintas situs. Dengan mengklik Terima, Anda setuju dengan",
+    "privacyPolicy": "Kebijakan Privasi",
+    "decline": "Tolak",
+    "accept": "Terima Semua"
+  },
+  "mobileCta": {
+    "browsePlans": "Lihat Paket",
+    "howItWorks": "Cara Kerja"
+  },
+  "backToTop": "Kembali ke atas",
+  "scroll": "Gulir",
+  "common": {
+    "tryAgain": "Coba lagi",
+    "loading": "Memuat…",
+    "from": "Mulai dari",
+    "plansAvailable": "paket tersedia"
+  },
+  "home": {
+    "hero": {
+      "headline": "Tetap Terhubung,",
+      "typingPhrases": [
+        "Ke Mana Pun Kamu Pergi.",
+        "Tanpa Batas.",
+        "Ke Seluruh Dunia.",
+        "Siap dalam Detik.",
+        "Selalu Online."
+      ],
+      "desc": "Unduh Simphonia, pilih destinasimu, dan tetap online begitu mendarat — tanpa kartu SIM, tanpa biaya roaming, tanpa stres.",
+      "trustFreeDownload": "Unduhan gratis",
+      "trust200Countries": "200+ negara",
+      "trustInstantActivation": "Aktivasi instan",
+      "downloadOnThe": "Download on the",
+      "appStore": "App Store",
+      "googlePlay": "Google Play"
+    },
+    "howItWorks": {
+      "label": "Cara Kerja",
+      "heading": "",
+      "subheading": "",
+      "learnMore": "Pelajari Lebih Lanjut",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": ""
+    },
+    "features": {
+      "label": "Features",
+      "heading": "",
+      "subheading": "",
+      "instantActivation": "Instant Activation",
+      "instantActivationDesc": "",
+      "zeroRoaming": "Zero Roaming",
+      "zeroRoamingDesc": "",
+      "countries200": "200+ Countries",
+      "countries200Desc": "",
+      "flexiblePlans": "Flexible Plans",
+      "flexiblePlansDesc": "",
+      "aiSupport": "AI Support 24/7",
+      "aiSupportDesc": "",
+      "allDevices": "All Devices",
+      "allDevicesDesc": ""
+    },
+    "showcase": {
+      "panel1Step": "01",
+      "panel1Title1": "",
+      "panel1Title2": "",
+      "panel1Desc": "Jawaban Sekilas",
+      "panel2Step": "02",
+      "panel2Title1": "",
+      "panel2Title2": "",
+      "panel2Desc": "",
+      "panel3Step": "03",
+      "panel3Title1": "",
+      "panel3Title2": "",
+      "panel3Desc": "",
+      "panel4Step": "04",
+      "panel4Title1": "",
+      "panel4Title2": "",
+      "panel4Desc": "Unduh Simphonia, pilih destinasimu, dan tetap online begitu mendarat — tanpa kartu SIM, tanpa biaya roaming, tanpa stres."
+    },
+    "cta": {
+      "heading1": "Tetap Terhubung,",
+      "heading2": "Tetap Terhubung,",
+      "desc": "",
+      "browseDestinations": "Hubungi Dukungan",
+      "howItWorks": "Cara Kerja"
+    }
+  },
+  "destinations": {
+    "hero": {
+      "label": "Destinasi",
+      "heading1": "Jelajahi",
+      "heading2": "200+ Negara",
+      "desc": "Temukan paket eSIM sempurna untuk perjalananmu berikutnya."
+    },
+    "grid": {
+      "label": "Destinasi",
+      "heading": "Temukan paket eSIM sempurna untuk perjalananmu berikutnya.",
+      "desc": "",
+      "searchPlaceholder": "Cari negara…",
+      "clearSearch": "Hapus pencarian",
+      "allTab": "Semua"
+    },
+    "count": {
+      "countries": "destinasi",
+      "of": "dari"
+    },
+    "noResults": {
+      "noCountriesFor": "Tidak Dapat Memuat Destinasi",
+      "clearSearch": "Hapus pencarian"
+    },
+    "loading": "Memuat destinasi…",
+    "error": {
+      "title": "Tidak Dapat Memuat Destinasi",
+      "desc": "Kami tidak dapat menjangkau server kami.\nPeriksa koneksi Anda dan coba lagi.",
+      "tryAgain": "Coba lagi"
+    },
+    "cta": {
+      "heading": "Tidak Menemukan Destinasimu?",
+      "desc": "Kami menambahkan negara baru setiap minggu.",
+      "contactSupport": "Hubungi Dukungan"
+    }
+  },
+  "support": {
+    "hero": {
+      "label": "Dukungan",
+      "heading1": "Bagaimana Kami Bisa",
+      "heading2": "Membantu?",
+      "desc": "Temukan jawaban atas pertanyaan umum atau hubungi tim kami. Kami di sini 24/7."
+    },
+    "faq": {
+      "label": "Pusat Bantuan",
+      "heading": "Jawaban Sekilas",
+      "desc": "Pilih pertanyaan untuk membaca jawaban lengkap.",
+      "searchPlaceholder": "Cari pertanyaan…",
+      "loading": "Memuat…",
+      "errorTitle": "Pusat Bantuan",
+      "errorDesc": "Kami tidak dapat menjangkau server kami.\nPeriksa koneksi Anda dan coba lagi.",
+      "tryAgain": "Coba lagi",
+      "stillNeedHelp": "Masih butuh bantuan? Hubungi kami",
+      "noResults": "Tidak ada pertanyaan yang cocok dengan pencarian Anda.",
+      "contactUsDirectly": "hubungi kami langsung"
+    },
+    "contact": {
+      "label": "Dukungan",
+      "heading": "Membantu?",
+      "desc": "Temukan jawaban atas pertanyaan umum atau hubungi tim kami. Kami di sini 24/7.",
+      "nameLabel": "Name",
+      "namePlaceholder": "Your name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "subjectLabel": "Subject",
+      "subjectDefault": "Select a topic…",
+      "subjectGeneral": "General Inquiry",
+      "subjectBilling": "Billing & Payments",
+      "subjectTechnical": "Technical Issue",
+      "subjectEsim": "eSIM Activation",
+      "subjectRefund": "Refund Request",
+      "subjectOther": "Other",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Describe your issue…",
+      "sendMessage": "Kirim Pesan",
+      "sending": "Mengirim…",
+      "successMessage": "Pesan terkirim! Kami akan membalas dalam 24 jam.",
+      "errorRequired": "Kolom ini wajib diisi.",
+      "errorEmail": "Masukkan alamat email yang valid.",
+      "errorNameRequired": "Kolom ini wajib diisi.",
+      "errorEmailRequired": "Kolom ini wajib diisi.",
+      "errorMessageRequired": "Kolom ini wajib diisi.",
+      "errorSubjectRequired": "Kolom ini wajib diisi.",
+      "errorCooldown": "Please wait {seconds} seconds.",
+      "errorNoToken": "Unable to connect. Please try again later.",
+      "errorGeneric": "Something went wrong. Please try again."
+    },
+    "channels": {
+      "label": "Dukungan",
+      "heading": "Membantu?",
+      "desc": "",
+      "chat": "In-App Chat",
+      "chatDesc": "",
+      "email": "Email",
+      "emailDesc": "",
+      "social": "Social",
+      "socialDesc": ""
+    }
+  },
+  "about": {
+    "hero": {
+      "label": "Tentang Kami",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "story": {
+      "label": "",
+      "heading1": "",
+      "heading2": "",
+      "quote": "",
+      "p1": "",
+      "p2": "",
+      "stat1Label": "Destinasi",
+      "stat2Label": "",
+      "stat3Label": "Dukungan"
+    },
+    "values": {
+      "label": "",
+      "heading": "",
+      "v1Title": "",
+      "v1Desc": "",
+      "v2Title": "",
+      "v2Desc": "",
+      "v3Title": "",
+      "v3Desc": "",
+      "v4Title": "",
+      "v4Desc": ""
+    },
+    "team": {
+      "label": "",
+      "heading": "",
+      "role": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "Hubungi Dukungan"
+    }
+  },
+  "howItWorks": {
+    "hero": {
+      "label": "Cara Kerja",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "steps": {
+      "label": "",
+      "heading": "",
+      "desc": "",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step1Check1": "",
+      "step1Check2": "",
+      "step1Check3": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step2Check1": "",
+      "step2Check2": "",
+      "step2Check3": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": "",
+      "step3Check1": "",
+      "step3Check2": "",
+      "step3Check3": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "Hubungi Dukungan",
+      "backToHome": ""
+    }
+  }
+}

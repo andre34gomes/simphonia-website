@@ -1,0 +1,320 @@
+{
+  "lang": {
+    "select": "언어",
+    "names": {
+      "en": "English",
+      "pt": "Português",
+      "es": "Español",
+      "fr": "Français",
+      "de": "Deutsch",
+      "it": "Italiano",
+      "nl": "Nederlands",
+      "ja": "日本語",
+      "zh": "中文",
+      "ko": "한국어",
+      "ar": "العربية",
+      "ru": "Русский",
+      "tr": "Türkçe",
+      "pl": "Polski",
+      "uk": "Українська",
+      "hi": "हिन्दी",
+      "id": "Bahasa Indonesia",
+      "vi": "Tiếng Việt",
+      "cs": "Čeština",
+      "hu": "Magyar",
+      "fa": "فارسی"
+    }
+  },
+  "nav": {
+    "destinations": "여행지",
+    "howItWorks": "이용 방법",
+    "support": "지원",
+    "about": "회사 소개",
+    "downloadApp": "앱 다운로드",
+    "skipToMain": "본문으로 이동",
+    "toggleTheme": "라이트/다크 모드",
+    "openMenu": "메뉴 열기",
+    "closeMenu": "메뉴 닫기"
+  },
+  "footer": {
+    "tagline": "어디에 있든 연결을 유지하세요. 현대 여행자를 위한 글로벌 eSIM 커버리지.",
+    "product": "제품",
+    "company": "회사",
+    "legal": "법적 사항",
+    "aboutUs": "회사 소개",
+    "contact": "연락처",
+    "privacyPolicy": "개인정보 처리방침",
+    "termsOfService": "서비스 이용약관",
+    "copyright": "모든 권리 보유."
+  },
+  "cookie": {
+    "text": "저희는 경험 개선 및 사이트 트래픽 분석을 위해 쿠키를 사용합니다. 동의를 클릭하면 저희",
+    "privacyPolicy": "개인정보 처리방침",
+    "decline": "거부",
+    "accept": "모두 동의"
+  },
+  "mobileCta": {
+    "browsePlans": "요금제 보기",
+    "howItWorks": "이용 방법"
+  },
+  "backToTop": "맨 위로",
+  "scroll": "스크롤",
+  "common": {
+    "tryAgain": "다시 시도",
+    "loading": "로딩 중…",
+    "from": "부터",
+    "plansAvailable": "개 요금제 이용 가능"
+  },
+  "home": {
+    "hero": {
+      "headline": "연결을 유지하세요,",
+      "typingPhrases": [
+        "어디에 있든.",
+        "한계 없이.",
+        "전 세계에서.",
+        "몇 초 안에 준비.",
+        "항상 온라인."
+      ],
+      "desc": "Simphonia를 다운로드하고 목적지를 선택하여 착륙 즉시 온라인으로 — SIM 카드 불필요, 로밍 요금 없음, 스트레스 없음.",
+      "trustFreeDownload": "무료 다운로드",
+      "trust200Countries": "200개 이상의 국가",
+      "trustInstantActivation": "즉시 활성화",
+      "downloadOnThe": "Download on the",
+      "appStore": "App Store",
+      "googlePlay": "Google Play"
+    },
+    "howItWorks": {
+      "label": "이용 방법",
+      "heading": "",
+      "subheading": "",
+      "learnMore": "더 알아보기",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": ""
+    },
+    "features": {
+      "label": "Features",
+      "heading": "",
+      "subheading": "",
+      "instantActivation": "Instant Activation",
+      "instantActivationDesc": "",
+      "zeroRoaming": "Zero Roaming",
+      "zeroRoamingDesc": "",
+      "countries200": "200+ Countries",
+      "countries200Desc": "",
+      "flexiblePlans": "Flexible Plans",
+      "flexiblePlansDesc": "",
+      "aiSupport": "AI Support 24/7",
+      "aiSupportDesc": "",
+      "allDevices": "All Devices",
+      "allDevicesDesc": ""
+    },
+    "showcase": {
+      "panel1Step": "01",
+      "panel1Title1": "",
+      "panel1Title2": "",
+      "panel1Desc": "한눈에 보는 답변",
+      "panel2Step": "02",
+      "panel2Title1": "",
+      "panel2Title2": "",
+      "panel2Desc": "",
+      "panel3Step": "03",
+      "panel3Title1": "",
+      "panel3Title2": "",
+      "panel3Desc": "",
+      "panel4Step": "04",
+      "panel4Title1": "",
+      "panel4Title2": "",
+      "panel4Desc": "Simphonia를 다운로드하고 목적지를 선택하여 착륙 즉시 온라인으로 — SIM 카드 불필요, 로밍 요금 없음, 스트레스 없음."
+    },
+    "cta": {
+      "heading1": "연결을 유지하세요,",
+      "heading2": "연결을 유지하세요,",
+      "desc": "",
+      "browseDestinations": "지원팀에 문의",
+      "howItWorks": "이용 방법"
+    }
+  },
+  "destinations": {
+    "hero": {
+      "label": "여행지",
+      "heading1": "탐색",
+      "heading2": "200개 이상의 국가",
+      "desc": "다음 여행을 위한 완벽한 eSIM 요금제를 찾으세요."
+    },
+    "grid": {
+      "label": "여행지",
+      "heading": "다음 여행을 위한 완벽한 eSIM 요금제를 찾으세요.",
+      "desc": "",
+      "searchPlaceholder": "국가 검색…",
+      "clearSearch": "검색 지우기",
+      "allTab": "전체"
+    },
+    "count": {
+      "countries": "여행지",
+      "of": "/"
+    },
+    "noResults": {
+      "noCountriesFor": "여행지를 불러올 수 없습니다",
+      "clearSearch": "검색 지우기"
+    },
+    "loading": "여행지 로딩 중…",
+    "error": {
+      "title": "여행지를 불러올 수 없습니다",
+      "desc": "서버에 연결할 수 없습니다.\n연결을 확인하고 다시 시도하세요.",
+      "tryAgain": "다시 시도"
+    },
+    "cta": {
+      "heading": "목적지를 찾을 수 없나요?",
+      "desc": "매주 새로운 국가를 추가하고 있습니다.",
+      "contactSupport": "지원팀에 문의"
+    }
+  },
+  "support": {
+    "hero": {
+      "label": "지원",
+      "heading1": "어떻게",
+      "heading2": "도와드릴까요?",
+      "desc": "자주 묻는 질문에 대한 답변을 찾거나 팀에 문의하세요. 24/7 서비스 제공."
+    },
+    "faq": {
+      "label": "도움말 센터",
+      "heading": "한눈에 보는 답변",
+      "desc": "질문을 선택하여 전체 답변을 읽으세요.",
+      "searchPlaceholder": "질문 검색…",
+      "loading": "로딩 중…",
+      "errorTitle": "도움말 센터",
+      "errorDesc": "서버에 연결할 수 없습니다.\n연결을 확인하고 다시 시도하세요.",
+      "tryAgain": "다시 시도",
+      "stillNeedHelp": "아직도 도움이 필요하신가요? 문의하기",
+      "noResults": "검색과 일치하는 질문이 없습니다.",
+      "contactUsDirectly": "직접 문의하기"
+    },
+    "contact": {
+      "label": "지원",
+      "heading": "도와드릴까요?",
+      "desc": "자주 묻는 질문에 대한 답변을 찾거나 팀에 문의하세요. 24/7 서비스 제공.",
+      "nameLabel": "Name",
+      "namePlaceholder": "Your name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "subjectLabel": "Subject",
+      "subjectDefault": "Select a topic…",
+      "subjectGeneral": "General Inquiry",
+      "subjectBilling": "Billing & Payments",
+      "subjectTechnical": "Technical Issue",
+      "subjectEsim": "eSIM Activation",
+      "subjectRefund": "Refund Request",
+      "subjectOther": "Other",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Describe your issue…",
+      "sendMessage": "메시지 보내기",
+      "sending": "전송 중…",
+      "successMessage": "메시지가 전송되었습니다! 24시간 이내에 답변드리겠습니다.",
+      "errorRequired": "이 필드는 필수입니다.",
+      "errorEmail": "유효한 이메일 주소를 입력해주세요.",
+      "errorNameRequired": "이 필드는 필수입니다.",
+      "errorEmailRequired": "이 필드는 필수입니다.",
+      "errorMessageRequired": "이 필드는 필수입니다.",
+      "errorSubjectRequired": "이 필드는 필수입니다.",
+      "errorCooldown": "Please wait {seconds} seconds.",
+      "errorNoToken": "Unable to connect. Please try again later.",
+      "errorGeneric": "Something went wrong. Please try again."
+    },
+    "channels": {
+      "label": "지원",
+      "heading": "도와드릴까요?",
+      "desc": "",
+      "chat": "In-App Chat",
+      "chatDesc": "",
+      "email": "Email",
+      "emailDesc": "",
+      "social": "Social",
+      "socialDesc": ""
+    }
+  },
+  "about": {
+    "hero": {
+      "label": "회사 소개",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "story": {
+      "label": "",
+      "heading1": "",
+      "heading2": "",
+      "quote": "",
+      "p1": "",
+      "p2": "",
+      "stat1Label": "여행지",
+      "stat2Label": "",
+      "stat3Label": "지원"
+    },
+    "values": {
+      "label": "",
+      "heading": "",
+      "v1Title": "",
+      "v1Desc": "",
+      "v2Title": "",
+      "v2Desc": "",
+      "v3Title": "",
+      "v3Desc": "",
+      "v4Title": "",
+      "v4Desc": ""
+    },
+    "team": {
+      "label": "",
+      "heading": "",
+      "role": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "지원팀에 문의"
+    }
+  },
+  "howItWorks": {
+    "hero": {
+      "label": "이용 방법",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "steps": {
+      "label": "",
+      "heading": "",
+      "desc": "",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step1Check1": "",
+      "step1Check2": "",
+      "step1Check3": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step2Check1": "",
+      "step2Check2": "",
+      "step2Check3": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": "",
+      "step3Check1": "",
+      "step3Check2": "",
+      "step3Check3": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "지원팀에 문의",
+      "backToHome": ""
+    }
+  }
+}

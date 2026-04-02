@@ -123,7 +123,7 @@
             <svg class="search-bar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
             </svg>
-            <input type="search" class="search-bar__input" id="dest-search" placeholder="Search countries…" aria-label="Search countries" autocomplete="off" spellcheck="false" inputmode="search" enterkeyhint="search">
+            <input type="search" class="search-bar__input" id="dest-search" placeholder="Search countries…" data-i18n-placeholder="destinations.grid.searchPlaceholder" aria-label="Search countries" autocomplete="off" spellcheck="false" inputmode="search" enterkeyhint="search">
             <button class="search-bar__clear" id="dest-search-clear" aria-label="Clear search" hidden>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M18 6 6 18M6 6l12 12"/></svg>
             </button>
@@ -131,7 +131,7 @@
 
           <div class="filter-tabs reveal" id="region-tabs">
             <!-- Populated by JS from API -->
-            <button class="filter-tab filter-tab--active" data-region="all">All</button>
+            <button class="filter-tab filter-tab--active" data-region="all" data-i18n="destinations.grid.allTab">All</button>
           </div>
         </div>
 
@@ -146,7 +146,7 @@
         <div id="no-results" class="dest-no-results" style="display:none;" role="alert">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M8 11h6"/></svg>
           <p>No countries found for <strong id="no-results-query"></strong></p>
-          <button class="btn btn--ghost btn--sm" id="no-results-clear">Clear search</button>
+          <button class="btn btn--ghost btn--sm" id="no-results-clear" data-i18n="destinations.grid.clearSearch">Clear search</button>
         </div>
       </div>
     </section>
@@ -156,10 +156,10 @@
       <div class="cta-section__bg" aria-hidden="true"></div>
       <div class="container">
         <div class="reveal">
-          <h2>Can't Find Your Destination?</h2>
-          <p>We're adding new countries every week. Check back soon for more destinations.</p>
+          <h2 data-i18n="destinations.cta.heading">Can't Find Your Destination?</h2>
+          <p data-i18n="destinations.cta.desc">We're adding new countries every week. Check back soon for more destinations.</p>
           <div class="flex flex-center gap-md mt-xl">
-            <a href="../support/" class="btn btn--primary btn--lg">Contact Support</a>
+            <a href="../support/" class="btn btn--primary btn--lg" data-i18n="destinations.cta.contactSupport">Contact Support</a>
           </div>
         </div>
       </div>
@@ -174,6 +174,7 @@
           integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
           crossorigin="anonymous" defer></script>
   <script defer src="../js/cdn-fallback.js"></script>
+  <script defer src="../js/i18n.js?v=20260401"></script>
   <script defer src="../js/components/layout.js?v=20260401"></script>
   <script defer src="../js/auth.js?v=20260401"></script>
   <script defer src="../js/animations-core.js?v=20260401"></script>

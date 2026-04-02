@@ -205,7 +205,8 @@ function injectShell() {
     const skip = document.createElement('a');
     skip.href = '#main-content';
     skip.className = 'skip-link';
-    skip.textContent = 'Skip to main content';
+    skip.textContent = typeof window.t === 'function' ? window.t('nav.skipToMain') : 'Skip to main content';
+    skip.setAttribute('data-i18n', 'nav.skipToMain');
     frag.appendChild(skip);
   }
 
@@ -243,8 +244,8 @@ function injectMobileCTA() {
   bar.id = 'mobile-cta-bar';
   bar.setAttribute('aria-hidden', 'true');
   bar.innerHTML = `
-    <a href="${base}destinations/" class="btn btn--primary">Browse Plans</a>
-    <a href="${base}how-it-works/" class="btn btn--outline">How It Works</a>
+    <a href="${base}destinations/" class="btn btn--primary" data-i18n="mobileCta.browsePlans">${typeof window.t === 'function' ? window.t('mobileCta.browsePlans') : 'Browse Plans'}</a>
+    <a href="${base}how-it-works/" class="btn btn--outline" data-i18n="mobileCta.howItWorks">${typeof window.t === 'function' ? window.t('mobileCta.howItWorks') : 'How It Works'}</a>
   `;
   document.body.appendChild(bar);
   // Scroll handling is batched in _sharedScrollTick (see injectBackToTop).
@@ -258,7 +259,8 @@ function injectBackToTop() {
   const btn = document.createElement('button');
   btn.className = 'back-to-top';
   btn.id = 'back-to-top';
-  btn.setAttribute('aria-label', 'Scroll back to top');
+  btn.setAttribute('aria-label', typeof window.t === 'function' ? window.t('backToTop') : 'Scroll back to top');
+  btn.setAttribute('data-i18n-aria-label', 'backToTop');
   btn.setAttribute('aria-hidden', 'true');
   btn.innerHTML = `
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -334,6 +336,7 @@ function injectCookieBanner() {
   } catch (_) {}
 
   const base = getBasePath();
+  const _t = typeof window.t === 'function' ? window.t.bind(window) : (k) => k;
   const banner = document.createElement('div');
   banner.className = 'cookie-banner';
   banner.id = 'cookie-banner';
@@ -347,13 +350,12 @@ function injectCookieBanner() {
     <div class="cookie-banner__content">
       <div class="cookie-banner__icon" aria-hidden="true">🍪</div>
       <p class="cookie-banner__text">
-        We use cookies to improve your experience and analyse site traffic.
-        By clicking <strong>Accept</strong>, you agree to our
-        <a href="${base}privacy/">Privacy Policy</a>.
+        <span data-i18n="cookie.text">${_t('cookie.text')}</span>
+        <a href="${base}privacy/" data-i18n="cookie.privacyPolicy">${_t('cookie.privacyPolicy')}</a>.
       </p>
       <div class="cookie-banner__actions">
-        <button class="btn btn--ghost btn--sm" id="cookie-decline">Decline</button>
-        <button class="btn btn--primary btn--sm" id="cookie-accept">Accept All</button>
+        <button class="btn btn--ghost btn--sm" id="cookie-decline" data-i18n="cookie.decline">${_t('cookie.decline')}</button>
+        <button class="btn btn--primary btn--sm" id="cookie-accept" data-i18n="cookie.accept">${_t('cookie.accept')}</button>
       </div>
     </div>
   `;
@@ -529,9 +531,152 @@ function getDownloadUrl(base) {
   return base;
 }
 
+function _buildLangPicker() {
+  const supported = window.SIMPHONIA_SUPPORTED_LANGS || ['en','pt','es','fr','de','it','nl','ja','zh','ko','ar','ru','tr','pl','uk','hi','id','vi','cs','hu','fa'];
+  const current = window.SIMPHONIA_LANG || 'en';
+  const _t = typeof window.t === 'function' ? window.t.bind(window) : (k) => k;
+
+  // Native names for each language — always shown in the native language
+  const nativeNames = {
+    en:'English', pt:'Português', es:'Español', fr:'Français', de:'Deutsch',
+    it:'Italiano', nl:'Nederlands', ja:'日本語', zh:'中文', ko:'한국어',
+    ar:'العربية', ru:'Русский', tr:'Türkçe', pl:'Polski', uk:'Українська',
+    hi:'हिन्दी', id:'Bahasa Indonesia', vi:'Tiếng Việt', cs:'Čeština',
+    hu:'Magyar', fa:'فارسی'
+  };
+
+  const options = supported.map(code => `
+    <button class="lang-picker__option${code === current ? ' lang-picker__option--active' : ''}"
+      data-lang="${code}" data-search="${code} ${(nativeNames[code] || code).toLowerCase()}"
+      aria-current="${code === current ? 'true' : 'false'}" type="button">
+      <span class="lang-picker__option-code">${code.toUpperCase()}</span>
+      <span class="lang-picker__option-name">${nativeNames[code] || code}</span>
+      ${code === current ? '<svg class="lang-picker__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>' : ''}
+    </button>
+  `).join('');
+
+  return `
+    <div class="lang-picker" id="lang-picker">
+      <button class="lang-picker__btn" id="lang-picker-btn" type="button"
+        aria-label="${_t('lang.select')}: ${current.toUpperCase()}"
+        aria-expanded="false" aria-controls="lang-picker-menu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+        </svg>
+      </button>
+      <div class="lang-picker__menu" id="lang-picker-menu" role="listbox" aria-label="${_t('lang.select')}">
+        <div class="lang-picker__search-wrap">
+          <svg class="lang-picker__search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input class="lang-picker__search" id="lang-picker-search" type="text" placeholder="Search…" autocomplete="off" spellcheck="false" />
+        </div>
+        <div class="lang-picker__menu-inner" id="lang-picker-list">${options}</div>
+        <div class="lang-picker__no-results" id="lang-picker-empty" hidden>No results</div>
+      </div>
+    </div>
+  `;
+}
+
+function _initLangPicker() {
+  const picker = document.getElementById('lang-picker');
+  if (!picker) return;
+  const btn = document.getElementById('lang-picker-btn');
+  const menu = document.getElementById('lang-picker-menu');
+  const searchInput = document.getElementById('lang-picker-search');
+  const list = document.getElementById('lang-picker-list');
+  const emptyMsg = document.getElementById('lang-picker-empty');
+  if (!btn || !menu) return;
+
+  function openMenu() {
+    picker.classList.add('lang-picker--open');
+    btn.setAttribute('aria-expanded', 'true');
+    // Auto-focus search after the opening transition
+    if (searchInput) setTimeout(function () { searchInput.focus(); }, 60);
+  }
+  function closeMenu() {
+    picker.classList.remove('lang-picker--open');
+    btn.setAttribute('aria-expanded', 'false');
+    // Clear search on close
+    if (searchInput) {
+      searchInput.value = '';
+      _filterLangs('');
+    }
+  }
+  function toggleMenu(e) {
+    e.stopPropagation();
+    picker.classList.contains('lang-picker--open') ? closeMenu() : openMenu();
+  }
+
+  // Search / filter
+  function _filterLangs(query) {
+    if (!list) return;
+    var q = query.toLowerCase().trim();
+    var anyVisible = false;
+    list.querySelectorAll('.lang-picker__option').forEach(function (opt) {
+      var hay = (opt.getAttribute('data-search') || '').toLowerCase();
+      var show = !q || hay.indexOf(q) !== -1;
+      opt.style.display = show ? '' : 'none';
+      if (show) anyVisible = true;
+    });
+    if (emptyMsg) emptyMsg.hidden = anyVisible;
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener('input', function () {
+      _filterLangs(this.value);
+    });
+    // Prevent clicks on the search from closing the menu
+    searchInput.addEventListener('click', function (e) { e.stopPropagation(); });
+  }
+
+  btn.addEventListener('click', toggleMenu);
+
+  menu.addEventListener('click', function (e) {
+    const opt = e.target.closest('.lang-picker__option');
+    if (!opt) return;
+    const code = opt.dataset.lang;
+    if (code && typeof window.setLang === 'function') {
+      window.setLang(code);
+    }
+    closeMenu();
+    e.stopPropagation();
+  });
+
+  document.addEventListener('click', function (e) {
+    if (!picker.contains(e.target)) closeMenu();
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') closeMenu();
+  });
+
+  // Re-render picker when language changes
+  document.addEventListener('simphonia:langchange', function (e) {
+    const code = e.detail && e.detail.lang;
+    if (!code) return;
+    btn.setAttribute('aria-label', (typeof window.t === 'function' ? window.t('lang.select') : 'Language') + ': ' + code.toUpperCase());
+    if (list) {
+      list.querySelectorAll('.lang-picker__option').forEach(function (opt) {
+        const isActive = opt.dataset.lang === code;
+        opt.classList.toggle('lang-picker__option--active', isActive);
+        opt.setAttribute('aria-current', isActive ? 'true' : 'false');
+        // Update check icon
+        var existingCheck = opt.querySelector('.lang-picker__check');
+        if (isActive && !existingCheck) {
+          opt.insertAdjacentHTML('beforeend', '<svg class="lang-picker__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>');
+        } else if (!isActive && existingCheck) {
+          existingCheck.remove();
+        }
+      });
+    }
+  });
+}
+
 function injectNav() {
   const base = getBasePath();
   const downloadUrl = getDownloadUrl(base);
+  const isExternalDownload = downloadUrl.startsWith('http');
+  const _t = typeof window.t === 'function' ? window.t.bind(window) : (k) => k;
   const nav = document.createElement('nav');
   nav.className = 'nav';
   nav.id = 'navbar';
@@ -545,18 +690,19 @@ function injectNav() {
       </a>
 
       <div class="nav__links">
-        <a href="${pagePath('destinations')}" class="nav__link ${activeClass('destinations')}">Destinations</a>
-        <a href="${pagePath('how-it-works')}" class="nav__link ${activeClass('how-it-works')}">How It Works</a>
-        <a href="${pagePath('support')}" class="nav__link ${activeClass('support')}">Support</a>
-        <a href="${pagePath('about')}" class="nav__link ${activeClass('about')}">About</a>
+        <a href="${pagePath('destinations')}" class="nav__link ${activeClass('destinations')}" data-i18n="nav.destinations">${_t('nav.destinations')}</a>
+        <a href="${pagePath('how-it-works')}" class="nav__link ${activeClass('how-it-works')}" data-i18n="nav.howItWorks">${_t('nav.howItWorks')}</a>
+        <a href="${pagePath('support')}" class="nav__link ${activeClass('support')}" data-i18n="nav.support">${_t('nav.support')}</a>
+        <a href="${pagePath('about')}" class="nav__link ${activeClass('about')}" data-i18n="nav.about">${_t('nav.about')}</a>
       </div>
 
       <div class="nav__actions">
-        <a href="${downloadUrl}" class="btn btn--primary btn--sm nav__download-btn" target="_blank" rel="noopener noreferrer">
+        <a href="${downloadUrl}" class="btn btn--primary btn--sm nav__download-btn"${isExternalDownload ? ' target="_blank" rel="noopener noreferrer"' : ''}>
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download App
+          <span data-i18n="nav.downloadApp">${_t('nav.downloadApp')}</span>
         </a>
-        <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">
+        ${_buildLangPicker()}
+        <button class="theme-toggle" id="theme-toggle" aria-label="${_t('nav.toggleTheme')}" data-i18n-aria-label="nav.toggleTheme">
           <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round">
             <circle cx="12" cy="12" r="4.5"/>
             <line x1="12" y1="2"   x2="12" y2="4.5"/>
@@ -572,7 +718,7 @@ function injectNav() {
             <path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/>
           </svg>
         </button>
-        <button class="nav__hamburger" id="hamburger" aria-label="Toggle menu" aria-controls="mobile-menu" aria-expanded="false">
+        <button class="nav__hamburger" id="hamburger" aria-label="${_t('nav.openMenu')}" aria-controls="mobile-menu" aria-expanded="false" data-i18n-aria-label="nav.openMenu">
           <span></span>
           <span></span>
           <span></span>
@@ -588,6 +734,7 @@ function injectNav() {
   mobileMenu.setAttribute('role', 'dialog');
   mobileMenu.setAttribute('aria-modal', 'true');
   mobileMenu.setAttribute('aria-label', 'Mobile menu');
+  const _tm = typeof window.t === 'function' ? window.t.bind(window) : (k) => k;
 
   mobileMenu.innerHTML = `
     <div class="nav__mobile-drawer">
@@ -599,7 +746,7 @@ function injectNav() {
       </div>
 
       <!-- Floating close button — mirrors hamburger position (top-right) -->
-      <button class="nav__mobile-close" id="mobile-menu-close" aria-label="Close menu">
+      <button class="nav__mobile-close" id="mobile-menu-close" aria-label="${_tm('nav.closeMenu')}" data-i18n-aria-label="nav.closeMenu">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
           <line x1="18" y1="6" x2="6" y2="18"/>
           <line x1="6" y1="6" x2="18" y2="18"/>
@@ -610,22 +757,22 @@ function injectNav() {
       <nav class="nav__mobile-links" aria-label="Site pages">
         <a href="${pagePath('destinations')}" class="nav__mobile-link${activeClass('destinations') ? ' nav__mobile-link--active' : ''}">
           <span class="nav__mobile-link-num" aria-hidden="true">01</span>
-          <span class="nav__mobile-link-text">Destinations</span>
+          <span class="nav__mobile-link-text" data-i18n="nav.destinations">${_tm('nav.destinations')}</span>
           <svg class="nav__mobile-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
         <a href="${pagePath('how-it-works')}" class="nav__mobile-link${activeClass('how-it-works') ? ' nav__mobile-link--active' : ''}">
           <span class="nav__mobile-link-num" aria-hidden="true">02</span>
-          <span class="nav__mobile-link-text">How It Works</span>
+          <span class="nav__mobile-link-text" data-i18n="nav.howItWorks">${_tm('nav.howItWorks')}</span>
           <svg class="nav__mobile-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
         <a href="${pagePath('support')}" class="nav__mobile-link${activeClass('support') ? ' nav__mobile-link--active' : ''}">
           <span class="nav__mobile-link-num" aria-hidden="true">03</span>
-          <span class="nav__mobile-link-text">Support</span>
+          <span class="nav__mobile-link-text" data-i18n="nav.support">${_tm('nav.support')}</span>
           <svg class="nav__mobile-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
         <a href="${pagePath('about')}" class="nav__mobile-link${activeClass('about') ? ' nav__mobile-link--active' : ''}">
           <span class="nav__mobile-link-num" aria-hidden="true">04</span>
-          <span class="nav__mobile-link-text">About</span>
+          <span class="nav__mobile-link-text" data-i18n="nav.about">${_tm('nav.about')}</span>
           <svg class="nav__mobile-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
       </nav>
@@ -634,7 +781,7 @@ function injectNav() {
       <div class="nav__mobile-download">
         <a href="${base}" class="btn btn--primary btn--block nav__mobile-cta-btn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download App
+          <span data-i18n="nav.downloadApp">${_tm('nav.downloadApp')}</span>
         </a>
       </div>
 
@@ -652,6 +799,7 @@ function injectNav() {
   }
   // Append mobile menu as a sibling of nav, direct child of body
   document.body.appendChild(mobileMenu);
+  _initLangPicker();
   initNavBehavior();
 }
 
@@ -802,6 +950,7 @@ function injectFooter() {
   const footer = document.createElement('footer');
   footer.className = 'footer';
   footer.setAttribute('role', 'contentinfo');
+  const _t = typeof window.t === 'function' ? window.t.bind(window) : (k) => k;
 
   footer.innerHTML = `
     <div class="container">
@@ -810,37 +959,37 @@ function injectFooter() {
           <a href="${base}" class="nav__logo" style="font-size:1.5rem;">
             ${brandMarkup(base)}
           </a>
-          <p>Stay connected, wherever you go. Global eSIM coverage for modern travelers.</p>
+          <p data-i18n="footer.tagline">${_t('footer.tagline')}</p>
         </div>
 
         <div class="footer__col">
-          <h4>Product</h4>
+          <h4 data-i18n="footer.product">${_t('footer.product')}</h4>
           <ul>
-            <li><a href="${pagePath('destinations')}">Destinations</a></li>
-            <li><a href="${pagePath('how-it-works')}">How It Works</a></li>
+            <li><a href="${pagePath('destinations')}" data-i18n="nav.destinations">${_t('nav.destinations')}</a></li>
+            <li><a href="${pagePath('how-it-works')}" data-i18n="nav.howItWorks">${_t('nav.howItWorks')}</a></li>
           </ul>
         </div>
 
         <div class="footer__col">
-          <h4>Company</h4>
+          <h4 data-i18n="footer.company">${_t('footer.company')}</h4>
           <ul>
-            <li><a href="${pagePath('about')}">About Us</a></li>
-            <li><a href="${pagePath('support')}">Support</a></li>
-            <li><a href="${pagePath('support')}#contact">Contact</a></li>
+            <li><a href="${pagePath('about')}" data-i18n="footer.aboutUs">${_t('footer.aboutUs')}</a></li>
+            <li><a href="${pagePath('support')}" data-i18n="nav.support">${_t('nav.support')}</a></li>
+            <li><a href="${pagePath('support')}#contact" data-i18n="footer.contact">${_t('footer.contact')}</a></li>
           </ul>
         </div>
 
         <div class="footer__col">
-          <h4>Legal</h4>
+          <h4 data-i18n="footer.legal">${_t('footer.legal')}</h4>
           <ul>
-            <li><a href="${pagePath('privacy')}">Privacy Policy</a></li>
-            <li><a href="${pagePath('terms')}">Terms of Service</a></li>
+            <li><a href="${pagePath('privacy')}" data-i18n="footer.privacyPolicy">${_t('footer.privacyPolicy')}</a></li>
+            <li><a href="${pagePath('terms')}" data-i18n="footer.termsOfService">${_t('footer.termsOfService')}</a></li>
           </ul>
         </div>
       </div>
 
       <div class="footer__bottom">
-        <p class="footer__copyright">&copy; ${CURRENT_YEAR} Simphonia. All rights reserved.</p>
+        <p class="footer__copyright">&copy; ${CURRENT_YEAR} Simphonia. <span data-i18n="footer.copyright">${_t('footer.copyright')}</span></p>
         <div class="footer__socials">
           <a href="https://instagram.com/simphonia.pt" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
             <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>

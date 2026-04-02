@@ -1,0 +1,320 @@
+{
+  "lang": {
+    "select": "اللغة",
+    "names": {
+      "en": "English",
+      "pt": "Português",
+      "es": "Español",
+      "fr": "Français",
+      "de": "Deutsch",
+      "it": "Italiano",
+      "nl": "Nederlands",
+      "ja": "日本語",
+      "zh": "中文",
+      "ko": "한국어",
+      "ar": "العربية",
+      "ru": "Русский",
+      "tr": "Türkçe",
+      "pl": "Polski",
+      "uk": "Українська",
+      "hi": "हिन्दी",
+      "id": "Bahasa Indonesia",
+      "vi": "Tiếng Việt",
+      "cs": "Čeština",
+      "hu": "Magyar",
+      "fa": "فارسی"
+    }
+  },
+  "nav": {
+    "destinations": "الوجهات",
+    "howItWorks": "كيف يعمل",
+    "support": "الدعم",
+    "about": "معلومات عنا",
+    "downloadApp": "تحميل التطبيق",
+    "skipToMain": "انتقل إلى المحتوى الرئيسي",
+    "toggleTheme": "تبديل الوضع الفاتح/الداكن",
+    "openMenu": "فتح القائمة",
+    "closeMenu": "إغلاق القائمة"
+  },
+  "footer": {
+    "tagline": "ابقَ متصلاً أينما ذهبت. تغطية eSIM العالمية للمسافرين العصريين.",
+    "product": "المنتج",
+    "company": "الشركة",
+    "legal": "القانونية",
+    "aboutUs": "معلومات عنا",
+    "contact": "اتصل بنا",
+    "privacyPolicy": "سياسة الخصوصية",
+    "termsOfService": "شروط الخدمة",
+    "copyright": "جميع الحقوق محفوظة."
+  },
+  "cookie": {
+    "text": "نستخدم ملفات تعريف الارتباط لتحسين تجربتك وتحليل حركة الموقع. بالنقر على قبول، توافق على",
+    "privacyPolicy": "سياسة الخصوصية",
+    "decline": "رفض",
+    "accept": "قبول الكل"
+  },
+  "mobileCta": {
+    "browsePlans": "تصفح الخطط",
+    "howItWorks": "كيف يعمل"
+  },
+  "backToTop": "العودة إلى الأعلى",
+  "scroll": "تمرير",
+  "common": {
+    "tryAgain": "حاول مجدداً",
+    "loading": "جاري التحميل…",
+    "from": "من",
+    "plansAvailable": "خطط متاحة"
+  },
+  "home": {
+    "hero": {
+      "headline": "ابقَ متصلاً،",
+      "typingPhrases": [
+        "أينما ذهبت.",
+        "بدون حدود.",
+        "في جميع أنحاء العالم.",
+        "جاهز في ثوانٍ.",
+        "متصل دائماً."
+      ],
+      "desc": "حمّل سيمفونيا، اختر وجهتك، وابقَ متصلاً بالإنترنت فور هبوطك — بدون بطاقة SIM، بدون رسوم تجوال، بدون ضغط.",
+      "trustFreeDownload": "تنزيل مجاني",
+      "trust200Countries": "200+ دولة",
+      "trustInstantActivation": "تفعيل فوري",
+      "downloadOnThe": "تحميل على",
+      "appStore": "App Store",
+      "googlePlay": "Google Play"
+    },
+    "howItWorks": {
+      "label": "كيف يعمل",
+      "heading": "",
+      "subheading": "",
+      "learnMore": "اعرف المزيد",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": ""
+    },
+    "features": {
+      "label": "Features",
+      "heading": "",
+      "subheading": "",
+      "instantActivation": "Instant Activation",
+      "instantActivationDesc": "",
+      "zeroRoaming": "Zero Roaming",
+      "zeroRoamingDesc": "",
+      "countries200": "200+ Countries",
+      "countries200Desc": "",
+      "flexiblePlans": "Flexible Plans",
+      "flexiblePlansDesc": "",
+      "aiSupport": "AI Support 24/7",
+      "aiSupportDesc": "",
+      "allDevices": "All Devices",
+      "allDevicesDesc": ""
+    },
+    "showcase": {
+      "panel1Step": "01",
+      "panel1Title1": "",
+      "panel1Title2": "",
+      "panel1Desc": "إجابات في لمحة",
+      "panel2Step": "02",
+      "panel2Title1": "",
+      "panel2Title2": "",
+      "panel2Desc": "",
+      "panel3Step": "03",
+      "panel3Title1": "",
+      "panel3Title2": "",
+      "panel3Desc": "",
+      "panel4Step": "04",
+      "panel4Title1": "",
+      "panel4Title2": "",
+      "panel4Desc": "حمّل سيمفونيا، اختر وجهتك، وابقَ متصلاً بالإنترنت فور هبوطك — بدون بطاقة SIM، بدون رسوم تجوال، بدون ضغط."
+    },
+    "cta": {
+      "heading1": "ابقَ متصلاً،",
+      "heading2": "ابقَ متصلاً،",
+      "desc": "",
+      "browseDestinations": "التواصل مع الدعم",
+      "howItWorks": "كيف يعمل"
+    }
+  },
+  "destinations": {
+    "hero": {
+      "label": "الوجهات",
+      "heading1": "استكشف",
+      "heading2": "+200 دولة",
+      "desc": "اعثر على خطة eSIM المثالية لرحلتك القادمة."
+    },
+    "grid": {
+      "label": "الوجهات",
+      "heading": "اعثر على خطة eSIM المثالية لرحلتك القادمة.",
+      "desc": "",
+      "searchPlaceholder": "ابحث عن الدول…",
+      "clearSearch": "مسح البحث",
+      "allTab": "الكل"
+    },
+    "count": {
+      "countries": "الوجهات",
+      "of": "من"
+    },
+    "noResults": {
+      "noCountriesFor": "تعذر تحميل الوجهات",
+      "clearSearch": "مسح البحث"
+    },
+    "loading": "جاري تحميل الوجهات…",
+    "error": {
+      "title": "تعذر تحميل الوجهات",
+      "desc": "لم نتمكن من الوصول إلى خوادمنا.\nتحقق من اتصالك وحاول مجدداً.",
+      "tryAgain": "حاول مجدداً"
+    },
+    "cta": {
+      "heading": "لم تجد وجهتك؟",
+      "desc": "نضيف دولاً جديدة كل أسبوع.",
+      "contactSupport": "التواصل مع الدعم"
+    }
+  },
+  "support": {
+    "hero": {
+      "label": "الدعم",
+      "heading1": "كيف يمكننا",
+      "heading2": "مساعدتك؟",
+      "desc": "ابحث عن إجابات للأسئلة الشائعة أو تواصل مع فريقنا. نحن هنا 24/7."
+    },
+    "faq": {
+      "label": "مركز المساعدة",
+      "heading": "إجابات في لمحة",
+      "desc": "اختر أي سؤال لقراءة الإجابة الكاملة.",
+      "searchPlaceholder": "ابحث في الأسئلة…",
+      "loading": "جاري التحميل…",
+      "errorTitle": "مركز المساعدة",
+      "errorDesc": "لم نتمكن من الوصول إلى خوادمنا.\nتحقق من اتصالك وحاول مجدداً.",
+      "tryAgain": "حاول مجدداً",
+      "stillNeedHelp": "هل لا تزال بحاجة إلى مساعدة؟ تواصل معنا",
+      "noResults": "لا توجد أسئلة تطابق بحثك.",
+      "contactUsDirectly": "تواصل معنا مباشرة"
+    },
+    "contact": {
+      "label": "الدعم",
+      "heading": "مساعدتك؟",
+      "desc": "ابحث عن إجابات للأسئلة الشائعة أو تواصل مع فريقنا. نحن هنا 24/7.",
+      "nameLabel": "Name",
+      "namePlaceholder": "Your name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "subjectLabel": "Subject",
+      "subjectDefault": "Select a topic…",
+      "subjectGeneral": "General Inquiry",
+      "subjectBilling": "Billing & Payments",
+      "subjectTechnical": "Technical Issue",
+      "subjectEsim": "eSIM Activation",
+      "subjectRefund": "Refund Request",
+      "subjectOther": "Other",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Describe your issue…",
+      "sendMessage": "إرسال الرسالة",
+      "sending": "جارٍ الإرسال…",
+      "successMessage": "تم إرسال الرسالة! سنرد عليك خلال 24 ساعة.",
+      "errorRequired": "هذا الحقل مطلوب.",
+      "errorEmail": "الرجاء إدخال عنوان بريد إلكتروني صالح.",
+      "errorNameRequired": "هذا الحقل مطلوب.",
+      "errorEmailRequired": "هذا الحقل مطلوب.",
+      "errorMessageRequired": "هذا الحقل مطلوب.",
+      "errorSubjectRequired": "هذا الحقل مطلوب.",
+      "errorCooldown": "Please wait {seconds} seconds.",
+      "errorNoToken": "Unable to connect. Please try again later.",
+      "errorGeneric": "Something went wrong. Please try again."
+    },
+    "channels": {
+      "label": "الدعم",
+      "heading": "مساعدتك؟",
+      "desc": "",
+      "chat": "In-App Chat",
+      "chatDesc": "",
+      "email": "Email",
+      "emailDesc": "",
+      "social": "Social",
+      "socialDesc": ""
+    }
+  },
+  "about": {
+    "hero": {
+      "label": "معلومات عنا",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "story": {
+      "label": "",
+      "heading1": "",
+      "heading2": "",
+      "quote": "",
+      "p1": "",
+      "p2": "",
+      "stat1Label": "الوجهات",
+      "stat2Label": "",
+      "stat3Label": "الدعم"
+    },
+    "values": {
+      "label": "",
+      "heading": "",
+      "v1Title": "",
+      "v1Desc": "",
+      "v2Title": "",
+      "v2Desc": "",
+      "v3Title": "",
+      "v3Desc": "",
+      "v4Title": "",
+      "v4Desc": ""
+    },
+    "team": {
+      "label": "",
+      "heading": "",
+      "role": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "التواصل مع الدعم"
+    }
+  },
+  "howItWorks": {
+    "hero": {
+      "label": "كيف يعمل",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "steps": {
+      "label": "",
+      "heading": "",
+      "desc": "",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step1Check1": "",
+      "step1Check2": "",
+      "step1Check3": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step2Check1": "",
+      "step2Check2": "",
+      "step2Check3": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": "",
+      "step3Check1": "",
+      "step3Check2": "",
+      "step3Check3": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "التواصل مع الدعم",
+      "backToHome": ""
+    }
+  }
+}

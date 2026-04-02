@@ -1,0 +1,320 @@
+{
+  "lang": {
+    "select": "Мова",
+    "names": {
+      "en": "English",
+      "pt": "Português",
+      "es": "Español",
+      "fr": "Français",
+      "de": "Deutsch",
+      "it": "Italiano",
+      "nl": "Nederlands",
+      "ja": "日本語",
+      "zh": "中文",
+      "ko": "한국어",
+      "ar": "العربية",
+      "ru": "Русский",
+      "tr": "Türkçe",
+      "pl": "Polski",
+      "uk": "Українська",
+      "hi": "हिन्दी",
+      "id": "Bahasa Indonesia",
+      "vi": "Tiếng Việt",
+      "cs": "Čeština",
+      "hu": "Magyar",
+      "fa": "فارسی"
+    }
+  },
+  "nav": {
+    "destinations": "Напрямки",
+    "howItWorks": "Як це працює",
+    "support": "Підтримка",
+    "about": "Про нас",
+    "downloadApp": "Завантажити додаток",
+    "skipToMain": "Перейти до основного вмісту",
+    "toggleTheme": "Світла/темна тема",
+    "openMenu": "Відкрити меню",
+    "closeMenu": "Закрити меню"
+  },
+  "footer": {
+    "tagline": "Залишайтеся на зв'язку, де б ви не були. Глобальне покриття eSIM для сучасних мандрівників.",
+    "product": "Продукт",
+    "company": "Компанія",
+    "legal": "Юридична інформація",
+    "aboutUs": "Про нас",
+    "contact": "Контакти",
+    "privacyPolicy": "Політика конфіденційності",
+    "termsOfService": "Умови використання",
+    "copyright": "Всі права захищені."
+  },
+  "cookie": {
+    "text": "Ми використовуємо файли cookie для покращення вашого досвіду та аналізу трафіку. Натискаючи «Прийняти», ви погоджуєтеся з нашою",
+    "privacyPolicy": "Політикою конфіденційності",
+    "decline": "Відхилити",
+    "accept": "Прийняти все"
+  },
+  "mobileCta": {
+    "browsePlans": "Переглянути плани",
+    "howItWorks": "Як це працює"
+  },
+  "backToTop": "Нагору",
+  "scroll": "Прокрутка",
+  "common": {
+    "tryAgain": "Спробувати знову",
+    "loading": "Завантаження…",
+    "from": "Від",
+    "plansAvailable": "планів доступно"
+  },
+  "home": {
+    "hero": {
+      "headline": "Залишайтеся на зв'язку,",
+      "typingPhrases": [
+        "Де б ви не були.",
+        "Без обмежень.",
+        "По всьому світу.",
+        "Готово за секунди.",
+        "Завжди онлайн."
+      ],
+      "desc": "Завантажте Simphonia, оберіть напрямок і залишайтеся онлайн з моменту приземлення — без SIM-картки, без роумінгу, без стресу.",
+      "trustFreeDownload": "Безкоштовне завантаження",
+      "trust200Countries": "200+ країн",
+      "trustInstantActivation": "Миттєва активація",
+      "downloadOnThe": "Download on the",
+      "appStore": "App Store",
+      "googlePlay": "Google Play"
+    },
+    "howItWorks": {
+      "label": "Як це працює",
+      "heading": "",
+      "subheading": "",
+      "learnMore": "Дізнатися більше",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": ""
+    },
+    "features": {
+      "label": "Features",
+      "heading": "",
+      "subheading": "",
+      "instantActivation": "Instant Activation",
+      "instantActivationDesc": "",
+      "zeroRoaming": "Zero Roaming",
+      "zeroRoamingDesc": "",
+      "countries200": "200+ Countries",
+      "countries200Desc": "",
+      "flexiblePlans": "Flexible Plans",
+      "flexiblePlansDesc": "",
+      "aiSupport": "AI Support 24/7",
+      "aiSupportDesc": "",
+      "allDevices": "All Devices",
+      "allDevicesDesc": ""
+    },
+    "showcase": {
+      "panel1Step": "01",
+      "panel1Title1": "",
+      "panel1Title2": "",
+      "panel1Desc": "Відповіді з першого погляду",
+      "panel2Step": "02",
+      "panel2Title1": "",
+      "panel2Title2": "",
+      "panel2Desc": "",
+      "panel3Step": "03",
+      "panel3Title1": "",
+      "panel3Title2": "",
+      "panel3Desc": "",
+      "panel4Step": "04",
+      "panel4Title1": "",
+      "panel4Title2": "",
+      "panel4Desc": "Завантажте Simphonia, оберіть напрямок і залишайтеся онлайн з моменту приземлення — без SIM-картки, без роумінгу, без стресу."
+    },
+    "cta": {
+      "heading1": "Залишайтеся на зв'язку,",
+      "heading2": "Залишайтеся на зв'язку,",
+      "desc": "",
+      "browseDestinations": "Зв'язатися з підтримкою",
+      "howItWorks": "Як це працює"
+    }
+  },
+  "destinations": {
+    "hero": {
+      "label": "Напрямки",
+      "heading1": "Досліджуйте",
+      "heading2": "200+ країн",
+      "desc": "Знайдіть ідеальний план eSIM для наступної подорожі."
+    },
+    "grid": {
+      "label": "Напрямки",
+      "heading": "Знайдіть ідеальний план eSIM для наступної подорожі.",
+      "desc": "",
+      "searchPlaceholder": "Пошук країн…",
+      "clearSearch": "Очистити пошук",
+      "allTab": "Всі"
+    },
+    "count": {
+      "countries": "напрямки",
+      "of": "з"
+    },
+    "noResults": {
+      "noCountriesFor": "Не вдалося завантажити напрямки",
+      "clearSearch": "Очистити пошук"
+    },
+    "loading": "Завантаження напрямків…",
+    "error": {
+      "title": "Не вдалося завантажити напрямки",
+      "desc": "Не вдалося зв'язатися з сервером.\nПеревірте з'єднання і повторіть.",
+      "tryAgain": "Спробувати знову"
+    },
+    "cta": {
+      "heading": "Не знайшли напрямок?",
+      "desc": "Ми додаємо нові країни щотижня.",
+      "contactSupport": "Зв'язатися з підтримкою"
+    }
+  },
+  "support": {
+    "hero": {
+      "label": "Підтримка",
+      "heading1": "Чим ми можемо",
+      "heading2": "допомогти?",
+      "desc": "Знайдіть відповіді на поширені запитання або зверніться до нашої команди. Ми тут 24/7."
+    },
+    "faq": {
+      "label": "Центр допомоги",
+      "heading": "Відповіді з першого погляду",
+      "desc": "Виберіть питання для повної відповіді.",
+      "searchPlaceholder": "Пошук питань…",
+      "loading": "Завантаження…",
+      "errorTitle": "Центр допомоги",
+      "errorDesc": "Не вдалося зв'язатися з сервером.\nПеревірте з'єднання і повторіть.",
+      "tryAgain": "Спробувати знову",
+      "stillNeedHelp": "Ще потрібна допомога? Зв'яжіться з нами",
+      "noResults": "Питання за вашим запитом не знайдені.",
+      "contactUsDirectly": "зв'язатися напряму"
+    },
+    "contact": {
+      "label": "Підтримка",
+      "heading": "допомогти?",
+      "desc": "Знайдіть відповіді на поширені запитання або зверніться до нашої команди. Ми тут 24/7.",
+      "nameLabel": "Name",
+      "namePlaceholder": "Your name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "subjectLabel": "Subject",
+      "subjectDefault": "Select a topic…",
+      "subjectGeneral": "General Inquiry",
+      "subjectBilling": "Billing & Payments",
+      "subjectTechnical": "Technical Issue",
+      "subjectEsim": "eSIM Activation",
+      "subjectRefund": "Refund Request",
+      "subjectOther": "Other",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Describe your issue…",
+      "sendMessage": "Надіслати повідомлення",
+      "sending": "Надсилання…",
+      "successMessage": "Повідомлення надіслано! Ми відповімо протягом 24 годин.",
+      "errorRequired": "Це поле обов'язкове.",
+      "errorEmail": "Введіть дійсну адресу електронної пошти.",
+      "errorNameRequired": "Це поле обов'язкове.",
+      "errorEmailRequired": "Це поле обов'язкове.",
+      "errorMessageRequired": "Це поле обов'язкове.",
+      "errorSubjectRequired": "Це поле обов'язкове.",
+      "errorCooldown": "Please wait {seconds} seconds.",
+      "errorNoToken": "Unable to connect. Please try again later.",
+      "errorGeneric": "Something went wrong. Please try again."
+    },
+    "channels": {
+      "label": "Підтримка",
+      "heading": "допомогти?",
+      "desc": "",
+      "chat": "In-App Chat",
+      "chatDesc": "",
+      "email": "Email",
+      "emailDesc": "",
+      "social": "Social",
+      "socialDesc": ""
+    }
+  },
+  "about": {
+    "hero": {
+      "label": "Про нас",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "story": {
+      "label": "",
+      "heading1": "",
+      "heading2": "",
+      "quote": "",
+      "p1": "",
+      "p2": "",
+      "stat1Label": "Напрямки",
+      "stat2Label": "",
+      "stat3Label": "Підтримка"
+    },
+    "values": {
+      "label": "",
+      "heading": "",
+      "v1Title": "",
+      "v1Desc": "",
+      "v2Title": "",
+      "v2Desc": "",
+      "v3Title": "",
+      "v3Desc": "",
+      "v4Title": "",
+      "v4Desc": ""
+    },
+    "team": {
+      "label": "",
+      "heading": "",
+      "role": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "Зв'язатися з підтримкою"
+    }
+  },
+  "howItWorks": {
+    "hero": {
+      "label": "Як це працює",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "steps": {
+      "label": "",
+      "heading": "",
+      "desc": "",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step1Check1": "",
+      "step1Check2": "",
+      "step1Check3": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step2Check1": "",
+      "step2Check2": "",
+      "step2Check3": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": "",
+      "step3Check1": "",
+      "step3Check2": "",
+      "step3Check3": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "Зв'язатися з підтримкою",
+      "backToHome": ""
+    }
+  }
+}

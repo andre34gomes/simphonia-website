@@ -1,0 +1,320 @@
+{
+  "lang": {
+    "select": "语言",
+    "names": {
+      "en": "English",
+      "pt": "Português",
+      "es": "Español",
+      "fr": "Français",
+      "de": "Deutsch",
+      "it": "Italiano",
+      "nl": "Nederlands",
+      "ja": "日本語",
+      "zh": "中文",
+      "ko": "한국어",
+      "ar": "العربية",
+      "ru": "Русский",
+      "tr": "Türkçe",
+      "pl": "Polski",
+      "uk": "Українська",
+      "hi": "हिन्दी",
+      "id": "Bahasa Indonesia",
+      "vi": "Tiếng Việt",
+      "cs": "Čeština",
+      "hu": "Magyar",
+      "fa": "فارسی"
+    }
+  },
+  "nav": {
+    "destinations": "目的地",
+    "howItWorks": "使用方法",
+    "support": "支持",
+    "about": "关于我们",
+    "downloadApp": "下载应用",
+    "skipToMain": "跳至主要内容",
+    "toggleTheme": "切换明暗模式",
+    "openMenu": "打开菜单",
+    "closeMenu": "关闭菜单"
+  },
+  "footer": {
+    "tagline": "无论您走到哪里，保持连接。为现代旅行者提供全球eSIM覆盖。",
+    "product": "产品",
+    "company": "公司",
+    "legal": "法律",
+    "aboutUs": "关于我们",
+    "contact": "联系我们",
+    "privacyPolicy": "隐私政策",
+    "termsOfService": "服务条款",
+    "copyright": "版权所有。"
+  },
+  "cookie": {
+    "text": "我们使用Cookie来改善您的体验并分析网站流量。点击接受即表示您同意我们的",
+    "privacyPolicy": "隐私政策",
+    "decline": "拒绝",
+    "accept": "全部接受"
+  },
+  "mobileCta": {
+    "browsePlans": "浏览套餐",
+    "howItWorks": "使用方法"
+  },
+  "backToTop": "返回顶部",
+  "scroll": "滚动",
+  "common": {
+    "tryAgain": "重试",
+    "loading": "加载中…",
+    "from": "从",
+    "plansAvailable": "个套餐可用"
+  },
+  "home": {
+    "hero": {
+      "headline": "保持连接，",
+      "typingPhrases": [
+        "无论您走到哪里。",
+        "没有限制。",
+        "遍布全球。",
+        "数秒内准备就绪。",
+        "永远在线。"
+      ],
+      "desc": "下载Simphonia，选择目的地，落地即可上网 — 无需实体SIM卡，无漫游费，无压力。",
+      "trustFreeDownload": "免费下载",
+      "trust200Countries": "200+个国家",
+      "trustInstantActivation": "即时激活",
+      "downloadOnThe": "Download on the",
+      "appStore": "App Store",
+      "googlePlay": "Google Play"
+    },
+    "howItWorks": {
+      "label": "使用方法",
+      "heading": "",
+      "subheading": "",
+      "learnMore": "了解更多",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": ""
+    },
+    "features": {
+      "label": "Features",
+      "heading": "",
+      "subheading": "",
+      "instantActivation": "Instant Activation",
+      "instantActivationDesc": "",
+      "zeroRoaming": "Zero Roaming",
+      "zeroRoamingDesc": "",
+      "countries200": "200+ Countries",
+      "countries200Desc": "",
+      "flexiblePlans": "Flexible Plans",
+      "flexiblePlansDesc": "",
+      "aiSupport": "AI Support 24/7",
+      "aiSupportDesc": "",
+      "allDevices": "All Devices",
+      "allDevicesDesc": ""
+    },
+    "showcase": {
+      "panel1Step": "01",
+      "panel1Title1": "",
+      "panel1Title2": "",
+      "panel1Desc": "一目了然的答案",
+      "panel2Step": "02",
+      "panel2Title1": "",
+      "panel2Title2": "",
+      "panel2Desc": "",
+      "panel3Step": "03",
+      "panel3Title1": "",
+      "panel3Title2": "",
+      "panel3Desc": "",
+      "panel4Step": "04",
+      "panel4Title1": "",
+      "panel4Title2": "",
+      "panel4Desc": "下载Simphonia，选择目的地，落地即可上网 — 无需实体SIM卡，无漫游费，无压力。"
+    },
+    "cta": {
+      "heading1": "保持连接，",
+      "heading2": "保持连接，",
+      "desc": "",
+      "browseDestinations": "联系支持",
+      "howItWorks": "使用方法"
+    }
+  },
+  "destinations": {
+    "hero": {
+      "label": "目的地",
+      "heading1": "探索",
+      "heading2": "200+个国家",
+      "desc": "为您的下次旅行找到完美的eSIM套餐。"
+    },
+    "grid": {
+      "label": "目的地",
+      "heading": "为您的下次旅行找到完美的eSIM套餐。",
+      "desc": "",
+      "searchPlaceholder": "搜索国家…",
+      "clearSearch": "清除搜索",
+      "allTab": "全部"
+    },
+    "count": {
+      "countries": "目的地",
+      "of": "共"
+    },
+    "noResults": {
+      "noCountriesFor": "无法加载目的地",
+      "clearSearch": "清除搜索"
+    },
+    "loading": "加载目的地中…",
+    "error": {
+      "title": "无法加载目的地",
+      "desc": "我们无法连接到服务器。\n请检查您的连接并重试。",
+      "tryAgain": "重试"
+    },
+    "cta": {
+      "heading": "找不到您的目的地？",
+      "desc": "我们每周都在添加新国家。",
+      "contactSupport": "联系支持"
+    }
+  },
+  "support": {
+    "hero": {
+      "label": "支持",
+      "heading1": "我们如何",
+      "heading2": "帮助您？",
+      "desc": "查找常见问题的答案或联系我们的团队。我们24/7全天候为您服务。"
+    },
+    "faq": {
+      "label": "帮助中心",
+      "heading": "一目了然的答案",
+      "desc": "选择任何问题阅读完整答案。",
+      "searchPlaceholder": "搜索问题…",
+      "loading": "加载中…",
+      "errorTitle": "帮助中心",
+      "errorDesc": "我们无法连接到服务器。\n请检查您的连接并重试。",
+      "tryAgain": "重试",
+      "stillNeedHelp": "仍需帮助？联系我们",
+      "noResults": "没有与您的搜索匹配的问题。",
+      "contactUsDirectly": "直接联系我们"
+    },
+    "contact": {
+      "label": "支持",
+      "heading": "帮助您？",
+      "desc": "查找常见问题的答案或联系我们的团队。我们24/7全天候为您服务。",
+      "nameLabel": "Name",
+      "namePlaceholder": "Your name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "subjectLabel": "Subject",
+      "subjectDefault": "Select a topic…",
+      "subjectGeneral": "General Inquiry",
+      "subjectBilling": "Billing & Payments",
+      "subjectTechnical": "Technical Issue",
+      "subjectEsim": "eSIM Activation",
+      "subjectRefund": "Refund Request",
+      "subjectOther": "Other",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Describe your issue…",
+      "sendMessage": "发送消息",
+      "sending": "发送中…",
+      "successMessage": "消息已发送！我们将在24小时内回复您。",
+      "errorRequired": "此字段为必填项。",
+      "errorEmail": "请输入有效的电子邮件地址。",
+      "errorNameRequired": "此字段为必填项。",
+      "errorEmailRequired": "此字段为必填项。",
+      "errorMessageRequired": "此字段为必填项。",
+      "errorSubjectRequired": "此字段为必填项。",
+      "errorCooldown": "Please wait {seconds} seconds.",
+      "errorNoToken": "Unable to connect. Please try again later.",
+      "errorGeneric": "Something went wrong. Please try again."
+    },
+    "channels": {
+      "label": "支持",
+      "heading": "帮助您？",
+      "desc": "",
+      "chat": "In-App Chat",
+      "chatDesc": "",
+      "email": "Email",
+      "emailDesc": "",
+      "social": "Social",
+      "socialDesc": ""
+    }
+  },
+  "about": {
+    "hero": {
+      "label": "关于我们",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "story": {
+      "label": "",
+      "heading1": "",
+      "heading2": "",
+      "quote": "",
+      "p1": "",
+      "p2": "",
+      "stat1Label": "目的地",
+      "stat2Label": "",
+      "stat3Label": "支持"
+    },
+    "values": {
+      "label": "",
+      "heading": "",
+      "v1Title": "",
+      "v1Desc": "",
+      "v2Title": "",
+      "v2Desc": "",
+      "v3Title": "",
+      "v3Desc": "",
+      "v4Title": "",
+      "v4Desc": ""
+    },
+    "team": {
+      "label": "",
+      "heading": "",
+      "role": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "联系支持"
+    }
+  },
+  "howItWorks": {
+    "hero": {
+      "label": "使用方法",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "steps": {
+      "label": "",
+      "heading": "",
+      "desc": "",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step1Check1": "",
+      "step1Check2": "",
+      "step1Check3": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step2Check1": "",
+      "step2Check2": "",
+      "step2Check3": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": "",
+      "step3Check1": "",
+      "step3Check2": "",
+      "step3Check3": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "联系支持",
+      "backToHome": ""
+    }
+  }
+}

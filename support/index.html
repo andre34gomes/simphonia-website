@@ -159,7 +159,7 @@
             <svg class="search-bar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
               <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>
             </svg>
-            <input type="search" class="search-bar__input" id="faq-search" placeholder="Search questions…" aria-label="Search FAQ" autocomplete="off" inputmode="search" enterkeyhint="search">
+            <input type="search" class="search-bar__input" id="faq-search" placeholder="Search questions…" data-i18n-placeholder="support.faq.searchPlaceholder" aria-label="Search FAQ" autocomplete="off" inputmode="search" enterkeyhint="search">
           </div>
         </div>
 
@@ -204,34 +204,34 @@
           </div>
           <div class="grid grid--2">
             <div class="form-group">
-              <label for="contact-name">Name <span class="required-mark" aria-hidden="true">*</span></label>
-              <input type="text" id="contact-name" name="name" class="form-input" placeholder="Your name" required aria-required="true" autocomplete="name" maxlength="100">
+              <label for="contact-name"><span data-i18n="support.contact.nameLabel">Name</span> <span class="required-mark" aria-hidden="true">*</span></label>
+              <input type="text" id="contact-name" name="name" class="form-input" placeholder="Your name" data-i18n-placeholder="support.contact.namePlaceholder" required aria-required="true" autocomplete="name" maxlength="100">
             </div>
             <div class="form-group">
-              <label for="contact-email">Email <span class="required-mark" aria-hidden="true">*</span></label>
-              <input type="email" id="contact-email" name="email" class="form-input" placeholder="you@example.com" required aria-required="true" autocomplete="email" maxlength="254">
+              <label for="contact-email"><span data-i18n="support.contact.emailLabel">Email</span> <span class="required-mark" aria-hidden="true">*</span></label>
+              <input type="email" id="contact-email" name="email" class="form-input" placeholder="you@example.com" data-i18n-placeholder="support.contact.emailPlaceholder" required aria-required="true" autocomplete="email" maxlength="254">
             </div>
           </div>
           <div class="form-group">
-            <label for="contact-subject">Subject <span class="required-mark" aria-hidden="true">*</span></label>
+            <label for="contact-subject"><span data-i18n="support.contact.subjectLabel">Subject</span> <span class="required-mark" aria-hidden="true">*</span></label>
             <div class="select-wrapper">
               <select id="contact-subject" name="subject" class="form-input form-select" required aria-required="true">
-                <option value="" disabled selected>Select a topic…</option>
-                <option value="General Inquiry">General Inquiry</option>
-                <option value="Billing &amp; Payments">Billing &amp; Payments</option>
-                <option value="Technical Issue">Technical Issue</option>
-                <option value="eSIM Activation">eSIM Activation</option>
-                <option value="Refund Request">Refund Request</option>
-                <option value="Other">Other</option>
+                <option value="" disabled selected data-i18n-value="support.contact.subjectDefault">Select a topic…</option>
+                <option value="General Inquiry" data-i18n="support.contact.subjectGeneral">General Inquiry</option>
+                <option value="Billing &amp; Payments" data-i18n="support.contact.subjectBilling">Billing &amp; Payments</option>
+                <option value="Technical Issue" data-i18n="support.contact.subjectTechnical">Technical Issue</option>
+                <option value="eSIM Activation" data-i18n="support.contact.subjectEsim">eSIM Activation</option>
+                <option value="Refund Request" data-i18n="support.contact.subjectRefund">Refund Request</option>
+                <option value="Other" data-i18n="support.contact.subjectOther">Other</option>
               </select>
               <svg class="select-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
             </div>
           </div>
           <div class="form-group">
-            <label for="contact-message">Message <span class="required-mark" aria-hidden="true">*</span></label>
-            <textarea id="contact-message" name="message" class="form-input" placeholder="Describe your issue or question…" required aria-required="true" maxlength="5000"></textarea>
+            <label for="contact-message"><span data-i18n="support.contact.messageLabel">Message</span> <span class="required-mark" aria-hidden="true">*</span></label>
+            <textarea id="contact-message" name="message" class="form-input" placeholder="Describe your issue or question…" data-i18n-placeholder="support.contact.messagePlaceholder" required aria-required="true" maxlength="5000"></textarea>
           </div>
-          <button type="submit" class="btn btn--primary btn--lg">Send Message</button>
+          <button type="submit" class="btn btn--primary btn--lg" data-i18n="support.contact.sendMessage">Send Message</button>
         </form>
       </div>
     </section>
@@ -301,6 +301,7 @@
           integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
           crossorigin="anonymous" defer></script>
   <script defer src="../js/cdn-fallback.js"></script>
+  <script defer src="../js/i18n.js?v=20260401"></script>
   <script defer src="../js/components/layout.js?v=20260401"></script>
   <script defer src="../js/auth.js?v=20260401"></script>
   <script defer src="../js/animations-core.js?v=20260401"></script>

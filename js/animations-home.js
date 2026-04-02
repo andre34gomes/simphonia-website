@@ -137,7 +137,7 @@ function _stickyShowcase() {
   var _segRafId = null;
 
   function _segTick() {
-    _segCurrent += (_segTarget - _segCurrent) * 0.12;
+    _segCurrent += (_segTarget - _segCurrent) * 0.08;
     if (Math.abs(_segTarget - _segCurrent) < 0.0005) _segCurrent = _segTarget;
     _renderSegs(_segCurrent);
     if (_segCurrent !== _segTarget) {
@@ -270,21 +270,21 @@ function _stickyShowcase() {
         tl.to(panels[pi], {
           opacity: 0,
           y: forward ? -slideOut : slideOut,
-          duration: 0.35,
-          ease: 'power2.in',
+          duration: 0.42,
+          ease: 'power2.inOut',
           onComplete: function () { gsap.set(panels[pi], { y: 0 }); },
         }, 0);
       })(prevIdx);
     }
 
-    // ── Outgoing phone screen (opacity + subtle y — no scale) ──
+    // ── Outgoing phone screen (opacity + subtle y — smooth crossfade) ──
     if (prevIdx >= 0 && screens[prevIdx]) {
       (function (pi) {
         tl.to(screens[pi], {
           opacity: 0,
-          y: forward ? -6 : 6,
-          duration: 0.3,
-          ease: 'power2.in',
+          y: forward ? -8 : 8,
+          duration: 0.45,
+          ease: 'power2.inOut',
           onComplete: function () {
             gsap.set(screens[pi], { y: 0 });
             screens[pi].style.pointerEvents = 'none';
@@ -317,18 +317,18 @@ function _stickyShowcase() {
     if (ch.title) tl.to(ch.title, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, stagger + 0.05);
     if (ch.desc)  tl.to(ch.desc,  { opacity: 1, y: 0, duration: 0.45, ease: 'power3.out' }, stagger + 0.10);
 
-    // ── Incoming phone screen (opacity + subtle y — no scale) ──
+    // ── Incoming phone screen (opacity + subtle y — smooth crossfade) ──
     if (screens[newIdx]) {
       (function (ni) {
         tl.fromTo(screens[ni],
-          { opacity: 0, y: forward ? 5 : -5 },
+          { opacity: 0, y: forward ? 8 : -8 },
           {
             opacity: 1, y: 0,
-            duration: 0.42,
-            ease: 'power2.out',
+            duration: 0.55,
+            ease: 'power3.out',
             onStart: function () { screens[ni].style.pointerEvents = 'auto'; },
           },
-          isFirst ? 0 : 0.10
+          isFirst ? 0 : 0.15
         );
       })(newIdx);
     }
@@ -345,7 +345,7 @@ function _stickyShowcase() {
       pinSpacing: true,
       start: 'top top',
       end: '+=' + (panelCount * 100) + '%',
-      scrub: 1,
+      scrub: 1.5,
       // No anticipatePin — it causes the pixel jump on enter/leave.
       // The pin transition is seamless without it when using transform-based pinning.
 

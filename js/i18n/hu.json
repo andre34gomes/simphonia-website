@@ -1,0 +1,320 @@
+{
+  "lang": {
+    "select": "Nyelv",
+    "names": {
+      "en": "English",
+      "pt": "Português",
+      "es": "Español",
+      "fr": "Français",
+      "de": "Deutsch",
+      "it": "Italiano",
+      "nl": "Nederlands",
+      "ja": "日本語",
+      "zh": "中文",
+      "ko": "한국어",
+      "ar": "العربية",
+      "ru": "Русский",
+      "tr": "Türkçe",
+      "pl": "Polski",
+      "uk": "Українська",
+      "hi": "हिन्दी",
+      "id": "Bahasa Indonesia",
+      "vi": "Tiếng Việt",
+      "cs": "Čeština",
+      "hu": "Magyar",
+      "fa": "فارسی"
+    }
+  },
+  "nav": {
+    "destinations": "Úticélok",
+    "howItWorks": "Hogyan működik",
+    "support": "Támogatás",
+    "about": "Rólunk",
+    "downloadApp": "App letöltése",
+    "skipToMain": "Ugrás a főtartalomra",
+    "toggleTheme": "Világos/sötét mód",
+    "openMenu": "Menü megnyitása",
+    "closeMenu": "Menü bezárása"
+  },
+  "footer": {
+    "tagline": "Maradjon kapcsolatban, bárhová is megy. Globális eSIM lefedettség a modern utazóknak.",
+    "product": "Termék",
+    "company": "Vállalat",
+    "legal": "Jogi",
+    "aboutUs": "Rólunk",
+    "contact": "Kapcsolat",
+    "privacyPolicy": "Adatvédelmi irányelvek",
+    "termsOfService": "Szolgáltatási feltételek",
+    "copyright": "Minden jog fenntartva."
+  },
+  "cookie": {
+    "text": "Cookie-kat használunk a tapasztalat javítása és a forgalom elemzése érdekében. Az Elfogadás gombra kattintva elfogadja a",
+    "privacyPolicy": "adatvédelmi irányelvünket",
+    "decline": "Elutasítás",
+    "accept": "Összes elfogadása"
+  },
+  "mobileCta": {
+    "browsePlans": "Tervek böngészése",
+    "howItWorks": "Hogyan működik"
+  },
+  "backToTop": "Vissza a tetejére",
+  "scroll": "Görgetés",
+  "common": {
+    "tryAgain": "Újra próbálkozás",
+    "loading": "Betöltés…",
+    "from": "Től",
+    "plansAvailable": "csomag elérhető"
+  },
+  "home": {
+    "hero": {
+      "headline": "Maradjon Kapcsolatban,",
+      "typingPhrases": [
+        "Bárhová is Megy.",
+        "Korlátok Nélkül.",
+        "Az Egész Világon.",
+        "Másodpercek Alatt Kész.",
+        "Mindig Online."
+      ],
+      "desc": "Töltse le a Simphoniát, válassza ki az úticélját, és maradjon online a leszállás pillanatától — SIM-kártya nélkül, roaming-díj nélkül, stressz nélkül.",
+      "trustFreeDownload": "Ingyenes letöltés",
+      "trust200Countries": "200+ ország",
+      "trustInstantActivation": "Azonnali aktiválás",
+      "downloadOnThe": "Download on the",
+      "appStore": "App Store",
+      "googlePlay": "Google Play"
+    },
+    "howItWorks": {
+      "label": "Hogyan működik",
+      "heading": "",
+      "subheading": "",
+      "learnMore": "Tudjon meg többet",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": ""
+    },
+    "features": {
+      "label": "Features",
+      "heading": "",
+      "subheading": "",
+      "instantActivation": "Instant Activation",
+      "instantActivationDesc": "",
+      "zeroRoaming": "Zero Roaming",
+      "zeroRoamingDesc": "",
+      "countries200": "200+ Countries",
+      "countries200Desc": "",
+      "flexiblePlans": "Flexible Plans",
+      "flexiblePlansDesc": "",
+      "aiSupport": "AI Support 24/7",
+      "aiSupportDesc": "",
+      "allDevices": "All Devices",
+      "allDevicesDesc": ""
+    },
+    "showcase": {
+      "panel1Step": "01",
+      "panel1Title1": "",
+      "panel1Title2": "",
+      "panel1Desc": "Válaszok egy pillantásra",
+      "panel2Step": "02",
+      "panel2Title1": "",
+      "panel2Title2": "",
+      "panel2Desc": "",
+      "panel3Step": "03",
+      "panel3Title1": "",
+      "panel3Title2": "",
+      "panel3Desc": "",
+      "panel4Step": "04",
+      "panel4Title1": "",
+      "panel4Title2": "",
+      "panel4Desc": "Töltse le a Simphoniát, válassza ki az úticélját, és maradjon online a leszállás pillanatától — SIM-kártya nélkül, roaming-díj nélkül, stressz nélkül."
+    },
+    "cta": {
+      "heading1": "Maradjon Kapcsolatban,",
+      "heading2": "Maradjon Kapcsolatban,",
+      "desc": "",
+      "browseDestinations": "Kapcsolatfelvétel a támogatással",
+      "howItWorks": "Hogyan működik"
+    }
+  },
+  "destinations": {
+    "hero": {
+      "label": "Úticélok",
+      "heading1": "Fedezze fel",
+      "heading2": "200+ Ország",
+      "desc": "Találja meg a tökéletes eSIM csomagot a következő útjára."
+    },
+    "grid": {
+      "label": "Úticélok",
+      "heading": "Találja meg a tökéletes eSIM csomagot a következő útjára.",
+      "desc": "",
+      "searchPlaceholder": "Ország keresése…",
+      "clearSearch": "Keresés törlése",
+      "allTab": "Összes"
+    },
+    "count": {
+      "countries": "úticélok",
+      "of": "/"
+    },
+    "noResults": {
+      "noCountriesFor": "Nem sikerült betölteni az úticélokat",
+      "clearSearch": "Keresés törlése"
+    },
+    "loading": "Úticélok betöltése…",
+    "error": {
+      "title": "Nem sikerült betölteni az úticélokat",
+      "desc": "Nem tudtuk elérni a szervereinket.\nEllenőrizze a kapcsolatát és próbálja újra.",
+      "tryAgain": "Újra próbálkozás"
+    },
+    "cta": {
+      "heading": "Nem találja az úticélját?",
+      "desc": "Minden héten új országokat adunk hozzá.",
+      "contactSupport": "Kapcsolatfelvétel a támogatással"
+    }
+  },
+  "support": {
+    "hero": {
+      "label": "Támogatás",
+      "heading1": "Hogyan tudunk",
+      "heading2": "segíteni?",
+      "desc": "Keressen válaszokat a gyakori kérdésekre, vagy vegye fel a kapcsolatot csapatunkkal. 24/7 itt vagyunk."
+    },
+    "faq": {
+      "label": "Súgóközpont",
+      "heading": "Válaszok egy pillantásra",
+      "desc": "Válasszon bármilyen kérdést a teljes válasz elolvasásához.",
+      "searchPlaceholder": "Kérdések keresése…",
+      "loading": "Betöltés…",
+      "errorTitle": "Súgóközpont",
+      "errorDesc": "Nem tudtuk elérni a szervereinket.\nEllenőrizze a kapcsolatát és próbálja újra.",
+      "tryAgain": "Újra próbálkozás",
+      "stillNeedHelp": "Még mindig segítségre van szüksége? Vegye fel velünk a kapcsolatot",
+      "noResults": "Nem található kérdés a keresésre.",
+      "contactUsDirectly": "lépjen velünk közvetlenül kapcsolatba"
+    },
+    "contact": {
+      "label": "Támogatás",
+      "heading": "segíteni?",
+      "desc": "Keressen válaszokat a gyakori kérdésekre, vagy vegye fel a kapcsolatot csapatunkkal. 24/7 itt vagyunk.",
+      "nameLabel": "Name",
+      "namePlaceholder": "Your name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "subjectLabel": "Subject",
+      "subjectDefault": "Select a topic…",
+      "subjectGeneral": "General Inquiry",
+      "subjectBilling": "Billing & Payments",
+      "subjectTechnical": "Technical Issue",
+      "subjectEsim": "eSIM Activation",
+      "subjectRefund": "Refund Request",
+      "subjectOther": "Other",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Describe your issue…",
+      "sendMessage": "Üzenet küldése",
+      "sending": "Küldés…",
+      "successMessage": "Üzenet elküldve! 24 órán belül válaszolunk.",
+      "errorRequired": "Ez a mező kötelező.",
+      "errorEmail": "Adjon meg egy érvényes e-mail-címet.",
+      "errorNameRequired": "Ez a mező kötelező.",
+      "errorEmailRequired": "Ez a mező kötelező.",
+      "errorMessageRequired": "Ez a mező kötelező.",
+      "errorSubjectRequired": "Ez a mező kötelező.",
+      "errorCooldown": "Please wait {seconds} seconds.",
+      "errorNoToken": "Unable to connect. Please try again later.",
+      "errorGeneric": "Something went wrong. Please try again."
+    },
+    "channels": {
+      "label": "Támogatás",
+      "heading": "segíteni?",
+      "desc": "",
+      "chat": "In-App Chat",
+      "chatDesc": "",
+      "email": "Email",
+      "emailDesc": "",
+      "social": "Social",
+      "socialDesc": ""
+    }
+  },
+  "about": {
+    "hero": {
+      "label": "Rólunk",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "story": {
+      "label": "",
+      "heading1": "",
+      "heading2": "",
+      "quote": "",
+      "p1": "",
+      "p2": "",
+      "stat1Label": "Úticélok",
+      "stat2Label": "",
+      "stat3Label": "Támogatás"
+    },
+    "values": {
+      "label": "",
+      "heading": "",
+      "v1Title": "",
+      "v1Desc": "",
+      "v2Title": "",
+      "v2Desc": "",
+      "v3Title": "",
+      "v3Desc": "",
+      "v4Title": "",
+      "v4Desc": ""
+    },
+    "team": {
+      "label": "",
+      "heading": "",
+      "role": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "Kapcsolatfelvétel a támogatással"
+    }
+  },
+  "howItWorks": {
+    "hero": {
+      "label": "Hogyan működik",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "steps": {
+      "label": "",
+      "heading": "",
+      "desc": "",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step1Check1": "",
+      "step1Check2": "",
+      "step1Check3": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step2Check1": "",
+      "step2Check2": "",
+      "step2Check3": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": "",
+      "step3Check1": "",
+      "step3Check2": "",
+      "step3Check3": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "Kapcsolatfelvétel a támogatással",
+      "backToHome": ""
+    }
+  }
+}

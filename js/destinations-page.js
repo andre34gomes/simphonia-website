@@ -11,7 +11,16 @@
 // ── Config (single source of truth: layout.js → window.SIMPHONIA_API) ──
 const API_BASE = (window.SIMPHONIA_API && window.SIMPHONIA_API.base) || 'https://api.simphonia.pt';
 const CURRENCY = 'EUR';
-const LANG = (navigator.language || 'en').split('-')[0];
+
+// Language: use i18n module if loaded, otherwise fall back to browser language
+function getLang() {
+  return window.SIMPHONIA_LANG || (navigator.language || 'en').split('-')[0];
+}
+
+// Translation helper
+function _t(key) {
+  return typeof window.t === 'function' ? window.t(key) : key;
+}
 
 const REGION_LABELS = {
   AFRICA: 'Africa',
@@ -103,7 +112,7 @@ function setLoading(on) {
       '<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>' +
       '</svg>' +
       '</div>' +
-      '<p class="dest-state__desc">Loading destinations\u2026</p>' +
+      '<p class="dest-state__desc">' + _t('destinations.loading') + '</p>' +
       '</div>';
     countEl.textContent = '';
     noResults.style.display = 'none';
@@ -120,14 +129,14 @@ function showFetchError() {
     '<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>' +
     '</svg>' +
     '</div>' +
-    '<h3 class="dest-state__title">Unable to Load Destinations</h3>' +
-    '<p class="dest-state__desc">We couldn\u2019t reach our servers right now.<br>Check your connection and try again.</p>' +
+    '<h3 class="dest-state__title">' + _t('destinations.error.title') + '</h3>' +
+    '<p class="dest-state__desc">' + _t('destinations.error.desc').replace('\n', '<br>') + '</p>' +
     '<button class="btn btn--outline btn--sm dest-state__retry" id="dest-retry">' +
     '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' +
     '<polyline points="23 4 23 10 17 10"/>' +
     '<path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>' +
     '</svg>' +
-    'Try Again' +
+    _t('destinations.error.tryAgain') +
     '</button>' +
     '</div>';
   var retryBtn = document.getElementById('dest-retry');
@@ -151,13 +160,13 @@ function renderGrid(items) {
   noResults.style.display = items.length === 0 ? 'flex' : 'none';
   noResultsQ.textContent = query
     ? '\u201C' + query + '\u201D'
-    : (REGION_LABELS[activeRegionCode] || activeRegionCode || 'selected filter');
+    : (REGION_LABELS[activeRegionCode] || activeRegionCode || _t('destinations.grid.allTab'));
 
   countEl.textContent = items.length === 0
     ? ''
     : items.length === total
-      ? total + ' countries'
-      : items.length + ' of ' + total + ' countries';
+      ? total + ' ' + _t('destinations.count.countries')
+      : items.length + ' ' + _t('destinations.count.of') + ' ' + total + ' ' + _t('destinations.count.countries');
 
   var frag = document.createDocumentFragment();
   items.forEach(function (d, i) {
@@ -181,8 +190,8 @@ function renderGrid(items) {
       '</div>' +
       '<div class="dest-card__body">' +
       '<div class="dest-card__name">' + (flag || '') + safeName + '</div>' +
-      (d.planCount ? '<div class="dest-card__plans">' + d.planCount + ' plans available</div>' : '') +
-      (d.startingPrice ? '<div class="dest-card__price">From \u20AC' + Number(d.startingPrice).toFixed(2) + '</div>' : '') +
+      (d.planCount ? '<div class="dest-card__plans">' + d.planCount + ' ' + _t('common.plansAvailable') + '</div>' : '') +
+      (d.startingPrice ? '<div class="dest-card__price">' + _t('common.from') + ' \u20AC' + Number(d.startingPrice).toFixed(2) + '</div>' : '') +
       '</div>';
     frag.appendChild(card);
   });
@@ -208,7 +217,7 @@ async function loadAllCountries() {
   const seq = ++_fetchSeq;
   setLoading(true);
   try {
-    const data = await apiFetch('/api/v1/countries/all?currency=' + CURRENCY + '&lang=' + LANG);
+    const data = await apiFetch('/api/v1/countries/all?currency=' + CURRENCY + '&lang=' + getLang());
     if (seq !== _fetchSeq) return; // discard stale response
     allCountries = data;
     displayedCountries = allCountries;
@@ -225,7 +234,7 @@ async function loadCountriesForRegion(regionCode) {
   setLoading(true);
   try {
     const data = await apiFetch(
-      '/api/v1/regions/' + regionCode + '/countries?currency=' + CURRENCY + '&lang=' + LANG
+      '/api/v1/regions/' + regionCode + '/countries?currency=' + CURRENCY + '&lang=' + getLang()
     );
     if (seq !== _fetchSeq) return; // discard stale response
     displayedCountries = data;
@@ -239,6 +248,11 @@ async function loadCountriesForRegion(regionCode) {
 
 async function buildRegionTabs() {
   try {
+    // Clear any previously added region tabs (keep the static "All" tab)
+    regionTabsContainer.querySelectorAll('.filter-tab:not([data-region="all"])').forEach(function (tab) {
+      tab.remove();
+    });
+
     var regions = await apiFetch('/api/v1/regions?currency=' + CURRENCY);
     regions.forEach(function (r) {
       var label = REGION_LABELS[r.regionCode] || r.regionCode;
@@ -323,5 +337,30 @@ buildRegionTabs();
 loadAllCountries();
 
 
+// Re-fetch with new language when language changes
+document.addEventListener('simphonia:langchange', function () {
+  // Reset state
+  allCountries = [];
+  displayedCountries = [];
+  activeRegionCode = null;
 
+  // Clear search
+  searchInput.value = '';
+  clearBtn.hidden = true;
 
+  // Reset tab selection to "All"
+  regionTabsContainer.querySelectorAll('.filter-tab').forEach(function (t) {
+    t.classList.remove('filter-tab--active');
+  });
+  var allTab = regionTabsContainer.querySelector('.filter-tab[data-region="all"]');
+  if (allTab) allTab.classList.add('filter-tab--active');
+
+  // Clear grid immediately so old-language content is removed
+  grid.textContent = '';
+  noResults.style.display = 'none';
+  countEl.textContent = '';
+
+  // Rebuild region tabs and reload countries with new language
+  buildRegionTabs();
+  loadAllCountries();
+});

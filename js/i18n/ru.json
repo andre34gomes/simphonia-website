@@ -1,0 +1,320 @@
+{
+  "lang": {
+    "select": "Язык",
+    "names": {
+      "en": "English",
+      "pt": "Português",
+      "es": "Español",
+      "fr": "Français",
+      "de": "Deutsch",
+      "it": "Italiano",
+      "nl": "Nederlands",
+      "ja": "日本語",
+      "zh": "中文",
+      "ko": "한국어",
+      "ar": "العربية",
+      "ru": "Русский",
+      "tr": "Türkçe",
+      "pl": "Polski",
+      "uk": "Українська",
+      "hi": "हिन्दी",
+      "id": "Bahasa Indonesia",
+      "vi": "Tiếng Việt",
+      "cs": "Čeština",
+      "hu": "Magyar",
+      "fa": "فارسی"
+    }
+  },
+  "nav": {
+    "destinations": "Направления",
+    "howItWorks": "Как это работает",
+    "support": "Поддержка",
+    "about": "О нас",
+    "downloadApp": "Скачать приложение",
+    "skipToMain": "Перейти к основному контенту",
+    "toggleTheme": "Светлая/тёмная тема",
+    "openMenu": "Открыть меню",
+    "closeMenu": "Закрыть меню"
+  },
+  "footer": {
+    "tagline": "Оставайтесь на связи, где бы вы ни были. Глобальное eSIM-покрытие для современных путешественников.",
+    "product": "Продукт",
+    "company": "Компания",
+    "legal": "Правовая информация",
+    "aboutUs": "О нас",
+    "contact": "Контакты",
+    "privacyPolicy": "Политика конфиденциальности",
+    "termsOfService": "Условия использования",
+    "copyright": "Все права защищены."
+  },
+  "cookie": {
+    "text": "Мы используем файлы cookie для улучшения вашего опыта и анализа трафика. Нажимая «Принять», вы соглашаетесь с нашей",
+    "privacyPolicy": "Политикой конфиденциальности",
+    "decline": "Отклонить",
+    "accept": "Принять всё"
+  },
+  "mobileCta": {
+    "browsePlans": "Смотреть планы",
+    "howItWorks": "Как это работает"
+  },
+  "backToTop": "Наверх",
+  "scroll": "Прокрутка",
+  "common": {
+    "tryAgain": "Повторить",
+    "loading": "Загрузка…",
+    "from": "От",
+    "plansAvailable": "планов доступно"
+  },
+  "home": {
+    "hero": {
+      "headline": "Оставайтесь на связи,",
+      "typingPhrases": [
+        "Где бы вы ни были.",
+        "Без ограничений.",
+        "По всему миру.",
+        "Готово за секунды.",
+        "Всегда онлайн."
+      ],
+      "desc": "Скачайте Simphonia, выберите направление и оставайтесь онлайн с момента приземления — без SIM-карты, без роуминга, без стресса.",
+      "trustFreeDownload": "Бесплатная загрузка",
+      "trust200Countries": "200+ стран",
+      "trustInstantActivation": "Мгновенная активация",
+      "downloadOnThe": "Download on the",
+      "appStore": "App Store",
+      "googlePlay": "Google Play"
+    },
+    "howItWorks": {
+      "label": "Как это работает",
+      "heading": "",
+      "subheading": "",
+      "learnMore": "Узнать больше",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": ""
+    },
+    "features": {
+      "label": "Features",
+      "heading": "",
+      "subheading": "",
+      "instantActivation": "Instant Activation",
+      "instantActivationDesc": "",
+      "zeroRoaming": "Zero Roaming",
+      "zeroRoamingDesc": "",
+      "countries200": "200+ Countries",
+      "countries200Desc": "",
+      "flexiblePlans": "Flexible Plans",
+      "flexiblePlansDesc": "",
+      "aiSupport": "AI Support 24/7",
+      "aiSupportDesc": "",
+      "allDevices": "All Devices",
+      "allDevicesDesc": ""
+    },
+    "showcase": {
+      "panel1Step": "01",
+      "panel1Title1": "",
+      "panel1Title2": "",
+      "panel1Desc": "Ответы с первого взгляда",
+      "panel2Step": "02",
+      "panel2Title1": "",
+      "panel2Title2": "",
+      "panel2Desc": "",
+      "panel3Step": "03",
+      "panel3Title1": "",
+      "panel3Title2": "",
+      "panel3Desc": "",
+      "panel4Step": "04",
+      "panel4Title1": "",
+      "panel4Title2": "",
+      "panel4Desc": "Скачайте Simphonia, выберите направление и оставайтесь онлайн с момента приземления — без SIM-карты, без роуминга, без стресса."
+    },
+    "cta": {
+      "heading1": "Оставайтесь на связи,",
+      "heading2": "Оставайтесь на связи,",
+      "desc": "",
+      "browseDestinations": "Связаться с поддержкой",
+      "howItWorks": "Как это работает"
+    }
+  },
+  "destinations": {
+    "hero": {
+      "label": "Направления",
+      "heading1": "Исследуйте",
+      "heading2": "200+ стран",
+      "desc": "Найдите идеальный план eSIM для вашей следующей поездки."
+    },
+    "grid": {
+      "label": "Направления",
+      "heading": "Найдите идеальный план eSIM для вашей следующей поездки.",
+      "desc": "",
+      "searchPlaceholder": "Поиск стран…",
+      "clearSearch": "Очистить поиск",
+      "allTab": "Все"
+    },
+    "count": {
+      "countries": "направления",
+      "of": "из"
+    },
+    "noResults": {
+      "noCountriesFor": "Не удалось загрузить направления",
+      "clearSearch": "Очистить поиск"
+    },
+    "loading": "Загрузка направлений…",
+    "error": {
+      "title": "Не удалось загрузить направления",
+      "desc": "Не удалось связаться с сервером.\nПроверьте подключение и повторите.",
+      "tryAgain": "Повторить"
+    },
+    "cta": {
+      "heading": "Не нашли направление?",
+      "desc": "Мы добавляем новые страны каждую неделю.",
+      "contactSupport": "Связаться с поддержкой"
+    }
+  },
+  "support": {
+    "hero": {
+      "label": "Поддержка",
+      "heading1": "Чем мы можем",
+      "heading2": "помочь?",
+      "desc": "Найдите ответы на часто задаваемые вопросы или свяжитесь с нашей командой. Мы здесь 24/7."
+    },
+    "faq": {
+      "label": "Центр помощи",
+      "heading": "Ответы с первого взгляда",
+      "desc": "Выберите вопрос для полного ответа.",
+      "searchPlaceholder": "Поиск вопросов…",
+      "loading": "Загрузка…",
+      "errorTitle": "Центр помощи",
+      "errorDesc": "Не удалось связаться с сервером.\nПроверьте подключение и повторите.",
+      "tryAgain": "Повторить",
+      "stillNeedHelp": "Ещё нужна помощь? Свяжитесь с нами",
+      "noResults": "Вопросы по вашему запросу не найдены.",
+      "contactUsDirectly": "связаться напрямую"
+    },
+    "contact": {
+      "label": "Поддержка",
+      "heading": "помочь?",
+      "desc": "Найдите ответы на часто задаваемые вопросы или свяжитесь с нашей командой. Мы здесь 24/7.",
+      "nameLabel": "Name",
+      "namePlaceholder": "Your name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "subjectLabel": "Subject",
+      "subjectDefault": "Select a topic…",
+      "subjectGeneral": "General Inquiry",
+      "subjectBilling": "Billing & Payments",
+      "subjectTechnical": "Technical Issue",
+      "subjectEsim": "eSIM Activation",
+      "subjectRefund": "Refund Request",
+      "subjectOther": "Other",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Describe your issue…",
+      "sendMessage": "Отправить сообщение",
+      "sending": "Отправка…",
+      "successMessage": "Сообщение отправлено! Мы ответим в течение 24 часов.",
+      "errorRequired": "Это поле обязательно.",
+      "errorEmail": "Введите действительный адрес электронной почты.",
+      "errorNameRequired": "Это поле обязательно.",
+      "errorEmailRequired": "Это поле обязательно.",
+      "errorMessageRequired": "Это поле обязательно.",
+      "errorSubjectRequired": "Это поле обязательно.",
+      "errorCooldown": "Please wait {seconds} seconds.",
+      "errorNoToken": "Unable to connect. Please try again later.",
+      "errorGeneric": "Something went wrong. Please try again."
+    },
+    "channels": {
+      "label": "Поддержка",
+      "heading": "помочь?",
+      "desc": "",
+      "chat": "In-App Chat",
+      "chatDesc": "",
+      "email": "Email",
+      "emailDesc": "",
+      "social": "Social",
+      "socialDesc": ""
+    }
+  },
+  "about": {
+    "hero": {
+      "label": "О нас",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "story": {
+      "label": "",
+      "heading1": "",
+      "heading2": "",
+      "quote": "",
+      "p1": "",
+      "p2": "",
+      "stat1Label": "Направления",
+      "stat2Label": "",
+      "stat3Label": "Поддержка"
+    },
+    "values": {
+      "label": "",
+      "heading": "",
+      "v1Title": "",
+      "v1Desc": "",
+      "v2Title": "",
+      "v2Desc": "",
+      "v3Title": "",
+      "v3Desc": "",
+      "v4Title": "",
+      "v4Desc": ""
+    },
+    "team": {
+      "label": "",
+      "heading": "",
+      "role": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "Связаться с поддержкой"
+    }
+  },
+  "howItWorks": {
+    "hero": {
+      "label": "Как это работает",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "steps": {
+      "label": "",
+      "heading": "",
+      "desc": "",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step1Check1": "",
+      "step1Check2": "",
+      "step1Check3": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step2Check1": "",
+      "step2Check2": "",
+      "step2Check3": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": "",
+      "step3Check1": "",
+      "step3Check2": "",
+      "step3Check3": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "Связаться с поддержкой",
+      "backToHome": ""
+    }
+  }
+}

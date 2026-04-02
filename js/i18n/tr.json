@@ -1,0 +1,320 @@
+{
+  "lang": {
+    "select": "Dil",
+    "names": {
+      "en": "English",
+      "pt": "Português",
+      "es": "Español",
+      "fr": "Français",
+      "de": "Deutsch",
+      "it": "Italiano",
+      "nl": "Nederlands",
+      "ja": "日本語",
+      "zh": "中文",
+      "ko": "한국어",
+      "ar": "العربية",
+      "ru": "Русский",
+      "tr": "Türkçe",
+      "pl": "Polski",
+      "uk": "Українська",
+      "hi": "हिन्दी",
+      "id": "Bahasa Indonesia",
+      "vi": "Tiếng Việt",
+      "cs": "Čeština",
+      "hu": "Magyar",
+      "fa": "فارسی"
+    }
+  },
+  "nav": {
+    "destinations": "Destinasyonlar",
+    "howItWorks": "Nasıl Çalışır",
+    "support": "Destek",
+    "about": "Hakkımızda",
+    "downloadApp": "Uygulamayı İndir",
+    "skipToMain": "Ana içeriğe geç",
+    "toggleTheme": "Açık/koyu mod",
+    "openMenu": "Menüyü aç",
+    "closeMenu": "Menüyü kapat"
+  },
+  "footer": {
+    "tagline": "Nereye gidersen git, bağlantıda kal. Modern gezginler için küresel eSIM kapsamı.",
+    "product": "Ürün",
+    "company": "Şirket",
+    "legal": "Yasal",
+    "aboutUs": "Hakkımızda",
+    "contact": "İletişim",
+    "privacyPolicy": "Gizlilik Politikası",
+    "termsOfService": "Hizmet Şartları",
+    "copyright": "Tüm hakları saklıdır."
+  },
+  "cookie": {
+    "text": "Deneyiminizi iyileştirmek ve site trafiğini analiz etmek için çerezler kullanıyoruz. Kabul'e tıklayarak",
+    "privacyPolicy": "Gizlilik Politikamızı",
+    "decline": "Reddet",
+    "accept": "Tümünü Kabul Et"
+  },
+  "mobileCta": {
+    "browsePlans": "Planları Gör",
+    "howItWorks": "Nasıl Çalışır"
+  },
+  "backToTop": "Başa dön",
+  "scroll": "Kaydır",
+  "common": {
+    "tryAgain": "Tekrar dene",
+    "loading": "Yükleniyor…",
+    "from": "İtibaren",
+    "plansAvailable": "plan mevcut"
+  },
+  "home": {
+    "hero": {
+      "headline": "Bağlantıda Kal,",
+      "typingPhrases": [
+        "Nereye Gidersen Git.",
+        "Sınır Yok.",
+        "Tüm Dünyada.",
+        "Saniyeler İçinde Hazır.",
+        "Her Zaman Çevrimiçi."
+      ],
+      "desc": "Simphonia'yı indir, destinasyonunu seç ve iner inmez çevrimiçi ol — SIM kart yok, roaming ücreti yok, stres yok.",
+      "trustFreeDownload": "Ücretsiz indirme",
+      "trust200Countries": "200+ ülke",
+      "trustInstantActivation": "Anında aktivasyon",
+      "downloadOnThe": "Download on the",
+      "appStore": "App Store",
+      "googlePlay": "Google Play"
+    },
+    "howItWorks": {
+      "label": "Nasıl Çalışır",
+      "heading": "",
+      "subheading": "",
+      "learnMore": "Daha fazla öğren",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": ""
+    },
+    "features": {
+      "label": "Features",
+      "heading": "",
+      "subheading": "",
+      "instantActivation": "Instant Activation",
+      "instantActivationDesc": "",
+      "zeroRoaming": "Zero Roaming",
+      "zeroRoamingDesc": "",
+      "countries200": "200+ Countries",
+      "countries200Desc": "",
+      "flexiblePlans": "Flexible Plans",
+      "flexiblePlansDesc": "",
+      "aiSupport": "AI Support 24/7",
+      "aiSupportDesc": "",
+      "allDevices": "All Devices",
+      "allDevicesDesc": ""
+    },
+    "showcase": {
+      "panel1Step": "01",
+      "panel1Title1": "",
+      "panel1Title2": "",
+      "panel1Desc": "Bir Bakışta Cevaplar",
+      "panel2Step": "02",
+      "panel2Title1": "",
+      "panel2Title2": "",
+      "panel2Desc": "",
+      "panel3Step": "03",
+      "panel3Title1": "",
+      "panel3Title2": "",
+      "panel3Desc": "",
+      "panel4Step": "04",
+      "panel4Title1": "",
+      "panel4Title2": "",
+      "panel4Desc": "Simphonia'yı indir, destinasyonunu seç ve iner inmez çevrimiçi ol — SIM kart yok, roaming ücreti yok, stres yok."
+    },
+    "cta": {
+      "heading1": "Bağlantıda Kal,",
+      "heading2": "Bağlantıda Kal,",
+      "desc": "",
+      "browseDestinations": "Destekle İletişime Geç",
+      "howItWorks": "Nasıl Çalışır"
+    }
+  },
+  "destinations": {
+    "hero": {
+      "label": "Destinasyonlar",
+      "heading1": "Keşfet",
+      "heading2": "200+ Ülke",
+      "desc": "Bir sonraki seyahatiniz için mükemmel eSIM planını bulun."
+    },
+    "grid": {
+      "label": "Destinasyonlar",
+      "heading": "Bir sonraki seyahatiniz için mükemmel eSIM planını bulun.",
+      "desc": "",
+      "searchPlaceholder": "Ülke ara…",
+      "clearSearch": "Aramayı temizle",
+      "allTab": "Tümü"
+    },
+    "count": {
+      "countries": "destinasyonlar",
+      "of": "/"
+    },
+    "noResults": {
+      "noCountriesFor": "Destinasyonlar yüklenemedi",
+      "clearSearch": "Aramayı temizle"
+    },
+    "loading": "Destinasyonlar yükleniyor…",
+    "error": {
+      "title": "Destinasyonlar yüklenemedi",
+      "desc": "Sunucularımıza ulaşamadık.\nBağlantınızı kontrol edip tekrar deneyin.",
+      "tryAgain": "Tekrar dene"
+    },
+    "cta": {
+      "heading": "Destinasyonunuzu bulamıyor musunuz?",
+      "desc": "Her hafta yeni ülkeler ekliyoruz.",
+      "contactSupport": "Destekle İletişime Geç"
+    }
+  },
+  "support": {
+    "hero": {
+      "label": "Destek",
+      "heading1": "Size Nasıl",
+      "heading2": "Yardımcı Olabiliriz?",
+      "desc": "Sık sorulan sorulara cevap bulun veya ekibimizle iletişime geçin. 7/24 buradayız."
+    },
+    "faq": {
+      "label": "Yardım Merkezi",
+      "heading": "Bir Bakışta Cevaplar",
+      "desc": "Tam cevabı okumak için herhangi bir soruyu seçin.",
+      "searchPlaceholder": "Soru ara…",
+      "loading": "Yükleniyor…",
+      "errorTitle": "Yardım Merkezi",
+      "errorDesc": "Sunucularımıza ulaşamadık.\nBağlantınızı kontrol edip tekrar deneyin.",
+      "tryAgain": "Tekrar dene",
+      "stillNeedHelp": "Hâlâ yardıma mı ihtiyacınız var? Bize ulaşın",
+      "noResults": "Aramanızla eşleşen soru bulunamadı.",
+      "contactUsDirectly": "doğrudan iletişime geçin"
+    },
+    "contact": {
+      "label": "Destek",
+      "heading": "Yardımcı Olabiliriz?",
+      "desc": "Sık sorulan sorulara cevap bulun veya ekibimizle iletişime geçin. 7/24 buradayız.",
+      "nameLabel": "Name",
+      "namePlaceholder": "Your name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "subjectLabel": "Subject",
+      "subjectDefault": "Select a topic…",
+      "subjectGeneral": "General Inquiry",
+      "subjectBilling": "Billing & Payments",
+      "subjectTechnical": "Technical Issue",
+      "subjectEsim": "eSIM Activation",
+      "subjectRefund": "Refund Request",
+      "subjectOther": "Other",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Describe your issue…",
+      "sendMessage": "Mesaj Gönder",
+      "sending": "Gönderiliyor…",
+      "successMessage": "Mesaj gönderildi! 24 saat içinde size geri döneceğiz.",
+      "errorRequired": "Bu alan zorunludur.",
+      "errorEmail": "Lütfen geçerli bir e-posta adresi girin.",
+      "errorNameRequired": "Bu alan zorunludur.",
+      "errorEmailRequired": "Bu alan zorunludur.",
+      "errorMessageRequired": "Bu alan zorunludur.",
+      "errorSubjectRequired": "Bu alan zorunludur.",
+      "errorCooldown": "Please wait {seconds} seconds.",
+      "errorNoToken": "Unable to connect. Please try again later.",
+      "errorGeneric": "Something went wrong. Please try again."
+    },
+    "channels": {
+      "label": "Destek",
+      "heading": "Yardımcı Olabiliriz?",
+      "desc": "",
+      "chat": "In-App Chat",
+      "chatDesc": "",
+      "email": "Email",
+      "emailDesc": "",
+      "social": "Social",
+      "socialDesc": ""
+    }
+  },
+  "about": {
+    "hero": {
+      "label": "Hakkımızda",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "story": {
+      "label": "",
+      "heading1": "",
+      "heading2": "",
+      "quote": "",
+      "p1": "",
+      "p2": "",
+      "stat1Label": "Destinasyonlar",
+      "stat2Label": "",
+      "stat3Label": "Destek"
+    },
+    "values": {
+      "label": "",
+      "heading": "",
+      "v1Title": "",
+      "v1Desc": "",
+      "v2Title": "",
+      "v2Desc": "",
+      "v3Title": "",
+      "v3Desc": "",
+      "v4Title": "",
+      "v4Desc": ""
+    },
+    "team": {
+      "label": "",
+      "heading": "",
+      "role": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "Destekle İletişime Geç"
+    }
+  },
+  "howItWorks": {
+    "hero": {
+      "label": "Nasıl Çalışır",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "steps": {
+      "label": "",
+      "heading": "",
+      "desc": "",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step1Check1": "",
+      "step1Check2": "",
+      "step1Check3": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step2Check1": "",
+      "step2Check2": "",
+      "step2Check3": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": "",
+      "step3Check1": "",
+      "step3Check2": "",
+      "step3Check3": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "Destekle İletişime Geç",
+      "backToHome": ""
+    }
+  }
+}

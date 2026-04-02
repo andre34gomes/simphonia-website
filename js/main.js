@@ -152,6 +152,11 @@ function revealGsapFallbacks() {
 
 async function bootstrapSite() {
   try {
+    // Wait for i18n translations to load (fires in parallel with deferred scripts)
+    if (window.i18nReady) {
+      await window.i18nReady;
+    }
+
     const layoutReady = await ensureLayoutBootstrap();
 
     if (!layoutReady) {
@@ -432,7 +437,9 @@ bootstrapSite();
   // Fallback startLoop() is also handled there for browsers without IO support.
 
   // ── API fetch with retry ──────────────────────────────────
-  const lang = (navigator.language || 'en').split('-')[0];
+  function getCurrentLang() {
+    return window.SIMPHONIA_LANG || (navigator.language || 'en').split('-')[0];
+  }
 
   // Hide the marquee strip until the API populates it with real data.
   // No hardcoded fallback — if the API is unreachable, the strip stays hidden.
@@ -451,6 +458,7 @@ bootstrapSite();
 
   function fetchCountries(attempt) {
     attempt = attempt || 0;
+    var lang = getCurrentLang();
     getGuestToken()
       .then(function (token) {
         var controller = new AbortController();
@@ -479,6 +487,16 @@ bootstrapSite();
   }
 
   fetchCountries();
+
+  // Re-fetch marquee countries when the language changes
+  document.addEventListener('simphonia:langchange', function () {
+    // Clear existing marquee content
+    var lists = strip.querySelectorAll('.marquee-list');
+    lists.forEach(function (ul) { ul.innerHTML = ''; });
+    strip.style.display = 'none';
+    // Fetch with the new language
+    fetchCountries(0);
+  });
 }());
 
 // ============================================================
@@ -773,13 +791,21 @@ function initHeroTyping() {
   let pausedByVisibility = false;
   let tickFn = null;
 
-  const phrases = [
-    'Wherever You Go.',
-    'Without Limits.',
-    'Across the Globe.',
-    'Ready in Seconds.',
-    'Always Online.',
-  ];
+  function getTypingPhrases() {
+    if (typeof window.t === 'function') {
+      var translated = window.t('home.hero.typingPhrases');
+      if (Array.isArray(translated)) return translated;
+    }
+    return [
+      'Wherever You Go.',
+      'Without Limits.',
+      'Across the Globe.',
+      'Ready in Seconds.',
+      'Always Online.',
+    ];
+  }
+
+  let phrases = getTypingPhrases();
 
   const TYPING_SPEED = 100;   // ms per character (typing)
   const DELETING_SPEED = 50;   // ms per character (deleting)
@@ -839,6 +865,21 @@ function initHeroTyping() {
       pausedByVisibility = false;
       timer = setTimeout(tickFn, 100);
     }
+  });
+
+  // Restart typing effect with new translated phrases when language changes
+  document.addEventListener('simphonia:langchange', function () {
+    if (!active) return;
+    // Clear current animation
+    if (timer) { clearTimeout(timer); timer = null; }
+    // Reload phrases with new language
+    phrases = getTypingPhrases();
+    // Reset state and restart from the beginning
+    phraseIndex = 0;
+    charIndex = 0;
+    isDeleting = false;
+    el.textContent = '';
+    timer = setTimeout(tickFn, 200);
   });
 
   // Clean up on page hide (bfcache / tab close)

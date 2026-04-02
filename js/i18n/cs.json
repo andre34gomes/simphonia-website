@@ -1,0 +1,320 @@
+{
+  "lang": {
+    "select": "Jazyk",
+    "names": {
+      "en": "English",
+      "pt": "Português",
+      "es": "Español",
+      "fr": "Français",
+      "de": "Deutsch",
+      "it": "Italiano",
+      "nl": "Nederlands",
+      "ja": "日本語",
+      "zh": "中文",
+      "ko": "한국어",
+      "ar": "العربية",
+      "ru": "Русский",
+      "tr": "Türkçe",
+      "pl": "Polski",
+      "uk": "Українська",
+      "hi": "हिन्दी",
+      "id": "Bahasa Indonesia",
+      "vi": "Tiếng Việt",
+      "cs": "Čeština",
+      "hu": "Magyar",
+      "fa": "فارسی"
+    }
+  },
+  "nav": {
+    "destinations": "Destinace",
+    "howItWorks": "Jak to funguje",
+    "support": "Podpora",
+    "about": "O nás",
+    "downloadApp": "Stáhnout aplikaci",
+    "skipToMain": "Přejít na hlavní obsah",
+    "toggleTheme": "Světlý/tmavý režim",
+    "openMenu": "Otevřít menu",
+    "closeMenu": "Zavřít menu"
+  },
+  "footer": {
+    "tagline": "Zůstaňte v kontaktu, kamkoliv jdete. Globální pokrytí eSIM pro moderní cestovatele.",
+    "product": "Produkt",
+    "company": "Společnost",
+    "legal": "Právní",
+    "aboutUs": "O nás",
+    "contact": "Kontakt",
+    "privacyPolicy": "Zásady ochrany osobních údajů",
+    "termsOfService": "Podmínky služby",
+    "copyright": "Všechna práva vyhrazena."
+  },
+  "cookie": {
+    "text": "Používáme soubory cookie ke zlepšení vašeho zážitku a analýze návštěvnosti. Kliknutím na Přijmout souhlasíte s naší",
+    "privacyPolicy": "Zásadami ochrany osobních údajů",
+    "decline": "Odmítnout",
+    "accept": "Přijmout vše"
+  },
+  "mobileCta": {
+    "browsePlans": "Zobrazit plány",
+    "howItWorks": "Jak to funguje"
+  },
+  "backToTop": "Zpět nahoru",
+  "scroll": "Scrollovat",
+  "common": {
+    "tryAgain": "Zkusit znovu",
+    "loading": "Načítání…",
+    "from": "Od",
+    "plansAvailable": "plánů k dispozici"
+  },
+  "home": {
+    "hero": {
+      "headline": "Zůstaňte v kontaktu,",
+      "typingPhrases": [
+        "Kamkoliv jdete.",
+        "Bez omezení.",
+        "Po celém světě.",
+        "Připraveno za sekundy.",
+        "Vždy online."
+      ],
+      "desc": "Stáhněte Simphonii, vyberte cíl a zůstaňte online hned po přistání — bez SIM karty, bez poplatků za roaming, bez stresu.",
+      "trustFreeDownload": "Ke stažení zdarma",
+      "trust200Countries": "200+ zemí",
+      "trustInstantActivation": "Okamžitá aktivace",
+      "downloadOnThe": "Download on the",
+      "appStore": "App Store",
+      "googlePlay": "Google Play"
+    },
+    "howItWorks": {
+      "label": "Jak to funguje",
+      "heading": "",
+      "subheading": "",
+      "learnMore": "Zjistit více",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": ""
+    },
+    "features": {
+      "label": "Features",
+      "heading": "",
+      "subheading": "",
+      "instantActivation": "Instant Activation",
+      "instantActivationDesc": "",
+      "zeroRoaming": "Zero Roaming",
+      "zeroRoamingDesc": "",
+      "countries200": "200+ Countries",
+      "countries200Desc": "",
+      "flexiblePlans": "Flexible Plans",
+      "flexiblePlansDesc": "",
+      "aiSupport": "AI Support 24/7",
+      "aiSupportDesc": "",
+      "allDevices": "All Devices",
+      "allDevicesDesc": ""
+    },
+    "showcase": {
+      "panel1Step": "01",
+      "panel1Title1": "",
+      "panel1Title2": "",
+      "panel1Desc": "Odpovědi na první pohled",
+      "panel2Step": "02",
+      "panel2Title1": "",
+      "panel2Title2": "",
+      "panel2Desc": "",
+      "panel3Step": "03",
+      "panel3Title1": "",
+      "panel3Title2": "",
+      "panel3Desc": "",
+      "panel4Step": "04",
+      "panel4Title1": "",
+      "panel4Title2": "",
+      "panel4Desc": "Stáhněte Simphonii, vyberte cíl a zůstaňte online hned po přistání — bez SIM karty, bez poplatků za roaming, bez stresu."
+    },
+    "cta": {
+      "heading1": "Zůstaňte v kontaktu,",
+      "heading2": "Zůstaňte v kontaktu,",
+      "desc": "",
+      "browseDestinations": "Kontaktovat podporu",
+      "howItWorks": "Jak to funguje"
+    }
+  },
+  "destinations": {
+    "hero": {
+      "label": "Destinace",
+      "heading1": "Prozkoumejte",
+      "heading2": "200+ zemí",
+      "desc": "Najděte ideální plán eSIM pro vaši příští cestu."
+    },
+    "grid": {
+      "label": "Destinace",
+      "heading": "Najděte ideální plán eSIM pro vaši příští cestu.",
+      "desc": "",
+      "searchPlaceholder": "Hledat země…",
+      "clearSearch": "Vymazat hledání",
+      "allTab": "Vše"
+    },
+    "count": {
+      "countries": "destinace",
+      "of": "z"
+    },
+    "noResults": {
+      "noCountriesFor": "Destinace nelze načíst",
+      "clearSearch": "Vymazat hledání"
+    },
+    "loading": "Načítání destinací…",
+    "error": {
+      "title": "Destinace nelze načíst",
+      "desc": "Nepodařilo se nám kontaktovat servery.\nZkontrolujte připojení a zkuste znovu.",
+      "tryAgain": "Zkusit znovu"
+    },
+    "cta": {
+      "heading": "Nenašli jste svůj cíl?",
+      "desc": "Každý týden přidáváme nové země.",
+      "contactSupport": "Kontaktovat podporu"
+    }
+  },
+  "support": {
+    "hero": {
+      "label": "Podpora",
+      "heading1": "Jak vám můžeme",
+      "heading2": "pomoci?",
+      "desc": "Najděte odpovědi na časté otázky nebo kontaktujte náš tým. Jsme tu 24/7."
+    },
+    "faq": {
+      "label": "Centrum nápovědy",
+      "heading": "Odpovědi na první pohled",
+      "desc": "Vyberte libovolnou otázku pro přečtení celé odpovědi.",
+      "searchPlaceholder": "Hledat otázky…",
+      "loading": "Načítání…",
+      "errorTitle": "Centrum nápovědy",
+      "errorDesc": "Nepodařilo se nám kontaktovat servery.\nZkontrolujte připojení a zkuste znovu.",
+      "tryAgain": "Zkusit znovu",
+      "stillNeedHelp": "Stále potřebujete pomoc? Kontaktujte nás",
+      "noResults": "Žádné otázky neodpovídají vašemu hledání.",
+      "contactUsDirectly": "kontaktujte nás přímo"
+    },
+    "contact": {
+      "label": "Podpora",
+      "heading": "pomoci?",
+      "desc": "Najděte odpovědi na časté otázky nebo kontaktujte náš tým. Jsme tu 24/7.",
+      "nameLabel": "Name",
+      "namePlaceholder": "Your name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "subjectLabel": "Subject",
+      "subjectDefault": "Select a topic…",
+      "subjectGeneral": "General Inquiry",
+      "subjectBilling": "Billing & Payments",
+      "subjectTechnical": "Technical Issue",
+      "subjectEsim": "eSIM Activation",
+      "subjectRefund": "Refund Request",
+      "subjectOther": "Other",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Describe your issue…",
+      "sendMessage": "Odeslat zprávu",
+      "sending": "Odesílání…",
+      "successMessage": "Zpráva odeslána! Odpovíme do 24 hodin.",
+      "errorRequired": "Toto pole je povinné.",
+      "errorEmail": "Prosím zadejte platnou e-mailovou adresu.",
+      "errorNameRequired": "Toto pole je povinné.",
+      "errorEmailRequired": "Toto pole je povinné.",
+      "errorMessageRequired": "Toto pole je povinné.",
+      "errorSubjectRequired": "Toto pole je povinné.",
+      "errorCooldown": "Please wait {seconds} seconds.",
+      "errorNoToken": "Unable to connect. Please try again later.",
+      "errorGeneric": "Something went wrong. Please try again."
+    },
+    "channels": {
+      "label": "Podpora",
+      "heading": "pomoci?",
+      "desc": "",
+      "chat": "In-App Chat",
+      "chatDesc": "",
+      "email": "Email",
+      "emailDesc": "",
+      "social": "Social",
+      "socialDesc": ""
+    }
+  },
+  "about": {
+    "hero": {
+      "label": "O nás",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "story": {
+      "label": "",
+      "heading1": "",
+      "heading2": "",
+      "quote": "",
+      "p1": "",
+      "p2": "",
+      "stat1Label": "Destinace",
+      "stat2Label": "",
+      "stat3Label": "Podpora"
+    },
+    "values": {
+      "label": "",
+      "heading": "",
+      "v1Title": "",
+      "v1Desc": "",
+      "v2Title": "",
+      "v2Desc": "",
+      "v3Title": "",
+      "v3Desc": "",
+      "v4Title": "",
+      "v4Desc": ""
+    },
+    "team": {
+      "label": "",
+      "heading": "",
+      "role": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "Kontaktovat podporu"
+    }
+  },
+  "howItWorks": {
+    "hero": {
+      "label": "Jak to funguje",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "steps": {
+      "label": "",
+      "heading": "",
+      "desc": "",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step1Check1": "",
+      "step1Check2": "",
+      "step1Check3": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step2Check1": "",
+      "step2Check2": "",
+      "step2Check3": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": "",
+      "step3Check1": "",
+      "step3Check2": "",
+      "step3Check3": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "Kontaktovat podporu",
+      "backToHome": ""
+    }
+  }
+}

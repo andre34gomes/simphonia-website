@@ -1,0 +1,320 @@
+{
+  "lang": {
+    "select": "Ngôn ngữ",
+    "names": {
+      "en": "English",
+      "pt": "Português",
+      "es": "Español",
+      "fr": "Français",
+      "de": "Deutsch",
+      "it": "Italiano",
+      "nl": "Nederlands",
+      "ja": "日本語",
+      "zh": "中文",
+      "ko": "한국어",
+      "ar": "العربية",
+      "ru": "Русский",
+      "tr": "Türkçe",
+      "pl": "Polski",
+      "uk": "Українська",
+      "hi": "हिन्दी",
+      "id": "Bahasa Indonesia",
+      "vi": "Tiếng Việt",
+      "cs": "Čeština",
+      "hu": "Magyar",
+      "fa": "فارسی"
+    }
+  },
+  "nav": {
+    "destinations": "Điểm đến",
+    "howItWorks": "Cách hoạt động",
+    "support": "Hỗ trợ",
+    "about": "Về chúng tôi",
+    "downloadApp": "Tải ứng dụng",
+    "skipToMain": "Chuyển đến nội dung chính",
+    "toggleTheme": "Chế độ sáng/tối",
+    "openMenu": "Mở menu",
+    "closeMenu": "Đóng menu"
+  },
+  "footer": {
+    "tagline": "Luôn kết nối dù bạn đi đâu. Phủ sóng eSIM toàn cầu cho du khách hiện đại.",
+    "product": "Sản phẩm",
+    "company": "Công ty",
+    "legal": "Pháp lý",
+    "aboutUs": "Về chúng tôi",
+    "contact": "Liên hệ",
+    "privacyPolicy": "Chính sách bảo mật",
+    "termsOfService": "Điều khoản dịch vụ",
+    "copyright": "Bảo lưu mọi quyền."
+  },
+  "cookie": {
+    "text": "Chúng tôi sử dụng cookie để cải thiện trải nghiệm của bạn và phân tích lưu lượng truy cập. Bằng cách nhấp Chấp nhận, bạn đồng ý với",
+    "privacyPolicy": "Chính sách bảo mật",
+    "decline": "Từ chối",
+    "accept": "Chấp nhận tất cả"
+  },
+  "mobileCta": {
+    "browsePlans": "Xem gói cước",
+    "howItWorks": "Cách hoạt động"
+  },
+  "backToTop": "Lên đầu trang",
+  "scroll": "Cuộn",
+  "common": {
+    "tryAgain": "Thử lại",
+    "loading": "Đang tải…",
+    "from": "Từ",
+    "plansAvailable": "gói có sẵn"
+  },
+  "home": {
+    "hero": {
+      "headline": "Luôn Kết Nối,",
+      "typingPhrases": [
+        "Dù Bạn Đi Đâu.",
+        "Không Giới Hạn.",
+        "Khắp Toàn Cầu.",
+        "Sẵn Sàng Trong Vài Giây.",
+        "Luôn Trực Tuyến."
+      ],
+      "desc": "Tải Simphonia, chọn điểm đến, và trực tuyến ngay khi hạ cánh — không cần SIM, không phí roaming, không lo lắng.",
+      "trustFreeDownload": "Tải miễn phí",
+      "trust200Countries": "200+ quốc gia",
+      "trustInstantActivation": "Kích hoạt ngay lập tức",
+      "downloadOnThe": "Download on the",
+      "appStore": "App Store",
+      "googlePlay": "Google Play"
+    },
+    "howItWorks": {
+      "label": "Cách hoạt động",
+      "heading": "",
+      "subheading": "",
+      "learnMore": "Tìm hiểu thêm",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": ""
+    },
+    "features": {
+      "label": "Features",
+      "heading": "",
+      "subheading": "",
+      "instantActivation": "Instant Activation",
+      "instantActivationDesc": "",
+      "zeroRoaming": "Zero Roaming",
+      "zeroRoamingDesc": "",
+      "countries200": "200+ Countries",
+      "countries200Desc": "",
+      "flexiblePlans": "Flexible Plans",
+      "flexiblePlansDesc": "",
+      "aiSupport": "AI Support 24/7",
+      "aiSupportDesc": "",
+      "allDevices": "All Devices",
+      "allDevicesDesc": ""
+    },
+    "showcase": {
+      "panel1Step": "01",
+      "panel1Title1": "",
+      "panel1Title2": "",
+      "panel1Desc": "Câu trả lời nhanh",
+      "panel2Step": "02",
+      "panel2Title1": "",
+      "panel2Title2": "",
+      "panel2Desc": "",
+      "panel3Step": "03",
+      "panel3Title1": "",
+      "panel3Title2": "",
+      "panel3Desc": "",
+      "panel4Step": "04",
+      "panel4Title1": "",
+      "panel4Title2": "",
+      "panel4Desc": "Tải Simphonia, chọn điểm đến, và trực tuyến ngay khi hạ cánh — không cần SIM, không phí roaming, không lo lắng."
+    },
+    "cta": {
+      "heading1": "Luôn Kết Nối,",
+      "heading2": "Luôn Kết Nối,",
+      "desc": "",
+      "browseDestinations": "Liên hệ hỗ trợ",
+      "howItWorks": "Cách hoạt động"
+    }
+  },
+  "destinations": {
+    "hero": {
+      "label": "Điểm đến",
+      "heading1": "Khám phá",
+      "heading2": "200+ Quốc gia",
+      "desc": "Tìm gói eSIM hoàn hảo cho chuyến đi tiếp theo."
+    },
+    "grid": {
+      "label": "Điểm đến",
+      "heading": "Tìm gói eSIM hoàn hảo cho chuyến đi tiếp theo.",
+      "desc": "",
+      "searchPlaceholder": "Tìm kiếm quốc gia…",
+      "clearSearch": "Xóa tìm kiếm",
+      "allTab": "Tất cả"
+    },
+    "count": {
+      "countries": "điểm đến",
+      "of": "/"
+    },
+    "noResults": {
+      "noCountriesFor": "Không thể tải điểm đến",
+      "clearSearch": "Xóa tìm kiếm"
+    },
+    "loading": "Đang tải điểm đến…",
+    "error": {
+      "title": "Không thể tải điểm đến",
+      "desc": "Chúng tôi không thể kết nối với máy chủ.\nKiểm tra kết nối và thử lại.",
+      "tryAgain": "Thử lại"
+    },
+    "cta": {
+      "heading": "Không tìm thấy điểm đến?",
+      "desc": "Chúng tôi đang thêm quốc gia mới mỗi tuần.",
+      "contactSupport": "Liên hệ hỗ trợ"
+    }
+  },
+  "support": {
+    "hero": {
+      "label": "Hỗ trợ",
+      "heading1": "Chúng tôi có thể",
+      "heading2": "giúp gì cho bạn?",
+      "desc": "Tìm câu trả lời cho các câu hỏi thường gặp hoặc liên hệ với nhóm của chúng tôi. Chúng tôi ở đây 24/7."
+    },
+    "faq": {
+      "label": "Trung tâm trợ giúp",
+      "heading": "Câu trả lời nhanh",
+      "desc": "Chọn bất kỳ câu hỏi nào để đọc câu trả lời đầy đủ.",
+      "searchPlaceholder": "Tìm kiếm câu hỏi…",
+      "loading": "Đang tải…",
+      "errorTitle": "Trung tâm trợ giúp",
+      "errorDesc": "Chúng tôi không thể kết nối với máy chủ.\nKiểm tra kết nối và thử lại.",
+      "tryAgain": "Thử lại",
+      "stillNeedHelp": "Vẫn cần giúp đỡ? Liên hệ chúng tôi",
+      "noResults": "Không có câu hỏi nào phù hợp với tìm kiếm của bạn.",
+      "contactUsDirectly": "liên hệ trực tiếp"
+    },
+    "contact": {
+      "label": "Hỗ trợ",
+      "heading": "giúp gì cho bạn?",
+      "desc": "Tìm câu trả lời cho các câu hỏi thường gặp hoặc liên hệ với nhóm của chúng tôi. Chúng tôi ở đây 24/7.",
+      "nameLabel": "Name",
+      "namePlaceholder": "Your name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "subjectLabel": "Subject",
+      "subjectDefault": "Select a topic…",
+      "subjectGeneral": "General Inquiry",
+      "subjectBilling": "Billing & Payments",
+      "subjectTechnical": "Technical Issue",
+      "subjectEsim": "eSIM Activation",
+      "subjectRefund": "Refund Request",
+      "subjectOther": "Other",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Describe your issue…",
+      "sendMessage": "Gửi tin nhắn",
+      "sending": "Đang gửi…",
+      "successMessage": "Tin nhắn đã gửi! Chúng tôi sẽ phản hồi trong vòng 24 giờ.",
+      "errorRequired": "Trường này là bắt buộc.",
+      "errorEmail": "Vui lòng nhập địa chỉ email hợp lệ.",
+      "errorNameRequired": "Trường này là bắt buộc.",
+      "errorEmailRequired": "Trường này là bắt buộc.",
+      "errorMessageRequired": "Trường này là bắt buộc.",
+      "errorSubjectRequired": "Trường này là bắt buộc.",
+      "errorCooldown": "Please wait {seconds} seconds.",
+      "errorNoToken": "Unable to connect. Please try again later.",
+      "errorGeneric": "Something went wrong. Please try again."
+    },
+    "channels": {
+      "label": "Hỗ trợ",
+      "heading": "giúp gì cho bạn?",
+      "desc": "",
+      "chat": "In-App Chat",
+      "chatDesc": "",
+      "email": "Email",
+      "emailDesc": "",
+      "social": "Social",
+      "socialDesc": ""
+    }
+  },
+  "about": {
+    "hero": {
+      "label": "Về chúng tôi",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "story": {
+      "label": "",
+      "heading1": "",
+      "heading2": "",
+      "quote": "",
+      "p1": "",
+      "p2": "",
+      "stat1Label": "Điểm đến",
+      "stat2Label": "",
+      "stat3Label": "Hỗ trợ"
+    },
+    "values": {
+      "label": "",
+      "heading": "",
+      "v1Title": "",
+      "v1Desc": "",
+      "v2Title": "",
+      "v2Desc": "",
+      "v3Title": "",
+      "v3Desc": "",
+      "v4Title": "",
+      "v4Desc": ""
+    },
+    "team": {
+      "label": "",
+      "heading": "",
+      "role": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "Liên hệ hỗ trợ"
+    }
+  },
+  "howItWorks": {
+    "hero": {
+      "label": "Cách hoạt động",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "steps": {
+      "label": "",
+      "heading": "",
+      "desc": "",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step1Check1": "",
+      "step1Check2": "",
+      "step1Check3": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step2Check1": "",
+      "step2Check2": "",
+      "step2Check3": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": "",
+      "step3Check1": "",
+      "step3Check2": "",
+      "step3Check3": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "Liên hệ hỗ trợ",
+      "backToHome": ""
+    }
+  }
+}

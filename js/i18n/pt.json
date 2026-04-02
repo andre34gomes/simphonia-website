@@ -1,0 +1,315 @@
+{
+  "lang": {
+    "select": "Idioma",
+    "names": {
+      "en": "English",
+      "pt": "Português",
+      "es": "Español",
+      "fr": "Français",
+      "de": "Deutsch",
+      "it": "Italiano",
+      "nl": "Nederlands",
+      "ja": "日本語",
+      "zh": "中文",
+      "ko": "한국어",
+      "ar": "العربية",
+      "ru": "Русский",
+      "tr": "Türkçe",
+      "pl": "Polski",
+      "uk": "Українська",
+      "hi": "हिन्दी",
+      "id": "Bahasa Indonesia",
+      "vi": "Tiếng Việt",
+      "cs": "Čeština",
+      "hu": "Magyar",
+      "fa": "فارسی"
+    }
+  },
+  "nav": {
+    "destinations": "Destinos",
+    "howItWorks": "Como Funciona",
+    "support": "Suporte",
+    "about": "Sobre",
+    "downloadApp": "Descarregar App",
+    "skipToMain": "Saltar para o conteúdo principal",
+    "toggleTheme": "Alternar modo claro/escuro",
+    "openMenu": "Abrir menu",
+    "closeMenu": "Fechar menu"
+  },
+  "footer": {
+    "tagline": "Mantém-te ligado, onde quer que vás. Cobertura eSIM global para viajantes modernos.",
+    "product": "Produto",
+    "company": "Empresa",
+    "legal": "Legal",
+    "aboutUs": "Sobre Nós",
+    "contact": "Contacto",
+    "privacyPolicy": "Política de Privacidade",
+    "termsOfService": "Termos de Serviço",
+    "copyright": "Todos os direitos reservados."
+  },
+  "cookie": {
+    "text": "Utilizamos cookies para melhorar a tua experiência e analisar o tráfego do site. Ao clicar em Aceitar, concordas com a nossa",
+    "privacyPolicy": "Política de Privacidade",
+    "decline": "Recusar",
+    "accept": "Aceitar Tudo"
+  },
+  "mobileCta": {
+    "browsePlans": "Ver Planos",
+    "howItWorks": "Como Funciona"
+  },
+  "backToTop": "Voltar ao topo",
+  "scroll": "Rolar",
+  "common": {
+    "tryAgain": "Tentar Novamente",
+    "loading": "A carregar…",
+    "from": "A partir de",
+    "plansAvailable": "planos disponíveis"
+  },
+  "home": {
+    "hero": {
+      "headline": "Fica Ligado,",
+      "typingPhrases": ["Onde Quer Que Vás.", "Sem Limites.", "Por Todo o Mundo.", "Pronto em Segundos.", "Sempre Online."],
+      "desc": "Descarrega a Simphonia, escolhe o teu destino e fica online assim que aterras — sem cartões SIM, sem tarifas de roaming, sem stress.",
+      "trustFreeDownload": "Download gratuito",
+      "trust200Countries": "200+ países",
+      "trustInstantActivation": "Ativação instantânea",
+      "downloadOnThe": "Descarregar na",
+      "appStore": "App Store",
+      "googlePlay": "Google Play"
+    },
+    "howItWorks": {
+      "label": "Como Funciona",
+      "heading": "Ligado em Menos de 2 Minutos",
+      "subheading": "Sem visitas a lojas, sem espera, sem SIM físico. Três passos para conetividade global.",
+      "learnMore": "Saber Mais",
+      "step1Label": "Passo 1",
+      "step1Title": "Escolhe o Teu Plano",
+      "step1Desc": "Pesquisa 200+ países e regiões. Compara planos por dados, duração e preço. Filtra por destino ou navega pelas sugestões curadas para os destinos mais populares.",
+      "step2Label": "Passo 2",
+      "step2Title": "Compra em Segundos",
+      "step2Desc": "Checkout seguro em segundos. O teu código QR eSIM é gerado instantaneamente na app — sem email, sem espera, sem entrega física.",
+      "step3Label": "Passo 3",
+      "step3Title": "Viaja Ligado",
+      "step3Desc": "Lê o código QR antes da partida. O teu eSIM ativa automaticamente quando chegares. Mantém o teu número, elimina as tarifas de roaming."
+    },
+    "features": {
+      "label": "Funcionalidades",
+      "heading": "Tudo o Que Precisas para Viajar com Inteligência",
+      "subheading": "Criado para a forma como os viajantes modernos realmente viajam.",
+      "instantActivation": "Ativação Instantânea",
+      "instantActivationDesc": "Código QR entregue instantaneamente na app. De compra a online em menos de 60 segundos, sem entrega física necessária.",
+      "zeroRoaming": "Zero Tarifas de Roaming",
+      "zeroRoamingDesc": "Liga-te a redes locais a preços locais. Poupa até 90% comparado com as tarifas de roaming tradicionais.",
+      "countries200": "200+ Países",
+      "countries200Desc": "Cobertura global que realmente funciona. Planos locais para cada destino e tipo de viagem.",
+      "flexiblePlans": "Planos Flexíveis",
+      "flexiblePlansDesc": "1 GB para um fim de semana ou dados ilimitados para uma expedição de um mês. Compra exatamente o que precisas.",
+      "aiSupport": "Suporte IA 24/7",
+      "aiSupportDesc": "Ajuda instantânea do nosso assistente de IA a qualquer hora, em qualquer fuso horário. Agentes humanos reais disponíveis quando mais precisares.",
+      "allDevices": "Todos os Dispositivos Modernos",
+      "allDevicesDesc": "Compatível com todos os iPhones, Samsung Galaxy, Google Pixel e mais dispositivos com suporte eSIM."
+    },
+    "showcase": {
+      "panel1Step": "Explorar",
+      "panel1Title1": "Encontra o teu plano",
+      "panel1Title2": "em segundos.",
+      "panel1Desc": "Pesquisa 200+ países com filtragem em tempo real e recomendações inteligentes para qualquer viagem.",
+      "panel2Step": "Comprar",
+      "panel2Title1": "Compra em menos de",
+      "panel2Title2": "30 segundos.",
+      "panel2Desc": "Apple Pay, Google Pay, todos os cartões principais. O teu código QR está pronto assim que pagas.",
+      "panel3Step": "Monitorizar",
+      "panel3Title1": "Sabe exatamente",
+      "panel3Title2": "o que resta.",
+      "panel3Desc": "Painel de dados em tempo real e alertas inteligentes para nunca ficares sem dados no momento errado.",
+      "panel4Step": "Suporte",
+      "panel4Title1": "Ajuda sempre que",
+      "panel4Title2": "precisares.",
+      "panel4Desc": "Suporte IA 24/7 em qualquer idioma, onde quer que estejas no mundo."
+    },
+    "cta": {
+      "heading1": "Fica Ligado,",
+      "heading2": "Onde Quer Que Vás.",
+      "desc": "Explora os nossos destinos e encontra o plano eSIM perfeito para a tua próxima aventura.",
+      "browseDestinations": "Ver Destinos",
+      "howItWorks": "Como Funciona"
+    }
+  },
+  "destinations": {
+    "hero": {
+      "label": "Destinos",
+      "heading1": "Explora",
+      "heading2": "200+ Países",
+      "desc": "Encontra o plano eSIM perfeito para a tua próxima viagem. Cobertura local em todo o mundo."
+    },
+    "grid": {
+      "label": "Explorar",
+      "heading": "Onde Vais a Seguir?",
+      "desc": "Cobertura em 200+ países e regiões. Pesquisa ou filtra para encontrar o teu destino.",
+      "searchPlaceholder": "Pesquisar países…",
+      "clearSearch": "Limpar pesquisa",
+      "allTab": "Todos"
+    },
+    "count": {
+      "countries": "países",
+      "of": "de"
+    },
+    "noResults": {
+      "noCountriesFor": "Nenhum país encontrado para",
+      "clearSearch": "Limpar pesquisa"
+    },
+    "loading": "A carregar destinos…",
+    "error": {
+      "title": "Não Foi Possível Carregar os Destinos",
+      "desc": "Não conseguimos alcançar os nossos servidores agora.\nVerifica a tua ligação e tenta novamente.",
+      "tryAgain": "Tentar Novamente"
+    },
+    "cta": {
+      "heading": "Não Encontras o Teu Destino?",
+      "desc": "Estamos a adicionar novos países todas as semanas. Volta em breve para mais destinos.",
+      "contactSupport": "Contactar Suporte"
+    }
+  },
+  "support": {
+    "hero": {
+      "label": "Suporte",
+      "heading1": "Como Podemos",
+      "heading2": "Ajudar?",
+      "desc": "Encontra respostas para perguntas frequentes ou entra em contacto com a nossa equipa. Estamos aqui 24/7."
+    },
+    "faq": {
+      "label": "Centro de Ajuda",
+      "heading": "Respostas de Relance",
+      "desc": "Seleciona qualquer pergunta para ler a resposta completa.",
+      "searchPlaceholder": "Pesquisar perguntas…",
+      "loading": "A carregar…",
+      "errorTitle": "Não Foi Possível Carregar as FAQs",
+      "errorDesc": "Não conseguimos alcançar os nossos servidores agora.\nVerifica a tua ligação e tenta novamente.",
+      "tryAgain": "Tentar Novamente",
+      "stillNeedHelp": "Ainda precisas de ajuda? Contacta-nos",
+      "noResults": "Nenhuma pergunta corresponde à tua pesquisa. Tenta palavras-chave diferentes ou",
+      "contactUsDirectly": "contacta-nos diretamente"
+    },
+    "contact": {
+      "label": "Contacta-nos",
+      "heading": "Ainda Precisas de Ajuda?",
+      "desc": "A nossa equipa de suporte está disponível 24/7. Envia-nos uma mensagem e responderemos brevemente.",
+      "nameLabel": "Nome",
+      "namePlaceholder": "O teu nome",
+      "emailLabel": "Email",
+      "emailPlaceholder": "tu@exemplo.com",
+      "subjectLabel": "Assunto",
+      "subjectDefault": "Seleciona um tema…",
+      "subjectGeneral": "Questão Geral",
+      "subjectBilling": "Faturação e Pagamentos",
+      "subjectTechnical": "Problema Técnico",
+      "subjectEsim": "Ativação de eSIM",
+      "subjectRefund": "Pedido de Reembolso",
+      "subjectOther": "Outro",
+      "messageLabel": "Mensagem",
+      "messagePlaceholder": "Descreve o teu problema ou questão…",
+      "sendMessage": "Enviar Mensagem",
+      "sending": "A enviar…",
+      "successMessage": "Mensagem enviada! Responderemos dentro de 24 horas.",
+      "errorRequired": "Este campo é obrigatório.",
+      "errorEmail": "Por favor insere um endereço de email válido.",
+      "errorNameRequired": "Por favor insere o teu nome.",
+      "errorEmailRequired": "Por favor insere o teu endereço de email.",
+      "errorMessageRequired": "Por favor descreve o teu problema ou questão.",
+      "errorSubjectRequired": "Por favor seleciona um tema.",
+      "errorCooldown": "Por favor aguarda {seconds} segundos antes de enviar outra mensagem.",
+      "errorNoToken": "Não foi possível ligar ao servidor. Tenta novamente mais tarde ou envia um email para support@simphonia.pt.",
+      "errorGeneric": "Algo correu mal. Tenta novamente ou envia um email para support@simphonia.pt."
+    },
+    "channels": {
+      "label": "Outras Formas de Nos Contactar",
+      "heading": "Estamos Sempre Disponíveis",
+      "desc": "Escolhe o canal que melhor te convém.",
+      "chat": "Chat na App",
+      "chatDesc": "Obtém respostas instantâneas do nosso assistente de IA diretamente dentro da app Simphonia — disponível 24/7.",
+      "email": "Email",
+      "emailDesc": "Envia-nos um email a qualquer hora — respondemos normalmente dentro de algumas horas.",
+      "social": "Redes Sociais",
+      "socialDesc": "Segue-nos para destaques de destinos, dicas de viagem e atualizações de produto."
+    }
+  },
+  "about": {
+    "hero": {
+      "label": "Sobre a Simphonia",
+      "heading1": "Ligar o Mundo,",
+      "heading2": "Uma Viagem de Cada Vez",
+      "desc": "Acreditamos que manter-se ligado durante as viagens deve ser simples, acessível e disponível para todos."
+    },
+    "story": {
+      "label": "A Nossa História",
+      "heading1": "Nascida de Uma",
+      "heading2": "Frustração de Viagem",
+      "quote": "\"Aterrei em Tóquio à meia-noite sem dados móveis. Sem mapas, sem transporte, sem tradutor. Essa viagem mudou tudo.\"",
+      "p1": "Essa frustração — o roaming excessivo, a caça por cartões SIM locais, as confusas lojas de operadoras — foi a faísca por trás da Simphonia.",
+      "p2": "Fundada em 2024, decidimos tornar a conetividade global instantânea e acessível para todos os viajantes. Hoje, a Simphonia cobre 200+ países com ativação eSIM de um toque, preços transparentes e suporte IA 24/7.",
+      "stat1Label": "Países",
+      "stat2Label": "Para Ligar",
+      "stat3Label": "Suporte IA"
+    },
+    "values": {
+      "label": "Os Nossos Valores",
+      "heading": "O Que Nos Move",
+      "v1Title": "Global em Primeiro",
+      "v1Desc": "Pensamos globalmente. Cada funcionalidade, cada plano, cada decisão é tomada com o viajante global em mente. Cobertura sem fronteiras.",
+      "v2Title": "Tudo Instantâneo",
+      "v2Desc": "A velocidade é importante quando se viaja. Da compra à ativação, tudo acontece em segundos. Sem esperas, sem atrasos.",
+      "v3Title": "Transparência Radical",
+      "v3Desc": "Sem taxas ocultas, sem cobranças surpresa, sem letra pequena. O que vês é o que pagas. Acreditamos que a confiança se constrói com honestidade.",
+      "v4Title": "Obcecados pelo Viajante",
+      "v4Desc": "Cada funcionalidade existe porque um viajante precisou dela. Ouvimos, iteramos e lançamos incansavelmente para resolver os problemas reais das viagens."
+    },
+    "team": {
+      "label": "A Nossa Equipa",
+      "heading": "A Pessoa Por Trás da Simphonia",
+      "role": "Fundador e CEO"
+    },
+    "cta": {
+      "heading": "Faz Parte da Jornada",
+      "desc": "Explora os nossos destinos e fica ligado onde quer que viajes.",
+      "browseDestinations": "Ver Destinos"
+    }
+  },
+  "howItWorks": {
+    "hero": {
+      "label": "Como Funciona",
+      "heading1": "Ligado em",
+      "heading2": "Menos de 2 Minutos",
+      "desc": "Sem lojas para visitar, sem cartões SIM para trocar, sem contratos para assinar. Apenas conetividade global perfeita em três passos."
+    },
+    "steps": {
+      "label": "O Processo",
+      "heading": "Três Passos para Ficar Ligado",
+      "desc": "Sem visitas a lojas, sem espera, sem troca de SIM físico.",
+      "step1Label": "Passo 1",
+      "step1Title": "Escolhe o Teu Destino",
+      "step1Desc": "Abre a Simphonia e navega por 200+ países. Compara planos por dados, duração e preço — ou deixa os filtros inteligentes encontrarem a combinação perfeita para a tua viagem.",
+      "step1Check1": "200+ países e regiões",
+      "step1Check2": "Planos locais para cada destino",
+      "step1Check3": "Pesquisa inteligente e filtros",
+      "step2Label": "Passo 2",
+      "step2Title": "Compra em Segundos",
+      "step2Desc": "Checkout em menos de 30 segundos com Apple Pay, Google Pay ou qualquer cartão principal. O teu código QR eSIM é gerado instantaneamente — sem email, sem envio, sem atrasos.",
+      "step2Check1": "Processamento de pagamento seguro",
+      "step2Check2": "Geração instantânea de código QR",
+      "step2Check3": "Códigos de desconto suportados",
+      "step3Label": "Passo 3",
+      "step3Title": "Liga-te e Viaja",
+      "step3Desc": "Lê o código QR nas definições do teu telemóvel antes da partida. O teu eSIM ativa automaticamente quando chegares — mantém o teu número, elimina as tarifas de roaming.",
+      "step3Check1": "Instalação fácil do código QR",
+      "step3Check2": "Ligação automática na chegada",
+      "step3Check3": "Mantém o teu número principal ativo"
+    },
+    "cta": {
+      "heading": "Pronto para Começar?",
+      "desc": "Explora os nossos destinos e encontra o plano eSIM perfeito para a tua próxima viagem.",
+      "browseDestinations": "Ver Destinos",
+      "backToHome": "Voltar ao Início"
+    }
+  }
+}
+

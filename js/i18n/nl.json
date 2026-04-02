@@ -1,0 +1,320 @@
+{
+  "lang": {
+    "select": "Taal",
+    "names": {
+      "en": "English",
+      "pt": "Português",
+      "es": "Español",
+      "fr": "Français",
+      "de": "Deutsch",
+      "it": "Italiano",
+      "nl": "Nederlands",
+      "ja": "日本語",
+      "zh": "中文",
+      "ko": "한국어",
+      "ar": "العربية",
+      "ru": "Русский",
+      "tr": "Türkçe",
+      "pl": "Polski",
+      "uk": "Українська",
+      "hi": "हिन्दी",
+      "id": "Bahasa Indonesia",
+      "vi": "Tiếng Việt",
+      "cs": "Čeština",
+      "hu": "Magyar",
+      "fa": "فارسی"
+    }
+  },
+  "nav": {
+    "destinations": "Bestemmingen",
+    "howItWorks": "Hoe Het Werkt",
+    "support": "Ondersteuning",
+    "about": "Over Ons",
+    "downloadApp": "App Downloaden",
+    "skipToMain": "Naar hoofdinhoud",
+    "toggleTheme": "Licht/donker modus",
+    "openMenu": "Menu openen",
+    "closeMenu": "Menu sluiten"
+  },
+  "footer": {
+    "tagline": "Blijf verbonden, waar je ook gaat. Wereldwijde eSIM-dekking voor moderne reizigers.",
+    "product": "Product",
+    "company": "Bedrijf",
+    "legal": "Juridisch",
+    "aboutUs": "Over Ons",
+    "contact": "Contact",
+    "privacyPolicy": "Privacybeleid",
+    "termsOfService": "Servicevoorwaarden",
+    "copyright": "Alle rechten voorbehouden."
+  },
+  "cookie": {
+    "text": "We gebruiken cookies om uw ervaring te verbeteren. Door op Accepteren te klikken, gaat u akkoord met ons",
+    "privacyPolicy": "Privacybeleid",
+    "decline": "Weigeren",
+    "accept": "Alles accepteren"
+  },
+  "mobileCta": {
+    "browsePlans": "Plannen bekijken",
+    "howItWorks": "Hoe Het Werkt"
+  },
+  "backToTop": "Terug naar boven",
+  "scroll": "Scrollen",
+  "common": {
+    "tryAgain": "Opnieuw proberen",
+    "loading": "Laden…",
+    "from": "Vanaf",
+    "plansAvailable": "plannen beschikbaar"
+  },
+  "home": {
+    "hero": {
+      "headline": "Blijf Verbonden,",
+      "typingPhrases": [
+        "Waar Je Ook Gaat.",
+        "Zonder Grenzen.",
+        "Overal ter Wereld.",
+        "Klaar in Seconden.",
+        "Altijd Online."
+      ],
+      "desc": "Download Simphonia, kies uw bestemming en blijf online zodra u landt — geen simkaart, geen roamingkosten, geen stress.",
+      "trustFreeDownload": "Gratis download",
+      "trust200Countries": "200+ landen",
+      "trustInstantActivation": "Onmiddellijke activering",
+      "downloadOnThe": "Download on the",
+      "appStore": "App Store",
+      "googlePlay": "Google Play"
+    },
+    "howItWorks": {
+      "label": "Hoe Het Werkt",
+      "heading": "",
+      "subheading": "",
+      "learnMore": "Meer weten",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": ""
+    },
+    "features": {
+      "label": "Features",
+      "heading": "",
+      "subheading": "",
+      "instantActivation": "Instant Activation",
+      "instantActivationDesc": "",
+      "zeroRoaming": "Zero Roaming",
+      "zeroRoamingDesc": "",
+      "countries200": "200+ Countries",
+      "countries200Desc": "",
+      "flexiblePlans": "Flexible Plans",
+      "flexiblePlansDesc": "",
+      "aiSupport": "AI Support 24/7",
+      "aiSupportDesc": "",
+      "allDevices": "All Devices",
+      "allDevicesDesc": ""
+    },
+    "showcase": {
+      "panel1Step": "01",
+      "panel1Title1": "",
+      "panel1Title2": "",
+      "panel1Desc": "Antwoorden in één oogopslag",
+      "panel2Step": "02",
+      "panel2Title1": "",
+      "panel2Title2": "",
+      "panel2Desc": "",
+      "panel3Step": "03",
+      "panel3Title1": "",
+      "panel3Title2": "",
+      "panel3Desc": "",
+      "panel4Step": "04",
+      "panel4Title1": "",
+      "panel4Title2": "",
+      "panel4Desc": "Download Simphonia, kies uw bestemming en blijf online zodra u landt — geen simkaart, geen roamingkosten, geen stress."
+    },
+    "cta": {
+      "heading1": "Blijf Verbonden,",
+      "heading2": "Blijf Verbonden,",
+      "desc": "",
+      "browseDestinations": "Contact opnemen",
+      "howItWorks": "Hoe Het Werkt"
+    }
+  },
+  "destinations": {
+    "hero": {
+      "label": "Bestemmingen",
+      "heading1": "Ontdek",
+      "heading2": "200+ Landen",
+      "desc": "Vind het perfecte eSIM-plan voor uw volgende reis."
+    },
+    "grid": {
+      "label": "Bestemmingen",
+      "heading": "Vind het perfecte eSIM-plan voor uw volgende reis.",
+      "desc": "",
+      "searchPlaceholder": "Landen zoeken…",
+      "clearSearch": "Zoekopdracht wissen",
+      "allTab": "Alle"
+    },
+    "count": {
+      "countries": "bestemmingen",
+      "of": "van"
+    },
+    "noResults": {
+      "noCountriesFor": "Kan bestemmingen niet laden",
+      "clearSearch": "Zoekopdracht wissen"
+    },
+    "loading": "Bestemmingen laden…",
+    "error": {
+      "title": "Kan bestemmingen niet laden",
+      "desc": "We konden onze servers niet bereiken.\nControleer uw verbinding en probeer het opnieuw.",
+      "tryAgain": "Opnieuw proberen"
+    },
+    "cta": {
+      "heading": "Uw bestemming niet gevonden?",
+      "desc": "We voegen elke week nieuwe landen toe.",
+      "contactSupport": "Contact opnemen"
+    }
+  },
+  "support": {
+    "hero": {
+      "label": "Ondersteuning",
+      "heading1": "Hoe Kunnen We",
+      "heading2": "Helpen?",
+      "desc": "Vind antwoorden op veelgestelde vragen of neem contact op met ons team. We zijn 24/7 beschikbaar."
+    },
+    "faq": {
+      "label": "Helpcentrum",
+      "heading": "Antwoorden in één oogopslag",
+      "desc": "Selecteer een vraag om het volledige antwoord te lezen.",
+      "searchPlaceholder": "Vragen zoeken…",
+      "loading": "Laden…",
+      "errorTitle": "Helpcentrum",
+      "errorDesc": "We konden onze servers niet bereiken.\nControleer uw verbinding en probeer het opnieuw.",
+      "tryAgain": "Opnieuw proberen",
+      "stillNeedHelp": "Nog hulp nodig? Neem contact op",
+      "noResults": "Geen vragen komen overeen met uw zoekopdracht.",
+      "contactUsDirectly": "neem direct contact op"
+    },
+    "contact": {
+      "label": "Ondersteuning",
+      "heading": "Helpen?",
+      "desc": "Vind antwoorden op veelgestelde vragen of neem contact op met ons team. We zijn 24/7 beschikbaar.",
+      "nameLabel": "Name",
+      "namePlaceholder": "Your name",
+      "emailLabel": "Email",
+      "emailPlaceholder": "you@example.com",
+      "subjectLabel": "Subject",
+      "subjectDefault": "Select a topic…",
+      "subjectGeneral": "General Inquiry",
+      "subjectBilling": "Billing & Payments",
+      "subjectTechnical": "Technical Issue",
+      "subjectEsim": "eSIM Activation",
+      "subjectRefund": "Refund Request",
+      "subjectOther": "Other",
+      "messageLabel": "Message",
+      "messagePlaceholder": "Describe your issue…",
+      "sendMessage": "Bericht sturen",
+      "sending": "Verzenden…",
+      "successMessage": "Bericht verzonden! We reageren binnen 24 uur.",
+      "errorRequired": "Dit veld is verplicht.",
+      "errorEmail": "Voer een geldig e-mailadres in.",
+      "errorNameRequired": "Dit veld is verplicht.",
+      "errorEmailRequired": "Dit veld is verplicht.",
+      "errorMessageRequired": "Dit veld is verplicht.",
+      "errorSubjectRequired": "Dit veld is verplicht.",
+      "errorCooldown": "Please wait {seconds} seconds.",
+      "errorNoToken": "Unable to connect. Please try again later.",
+      "errorGeneric": "Something went wrong. Please try again."
+    },
+    "channels": {
+      "label": "Ondersteuning",
+      "heading": "Helpen?",
+      "desc": "",
+      "chat": "In-App Chat",
+      "chatDesc": "",
+      "email": "Email",
+      "emailDesc": "",
+      "social": "Social",
+      "socialDesc": ""
+    }
+  },
+  "about": {
+    "hero": {
+      "label": "Over Ons",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "story": {
+      "label": "",
+      "heading1": "",
+      "heading2": "",
+      "quote": "",
+      "p1": "",
+      "p2": "",
+      "stat1Label": "Bestemmingen",
+      "stat2Label": "",
+      "stat3Label": "Ondersteuning"
+    },
+    "values": {
+      "label": "",
+      "heading": "",
+      "v1Title": "",
+      "v1Desc": "",
+      "v2Title": "",
+      "v2Desc": "",
+      "v3Title": "",
+      "v3Desc": "",
+      "v4Title": "",
+      "v4Desc": ""
+    },
+    "team": {
+      "label": "",
+      "heading": "",
+      "role": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "Contact opnemen"
+    }
+  },
+  "howItWorks": {
+    "hero": {
+      "label": "Hoe Het Werkt",
+      "heading1": "",
+      "heading2": "",
+      "desc": ""
+    },
+    "steps": {
+      "label": "",
+      "heading": "",
+      "desc": "",
+      "step1Label": "",
+      "step1Title": "",
+      "step1Desc": "",
+      "step1Check1": "",
+      "step1Check2": "",
+      "step1Check3": "",
+      "step2Label": "",
+      "step2Title": "",
+      "step2Desc": "",
+      "step2Check1": "",
+      "step2Check2": "",
+      "step2Check3": "",
+      "step3Label": "",
+      "step3Title": "",
+      "step3Desc": "",
+      "step3Check1": "",
+      "step3Check2": "",
+      "step3Check3": ""
+    },
+    "cta": {
+      "heading": "",
+      "desc": "",
+      "browseDestinations": "Contact opnemen",
+      "backToHome": ""
+    }
+  }
+}
