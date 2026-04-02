@@ -8,8 +8,9 @@
 /pages/privacy.html        /privacy/        301
 /pages/terms.html          /terms/          301
 
-# Note: 404 page is handled automatically by Cloudflare Pages
-# via the 404.html file in the root directory.
+# SPA catch-all — serve index.html for all app routes (200 = rewrite, not redirect)
+/*  /index.html  200
+
 
 
 

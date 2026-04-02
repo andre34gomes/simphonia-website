@@ -35,12 +35,7 @@
     }
   ],
   "rewrites": [
-    { "source": "/destinations", "destination": "/destinations/index.html" },
-    { "source": "/how-it-works", "destination": "/how-it-works/index.html" },
-    { "source": "/support", "destination": "/support/index.html" },
-    { "source": "/about", "destination": "/about/index.html" },
-    { "source": "/privacy", "destination": "/privacy/index.html" },
-    { "source": "/terms", "destination": "/terms/index.html" }
+    { "source": "/(.*)", "destination": "/index.html" }
   ],
   "redirects": [
     { "source": "/pages/destinations.html", "destination": "/destinations/", "permanent": true },

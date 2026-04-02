@@ -4,13 +4,21 @@
  * Handles: region tabs, country grid, search/filter, API fetches.
  * Depends on: layout.js (window.SIMPHONIA_API, window.flagEmoji, window.escHTML)
  *             auth.js   (window.getGuestToken)
+ *
+ * In SPA mode, the boot is lazy — called via window.initDestinationsPage()
+ * by the router on first navigation to /destinations/.
  */
 
 'use strict';
 
-// ── Config (single source of truth: layout.js → window.SIMPHONIA_API) ──
-const API_BASE = (window.SIMPHONIA_API && window.SIMPHONIA_API.base) || 'https://api.simphonia.pt';
+(function () {
+
+// ── Config ─────────────────────────────────────────────────────────────────
 const CURRENCY = 'EUR';
+
+function getApiBase() {
+  return (window.SIMPHONIA_API && window.SIMPHONIA_API.base) || 'https://api.simphonia.pt';
+}
 
 // Language: use i18n module if loaded, otherwise fall back to browser language
 function getLang() {
@@ -34,25 +42,22 @@ const REGION_LABELS = {
   OCEANIA: 'Oceania',
 };
 
-// ── Guest-token: reuse shared auth.js via window.getGuestToken ────────
-const getGuestToken = window.getGuestToken;
-
-// ── Helpers (reuse shared utilities from layout.js) ─────────────────────
 const flagEmoji = window.flagEmoji;
 const esc = window.escHTML;
 
 function resolveImage(url) {
   if (!url) return null;
+  const API_BASE = getApiBase();
   if (url.startsWith('http') || url.startsWith('//')) return url;
   return API_BASE + (url.startsWith('/') ? url : '/' + url);
 }
 
-
 async function apiFetch(path, _retried) {
   if (_retried === undefined) _retried = false;
+  const API_BASE = getApiBase();
+  const getGuestToken = window.getGuestToken;
   const token = await getGuestToken();
 
-  // Abort after 10 s to avoid hanging indefinitely on network issues
   const controller = new AbortController();
   const timeoutId = setTimeout(function () { controller.abort(); }, 10000);
 
@@ -62,7 +67,6 @@ async function apiFetch(path, _retried) {
       signal: controller.signal,
     });
 
-    // On 401, clear cached token, obtain a fresh one, and retry once
     if (res.status === 401 && !_retried) {
       sessionStorage.removeItem('simphonia_guest_token');
       sessionStorage.removeItem('simphonia_guest_expiry');
@@ -82,26 +86,29 @@ async function apiFetch(path, _retried) {
   }
 }
 
-// ── DOM refs ─────────────────────────────────────────────────────────────
-const regionTabsContainer = document.getElementById('region-tabs');
-const grid = document.getElementById('dest-grid');
-const noResults = document.getElementById('no-results');
-const noResultsQ = document.getElementById('no-results-query');
-const countEl = document.getElementById('dest-count');
-const searchInput = document.getElementById('dest-search');
-const clearBtn = document.getElementById('dest-search-clear');
-const noResultsClear = document.getElementById('no-results-clear');
-
 // ── State ─────────────────────────────────────────────────────────────────
-let allCountries = [];   // full list, loaded once on init
-let displayedCountries = [];  // current filtered list (by region)
-let activeRegionCode = null; // null = "All"
-// Request counter: incremented before each fetch so stale responses can be
-// detected and discarded, preventing race conditions on rapid tab clicks.
+let allCountries = [];
+let displayedCountries = [];
+let activeRegionCode = null;
 let _fetchSeq = 0;
+
+// ── DOM refs (resolved lazily inside init) ────────────────────────────────
+let regionTabsContainer, grid, noResults, noResultsQ, countEl, searchInput, clearBtn, noResultsClear;
+
+function resolveRefs() {
+  regionTabsContainer = document.getElementById('region-tabs');
+  grid                = document.getElementById('dest-grid');
+  noResults           = document.getElementById('no-results');
+  noResultsQ          = document.getElementById('no-results-query');
+  countEl             = document.getElementById('dest-count');
+  searchInput         = document.getElementById('dest-search');
+  clearBtn            = document.getElementById('dest-search-clear');
+  noResultsClear      = document.getElementById('no-results-clear');
+}
 
 // ── Loading / error states ───────────────────────────────────────────────
 function setLoading(on) {
+  if (!grid) return;
   if (on) {
     grid.innerHTML =
       '<div class="dest-state dest-state--loading">' +
@@ -114,12 +121,13 @@ function setLoading(on) {
       '</div>' +
       '<p class="dest-state__desc">' + _t('destinations.loading') + '</p>' +
       '</div>';
-    countEl.textContent = '';
-    noResults.style.display = 'none';
+    if (countEl) countEl.textContent = '';
+    if (noResults) noResults.style.display = 'none';
   }
 }
 
 function showFetchError() {
+  if (!grid) return;
   grid.innerHTML =
     '<div class="dest-state dest-state--error">' +
     '<div class="dest-state__icon">' +
@@ -153,16 +161,17 @@ function showFetchError() {
 
 // ── Render grid ───────────────────────────────────────────────────────────
 function renderGrid(items) {
-  grid.textContent = '';   // faster than innerHTML = '' for clearing
+  if (!grid) return;
+  grid.textContent = '';
   var total = displayedCountries.length;
-  var query = searchInput.value.trim();
+  var query = searchInput ? searchInput.value.trim() : '';
 
-  noResults.style.display = items.length === 0 ? 'flex' : 'none';
-  noResultsQ.textContent = query
+  if (noResults) noResults.style.display = items.length === 0 ? 'flex' : 'none';
+  if (noResultsQ) noResultsQ.textContent = query
     ? '\u201C' + query + '\u201D'
     : (REGION_LABELS[activeRegionCode] || activeRegionCode || _t('destinations.grid.allTab'));
 
-  countEl.textContent = items.length === 0
+  if (countEl) countEl.textContent = items.length === 0
     ? ''
     : items.length === total
       ? total + ' ' + _t('destinations.count.countries')
@@ -200,8 +209,9 @@ function renderGrid(items) {
 
 // ── Filter + search ───────────────────────────────────────────────────────
 function applySearch() {
+  if (!searchInput) return;
   var query = searchInput.value.toLowerCase().trim();
-  clearBtn.hidden = !query;
+  if (clearBtn) clearBtn.hidden = !query;
   var filtered = query
     ? displayedCountries.filter(function (d) {
       var name = (d.countryName || '').toLowerCase();
@@ -218,7 +228,7 @@ async function loadAllCountries() {
   setLoading(true);
   try {
     const data = await apiFetch('/api/v1/countries/all?currency=' + CURRENCY + '&lang=' + getLang());
-    if (seq !== _fetchSeq) return; // discard stale response
+    if (seq !== _fetchSeq) return;
     allCountries = data;
     displayedCountries = allCountries;
     applySearch();
@@ -236,7 +246,7 @@ async function loadCountriesForRegion(regionCode) {
     const data = await apiFetch(
       '/api/v1/regions/' + regionCode + '/countries?currency=' + CURRENCY + '&lang=' + getLang()
     );
-    if (seq !== _fetchSeq) return; // discard stale response
+    if (seq !== _fetchSeq) return;
     displayedCountries = data;
     applySearch();
   } catch (err) {
@@ -247,8 +257,8 @@ async function loadCountriesForRegion(regionCode) {
 }
 
 async function buildRegionTabs() {
+  if (!regionTabsContainer) return;
   try {
-    // Clear any previously added region tabs (keep the static "All" tab)
     regionTabsContainer.querySelectorAll('.filter-tab:not([data-region="all"])').forEach(function (tab) {
       tab.remove();
     });
@@ -262,9 +272,8 @@ async function buildRegionTabs() {
       btn.textContent = label;
       regionTabsContainer.appendChild(btn);
     });
-    // Show the tabs container now that it has content
     if (regions.length) {
-      regionTabsContainer.style.display = 'flex';
+      regionTabsContainer.classList.add('filter-tabs--shown');
     }
   } catch (err) {
     console.error('[destinations] Failed to load regions:', err);
@@ -272,102 +281,121 @@ async function buildRegionTabs() {
 }
 
 // ── Event listeners ───────────────────────────────────────────────────────
-regionTabsContainer.addEventListener('click', function (e) {
-  if (!e.target || typeof e.target.closest !== 'function') return;
-  var tab = e.target.closest('.filter-tab');
-  if (!tab) return;
+function bindEvents() {
+  if (regionTabsContainer && !regionTabsContainer._destBound) {
+    regionTabsContainer._destBound = true;
+    regionTabsContainer.addEventListener('click', function (e) {
+      if (!e.target || typeof e.target.closest !== 'function') return;
+      var tab = e.target.closest('.filter-tab');
+      if (!tab) return;
 
-  regionTabsContainer.querySelectorAll('.filter-tab')
-    .forEach(function (t) { t.classList.remove('filter-tab--active'); });
-  tab.classList.add('filter-tab--active');
+      regionTabsContainer.querySelectorAll('.filter-tab')
+        .forEach(function (t) { t.classList.remove('filter-tab--active'); });
+      tab.classList.add('filter-tab--active');
 
-  var code = tab.dataset.region;
-  activeRegionCode = code === 'all' ? null : code;
-  searchInput.value = '';
-  clearBtn.hidden = true;
+      var code = tab.dataset.region;
+      activeRegionCode = code === 'all' ? null : code;
+      if (searchInput) searchInput.value = '';
+      if (clearBtn) clearBtn.hidden = true;
 
-  if (!activeRegionCode) {
-    displayedCountries = allCountries;
-    applySearch();
-  } else {
-    loadCountriesForRegion(activeRegionCode);
+      if (!activeRegionCode) {
+        displayedCountries = allCountries;
+        applySearch();
+      } else {
+        loadCountriesForRegion(activeRegionCode);
+      }
+    });
   }
-});
 
-var searchDebounce = null;
-searchInput.addEventListener('input', function () {
-  clearTimeout(searchDebounce);
-  searchDebounce = setTimeout(applySearch, 200);
-});
+  if (searchInput && !searchInput._destBound) {
+    searchInput._destBound = true;
+    var searchDebounce = null;
+    searchInput.addEventListener('input', function () {
+      clearTimeout(searchDebounce);
+      searchDebounce = setTimeout(applySearch, 200);
+    });
 
-// Escape key clears search; Enter key prevents form submission flash
-searchInput.addEventListener('keydown', function (e) {
-  if (e.key === 'Escape' && searchInput.value) {
-    e.preventDefault();
-    searchInput.value = '';
-    clearBtn.hidden = true;
-    applySearch();
+    searchInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && searchInput.value) {
+        e.preventDefault();
+        searchInput.value = '';
+        if (clearBtn) clearBtn.hidden = true;
+        applySearch();
+      }
+    });
   }
-});
 
-clearBtn.addEventListener('click', function () {
-  searchInput.value = '';
-  clearBtn.hidden = true;
-  searchInput.focus();
-  applySearch();
-});
+  if (clearBtn && !clearBtn._destBound) {
+    clearBtn._destBound = true;
+    clearBtn.addEventListener('click', function () {
+      if (searchInput) searchInput.value = '';
+      clearBtn.hidden = true;
+      if (searchInput) searchInput.focus();
+      applySearch();
+    });
+  }
 
-noResultsClear.addEventListener('click', function () {
-  searchInput.value = '';
-  clearBtn.hidden = true;
-  regionTabsContainer.querySelectorAll('.filter-tab')
-    .forEach(function (t) { t.classList.remove('filter-tab--active'); });
-  // Activate the "All" tab by its data-region value instead of assuming it is
-  // the first child (order may change if tabs are dynamically reordered).
-  const allTab = regionTabsContainer.querySelector('.filter-tab[data-region="all"]')
-    || regionTabsContainer.querySelector('.filter-tab');
-  if (allTab) allTab.classList.add('filter-tab--active');
-  activeRegionCode = null;
-  displayedCountries = allCountries;
-  applySearch();
-});
+  if (noResultsClear && !noResultsClear._destBound) {
+    noResultsClear._destBound = true;
+    noResultsClear.addEventListener('click', function () {
+      if (searchInput) searchInput.value = '';
+      if (clearBtn) clearBtn.hidden = true;
+      if (regionTabsContainer) {
+        regionTabsContainer.querySelectorAll('.filter-tab')
+          .forEach(function (t) { t.classList.remove('filter-tab--active'); });
+        const allTab = regionTabsContainer.querySelector('.filter-tab[data-region="all"]')
+          || regionTabsContainer.querySelector('.filter-tab');
+        if (allTab) allTab.classList.add('filter-tab--active');
+      }
+      activeRegionCode = null;
+      displayedCountries = allCountries;
+      applySearch();
+    });
+  }
+}
 
-// ── Bootstrap ─────────────────────────────────────────────────────────────
-buildRegionTabs();
-loadAllCountries();
-
-
-// Track the language used for the last fetch so we can skip redundant reloads
+// ── Language change handler ───────────────────────────────────────────────
 var _lastFetchedLang = getLang();
 
-// Re-fetch with new language when language changes
 document.addEventListener('simphonia:langchange', function () {
   var newLang = getLang();
   if (newLang === _lastFetchedLang) return;
   _lastFetchedLang = newLang;
 
-  // Reset state
   allCountries = [];
   displayedCountries = [];
   activeRegionCode = null;
 
-  // Clear search
-  searchInput.value = '';
-  clearBtn.hidden = true;
+  if (searchInput) searchInput.value = '';
+  if (clearBtn) clearBtn.hidden = true;
 
-  // Reset tab selection to "All"
-  regionTabsContainer.querySelectorAll('.filter-tab').forEach(function (t) {
-    t.classList.remove('filter-tab--active');
-  });
-  var allTab = regionTabsContainer.querySelector('.filter-tab[data-region="all"]');
-  if (allTab) allTab.classList.add('filter-tab--active');
+  if (regionTabsContainer) {
+    regionTabsContainer.querySelectorAll('.filter-tab').forEach(function (t) {
+      t.classList.remove('filter-tab--active');
+    });
+    var allTab = regionTabsContainer.querySelector('.filter-tab[data-region="all"]');
+    if (allTab) allTab.classList.add('filter-tab--active');
+  }
 
-  // Clear grid immediately so old-language content is removed
-  grid.textContent = '';
-  noResults.style.display = 'none';
-  countEl.textContent = '';
+  if (grid) grid.textContent = '';
+  if (noResults) noResults.style.display = 'none';
+  if (countEl) countEl.textContent = '';
 
-  // Rebuild region tabs and reload countries with new language
   buildRegionTabs();
   loadAllCountries();
 });
+
+// ── Public init — called lazily by router ─────────────────────────────────
+var _initialized = false;
+
+window.initDestinationsPage = function () {
+  if (_initialized) return;
+  _initialized = true;
+
+  resolveRefs();
+  bindEvents();
+  buildRegionTabs();
+  loadAllCountries();
+};
+
+}()); // end IIFE

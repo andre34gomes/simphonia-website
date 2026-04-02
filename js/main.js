@@ -112,7 +112,7 @@ function revealGsapFallbacks() {
 
   // Showcase section: reveal only the first panel and first screen so content
   // is visible if GSAP (or ScrollTrigger) never initialises. Revealing all
-  // Showcase section: ensure first panel/screen is visible if GSAP fails
+  // panels simultaneously would be confusing.
   document.querySelectorAll('.showcase-sticky__panel[data-panel="0"]').forEach(function (el) {
     el.style.opacity = '1';
     el.style.transform = 'none';
@@ -165,10 +165,10 @@ async function bootstrapSite() {
       return;
     }
 
-    // 0. Apply theme immediately (prevents flash)
+    // 1. Apply theme immediately (prevents flash)
     window.initTheme();
 
-    // 1. Inject shared shell (skip-link, bg-noise, stars, cursor)
+    // 2. Inject shared shell (skip-link, bg-noise, stars, cursor)
     window.injectShell();
 
     // 3. Inject shared nav + footer
@@ -184,36 +184,36 @@ async function bootstrapSite() {
     window.injectBackToTop();
     window.injectCookieBanner();
 
-    // 5b. Announcement banner (homepage only, session-dismissible)
+    // 6. Announcement banner (homepage only, session-dismissible)
     if (typeof window.injectAnnouncementBanner === 'function') {
       window.injectAnnouncementBanner();
     }
 
-    // 6. Custom cursor
+    // 7. Custom cursor
     initCursor();
 
-    // 6b. Populate deduplicated showcase templates (hero bg, status bars, nav bars)
-    populateShowcaseTemplates();
-
-    // 7. Star background canvas
+    // 8. Star background canvas (canvas is injected by injectShell())
     if (document.getElementById('stars-canvas')) initStars();
 
-    // 9. GSAP scroll animations — has internal retry loop for CDN timing safety
-    initAnimations();
-
-    // 9b. Hero typing effect — starts after hero entrance animation completes
-    if (document.getElementById('typing-text')) {
-      setTimeout(initHeroTyping, 1200);
+    // 10. Initialise the SPA router — this handles initial page display,
+    //     animation init, and all subsequent in-app navigation.
+    if (typeof window.initRouter === 'function') {
+      window.initRouter();
+    } else {
+      // Fallback: no router (e.g., 404 page) — run animations directly
+      initAnimations();
+      initLegalToc();
     }
 
-    // 10. Safety net — if GSAP still hasn't loaded after 5 s, ensure everything visible
+    // 11. Hero typing effect — now initiated lazily by initPage('home') in router.js
+    //     once the home page partial is loaded and rendered.
+
+    // 12. Safety net — if GSAP still hasn't loaded after 5 s, ensure everything visible
     setTimeout(revealGsapFallbacks, 5000);
 
-    // 11. Native anchor navigation + focus polish
+    // 13. Native anchor navigation + focus polish
     initSmoothScroll();
 
-    // 12. Legal page table-of-contents active-link tracker
-    initLegalToc();
 
   } catch (err) {
     console.error('[main] Bootstrap failed:', err);
@@ -267,11 +267,17 @@ function populateShowcaseTemplates() {
 
 bootstrapSite();
 
+// Expose home-specific initialisers so router.js can call them lazily
+// after the home page partial is injected into the DOM.
+window.populateShowcaseTemplates = populateShowcaseTemplates;
+window.initHeroTyping = initHeroTyping;
+
 // ============================================================
 // Destinations Marquee — populated from backend + scrollable
-// Uses the same guest-auth + endpoint as destinations/index.html
+// Exposed as window.initDestinationsMarquee and called lazily
+// by the router once the home page partial is in the DOM.
 // ============================================================
-(function initDestinationsMarquee() {
+window.initDestinationsMarquee = function initDestinationsMarquee() {
   const strip = document.querySelector('.hero__destinations-strip');
   if (!strip) return;
 
@@ -504,7 +510,7 @@ bootstrapSite();
     // Fetch with the new language
     fetchCountries(0);
   });
-}());
+};
 
 // ============================================================
 // Legal TOC — shared by /privacy/ and /terms/
@@ -796,7 +802,6 @@ function initHeroTyping() {
   let active = true;
   let timer = null;
   let pausedByVisibility = false;
-  let tickFn = null;
 
   function getTypingPhrases() {
     if (typeof window.t === 'function') {
@@ -858,8 +863,6 @@ function initHeroTyping() {
     }
   }
 
-  tickFn = tick;
-
   // Pause typing when tab is hidden, resume on becoming visible
   document.addEventListener('visibilitychange', function onVisibility() {
     if (!active) {
@@ -868,9 +871,9 @@ function initHeroTyping() {
     }
     if (document.hidden) {
       if (timer) { clearTimeout(timer); timer = null; pausedByVisibility = true; }
-    } else if (pausedByVisibility && tickFn) {
+    } else if (pausedByVisibility) {
       pausedByVisibility = false;
-      timer = setTimeout(tickFn, 100);
+      timer = setTimeout(tick, 100);
     }
   });
 
@@ -886,7 +889,7 @@ function initHeroTyping() {
     charIndex = 0;
     isDeleting = false;
     el.textContent = '';
-    timer = setTimeout(tickFn, 200);
+    timer = setTimeout(tick, 200);
   });
 
   // Clean up on page hide (bfcache / tab close)

@@ -9,21 +9,16 @@
  * Cache versioning: bump CACHE_VERSION when deploying breaking asset changes.
  */
 
-const CACHE_VERSION = 'simphonia-v6';
+const CACHE_VERSION = 'simphonia-v8';
 
-const ASSET_VERSION = '20260402';
-
-// Core shell assets cached on install
+// Core shell assets cached on install.
+// SPA: only index.html is needed — all routes are handled client-side.
+// Sub-page directories (/about/, /destinations/, etc.) are no longer pre-cached
+// because the server rewrites them to /index.html anyway.
 const PRECACHE_URLS = [
   '/',
   '/index.html',
   '/404.html',
-  '/about/',
-  '/destinations/',
-  '/how-it-works/',
-  '/support/',
-  '/privacy/',
-  '/terms/',
   '/css/about.css',
   '/css/base.css',
   '/css/destinations.css',
@@ -39,6 +34,7 @@ const PRECACHE_URLS = [
   '/js/destinations-page.js',
   '/js/i18n.js',
   '/js/main.js',
+  '/js/router.js',
   '/js/support.js',
   '/js/theme-init.js',
   '/js/components/layout.js',
@@ -52,6 +48,14 @@ const PRECACHE_URLS = [
   '/assets/logo-mark.svg',
   '/assets/og-image.png',
   '/manifest.json',
+  // Page HTML partials — loaded on demand by the SPA router
+  '/pages/home.html',
+  '/pages/destinations.html',
+  '/pages/how-it-works.html',
+  '/pages/support.html',
+  '/pages/about.html',
+  '/pages/privacy.html',
+  '/pages/terms.html',
 ];
 
 // Origins that should never be cached (API data, CDN scripts, flag images)

@@ -101,6 +101,18 @@ function _scheduleScrollRefresh(options) {
 }
 
 /* ───────────────────────────────────────────────────────────
+   PUBLIC: resetAnimations()
+   Kills all ScrollTrigger instances and resets the init guard
+   so initAnimations() can be called again on SPA page change.
+   ─────────────────────────────────────────────────────────── */
+window.resetAnimations = function () {
+  _animationsInitialized = false;
+  if (typeof ScrollTrigger !== 'undefined') {
+    ScrollTrigger.getAll().forEach(function (t) { t.kill(); });
+  }
+};
+
+/* ───────────────────────────────────────────────────────────
    PUBLIC: initAnimations()
    ─────────────────────────────────────────────────────────── */
 var _animationsInitialized = false;
@@ -198,16 +210,17 @@ function _genericReveals() {
 }
 
 // ── SECTION DIVIDERS ─────────────────────────────────────
-function _sectionDividers() {
-  var main = document.querySelector('main');
-  if (!main) return;
+function _insertDividersIn(root) {
+  if (!root) return;
 
-  var children = Array.from(main.children).filter(function (el) {
+  var children = Array.from(root.children).filter(function (el) {
     return !el.classList.contains('section-divider');
   });
 
   children.forEach(function (el, i) {
     if (i === 0) return;
+    // Skip [data-page] wrapper divs — never insert between page containers
+    if (el.hasAttribute('data-page')) return;
     var tag = el.tagName.toLowerCase();
     if (tag !== 'section' && tag !== 'div' && tag !== 'article' && tag !== 'aside') return;
     var prev = el.previousElementSibling;
@@ -220,8 +233,21 @@ function _sectionDividers() {
       '<span class="section-divider__line section-divider__line--left"></span>' +
       '<span class="section-divider__dot"></span>' +
       '<span class="section-divider__line section-divider__line--right"></span>';
-    main.insertBefore(div, el);
+    root.insertBefore(div, el);
   });
+}
+
+function _sectionDividers() {
+  // In SPA mode, insert dividers within each page container independently.
+  var pageContainers = document.querySelectorAll('[data-page]');
+  if (pageContainers.length) {
+    pageContainers.forEach(function (page) {
+      _insertDividersIn(page);
+    });
+    return;
+  }
+  // Fallback: operate on main directly
+  _insertDividersIn(document.querySelector('main'));
 }
 
 // ── SECTION HEADER SPLIT ─────────────────────────────────

@@ -108,8 +108,8 @@ function renderNav(items) {
             + '</span>' : '') +
         '<p>' + item.a + '</p>' +
         '<a href="#contact" class="faq-panel__display-cta">' +
-        'Still need help? Contact us ' +
-        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>'
+        (typeof window.t === 'function' ? window.t('support.faq.stillNeedHelp') : 'Still need help? Contact us') +
+        ' <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>'
         +
         '</a>' +
         '</div>';
@@ -401,8 +401,8 @@ function initPanel(items) {
         '<h3 class="faq-panel__display-q" id="fpd-q"></h3>' +
         '<div class="faq-panel__display-body" id="fpd-body"></div>' +
         '<a href="#contact" class="faq-panel__display-cta">' +
-        'Still need help? Contact us ' +
-        '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>'
+        (typeof window.t === 'function' ? window.t('support.faq.stillNeedHelp') : 'Still need help? Contact us') +
+        ' <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>'
         +
         '</a>';
   }
@@ -809,12 +809,21 @@ function initContactForm() {
 }
 
 /* ─────────────────────────────────────────────────────────────
-   Boot
+   Boot — called lazily by router on first navigation to /support/
    ───────────────────────────────────────────────────────────── */
-var _currentSupportLang = window.SIMPHONIA_LANG || (navigator.language
-    || 'en').split('-')[0].toLowerCase();
-loadFaqs(_currentSupportLang);
-initContactForm();
+var _supportInitialized = false;
+
+window.initSupportPage = function () {
+  if (_supportInitialized) return;
+  _supportInitialized = true;
+
+  var lang = window.SIMPHONIA_LANG || (navigator.language || 'en').split('-')[0].toLowerCase();
+  _currentSupportLang = lang;
+  loadFaqs(lang);
+  initContactForm();
+};
+
+var _currentSupportLang = window.SIMPHONIA_LANG || (navigator.language || 'en').split('-')[0].toLowerCase();
 
 // Reload FAQs when language changes
 document.addEventListener('simphonia:langchange', function (e) {

@@ -46,11 +46,14 @@
   to = "/terms/"
   status = 301
 
-# Custom 404 error page
+# SPA catch-all — serve index.html for all routes so the client-side
+# router can handle /destinations/, /about/, /support/, etc.
+# force = true ensures this rule applies even if a matching file exists.
 [[redirects]]
   from = "/*"
-  to = "/404.html"
-  status = 404
+  to = "/index.html"
+  status = 200
+  force = true
 
 # ── Cache Control ────────────────────────────────────────────
 # Immutable static assets — long cache with revalidation

@@ -457,53 +457,24 @@ function injectNoscript() {
 
 /**
  * Returns the path prefix to reach the site root.
- * Root (/ or /index.html) → './'
- * Any inner page (/about/, /destinations/, etc.) → '../'
- *
- * Works for:  file:// protocol, localhost, any deployed host,
- *             and paths like /subfolder/simphonia-website/about/
+ * Always '/' — the site runs as an SPA with absolute paths everywhere.
  */
 var _cachedBasePath = null;
 function getBasePath() {
   if (_cachedBasePath !== null) return _cachedBasePath;
-
-  const path = window.location.pathname;
-
-  // If the current HTML file is the root index.html we return './'
-  // For inner pages (/about/index.html) we return '../'
-
-  // Strategy: the root index.html's path either ends with /index.html directly
-  // inside the project folder, or is just '/'.  Inner pages always have one
-  // extra directory segment (e.g. /about/ or /about/index.html).
-
-  // Quick checks for common cases
-  if (path === '/' || path === '/index.html') return (_cachedBasePath = './');
-
-  // Detect if we're inside one of the known page directories
-  const pagePattern = /\/(destinations|how-it-works|support|about|privacy|terms)(\/|\/index\.html)?$/;
-  if (pagePattern.test(path)) return (_cachedBasePath = '../');
-
-  // Fallback: if path ends with /index.html or just /, count depth
-  // by checking if the second-to-last segment is a known page slug
-  const segments = path.replace(/\/index\.html$/, '').replace(/\/$/, '').split('/');
-  const last = segments[segments.length - 1];
-  const knownPages = ['destinations', 'how-it-works', 'support', 'about', 'privacy', 'terms'];
-  if (knownPages.includes(last)) return (_cachedBasePath = '../');
-
-  // Default: assume we're at root level
-  return (_cachedBasePath = './');
+  return (_cachedBasePath = '/');
 }
 
 /**
- * Returns the prefix to link to a sibling page slug.
- * From root → './slug/'   From inner page → '../slug/'
+ * Returns the absolute path to a page slug.
+ * Always returns an absolute path (/slug/) for SPA compatibility.
  */
 function pagePath(slug) {
-  return getBasePath() + slug + '/';
+  return '/' + slug + '/';
 }
 
-function brandMarkup(base) {
-  const markSrc = base + 'assets/logo-mark.svg';
+function brandMarkup() {
+  const markSrc = '/assets/logo-mark.svg';
   return `
     <span class="nav__logo-icon" aria-hidden="true">
       <img src="${markSrc}" class="nav__logo-icon-image" alt="" width="40" height="40" decoding="async" fetchpriority="high">
@@ -513,18 +484,24 @@ function brandMarkup(base) {
 }
 
 /**
- * Returns 'nav__link--active' if the slug matches the current page path.
+ * Returns 'nav__link--active' if the slug matches the current page.
+ * In SPA mode, uses window.currentRoute instead of location.pathname.
  */
 function activeClass(slug) {
+  // SPA mode: use router's current route
+  if (window.currentRoute !== undefined) {
+    const current = window.currentRoute || 'home';
+    if (slug === '') return current === 'home' ? 'nav__link--active' : '';
+    return current === slug ? 'nav__link--active' : '';
+  }
+  // Fallback: use location pathname
   const path = window.location.pathname;
   if (slug === '') {
-    // Home: path is root, or ends with index.html at the root level
     const segments = path.replace(/\/index\.html$/, '').replace(/\/$/, '').split('/');
     const last = segments[segments.length - 1];
     const knownPages = ['destinations', 'how-it-works', 'support', 'about', 'privacy', 'terms'];
     return knownPages.includes(last) ? '' : 'nav__link--active';
   }
-  // Exact segment match: /slug, /slug/, or /slug/index.html — not substring matches
   const pattern = new RegExp('(^|/)' + slug + '(/|/index\\.html|$)');
   return pattern.test(path) ? 'nav__link--active' : '';
 }
@@ -770,7 +747,6 @@ function injectNav() {
   mobileMenu.setAttribute('role', 'dialog');
   mobileMenu.setAttribute('aria-modal', 'true');
   mobileMenu.setAttribute('aria-label', 'Mobile menu');
-  const _tm = typeof window.t === 'function' ? window.t.bind(window) : (k) => k;
 
   mobileMenu.innerHTML = `
     <div class="nav__mobile-drawer">
@@ -782,7 +758,7 @@ function injectNav() {
       </div>
 
       <!-- Floating close button — mirrors hamburger position (top-right) -->
-      <button class="nav__mobile-close" id="mobile-menu-close" aria-label="${_tm('nav.closeMenu')}" data-i18n-aria-label="nav.closeMenu">
+      <button class="nav__mobile-close" id="mobile-menu-close" aria-label="${_t('nav.closeMenu')}" data-i18n-aria-label="nav.closeMenu">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
           <line x1="18" y1="6" x2="6" y2="18"/>
           <line x1="6" y1="6" x2="18" y2="18"/>
@@ -793,22 +769,22 @@ function injectNav() {
       <nav class="nav__mobile-links" aria-label="Site pages">
         <a href="${pagePath('destinations')}" class="nav__mobile-link${activeClass('destinations') ? ' nav__mobile-link--active' : ''}">
           <span class="nav__mobile-link-num" aria-hidden="true">01</span>
-          <span class="nav__mobile-link-text" data-i18n="nav.destinations">${_tm('nav.destinations')}</span>
+          <span class="nav__mobile-link-text" data-i18n="nav.destinations">${_t('nav.destinations')}</span>
           <svg class="nav__mobile-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
         <a href="${pagePath('how-it-works')}" class="nav__mobile-link${activeClass('how-it-works') ? ' nav__mobile-link--active' : ''}">
           <span class="nav__mobile-link-num" aria-hidden="true">02</span>
-          <span class="nav__mobile-link-text" data-i18n="nav.howItWorks">${_tm('nav.howItWorks')}</span>
+          <span class="nav__mobile-link-text" data-i18n="nav.howItWorks">${_t('nav.howItWorks')}</span>
           <svg class="nav__mobile-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
         <a href="${pagePath('support')}" class="nav__mobile-link${activeClass('support') ? ' nav__mobile-link--active' : ''}">
           <span class="nav__mobile-link-num" aria-hidden="true">03</span>
-          <span class="nav__mobile-link-text" data-i18n="nav.support">${_tm('nav.support')}</span>
+          <span class="nav__mobile-link-text" data-i18n="nav.support">${_t('nav.support')}</span>
           <svg class="nav__mobile-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
         <a href="${pagePath('about')}" class="nav__mobile-link${activeClass('about') ? ' nav__mobile-link--active' : ''}">
           <span class="nav__mobile-link-num" aria-hidden="true">04</span>
-          <span class="nav__mobile-link-text" data-i18n="nav.about">${_tm('nav.about')}</span>
+          <span class="nav__mobile-link-text" data-i18n="nav.about">${_t('nav.about')}</span>
           <svg class="nav__mobile-link-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
         </a>
       </nav>
@@ -817,7 +793,7 @@ function injectNav() {
       <div class="nav__mobile-download">
         <a href="${base}" class="btn btn--primary btn--block nav__mobile-cta-btn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <span data-i18n="nav.downloadApp">${_tm('nav.downloadApp')}</span>
+          <span data-i18n="nav.downloadApp">${_t('nav.downloadApp')}</span>
         </a>
       </div>
 
@@ -863,7 +839,11 @@ function initNavBehavior() {
 
   document.querySelectorAll('.nav__download-btn, .nav__mobile-download a').forEach(btn => {
     btn.addEventListener('click', (e) => {
-      const onHomePage = !!document.getElementById('download');
+      // In SPA mode, check the router's active route instead of element presence.
+      // (#download lives in the home section which is always in the DOM in SPA mode)
+      const onHomePage = window.__SPA_MODE
+        ? (window.currentRoute === 'home' || !window.currentRoute)
+        : !!document.getElementById('download');
       if (onHomePage) {
         // Already on home page — no reload needed
         e.preventDefault();
@@ -871,8 +851,17 @@ function initNavBehavior() {
         // Highlight download buttons after scroll settles
         setTimeout(highlightDownloadBtns, 400);
       } else {
-        // On another page — navigate to root, flag highlight for next load
-        try { sessionStorage.setItem('hl-download', '1'); } catch (_) {}
+        // Navigate to home (SPA router will pick this up via click interception)
+        // then highlight buttons once the page is rendered
+        if (window.__SPA_MODE && typeof window.navigateTo === 'function') {
+          e.preventDefault();
+          window.navigateTo('/');
+          try { sessionStorage.setItem('hl-download', '1'); } catch (_) {}
+          setTimeout(highlightDownloadBtns, 700);
+        } else {
+          // On another page — navigate to root, flag highlight for next load
+          try { sessionStorage.setItem('hl-download', '1'); } catch (_) {}
+        }
       }
     });
   });
