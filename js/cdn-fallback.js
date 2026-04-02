@@ -2,7 +2,7 @@
  * CDN Fallback Loader — Simphonia Website
  *
  * If any CDN library fails to load, this script tries to load a local
- * copy. All libraries (GSAP, ScrollTrigger, Three.js) are treated as
+ * copy. All libraries (GSAP, ScrollTrigger) are treated as
  * progressive enhancement — the site is fully usable without them.
  *
  * Usage: include AFTER the CDN <script> tags and BEFORE animations.js

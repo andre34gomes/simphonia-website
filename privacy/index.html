@@ -8,9 +8,9 @@
     script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     font-src 'self' https://fonts.gstatic.com;
-    img-src 'self' data: https:;
+    img-src 'self' https://images.unsplash.com https://api.simphonia.pt http://localhost:* https://flagcdn.com data: blob:;
     connect-src 'self' https://api.simphonia.pt http://localhost:*;
-    upgrade-insecure-requests;
+    base-uri 'self'; form-action 'self'; upgrade-insecure-requests;
   ">
   <title>Privacy Policy — Simphonia eSIM</title>
   <meta name="description" content="Simphonia's privacy policy. Learn how we collect, use, and protect your personal information.">
@@ -18,6 +18,7 @@
   <!-- Legal pages: allow indexing but exclude from sitelinks/navigation suggestions -->
   <meta name="robots" content="noindex, follow">
   <link rel="canonical" href="https://simphonia.pt/privacy/">
+  <link rel="alternate" hreflang="en" href="https://simphonia.pt/privacy/">
   <meta property="og:title" content="Privacy Policy — Simphonia eSIM">
   <meta property="og:description" content="Learn how Simphonia collects, uses, and protects your personal information.">
   <meta property="og:type" content="website">
@@ -30,6 +31,7 @@
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
   <link rel="shortcut icon" href="../assets/favicon.svg">
   <link rel="mask-icon" href="../assets/favicon.svg" color="#D4AF37">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
   <link rel="manifest" href="/manifest.json">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -42,9 +44,34 @@
   <!-- Preload nav logo -->
   <link rel="preload" href="../assets/logo-mark.svg" as="image" type="image/svg+xml">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Pacifico&display=swap">
+  <!-- Critical CSS: above-the-fold rules inlined for fast first paint -->
+  <style>
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--accent:#D4AF37;--bg-primary:#121212;--text-primary:#FFFFFF;--font-body:'Inter',system-ui,-apple-system,sans-serif;--nav-height:72px}
+    [data-theme="light"]{--bg-primary:#FEF9EE;--text-primary:#1C1814}
+    @media(prefers-color-scheme:light){html:not([data-theme]){--bg-primary:#FEF9EE;--text-primary:#1C1814}}
+    html{-webkit-text-size-adjust:100%}
+    body{background-color:var(--bg-primary);color:var(--text-primary);font-family:var(--font-body);font-size:16px;line-height:1.6;overflow-x:clip;-webkit-font-smoothing:antialiased}
+    img{max-width:100%;height:auto;display:block}
+    a{text-decoration:none;color:inherit}
+    .container{max-width:1200px;margin:0 auto;padding:0 clamp(1rem,4vw,2.5rem)}
+  </style>
+
   <!-- Full stylesheets: render-blocking to prevent flash of unstyled content -->
   <link rel="stylesheet" href="../css/base.css">
   <link rel="stylesheet" href="../css/legal.css">
+
+  <!-- Structured Data: Breadcrumb -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Simphonia", "item": "https://simphonia.pt/" },
+      { "@type": "ListItem", "position": 2, "name": "Privacy Policy", "item": "https://simphonia.pt/privacy/" }
+    ]
+  }
+  </script>
 </head>
 <body>
   <a href="#main-content" class="skip-link">Skip to main content</a>
@@ -62,12 +89,27 @@
         <a href="../about/" class="nav__link">About</a>
       </div>
       <div class="nav__actions">
-        <a href="../" class="btn btn--primary btn--sm nav__download-btn">Download App</a>
+        <a href="../" class="btn btn--primary btn--sm nav__download-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>Download App</span>
+        </a>
+        <div class="lang-picker">
+          <button class="lang-picker__btn" type="button" aria-label="Language" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </button>
+        </div>
+        <button class="theme-toggle" aria-label="Toggle theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="2" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="22"/><line x1="2" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="22" y2="12"/><line x1="5.05" y1="5.05" x2="6.82" y2="6.82"/><line x1="17.18" y1="17.18" x2="18.95" y2="18.95"/><line x1="5.05" y1="18.95" x2="6.82" y2="17.18"/><line x1="17.18" y1="6.82" x2="18.95" y2="5.05"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
+        </button>
+        <button class="nav__hamburger" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
       </div>
     </div>
   </nav>
 
-  <main id="main-content">
+  <main id="main-content" tabindex="-1">
 
     <section class="legal-hero">
       <div class="container rel-z1">
@@ -210,11 +252,11 @@
           integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
           crossorigin="anonymous" defer></script>
   <script defer src="../js/cdn-fallback.js"></script>
-  <script defer src="../js/i18n.js?v=20260401"></script>
-  <script defer src="../js/components/layout.js?v=20260401"></script>
-  <script defer src="../js/animations-core.js?v=20260401"></script>
-  <script defer src="../js/animations-subpages.js?v=20260401"></script>
-  <script defer src="../js/main.js?v=20260401"></script>
+  <script defer src="../js/i18n.js?v=20260402"></script>
+  <script defer src="../js/components/layout.js?v=20260402"></script>
+  <script defer src="../js/animations-core.js?v=20260402"></script>
+  <script defer src="../js/animations-subpages.js?v=20260402"></script>
+  <script defer src="../js/main.js?v=20260402"></script>
   <!-- Legal TOC scroll-spy is handled by initLegalToc() in main.js -->
   <script>if('serviceWorker'in navigator)window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})});</script>
 

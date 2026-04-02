@@ -9,9 +9,9 @@
  * Cache versioning: bump CACHE_VERSION when deploying breaking asset changes.
  */
 
-const CACHE_VERSION = 'simphonia-v4';
+const CACHE_VERSION = 'simphonia-v6';
 
-const ASSET_VERSION = '20260401';
+const ASSET_VERSION = '20260402';
 
 // Core shell assets cached on install
 const PRECACHE_URLS = [
@@ -37,16 +37,20 @@ const PRECACHE_URLS = [
   '/js/auth.js',
   '/js/cdn-fallback.js',
   '/js/destinations-page.js',
-  '/js/globe.js',
+  '/js/i18n.js',
   '/js/main.js',
   '/js/support.js',
   '/js/theme-init.js',
   '/js/components/layout.js',
   '/assets/apple.svg',
+  '/assets/apple-touch-icon.png',
   '/assets/favicon.svg',
   '/assets/google.svg',
+  '/assets/icon-192.png',
+  '/assets/icon-512.png',
   '/assets/iphone-frame.svg',
   '/assets/logo-mark.svg',
+  '/assets/og-image.png',
   '/manifest.json',
 ];
 
@@ -77,7 +81,7 @@ self.addEventListener('install', function (event) {
   );
 });
 
-// ─── Activate: clean up old caches ───────────────────────────────────────────
+// ─── Activate: clean up old caches + enable navigation preload ──────────────
 self.addEventListener('activate', function (event) {
   event.waitUntil(
     caches.keys().then(function (keys) {
@@ -85,6 +89,12 @@ self.addEventListener('activate', function (event) {
         keys.filter(function (k) { return k !== CACHE_VERSION; })
             .map(function (k) { return caches.delete(k); })
       );
+    }).then(function () {
+      // Enable navigation preload if supported — lets the browser start
+      // fetching HTML in parallel with SW boot, reducing TTFB by ~50-100ms.
+      if (self.registration.navigationPreload) {
+        return self.registration.navigationPreload.enable();
+      }
     }).then(function () {
       return self.clients.claim();
     })
@@ -112,7 +122,7 @@ self.addEventListener('fetch', function (event) {
 
   if (isHTML) {
     // HTML: network-first — always try to fetch fresh; serve cache if offline
-    event.respondWith(networkFirst(req));
+    event.respondWith(networkFirst(req, event.preloadResponse));
   } else if (isAsset) {
     // CSS/JS/Fonts: stale-while-revalidate — instant from cache + refresh in background
     event.respondWith(staleWhileRevalidate(req));
@@ -120,9 +130,15 @@ self.addEventListener('fetch', function (event) {
   // Everything else: browser default (no interception)
 });
 
-// ─── Strategy: Network-first ─────────────────────────────────────────────────
-function networkFirst(req) {
-  return fetch(req).then(function (networkResponse) {
+// ─── Strategy: Network-first (with navigation preload support) ───────────────
+function networkFirst(req, preloadResponse) {
+  // Use navigation preload response if available (skips full SW fetch overhead)
+  var networkPromise = (preloadResponse || Promise.resolve(null)).then(function (preloaded) {
+    if (preloaded) return preloaded;
+    return fetch(req);
+  });
+
+  return networkPromise.then(function (networkResponse) {
     if (networkResponse.ok) {
       var clone = networkResponse.clone();
       caches.open(CACHE_VERSION).then(function (cache) {

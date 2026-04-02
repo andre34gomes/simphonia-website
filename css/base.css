@@ -156,6 +156,9 @@ input, textarea, select {
 }
 
 :root {
+  /* Browser chrome color scheme */
+  color-scheme: dark;
+
   /* Brand — shared across themes */
   --accent: #D4AF37;
   --accent-light: #F0D060;
@@ -242,6 +245,8 @@ input, textarea, select {
 
 /* ----- Light theme — warm cream palette ----- */
 [data-theme="light"] {
+  color-scheme: light;
+
   --bg-primary: #FEF9EE;
   --bg-secondary: #FBF4E4;
   --bg-tertiary: #F5EDD5;
@@ -790,7 +795,6 @@ body.theme-transition .btn {
   opacity: 0.15;
   pointer-events: none;
   z-index: 0;
-  contain: strict;
 }
 
 #stars-canvas {
@@ -830,6 +834,14 @@ body.theme-transition .btn {
 
 .search-bar__input::placeholder {
   color: var(--text-tertiary);
+}
+
+/* Hide native browser clear button — we use a custom .search-bar__clear instead */
+.search-bar__input::-webkit-search-cancel-button,
+.search-bar__input::-webkit-search-decoration {
+  -webkit-appearance: none;
+  appearance: none;
+  display: none;
 }
 
 .search-bar__input:focus {
@@ -3020,7 +3032,7 @@ html.gsap-ready .feature-grid--new {
   .lang-picker__btn {
     width: 34px;
     height: 34px;
-    border-radius: var(--radius-sm);
+    border-radius: var(--radius-md);
   }
 
   .lang-picker__btn svg {
@@ -3050,4 +3062,125 @@ html.gsap-ready .feature-grid--new {
 
   /* Hide desktop trigger inside the mobile overlay (menu is always visible) */
   .nav__mobile .lang-picker__btn { display: none; }
+}
+
+/* ==============================================
+   RTL SUPPORT — Arabic, Farsi
+   ============================================== */
+[dir="rtl"] {
+  direction: rtl;
+  text-align: right;
+}
+
+[dir="rtl"] .nav__inner {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .nav__links {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .nav__actions {
+  flex-direction: row-reverse;
+}
+
+[dir="rtl"] .footer__grid {
+  direction: rtl;
+}
+
+[dir="rtl"] .hero__scroll {
+  right: auto;
+  left: 2rem;
+}
+
+[dir="rtl"] .section-header {
+  text-align: right;
+}
+
+/* Flip chevrons and arrows for RTL */
+[dir="rtl"] .nav__mobile-link-arrow,
+[dir="rtl"] .faq-panel__display-cta svg,
+[dir="rtl"] .btn svg[aria-hidden="true"] {
+  transform: scaleX(-1);
+}
+
+/* Language picker: keep LTR alignment for native language names */
+[dir="rtl"] .lang-picker__menu {
+  direction: ltr;
+  text-align: left;
+}
+
+/* ==============================================
+   PRINT STYLES
+   ============================================== */
+@media print {
+  /* Hide non-essential UI */
+  .nav,
+  .nav__mobile,
+  .footer__socials,
+  .mobile-cta-bar,
+  .back-to-top,
+  .cookie-banner,
+  .scroll-progress,
+  .bg-noise,
+  #stars-canvas,
+  .cursor,
+  .hero__scroll,
+  .announcement-banner,
+  .skip-link,
+  .theme-toggle,
+  .lang-picker,
+  .cta-section__bg,
+  .cta-section::after,
+  .section-divider {
+    display: none !important;
+  }
+
+  /* Reset backgrounds for ink saving */
+  body {
+    background: #fff !important;
+    color: #000 !important;
+  }
+
+  .section,
+  .section--alt,
+  .footer {
+    background: transparent !important;
+    padding: 1rem 0 !important;
+    min-height: auto !important;
+  }
+
+  /* Show URLs after links */
+  a[href^="http"]::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #666;
+    word-break: break-all;
+  }
+
+  /* Don't break cards/sections across pages */
+  .glass-card,
+  .feat-card,
+  .step-card,
+  .value-card,
+  .team-card,
+  .faq-item,
+  .dest-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  /* Ensure all content is visible (no GSAP clip-path hiding) */
+  * {
+    clip-path: none !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+  }
+
+  /* Footer: single column print layout */
+  .footer__grid {
+    grid-template-columns: 1fr !important;
+    gap: 0.5rem !important;
+  }
 }

@@ -337,8 +337,15 @@ buildRegionTabs();
 loadAllCountries();
 
 
+// Track the language used for the last fetch so we can skip redundant reloads
+var _lastFetchedLang = getLang();
+
 // Re-fetch with new language when language changes
 document.addEventListener('simphonia:langchange', function () {
+  var newLang = getLang();
+  if (newLang === _lastFetchedLang) return;
+  _lastFetchedLang = newLang;
+
   // Reset state
   allCountries = [];
   displayedCountries = [];

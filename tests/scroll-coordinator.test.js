@@ -47,6 +47,24 @@ function createRuntime(options = {}) {
     body: { classList: createClassList() },
     getElementById(id) { return elements.get(id) || null; },
     querySelector() { return null; },
+    querySelectorAll() { return []; },
+    createElement(tag) {
+      return {
+        tagName: tag,
+        textContent: '',
+        innerHTML: '',
+        style: {},
+        className: '',
+        id: '',
+        attributes: {},
+        setAttribute() {},
+        getAttribute() { return null; },
+        appendChild() {},
+      };
+    },
+    addEventListener() {},
+    removeEventListener() {},
+    dispatchEvent() {},
   };
 
   const windowObject = {
@@ -75,8 +93,16 @@ function createRuntime(options = {}) {
   const context = {
     console,
     Date,
+    Object,
+    Array,
+    String,
+    Number,
+    Promise,
     decodeURIComponent,
     encodeURIComponent,
+    navigator: { userAgent: '', languages: ['en'], language: 'en', connection: null },
+    location: windowObject.location,
+    matchMedia: function () { return { matches: false, addEventListener() {} }; },
     window: windowObject,
     document,
     ScrollTrigger: scrollTrigger,

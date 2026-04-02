@@ -8,9 +8,9 @@
     script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     font-src 'self' https://fonts.gstatic.com;
-    img-src 'self' data: https:;
+    img-src 'self' https://images.unsplash.com https://api.simphonia.pt http://localhost:* https://flagcdn.com data: blob:;
     connect-src 'self' https://api.simphonia.pt http://localhost:*;
-    upgrade-insecure-requests;
+    base-uri 'self'; form-action 'self'; upgrade-insecure-requests;
   ">
   <title>Support & FAQ — Simphonia eSIM</title>
   <meta name="description" content="Get help with your Simphonia eSIM. Browse frequently asked questions or contact our 24/7 support team.">
@@ -30,6 +30,7 @@
   <link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
   <link rel="shortcut icon" href="../assets/favicon.svg">
   <link rel="mask-icon" href="../assets/favicon.svg" color="#D4AF37">
+  <link rel="apple-touch-icon" sizes="180x180" href="../assets/apple-touch-icon.png">
   <link rel="manifest" href="/manifest.json">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -118,11 +119,26 @@
       <div class="nav__links">
         <a href="../destinations/" class="nav__link">Destinations</a>
         <a href="../how-it-works/" class="nav__link">How It Works</a>
-        <a href="../support/" class="nav__link nav__link--active">Support</a>
+        <a href="../support/" class="nav__link nav__link--active" aria-current="page">Support</a>
         <a href="../about/" class="nav__link">About</a>
       </div>
       <div class="nav__actions">
-        <a href="../" class="btn btn--primary btn--sm nav__download-btn">Download App</a>
+        <a href="../" class="btn btn--primary btn--sm nav__download-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span>Download App</span>
+        </a>
+        <div class="lang-picker">
+          <button class="lang-picker__btn" type="button" aria-label="Language" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </button>
+        </div>
+        <button class="theme-toggle" aria-label="Toggle theme">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="2" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="22"/><line x1="2" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="22" y2="12"/><line x1="5.05" y1="5.05" x2="6.82" y2="6.82"/><line x1="17.18" y1="17.18" x2="18.95" y2="18.95"/><line x1="5.05" y1="18.95" x2="6.82" y2="17.18"/><line x1="17.18" y1="6.82" x2="18.95" y2="5.05"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
+        </button>
+        <button class="nav__hamburger" aria-label="Open menu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
       </div>
     </div>
   </nav>
@@ -132,15 +148,15 @@
     <!-- Hero -->
     <section class="support-hero" aria-labelledby="support-heading">
       <div class="container">
-        <span class="label reveal">Support</span>
-        <h1 class="reveal" id="support-heading">How Can We<br><span class="text-gradient">Help?</span></h1>
-        <p class="reveal">
+        <span class="label reveal" data-i18n="support.hero.label">Support</span>
+        <h1 class="reveal" id="support-heading"><span data-i18n="support.hero.heading1">How Can We</span><br><span class="text-gradient" data-i18n="support.hero.heading2">Help?</span></h1>
+        <p class="reveal" data-i18n="support.hero.desc">
           Find answers to common questions or get in touch with our team. We're here 24/7.
         </p>
       </div>
       <div class="hero__scroll" aria-hidden="true">
         <div class="hero__scroll-line"></div>
-        <span>Scroll</span>
+        <span data-i18n="scroll">Scroll</span>
       </div>
     </section>
 
@@ -148,9 +164,9 @@
     <section class="section" id="faq" aria-labelledby="faq-heading">
       <div class="container">
         <div class="section-header reveal">
-          <span class="label">Help Center</span>
-          <h2 id="faq-heading">Answers at a Glance</h2>
-          <p>Select any question to read the full answer.</p>
+          <span class="label" data-i18n="support.faq.label">Help Center</span>
+          <h2 id="faq-heading" data-i18n="support.faq.heading">Answers at a Glance</h2>
+          <p data-i18n="support.faq.desc">Select any question to read the full answer.</p>
         </div>
 
         <!-- Search -->
@@ -191,9 +207,9 @@
     <section class="section section--alt" id="contact" aria-labelledby="contact-heading">
       <div class="container">
         <div class="section-header reveal">
-          <span class="label">Contact Us</span>
-          <h2 id="contact-heading">Still Need Help?</h2>
-          <p>Our support team is available 24/7. Send us a message and we'll get back to you shortly.</p>
+          <span class="label" data-i18n="support.contact.label">Contact Us</span>
+          <h2 id="contact-heading" data-i18n="support.contact.heading">Still Need Help?</h2>
+          <p data-i18n="support.contact.desc">Our support team is available 24/7. Send us a message and we'll get back to you shortly.</p>
         </div>
 
         <form class="contact-form reveal" id="contact-form" novalidate>
@@ -240,9 +256,9 @@
     <section class="section section--alt" id="quick-links" aria-labelledby="reach-heading">
       <div class="container">
         <div class="section-header reveal">
-          <span class="label">Other Ways to Reach Us</span>
-          <h2 id="reach-heading">We're Always Available</h2>
-          <p>Pick the channel that works best for you.</p>
+          <span class="label" data-i18n="support.reach.label">Other Ways to Reach Us</span>
+          <h2 id="reach-heading" data-i18n="support.reach.heading">We're Always Available</h2>
+          <p data-i18n="support.reach.desc">Pick the channel that works best for you.</p>
         </div>
 
         <div class="reach-channels reveal">
@@ -254,8 +270,8 @@
                 <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
               </svg>
             </div>
-            <h3>In-App Chat</h3>
-            <p>Get instant answers from our AI assistant directly inside the Simphonia app — available 24/7.</p>
+            <h3 data-i18n="support.channels.chat">In-App Chat</h3>
+            <p data-i18n="support.channels.chatDesc">Get instant answers from our AI assistant directly inside the Simphonia app — available 24/7.</p>
           </div>
 
           <!-- Email -->
@@ -266,8 +282,8 @@
                 <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
               </svg>
             </div>
-            <h3>Email</h3>
-            <p>Drop us a line any time — we typically respond within a few hours.</p>
+            <h3 data-i18n="support.channels.email">Email</h3>
+            <p data-i18n="support.channels.emailDesc">Drop us a line any time — we typically respond within a few hours.</p>
             <a href="mailto:support@simphonia.pt" class="reach-channel__link link-accent">support@simphonia.pt</a>
           </div>
 
@@ -279,8 +295,8 @@
                 <path d="m8.59 13.51 6.83 3.98M15.41 6.51l-6.82 3.98"/>
               </svg>
             </div>
-            <h3>Social</h3>
-            <p>Follow us for destination highlights, travel tips, and product updates.</p>
+            <h3 data-i18n="support.channels.social">Social</h3>
+            <p data-i18n="support.channels.socialDesc">Follow us for destination highlights, travel tips, and product updates.</p>
             <div class="reach-channel__socials">
               <a href="https://instagram.com/simphonia.pt" target="_blank" rel="noopener noreferrer" class="link-accent" aria-label="Simphonia on Instagram">Instagram</a>
               <span aria-hidden="true">·</span>
@@ -301,13 +317,13 @@
           integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
           crossorigin="anonymous" defer></script>
   <script defer src="../js/cdn-fallback.js"></script>
-  <script defer src="../js/i18n.js?v=20260401"></script>
-  <script defer src="../js/components/layout.js?v=20260401"></script>
-  <script defer src="../js/auth.js?v=20260401"></script>
-  <script defer src="../js/animations-core.js?v=20260401"></script>
-  <script defer src="../js/animations-subpages.js?v=20260401"></script>
-  <script defer src="../js/main.js?v=20260401"></script>
-  <script defer src="../js/support.js?v=20260401"></script>
+  <script defer src="../js/i18n.js?v=20260402"></script>
+  <script defer src="../js/components/layout.js?v=20260402"></script>
+  <script defer src="../js/auth.js?v=20260402"></script>
+  <script defer src="../js/animations-core.js?v=20260402"></script>
+  <script defer src="../js/animations-subpages.js?v=20260402"></script>
+  <script defer src="../js/main.js?v=20260402"></script>
+  <script defer src="../js/support.js?v=20260402"></script>
   <script>if('serviceWorker'in navigator)window.addEventListener('load',function(){navigator.serviceWorker.register('/sw.js').catch(function(){})});</script>
 </body>
 </html>

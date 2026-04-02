@@ -310,6 +310,14 @@
       "browseDestinations": "Browse Destinations",
       "backToHome": "Back to Home"
     }
+  },
+  "error404": {
+    "title": "Page Not Found",
+    "desc": "Looks like this destination isn't on our eSIM network yet. Let's get you back to somewhere familiar.",
+    "goHome": "Go Home",
+    "browseDestinations": "Browse Destinations",
+    "copyLink": "Copy Link",
+    "copied": "Copied!"
   }
 }
 

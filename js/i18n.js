@@ -27,6 +27,7 @@
   var _data = {};
   var _lang = DEFAULT;
   var _resolveReady;
+  var _initialLoadDone = false;
 
   var i18nReady = new Promise(function (resolve) {
     _resolveReady = resolve;
@@ -80,9 +81,12 @@
 
   // ── DOM application ─────────────────────────────────────────────────────
 
+  var RTL_LANGS = ['ar', 'fa'];
+
   function applyAll() {
-    // Update <html lang>
+    // Update <html lang> and direction
     document.documentElement.lang = _lang;
+    document.documentElement.dir = RTL_LANGS.indexOf(_lang) !== -1 ? 'rtl' : 'ltr';
 
     // [data-i18n]             → textContent
     document.querySelectorAll('[data-i18n]').forEach(function (el) {
@@ -121,13 +125,19 @@
       });
     }
 
-    // Notify other modules (e.g. support.js reloads FAQs on lang change)
-    try {
-      document.dispatchEvent(new CustomEvent('simphonia:langchange', {
-        detail: { lang: _lang },
-        bubbles: false,
-      }));
-    } catch (_) {}
+    // Notify other modules (e.g. support.js reloads FAQs on lang change).
+    // Skip the event on the very first load — page scripts have already made
+    // their initial API calls by the time this fires, so dispatching the event
+    // would cause every endpoint to be fetched a second time.
+    if (_initialLoadDone) {
+      try {
+        document.dispatchEvent(new CustomEvent('simphonia:langchange', {
+          detail: { lang: _lang },
+          bubbles: false,
+        }));
+      } catch (_) {}
+    }
+    _initialLoadDone = true;
   }
 
   // ── Base-path detection ─────────────────────────────────────────────────
@@ -144,7 +154,7 @@
   // ── Fetch + apply translations ──────────────────────────────────────────
 
   function load(lang, isRetry) {
-    var url = basePath() + 'js/i18n/' + lang + '.json?v=20260401';
+    var url = basePath() + 'js/i18n/' + lang + '.json?v=20260402';
     return fetch(url)
       .then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);

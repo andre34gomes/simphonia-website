@@ -6,7 +6,7 @@
  * have already run.
  */
 
-const LAYOUT_ASSET_VERSION = '20260401';
+const LAYOUT_ASSET_VERSION = '20260402';
 const REQUIRED_LAYOUT_APIS = [
   'initTheme',
   'injectShell',
@@ -488,8 +488,15 @@ bootstrapSite();
 
   fetchCountries();
 
+  // Track the language used for the last marquee fetch
+  var _lastMarqueeLang = getCurrentLang();
+
   // Re-fetch marquee countries when the language changes
   document.addEventListener('simphonia:langchange', function () {
+    var newLang = getCurrentLang();
+    if (newLang === _lastMarqueeLang) return;
+    _lastMarqueeLang = newLang;
+
     // Clear existing marquee content
     var lists = strip.querySelectorAll('.marquee-list');
     lists.forEach(function (ul) { ul.innerHTML = ''; });

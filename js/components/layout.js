@@ -385,6 +385,20 @@ function injectCookieBanner() {
     if (e.target.id === 'cookie-accept') dismiss(true);
     if (e.target.id === 'cookie-decline') dismiss(false);
   });
+
+  // Focus trap: keep Tab cycling within the cookie banner while it is visible
+  banner.addEventListener('keydown', (e) => {
+    if (e.key !== 'Tab') return;
+    const focusable = banner.querySelectorAll('button, a[href]');
+    if (!focusable.length) return;
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey) {
+      if (document.activeElement === first) { e.preventDefault(); last.focus(); }
+    } else {
+      if (document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
 }
 
 /**
@@ -513,6 +527,11 @@ function activeClass(slug) {
   // Exact segment match: /slug, /slug/, or /slug/index.html — not substring matches
   const pattern = new RegExp('(^|/)' + slug + '(/|/index\\.html|$)');
   return pattern.test(path) ? 'nav__link--active' : '';
+}
+
+/** Returns aria-current="page" if the slug matches, empty string otherwise. */
+function ariaCurrent(slug) {
+  return activeClass(slug) ? ' aria-current="page"' : '';
 }
 
 /**
@@ -648,6 +667,23 @@ function _initLangPicker() {
 
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') closeMenu();
+
+    // Arrow key navigation within the language picker when open
+    if (!picker.classList.contains('lang-picker--open')) return;
+    if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
+    e.preventDefault();
+    var options = Array.from(list.querySelectorAll('.lang-picker__option')).filter(function (opt) {
+      return opt.style.display !== 'none';
+    });
+    if (!options.length) return;
+    var focused = document.activeElement;
+    var idx = options.indexOf(focused);
+    if (e.key === 'ArrowDown') {
+      idx = idx < options.length - 1 ? idx + 1 : 0;
+    } else {
+      idx = idx > 0 ? idx - 1 : options.length - 1;
+    }
+    options[idx].focus();
   });
 
   // Re-render picker when language changes
@@ -690,10 +726,10 @@ function injectNav() {
       </a>
 
       <div class="nav__links">
-        <a href="${pagePath('destinations')}" class="nav__link ${activeClass('destinations')}" data-i18n="nav.destinations">${_t('nav.destinations')}</a>
-        <a href="${pagePath('how-it-works')}" class="nav__link ${activeClass('how-it-works')}" data-i18n="nav.howItWorks">${_t('nav.howItWorks')}</a>
-        <a href="${pagePath('support')}" class="nav__link ${activeClass('support')}" data-i18n="nav.support">${_t('nav.support')}</a>
-        <a href="${pagePath('about')}" class="nav__link ${activeClass('about')}" data-i18n="nav.about">${_t('nav.about')}</a>
+        <a href="${pagePath('destinations')}" class="nav__link ${activeClass('destinations')}"${ariaCurrent('destinations')} data-i18n="nav.destinations">${_t('nav.destinations')}</a>
+        <a href="${pagePath('how-it-works')}" class="nav__link ${activeClass('how-it-works')}"${ariaCurrent('how-it-works')} data-i18n="nav.howItWorks">${_t('nav.howItWorks')}</a>
+        <a href="${pagePath('support')}" class="nav__link ${activeClass('support')}"${ariaCurrent('support')} data-i18n="nav.support">${_t('nav.support')}</a>
+        <a href="${pagePath('about')}" class="nav__link ${activeClass('about')}"${ariaCurrent('about')} data-i18n="nav.about">${_t('nav.about')}</a>
       </div>
 
       <div class="nav__actions">
@@ -937,6 +973,19 @@ function initNavBehavior() {
 
     document.addEventListener('keydown', (event) => {
       if (event.key === 'Escape') closeMenu();
+
+      // Focus trap: keep Tab cycling within mobile menu when open
+      if (event.key === 'Tab' && mobileMenu.classList.contains('nav__mobile--open')) {
+        const focusable = mobileMenu.querySelectorAll('a[href], button, input, [tabindex]:not([tabindex="-1"])');
+        if (!focusable.length) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (event.shiftKey) {
+          if (document.activeElement === first) { event.preventDefault(); last.focus(); }
+        } else {
+          if (document.activeElement === last) { event.preventDefault(); first.focus(); }
+        }
+      }
     });
 
     window.addEventListener('resize', () => {
