@@ -39,6 +39,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="dns-prefetch" href="https://api.simphonia.pt">
+  <!-- Preload nav logo -->
+  <link rel="preload" href="../assets/logo-mark.svg" as="image" type="image/svg+xml">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Pacifico&display=swap">
   <!-- Full stylesheets: render-blocking to prevent flash of unstyled content -->
   <link rel="stylesheet" href="../css/base.css">
@@ -50,7 +52,7 @@
   <nav class="nav" id="navbar" role="navigation" aria-label="Main navigation">
     <div class="nav__inner">
       <a href="../" class="nav__logo" aria-label="Simphonia Home">
-        <span class="nav__logo-icon" aria-hidden="true"><img src="../assets/logo-mark.svg" class="nav__logo-icon-image" alt="" width="40" height="40"></span>
+        <span class="nav__logo-icon" aria-hidden="true"><img src="../assets/logo-mark.svg" class="nav__logo-icon-image" alt="" width="40" height="40" fetchpriority="high" decoding="sync"></span>
         <span class="nav__logo-wordmark">Simphonia</span>
       </a>
       <div class="nav__links">

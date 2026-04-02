@@ -396,6 +396,115 @@ function _stickyShowcase() {
   } else {
     window.addEventListener('load', setup, { once: true });
   }
+
+  // ── Touch swipe: advance/retreat panels on mobile ──────────────────────────
+  // Lets users swipe left/right on the showcase (text or phone area) instead
+  // of having to scroll through 400dvh to see all four panels.
+  // Only active on mobile (≤960px); passive listeners — no scroll interference.
+  (function _addShowcaseSwipe() {
+    if (!('ontouchstart' in window)) return;
+
+    // Insert the swipe-hint element into the showcase left column
+    var left = section.querySelector('.showcase-sticky__left');
+    var hintEl = null;
+    if (left) {
+      hintEl = document.createElement('div');
+      hintEl.className = 'showcase-swipe-hint';
+      hintEl.setAttribute('aria-hidden', 'true');
+      hintEl.innerHTML =
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">' +
+        '<path d="M5 12h14"/><path d="m15 7 5 5-5 5"/></svg>' +
+        '<span>Swipe to navigate</span>' +
+        '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="transform:scaleX(-1)">' +
+        '<path d="M5 12h14"/><path d="m15 7 5 5-5 5"/></svg>';
+      left.appendChild(hintEl);
+    }
+
+    var swipeTarget = scene; // listen on the full scene area
+    var startX = 0, startY = 0, startTime = 0;
+    var SWIPE_MIN_PX = 45;       // minimum horizontal distance for a swipe
+    var SWIPE_MAX_MS = 450;      // maximum duration for a swipe gesture
+    var hintShown = false;
+    var hintTimer = null;
+    var showcaseST = null;      // filled in by setup() via the resize/scroll watcher
+
+    // Retrieve the ST instance once it exists (created inside setup())
+    function getShowcaseST() {
+      if (showcaseST) return showcaseST;
+      var all = typeof ScrollTrigger !== 'undefined' ? ScrollTrigger.getAll() : [];
+      for (var i = 0; i < all.length; i++) {
+        if (all[i].trigger === section) { showcaseST = all[i]; return showcaseST; }
+      }
+      return null;
+    }
+
+    function showHint() {
+      if (!hintEl || hintShown) return;
+      // Only show hint when the first panel is active (user just scrolled in)
+      if (window.innerWidth > 960) return;
+      hintShown = true;
+      hintEl.classList.add('showcase-swipe-hint--visible');
+      hintTimer = setTimeout(function () {
+        hintEl.classList.remove('showcase-swipe-hint--visible');
+        hintEl.classList.add('showcase-swipe-hint--hidden');
+      }, 2800);
+    }
+
+    function hideHint() {
+      if (!hintEl) return;
+      clearTimeout(hintTimer);
+      hintEl.classList.remove('showcase-swipe-hint--visible');
+      hintEl.classList.add('showcase-swipe-hint--hidden');
+    }
+
+    swipeTarget.addEventListener('touchstart', function (e) {
+      startX = e.touches[0].clientX;
+      startY = e.touches[0].clientY;
+      startTime = Date.now();
+    }, { passive: true });
+
+    swipeTarget.addEventListener('touchend', function (e) {
+      // Only active on mobile layout
+      if (window.innerWidth > 960) return;
+
+      var st = getShowcaseST();
+      if (!st || typeof st.start !== 'number') return;
+
+      var dx = e.changedTouches[0].clientX - startX;
+      var dy = Math.abs(e.changedTouches[0].clientY - startY);
+      var dt = Date.now() - startTime;
+
+      // Require: clear horizontal dominance, minimum swipe distance, fast enough
+      if (Math.abs(dx) < SWIPE_MIN_PX) return;
+      if (dy > Math.abs(dx) * 0.6) return; // too vertical
+      if (dt > SWIPE_MAX_MS) return;
+
+      hideHint();
+
+      var currentPanel = Math.max(0, lastActive < 0 ? 0 : lastActive);
+      var targetPanel = dx < 0
+        ? Math.min(currentPanel + 1, panelCount - 1)  // swipe left → next
+        : Math.max(currentPanel - 1, 0);               // swipe right → prev
+
+      if (targetPanel === currentPanel) return;
+
+      // Scroll to the midpoint of the target panel's scroll range
+      var span = st.end - st.start;
+      var targetY = st.start + ((targetPanel + 0.5) / panelCount) * span;
+      window.scrollTo({ top: targetY, behavior: 'smooth' });
+    }, { passive: true });
+
+    // Show the hint when panel 0 first becomes active after entering showcase
+    var _origTransitionTo = transitionTo;
+    // Wrap transitionTo to detect the first entry into the showcase from outside
+    // (panel -1 → 0) and show the swipe hint on mobile
+    transitionTo = function (newIdx, prevIdx) {
+      if (window.innerWidth <= 960 && prevIdx < 0 && newIdx === 0 && !hintShown) {
+        setTimeout(showHint, 600);
+      }
+      _origTransitionTo(newIdx, prevIdx);
+    };
+  }());
 }
 
 // ── 10. FAQ ITEMS ────────────────────────────────────────

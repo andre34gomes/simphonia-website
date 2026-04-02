@@ -75,8 +75,11 @@ function renderNav(items) {
     btn.type = 'button';
     btn.className = 'faq-panel__q' + (i === 0 ? ' is-active' : '');
     btn.dataset.index = i;
-    btn.dataset.searchText = (item.q + ' ' + (item.category || '')).toLowerCase();
-    btn.setAttribute('aria-pressed', i === 0 ? 'true' : 'false');
+    // Include answer text (HTML-stripped) in search index for better discoverability
+    var plainAnswer = item.a.replace(/<[^>]*>/g, '');
+    btn.dataset.searchText = (item.q + ' ' + plainAnswer + ' ' + (item.category || '')).toLowerCase();
+    btn.setAttribute('aria-expanded', i === 0 ? 'true' : 'false');
+    btn.setAttribute('aria-controls', 'faq-inline-' + i);
     btn.innerHTML =
       '<span class="faq-panel__q-num">' + String(i + 1).padStart(2, '0') + '</span>' +
       '<span class="faq-panel__q-text">' + item.q + '</span>' +
@@ -149,7 +152,7 @@ function switchFaq(index) {
       activeAnswer.setAttribute('aria-hidden', 'true');
       if (activeBtn) {
         activeBtn.classList.remove('is-active');
-        activeBtn.setAttribute('aria-pressed', 'false');
+        activeBtn.setAttribute('aria-expanded', 'false');
       }
       activeIndex = -1;
       return;
@@ -178,7 +181,7 @@ function switchFaq(index) {
       document.querySelectorAll('.faq-panel__q').forEach(function (btn) {
         var isActive = parseInt(btn.dataset.index, 10) === index;
         btn.classList.toggle('is-active', isActive);
-        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        btn.setAttribute('aria-expanded', isActive ? 'true' : 'false');
       });
 
       inner.classList.remove('is-switching');
@@ -190,7 +193,7 @@ function switchFaq(index) {
     document.querySelectorAll('.faq-panel__q').forEach(function (btn) {
       var isActive = parseInt(btn.dataset.index, 10) === index;
       btn.classList.toggle('is-active', isActive);
-      btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+      btn.setAttribute('aria-expanded', isActive ? 'true' : 'false');
     });
 
     var answer = document.getElementById('faq-inline-' + index);
@@ -273,7 +276,7 @@ function loadFaqs(lang) {
   showFaqLoading();
 
   var tokenPromise = (typeof getGuestToken === 'function')
-    ? Promise.resolve().then(function () { return getGuestToken(); }).catch(function () { return null; })
+    ? getGuestToken().catch(function () { return null; })
     : Promise.resolve(null);
 
   tokenPromise
@@ -356,6 +359,9 @@ function initFaqSearch() {
   if (!inputs.length) return;
 
   inputs.forEach(function (input) {
+    // Skip if clear button already injected (e.g. on FAQ retry)
+    if (input.parentElement.querySelector('.search-bar__clear')) return;
+
     // Inject clear button
     var clearBtn = document.createElement('button');
     clearBtn.type = 'button';
@@ -443,7 +449,7 @@ function filterFaq(query) {
       visibleBtns.forEach(function (b, i) {
         var isFirst = i === 0;
         b.classList.toggle('is-active', isFirst);
-        b.setAttribute('aria-pressed', isFirst ? 'true' : 'false');
+        b.setAttribute('aria-expanded', isFirst ? 'true' : 'false');
       });
     }
   }
@@ -588,7 +594,7 @@ function initContactForm() {
     submitBtn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span> Sending\u2026';
 
     var tokenPromise = (typeof getGuestToken === 'function')
-      ? Promise.resolve().then(function () { return getGuestToken(); }).catch(function () { return null; })
+      ? getGuestToken().catch(function () { return null; })
       : Promise.resolve(null);
 
     tokenPromise

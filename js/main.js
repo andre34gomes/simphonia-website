@@ -122,6 +122,10 @@ function revealGsapFallbacks() {
     el.style.opacity = '1';
     el.style.pointerEvents = 'auto';
   });
+  // Hide swipe hint — irrelevant when GSAP failed
+  document.querySelectorAll('.showcase-swipe-hint').forEach(function (el) {
+    el.style.display = 'none';
+  });
 
   // CTA section buttons are hidden by _ctaButtonEntrance() via GSAP clipPath.
   // If the user never scrolls that far, make sure they're always visible.
@@ -320,9 +324,10 @@ bootstrapSite();
   }
 
   let animating = false;
+  let stripVisible = false; // tracks IntersectionObserver state
 
   function startLoop() {
-    if (!animating) {
+    if (!animating && !document.hidden) {
       animating = true;
       requestAnimationFrame(loop);
     }
@@ -350,7 +355,8 @@ bootstrapSite();
   // Only run the animation loop when the strip is visible on screen.
   if ('IntersectionObserver' in window) {
     var stripObserver = new IntersectionObserver(function (entries) {
-      if (entries[0].isIntersecting) {
+      stripVisible = entries[0].isIntersecting;
+      if (stripVisible) {
         startLoop();
       } else {
         animating = false;
@@ -359,8 +365,18 @@ bootstrapSite();
     stripObserver.observe(strip);
   } else {
     // Fallback for older browsers — always animate
+    stripVisible = true;
     startLoop();
   }
+
+  // Pause/resume rAF loop when tab visibility changes
+  document.addEventListener('visibilitychange', function () {
+    if (document.hidden) {
+      animating = false;
+    } else if (stripVisible) {
+      startLoop();
+    }
+  });
 
   // ── Desktop: hover pauses; leaving restarts the 3 s timer ──
   strip.addEventListener('mouseenter', function () {
@@ -421,6 +437,14 @@ bootstrapSite();
   // Hide the marquee strip until the API populates it with real data.
   // No hardcoded fallback — if the API is unreachable, the strip stays hidden.
   strip.style.display = 'none';
+
+  // Respect Save-Data / data-saver preference — skip the API call entirely
+  // on metered connections to conserve bandwidth.
+  var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (conn && (conn.saveData || conn.effectiveType === 'slow-2g')) {
+    // Strip stays hidden — no extra network request on metered connections
+    return;
+  }
 
   var RETRY_COUNT = 2;
   var RETRY_DELAY = 3000; // ms
@@ -594,7 +618,12 @@ function initStars() {
   // Fallback: also check computed style in case CSS wasn't loaded yet
   if (getComputedStyle(canvas).display === 'none') return;
 
+  // Respect data-saver preference on desktop too
+  var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (conn && conn.saveData) return;
+
   const ctx = canvas.getContext('2d');
+  // Reduce star count on lower-resolution or lower-powered screens
   const N = window.innerWidth < 1280 ? 80 : 120;
   let w, h, stars = [];
 
@@ -611,8 +640,16 @@ function initStars() {
   );
 
   function resize() {
+    var oldW = w, oldH = h;
     w = canvas.width = window.innerWidth;
     h = canvas.height = window.innerHeight;
+    // Redistribute stars that fall outside new bounds (e.g. window grew)
+    if (stars.length && (w > oldW || h > oldH)) {
+      for (var i = 0; i < stars.length; i++) {
+        if (stars[i].x > w) stars[i].x = Math.random() * w;
+        if (stars[i].y > h) stars[i].y = Math.random() * h;
+      }
+    }
   }
 
   function populate() {

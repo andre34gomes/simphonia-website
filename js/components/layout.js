@@ -20,7 +20,8 @@ window.flagEmoji = function(code) {
     ' width="20" height="15"' +
     ' alt="' + code.toUpperCase() + '"' +
     ' class="flag-img"' +
-    ' loading="lazy">';
+    ' loading="lazy"' +
+    ' decoding="async">';
 };
 
 // ────────────────────────────────────────
@@ -310,6 +311,11 @@ function injectBackToTop() {
         ctaBar.setAttribute('aria-hidden', String(!showBar));
       }
 
+      // Scroll progress bar (consolidated here to avoid a separate listener)
+      if (typeof window._updateScrollProgress === 'function') {
+        window._updateScrollProgress();
+      }
+
       ticking = false;
     });
   }
@@ -394,24 +400,19 @@ function injectScrollProgress() {
   bar.setAttribute('aria-label', 'Page scroll progress');
   document.body.appendChild(bar);
 
-  let ticking = false;
-  const update = () => {
-    // Recompute the full scrollable height every tick so that lazy-loaded
-    // images, dynamic content and the footer are always accounted for.
+  // Update logic is called by the shared scroll handler in injectBackToTop()
+  // to avoid a redundant scroll listener. Exposed via window for the shared tick.
+  window._updateScrollProgress = function () {
     const docH = document.documentElement.scrollHeight - window.innerHeight;
     const pct = docH > 0 ? Math.min(100, (window.scrollY / docH) * 100) : 0;
     bar.style.transform = `scaleX(${pct / 100})`;
     bar.setAttribute('aria-valuenow', Math.round(pct));
-    ticking = false;
   };
 
-  window.addEventListener('scroll', () => {
-    if (!ticking) { ticking = true; requestAnimationFrame(update); }
-  }, { passive: true });
-
   // Also update on resize so orientation changes are covered.
+  let resizeTicking = false;
   window.addEventListener('resize', () => {
-    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+    if (!resizeTicking) { resizeTicking = true; requestAnimationFrame(() => { window._updateScrollProgress(); resizeTicking = false; }); }
   }, { passive: true });
 }
 
@@ -446,7 +447,10 @@ function injectNoscript() {
  * Works for:  file:// protocol, localhost, any deployed host,
  *             and paths like /subfolder/simphonia-website/about/
  */
+var _cachedBasePath = null;
 function getBasePath() {
+  if (_cachedBasePath !== null) return _cachedBasePath;
+
   const path = window.location.pathname;
 
   // If the current HTML file is the root index.html we return './'
@@ -457,21 +461,21 @@ function getBasePath() {
   // extra directory segment (e.g. /about/ or /about/index.html).
 
   // Quick checks for common cases
-  if (path === '/' || path === '/index.html') return './';
+  if (path === '/' || path === '/index.html') return (_cachedBasePath = './');
 
   // Detect if we're inside one of the known page directories
   const pagePattern = /\/(destinations|how-it-works|support|about|privacy|terms)(\/|\/index\.html)?$/;
-  if (pagePattern.test(path)) return '../';
+  if (pagePattern.test(path)) return (_cachedBasePath = '../');
 
   // Fallback: if path ends with /index.html or just /, count depth
   // by checking if the second-to-last segment is a known page slug
   const segments = path.replace(/\/index\.html$/, '').replace(/\/$/, '').split('/');
   const last = segments[segments.length - 1];
   const knownPages = ['destinations', 'how-it-works', 'support', 'about', 'privacy', 'terms'];
-  if (knownPages.includes(last)) return '../';
+  if (knownPages.includes(last)) return (_cachedBasePath = '../');
 
   // Default: assume we're at root level
-  return './';
+  return (_cachedBasePath = './');
 }
 
 /**
@@ -486,7 +490,7 @@ function brandMarkup(base) {
   const markSrc = base + 'assets/logo-mark.svg';
   return `
     <span class="nav__logo-icon" aria-hidden="true">
-      <img src="${markSrc}" class="nav__logo-icon-image" alt="" width="40" height="40">
+      <img src="${markSrc}" class="nav__logo-icon-image" alt="" width="40" height="40" decoding="async" fetchpriority="high">
     </span>
     <span class="nav__logo-wordmark">Simphonia</span>
   `;

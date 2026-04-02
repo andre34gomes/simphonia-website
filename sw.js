@@ -147,9 +147,9 @@ function staleWhileRevalidate(req) {
         }
         return networkResponse;
       }).catch(function (err) {
-        // If we have a stale copy, swallow the error — stale is fine.
+        // If we have a stale copy, return it — stale is fine.
         // If not, re-throw so the browser shows its default offline error.
-        if (cached) return undefined;
+        if (cached) return cached;
         throw err;
       });
 

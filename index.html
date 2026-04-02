@@ -22,6 +22,7 @@
   ">
   <link rel="canonical" href="https://simphonia.pt/">
   <link rel="alternate" hreflang="en" href="https://simphonia.pt/">
+  <meta name="robots" content="index, follow">
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="shortcut icon" href="assets/favicon.svg">
   <link rel="mask-icon" href="assets/favicon.svg" color="#D4AF37">
@@ -49,6 +50,8 @@
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="dns-prefetch" href="https://flagcdn.com">
   <link rel="dns-prefetch" href="https://api.simphonia.pt">
+  <!-- Preload nav logo — visible on first paint in static nav placeholder -->
+  <link rel="preload" href="assets/logo-mark.svg" as="image" type="image/svg+xml">
   <!-- Google Fonts: render-blocking so text displays with the correct font immediately.
        Preconnect hints above ensure DNS+TLS starts early. display=swap guarantees
        text is always visible (with fallback) even if .woff2 files are slow. -->
@@ -110,7 +113,7 @@
   <nav class="nav" id="navbar" role="navigation" aria-label="Main navigation">
     <div class="nav__inner">
       <a href="./" class="nav__logo" aria-label="Simphonia Home">
-        <span class="nav__logo-icon" aria-hidden="true"><img src="assets/logo-mark.svg" class="nav__logo-icon-image" alt="" width="40" height="40"></span>
+        <span class="nav__logo-icon" aria-hidden="true"><img src="assets/logo-mark.svg" class="nav__logo-icon-image" alt="" width="40" height="40" fetchpriority="high" decoding="sync"></span>
         <span class="nav__logo-wordmark">Simphonia</span>
       </a>
       <div class="nav__links">

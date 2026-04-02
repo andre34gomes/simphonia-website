@@ -17,6 +17,7 @@
   <meta name="theme-color" content="#121212">
   <link rel="canonical" href="https://simphonia.pt/destinations/">
   <link rel="alternate" hreflang="en" href="https://simphonia.pt/destinations/">
+  <meta name="robots" content="index, follow">
   <meta property="og:title" content="Destinations — Simphonia eSIM">
   <meta property="og:description" content="Browse eSIM plans for 200+ countries and regions. Find the perfect data plan for your next trip.">
   <meta property="og:type" content="website">
@@ -38,6 +39,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="dns-prefetch" href="https://api.simphonia.pt">
+  <!-- Preload nav logo — visible on first paint in static nav placeholder -->
+  <link rel="preload" href="../assets/logo-mark.svg" as="image" type="image/svg+xml">
   <link rel="dns-prefetch" href="https://flagcdn.com">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Pacifico&display=swap">
   <!-- Critical CSS: above-the-fold rules inlined for fast first paint -->
@@ -75,7 +78,7 @@
   <nav class="nav" id="navbar" role="navigation" aria-label="Main navigation">
     <div class="nav__inner">
       <a href="../" class="nav__logo" aria-label="Simphonia Home">
-        <span class="nav__logo-icon" aria-hidden="true"><img src="../assets/logo-mark.svg" class="nav__logo-icon-image" alt="" width="40" height="40"></span>
+        <span class="nav__logo-icon" aria-hidden="true"><img src="../assets/logo-mark.svg" class="nav__logo-icon-image" alt="" width="40" height="40" fetchpriority="high" decoding="sync"></span>
         <span class="nav__logo-wordmark">Simphonia</span>
       </a>
       <div class="nav__links">

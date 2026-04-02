@@ -286,35 +286,11 @@ function _footerReveal() {
     }
   });
 
-  // Secondary mechanism: Proactive scroll monitoring (for fast scrolling)
-  var scrollCheck = function () {
-    if (triggered) {
-      window.removeEventListener('scroll', scrollCheck);
-      return;
-    }
-    var rect = footer.getBoundingClientRect();
-    if (rect.top < window.innerHeight) {
-      trigger();
-      window.removeEventListener('scroll', scrollCheck);
-    }
-  };
-  window.addEventListener('scroll', scrollCheck, { passive: true });
-
-  // Fallback: If already in view or very close on load
-  function initialCheck() {
-    if (triggered) return;
-    if (footer.getBoundingClientRect().top < window.innerHeight * 1.05) {
-      trigger();
-    }
-  }
-  initialCheck();
-  setTimeout(initialCheck, 150);
-  setTimeout(initialCheck, 400);
-
-  // Absolute safety net
+  // Safety net: if ScrollTrigger hasn't fired after page is fully loaded + 1.5s,
+  // force the footer visible. Covers edge cases like very short pages.
   setTimeout(function () {
     if (!triggered) trigger();
-  }, 1200);
+  }, 1500);
 }
 
 // ── MAGNETIC BUTTONS ─────────────────────────────────────

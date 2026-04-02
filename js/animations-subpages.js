@@ -142,10 +142,16 @@ function _valueCards3D() {
     card.style.transformStyle = 'preserve-3d';
   });
 
+  // Cache the hovered card's rect to avoid layout thrashing on every mousemove
+  var _hoveredValueCard = null;
+  var _hoveredValueRect = null;
+
   document.addEventListener('mouseover', function (e) {
     if (!e.target || typeof e.target.closest !== 'function') return;
     var card = e.target.closest('.value-card');
     if (!card) return;
+    _hoveredValueCard = card;
+    _hoveredValueRect = card.getBoundingClientRect();
     gsap.to(card, { scale: 1.04, duration: 0.3, ease: 'power2.out' });
   }, { passive: true });
 
@@ -153,17 +159,18 @@ function _valueCards3D() {
     if (!e.target || typeof e.target.closest !== 'function') return;
     var card = e.target.closest('.value-card');
     if (!card) return;
+    if (_hoveredValueCard === card) { _hoveredValueCard = null; _hoveredValueRect = null; }
     gsap.to(card, { scale: 1, rotateX: 0, rotateY: 0, transformPerspective: 800, duration: 0.4, ease: 'power2.out' });
   }, { passive: true });
 
   document.addEventListener('mousemove', function (e) {
+    if (!_hoveredValueCard || !_hoveredValueRect) return;
     if (!e.target || typeof e.target.closest !== 'function') return;
     var card = e.target.closest('.value-card');
-    if (!card) return;
-    var rect = card.getBoundingClientRect();
-    var x = (e.clientX - rect.left) / rect.width - 0.5;
-    var y = (e.clientY - rect.top) / rect.height - 0.5;
-    gsap.to(card, { rotateY: x * 12, rotateX: -y * 12, transformPerspective: 800, duration: 0.3, ease: 'power2.out' });
+    if (card !== _hoveredValueCard) return;
+    var x = (e.clientX - _hoveredValueRect.left) / _hoveredValueRect.width - 0.5;
+    var y = (e.clientY - _hoveredValueRect.top) / _hoveredValueRect.height - 0.5;
+    gsap.to(_hoveredValueCard, { rotateY: x * 12, rotateX: -y * 12, transformPerspective: 800, duration: 0.3, ease: 'power2.out' });
   }, { passive: true });
 }
 

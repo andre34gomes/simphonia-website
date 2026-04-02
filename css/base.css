@@ -41,6 +41,8 @@ body {
   overflow-x: clip;   /* clip ≠ hidden: does NOT create a scroll container */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  /* Remove the grey/blue tap flash on iOS/Android */
+  -webkit-tap-highlight-color: transparent;
 }
 
 /* Mobile-menu scroll lock — body only, no html, no overscroll, no touch-action.
@@ -1376,6 +1378,7 @@ body.theme-transition .btn {
   overflow: hidden;
   overflow-y: auto;   /* Allow vertical scroll in landscape if content overflows */
   -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain; /* prevent scroll from bleeding to the page body */
   /* clip-path on the parent handles the reveal — no slide transform needed */
   transform: none;
   transition: none;
@@ -1646,6 +1649,9 @@ body.theme-transition .btn {
   padding-top: var(--space-4xl);
   position: relative;
   z-index: 2;
+  /* Defer rendering until the footer approaches the viewport */
+  content-visibility: auto;
+  contain-intrinsic-size: auto 420px;
 }
 
 .footer__grid {
@@ -2133,6 +2139,37 @@ html.gsap-ready .cta-section .reveal {
   /* Prevent mobile menu link text from overflowing */
   .nav__mobile-link-text {
     font-size: clamp(1.5rem, 6vw, 1.875rem);
+  }
+}
+
+/* ── Mobile GPU Performance: reduce expensive backdrop-filter blur ── */
+/* Nav: half the blur radius on tablet/phone — still looks frosted but cheaper */
+@media (max-width: 960px) {
+  .nav--scrolled {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .nav__mobile-close {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+}
+/* Mobile-only overlays: reduce blur further on small screens */
+@media (max-width: 768px) {
+  .mobile-cta-bar {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  .cookie-banner__content {
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+  }
+  /* Mobile CTA bar: ensure smooth slide-in compositing */
+  .mobile-cta-bar {
+    will-change: transform;
+  }
+  .mobile-cta-bar.mobile-cta-bar--visible {
+    will-change: auto; /* release after animation completes */
   }
 }
 

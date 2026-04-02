@@ -144,7 +144,7 @@ function showFetchError() {
 
 // ── Render grid ───────────────────────────────────────────────────────────
 function renderGrid(items) {
-  grid.innerHTML = '';
+  grid.textContent = '';   // faster than innerHTML = '' for clearing
   var total = displayedCountries.length;
   var query = searchInput.value.trim();
 
@@ -195,7 +195,9 @@ function applySearch() {
   clearBtn.hidden = !query;
   var filtered = query
     ? displayedCountries.filter(function (d) {
-      return (d.countryName || d.countryCode || '').toLowerCase().includes(query);
+      var name = (d.countryName || '').toLowerCase();
+      var code = (d.countryCode || '').toLowerCase();
+      return name.includes(query) || code.includes(query);
     })
     : displayedCountries;
   renderGrid(filtered);

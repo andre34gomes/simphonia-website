@@ -189,7 +189,7 @@ function initGlobe(containerId = 'globe-container') {
     if (tabActive && visible) startAnimate();
     else stopAnimate();
   }
-  document.addEventListener('visibilitychange', onVisibilityChange);
+  document.addEventListener('visibilitychange', onVisibilityChange, { passive: true });
 
   const io = new IntersectionObserver(([entry]) => {
     visible = entry.isIntersecting;
