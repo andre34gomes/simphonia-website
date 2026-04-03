@@ -63,12 +63,16 @@ test('initial preload and service worker precache use clean partial URLs', () =>
   assert.doesNotMatch(sw, /'\/pages\/destinations\.html',/);
 });
 
-test('mobile home scroll indicator stays visible instead of being hidden', () => {
+test('home page no longer renders a scroll cue, while subpages keep the shared one', () => {
+  const homePage = read('pages/home.html');
+  const aboutPage = read('pages/about.html');
+  const baseCss = read('css/base.css');
   const homeCss = read('css/home.css');
 
-  assert.doesNotMatch(homeCss, /\.hero-postcard \.hero__scroll\s*\{\s*display:\s*none;/);
-  assert.match(homeCss, /@media \(max-width: 768px\)\s*\{[\s\S]*?\.hero-postcard \.hero__scroll\s*\{[\s\S]*?font-size:\s*0\.5625rem;/);
-  assert.match(homeCss, /@media \(max-width: 960px\)\s*\{[\s\S]*?\.hero__scroll\s*\{[\s\S]*?font-size:\s*0\.625rem;[\s\S]*?opacity:\s*0\.72;/);
+  assert.doesNotMatch(homePage, /class="hero__scroll/);
+  assert.match(aboutPage, /class="hero__scroll"/);
+  assert.match(baseCss, /\.about-hero \.hero__scroll,[\s\S]*\.legal-hero \.hero__scroll \{/);
+  assert.doesNotMatch(homeCss, /\.hero-postcard \.hero__scroll/);
 });
 
 test('static route shells exist and stay in sync with the SPA shell', () => {
@@ -81,6 +85,7 @@ test('static route shells exist and stay in sync with the SPA shell', () => {
     assert.equal(read(relativePath), shell, 'expected route shell ' + relativePath + ' to match index.html');
   });
 });
+
 
 
 

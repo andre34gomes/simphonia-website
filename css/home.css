@@ -1903,50 +1903,6 @@
 
 /* scroll-margin-top for section[id] — defined once in base.css (includes --announcement-h) */
 
-/* Scroll indicator — positioned above the strip */
-.hero__scroll {
-  flex-shrink: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.375rem;
-  padding: 0.35rem 0 0.4rem;
-  color: var(--text-tertiary);
-  z-index: 10;
-  pointer-events: none;
-}
-
-/* Homepage hero: scroll indicator is inside flex layout (not absolute like sub-pages) */
-.hero-postcard .hero__scroll {
-  font-size: 0.625rem;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  opacity: 0.6;
-  transition: opacity 0.3s ease;
-}
-
-/* Keep the scroll indicator visible on mobile, but compact it to save space */
-@media (max-width: 768px) {
-  .hero-postcard .hero__scroll {
-    gap: 0.25rem;
-    padding: 0.25rem 0 0.3rem;
-    font-size: 0.5625rem;
-    opacity: 0.7;
-  }
-
-  .hero-postcard .hero__scroll-line {
-    height: 18px;
-  }
-}
-
-.hero__scroll-line {
-  width: 1px;
-  height: 22px;
-  background: linear-gradient(to bottom, var(--accent), transparent);
-}
-
-/* @keyframes scroll-line — defined once in base.css; removed duplicate here */
-
 @keyframes strip-entrance {
   from { opacity: 0; transform: translateY(16px); }
   to   { opacity: 1; transform: translateY(0); }
@@ -2051,15 +2007,6 @@
 }
 
 @media (min-width: 961px) and (max-height: 860px) {
-  .hero__scroll {
-    font-size: 0.625rem;
-    padding: 0.65rem 0;
-  }
-
-  .hero__scroll-line {
-    height: 22px;
-  }
-
   .hero__destinations-strip {
     padding: 0.5rem 0;
   }
@@ -2075,10 +2022,6 @@
 }
 
 @media (min-width: 961px) and (max-height: 760px) {
-  .hero__scroll {
-    display: none;
-  }
-
   .hero__destinations-strip {
     padding: 0.4rem 0;
   }
@@ -2515,22 +2458,12 @@
   .dest-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   .dest-grid-card { max-height: 360px; }
 
-  .hero__scroll {
-    gap: 0.25rem;
-    padding: 0.35rem 0;
-    font-size: 0.625rem;
-    opacity: 0.72;
-  }
-
-  .hero__scroll-line {
-    height: 18px;
-  }
   .marquee-item { padding: 0 1.25rem; font-size: 0.8125rem; }
-  
-  
+
+
   .steps--cards { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
   .feature-grid--new { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
-  
+
 
   /* Disable perspective on mobile — prevents text from looking skewed during animations */
   .steps--cards,
