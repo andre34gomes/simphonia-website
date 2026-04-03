@@ -25,6 +25,13 @@
     '/terms':        { page: 'terms',        titleKey: 'page.titles.terms',        descriptionKey: 'page.descriptions.terms' },
   };
 
+  var NOT_FOUND_ROUTE = {
+    page: 'not-found',
+    titleKey: 'page.titles.notFound',
+    descriptionKey: 'page.descriptions.notFound',
+    robots: 'noindex, follow'
+  };
+
   /* Page slug → HTML partial path */
   var PAGE_PARTIALS = {
     'home':         '/pages/home.html',
@@ -34,6 +41,7 @@
     'about':        '/pages/about.html',
     'privacy':      '/pages/privacy.html',
     'terms':        '/pages/terms.html',
+    'not-found':    '/pages/not-found.html',
   };
 
   /* Nav link mapping: page name → nav href for active state */
@@ -47,15 +55,21 @@
 
   /* ── State ─────────────────────────────────────────────────── */
   var currentPage = null;
+  var currentPath = null;
   var _pageInitialized = {}; // tracks which page-specific inits have run
   var _pageLoadPromises = {}; // inflight fetch promises keyed by pageName
 
   /* ── Helpers ───────────────────────────────────────────────── */
   function resolveRoute(path) {
-    // Strip hash fragment first, then trailing slashes (except root)
-    var clean = path.split('#')[0];
+    // Strip query/hash fragments first, then trailing slashes (except root)
+    var clean = path.split('#')[0].split('?')[0] || '/';
     var normalized = clean === '/' ? '/' : clean.replace(/\/+$/, '');
     return ROUTES[normalized] || null;
+  }
+
+  function normalizePath(path) {
+    var clean = (path || '/').split('#')[0].split('?')[0] || '/';
+    return clean || '/';
   }
 
   function getAllPages() {
@@ -68,10 +82,12 @@
     return typeof value === 'string' ? value : '';
   }
 
-  function updateSeo(route) {
+  function updateSeo(route, path) {
     if (!route) return;
     var title = translateText(route.titleKey);
     var description = translateText(route.descriptionKey);
+    var normalizedPath = normalizePath(path || window.location.pathname);
+    var canonicalUrl = window.location.origin + normalizedPath;
 
     if (title) {
       document.title = title;
@@ -89,6 +105,21 @@
       var next = /title/.test(id) ? title : description;
       if (next) el.setAttribute('content', next);
     });
+
+    var robots = document.getElementById('meta-robots');
+    if (robots) {
+      robots.setAttribute('content', route.robots || 'index, follow');
+    }
+
+    var canonical = document.getElementById('canonical-url');
+    if (canonical) {
+      canonical.setAttribute('href', canonicalUrl);
+    }
+
+    var ogUrl = document.getElementById('og-url');
+    if (ogUrl) {
+      ogUrl.setAttribute('content', canonicalUrl);
+    }
   }
 
   function setActiveNav(pageName) {
@@ -200,6 +231,11 @@
       case 'terms':
         // Legal TOC handled by initAnimations → main.js initLegalToc()
         break;
+      case 'not-found':
+        if (typeof window.initNotFoundPage === 'function') {
+          window.initNotFoundPage();
+        }
+        break;
     }
   }
 
@@ -207,21 +243,21 @@
   function navigateTo(path, pushState) {
     if (pushState === undefined) pushState = true;
 
+    path = normalizePath(path);
     var route = resolveRoute(path);
     if (!route) {
-      // Unknown route — show home
-      route = ROUTES['/'];
-      path = '/';
+      // Unknown route — keep the requested URL and show the SPA 404 page
+      route = NOT_FOUND_ROUTE;
     }
 
     var pageName = route.page;
 
-    // Already on this page
-    if (pageName === currentPage) return;
+    // Already on this page/path
+    if (pageName === currentPage && path === currentPath) return;
 
     // Update URL and title eagerly (better perceived performance)
     var resolvedTitle = translateText(route.titleKey);
-    updateSeo(route);
+    updateSeo(route, path);
     if (pushState && window.location.pathname !== path) {
       history.pushState({ page: pageName }, resolvedTitle, path);
     }
@@ -246,6 +282,7 @@
 
         // Update state
         currentPage = pageName;
+        currentPath = path;
         window.currentRoute = pageName;
 
         // Update nav active state
@@ -277,9 +314,14 @@
       })
       .catch(function (err) {
         console.error('[router] Navigation failed for', pageName, err);
+        if (pageName === 'not-found') {
+          window.location.replace('/404.html');
+          return;
+        }
         // Fall back to home if loading another page failed
         if (pageName !== 'home') {
           currentPage = null; // reset guard so navigateTo home doesn't no-op
+          currentPath = null;
           navigateTo('/', false);
         }
       });
@@ -371,8 +413,8 @@
     document.addEventListener('simphonia:langchange', function () {
       if (!currentPage) return;
       var currentPath = window.location.pathname.split('#')[0].replace(/\/+$/, '') || '/';
-      var route = ROUTES[currentPath] || ROUTES['/'];
-      updateSeo(route);
+      var route = resolveRoute(currentPath) || NOT_FOUND_ROUTE;
+      updateSeo(route, currentPath);
     });
 
     // Navigate to the current URL (initial page load)

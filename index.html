@@ -15,9 +15,9 @@
     connect-src 'self' https://api.simphonia.pt http://localhost:*;
     base-uri 'self'; form-action 'self'; upgrade-insecure-requests;
   ">
-  <link rel="canonical" href="https://simphonia.pt/">
+  <link id="canonical-url" rel="canonical" href="https://simphonia.pt/">
   <link rel="alternate" hreflang="en" href="https://simphonia.pt/">
-  <meta name="robots" content="index, follow">
+  <meta id="meta-robots" name="robots" content="index, follow">
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <link rel="shortcut icon" href="/assets/favicon.svg">
   <link rel="mask-icon" href="/assets/favicon.svg" color="#D4AF37">
@@ -31,7 +31,7 @@
   <meta id="og-title" property="og:title" content="Simphonia — Stay Connected, Wherever You Go" data-i18n-content="page.titles.home">
   <meta id="og-description" property="og:description" content="Instant eSIM activation for 200+ countries. No roaming fees, no SIM swaps, no contracts. Stay connected wherever you go with Simphonia." data-i18n-content="page.descriptions.home">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://simphonia.pt/">
+  <meta id="og-url" property="og:url" content="https://simphonia.pt/">
   <meta property="og:image" content="https://simphonia.pt/assets/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
   <meta id="twitter-title" name="twitter:title" content="Simphonia — Stay Connected, Wherever You Go" data-i18n-content="page.titles.home">
@@ -70,6 +70,7 @@
   <link rel="stylesheet" href="/css/how-it-works.css?v=20260403">
   <link rel="stylesheet" href="/css/support.css?v=20260403">
   <link rel="stylesheet" href="/css/legal.css?v=20260403">
+  <link rel="stylesheet" href="/css/404.css?v=20260403">
 
   <!-- Structured Data -->
   <script type="application/ld+json">
@@ -97,9 +98,10 @@
         '/about':        '/pages/about.html',
         '/privacy':      '/pages/privacy.html',
         '/terms':        '/pages/terms.html',
+        '/not-found':    '/pages/not-found.html',
       };
       var path = window.location.pathname.split('#')[0].replace(/\/+$/, '') || '/';
-      var url  = map[path] || '/pages/home.html';
+      var url  = map[path] || '/pages/not-found.html';
       var link = document.createElement('link');
       link.rel  = 'preload';
       link.as   = 'fetch';
@@ -165,7 +167,8 @@
   <script defer src="/js/animations-core.js?v=20260402"></script>
   <script defer src="/js/animations-home.js?v=20260402"></script>
   <script defer src="/js/animations-subpages.js?v=20260402"></script>
-  <script defer src="/js/router.js?v=20260402"></script>
+  <script defer src="/js/not-found-page.js?v=20260403"></script>
+  <script defer src="/js/router.js?v=20260403"></script>
   <script defer src="/js/main.js?v=20260402"></script>
   <script defer src="/js/destinations-page.js?v=20260402"></script>
   <script defer src="/js/support.js?v=20260402"></script>
