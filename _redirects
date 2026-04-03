@@ -3,8 +3,8 @@
 # Do not redirect `/pages/*.html`: those files are fetched directly by
 # `js/router.js` as SPA partials during in-app navigation.
 #
-# SPA catch-all handling lives in `/functions/[[path]].js` for Cloudflare and in
-# `netlify.toml` / `vercel.json` for the other hosts.
+# Missing-route handling lives in `/functions/[[path]].js` for Cloudflare.
+# Netlify and Vercel fall through to their native `404.html` handling.
 
 
 

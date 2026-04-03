@@ -6,15 +6,16 @@
  *  - CSS / JS / fonts: stale-while-revalidate (instant load + background refresh)
  *  - API calls: network-only (never cache dynamic data)
  *
- * Cache versioning: bump CACHE_VERSION when deploying breaking asset changes.
+ * Cache versioning: bump CACHE_VERSION when deploying breaking asset changes
+ * or routing changes that should invalidate cached HTML behavior.
  */
 
-const CACHE_VERSION = 'simphonia-v13';
+const CACHE_VERSION = 'simphonia-v14';
 
 // Core shell assets cached on install.
-// SPA: only index.html is needed — all routes are handled client-side.
-// Sub-page directories (/about/, /destinations/, etc.) are no longer pre-cached
-// because the server rewrites them to /index.html anyway.
+// The SPA still powers in-app navigation, but direct loads for known clean URLs
+// are served by their static route shells and unknown routes now fall back to
+// the branded 404 page instead of a global index.html rewrite.
 const PRECACHE_URLS = [
   '/',
   '/index.html',

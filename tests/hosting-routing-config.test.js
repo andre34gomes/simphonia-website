@@ -24,6 +24,7 @@ test('Netlify keeps /pages/* as fetchable partials instead of redirect targets',
 
   assert.match(config, /from\s*=\s*"\/pages\/\*"[\s\S]*to\s*=\s*"\/pages\/:splat"[\s\S]*status\s*=\s*200/);
   assert.doesNotMatch(config, /from\s*=\s*"\/pages\/.*\.html"[\s\S]*status\s*=\s*30[1278]/);
+  assert.equal(config.includes('from = "/*"') && config.includes('to = "/index.html"'), false);
 });
 
 test('Vercel keeps /pages/* as a rewrite and has no partial redirect rules', () => {
@@ -41,6 +42,19 @@ test('Vercel keeps /pages/* as a rewrite and has no partial redirect rules', () 
     false,
     'did not expect redirects for /pages/* partials'
   );
+
+  assert.equal(
+    rewrites.some((rule) => rule.source === '/(.*)' && rule.destination === '/index.html'),
+    false,
+    'did not expect a catch-all rewrite to /index.html'
+  );
+});
+
+test('Cloudflare missing-route handler serves the branded 404 document', () => {
+  const handler = read('functions/[[path]].js');
+
+  assert.equal(handler.includes("new URL('/404.html', url)"), true);
+  assert.equal(handler.includes("new URL('/index.html', url)"), false);
 });
 
 test('router prefers clean /pages/<slug> partial URLs before legacy .html fallbacks', () => {

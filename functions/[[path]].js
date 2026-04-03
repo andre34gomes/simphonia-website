@@ -19,7 +19,17 @@ export async function onRequest(context) {
     return response;
   }
 
-  const assetRequest = new Request(new URL('/index.html', url), request);
-  return context.env.ASSETS.fetch(assetRequest);
+  const assetRequest = new Request(new URL('/404.html', url), request);
+  const notFoundResponse = await context.env.ASSETS.fetch(assetRequest);
+
+  if (!notFoundResponse.ok) {
+    return response;
+  }
+
+  return new Response(notFoundResponse.body, {
+    status: 404,
+    statusText: 'Not Found',
+    headers: notFoundResponse.headers
+  });
 }
 

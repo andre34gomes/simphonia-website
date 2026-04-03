@@ -36,8 +36,7 @@
   ],
   "rewrites": [
     { "source": "/404.html", "destination": "/404.html" },
-    { "source": "/pages/:path*", "destination": "/pages/:path*" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "source": "/pages/:path*", "destination": "/pages/:path*" }
   ],
   "cleanUrls": true,
   "trailingSlash": true
