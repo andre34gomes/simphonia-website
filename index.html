@@ -91,17 +91,17 @@
   <script>
     (function () {
       var map = {
-        '/':             '/pages/home.html',
-        '/destinations': '/pages/destinations.html',
-        '/how-it-works': '/pages/how-it-works.html',
-        '/support':      '/pages/support.html',
-        '/about':        '/pages/about.html',
-        '/privacy':      '/pages/privacy.html',
-        '/terms':        '/pages/terms.html',
-        '/not-found':    '/pages/not-found.html',
+        '/':             '/pages/home',
+        '/destinations': '/pages/destinations',
+        '/how-it-works': '/pages/how-it-works',
+        '/support':      '/pages/support',
+        '/about':        '/pages/about',
+        '/privacy':      '/pages/privacy',
+        '/terms':        '/pages/terms',
+        '/not-found':    '/pages/not-found',
       };
       var path = window.location.pathname.split('#')[0].replace(/\/+$/, '') || '/';
-      var url  = map[path] || '/pages/not-found.html';
+      var url  = map[path] || '/pages/not-found';
       var link = document.createElement('link');
       link.rel  = 'preload';
       link.as   = 'fetch';
@@ -168,7 +168,7 @@
   <script defer src="/js/animations-home.js?v=20260402"></script>
   <script defer src="/js/animations-subpages.js?v=20260402"></script>
   <script defer src="/js/not-found-page.js?v=20260403"></script>
-  <script defer src="/js/router.js?v=20260403"></script>
+  <script defer src="/js/router.js?v=20260403c"></script>
   <script defer src="/js/main.js?v=20260402"></script>
   <script defer src="/js/destinations-page.js?v=20260402"></script>
   <script defer src="/js/support.js?v=20260402"></script>

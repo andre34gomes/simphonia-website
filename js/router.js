@@ -32,16 +32,16 @@
     robots: 'noindex, follow'
   };
 
-  /* Page slug → HTML partial path */
+  /* Page slug → candidate HTML partial paths (preferred first) */
   var PAGE_PARTIALS = {
-    'home':         '/pages/home.html',
-    'destinations': '/pages/destinations.html',
-    'how-it-works': '/pages/how-it-works.html',
-    'support':      '/pages/support.html',
-    'about':        '/pages/about.html',
-    'privacy':      '/pages/privacy.html',
-    'terms':        '/pages/terms.html',
-    'not-found':    '/pages/not-found.html',
+    'home':         ['/pages/home', '/pages/home.html'],
+    'destinations': ['/pages/destinations', '/pages/destinations.html'],
+    'how-it-works': ['/pages/how-it-works', '/pages/how-it-works.html'],
+    'support':      ['/pages/support', '/pages/support.html'],
+    'about':        ['/pages/about', '/pages/about.html'],
+    'privacy':      ['/pages/privacy', '/pages/privacy.html'],
+    'terms':        ['/pages/terms', '/pages/terms.html'],
+    'not-found':    ['/pages/not-found', '/pages/not-found.html'],
   };
 
   /* Nav link mapping: page name → nav href for active state */
@@ -80,6 +80,42 @@
     if (typeof window.t !== 'function') return '';
     var value = window.t(key);
     return typeof value === 'string' ? value : '';
+  }
+
+  function getPagePartialCandidates(pageName) {
+    var entry = PAGE_PARTIALS[pageName];
+    if (!entry) return [];
+    return Array.isArray(entry) ? entry.slice() : [entry];
+  }
+
+  function fetchPagePartial(url) {
+    var controller = new AbortController();
+    var timeoutId = setTimeout(function () { controller.abort(); }, 8000);
+
+    return fetch(url, { credentials: 'same-origin', signal: controller.signal })
+      .then(function (res) {
+        clearTimeout(timeoutId);
+        if (!res.ok) throw new Error('Page fetch failed (' + res.status + '): ' + url);
+        return res.text();
+      })
+      .catch(function (err) {
+        clearTimeout(timeoutId);
+        throw err;
+      });
+  }
+
+  function loadPagePartial(pageName, urls, index) {
+    index = index || 0;
+    var url = urls[index];
+    if (!url) {
+      return Promise.reject(new Error('No page partial URL configured for: ' + pageName));
+    }
+
+    return fetchPagePartial(url)
+      .catch(function (err) {
+        if (index + 1 >= urls.length) throw err;
+        return loadPagePartial(pageName, urls, index + 1);
+      });
   }
 
   function updateSeo(route, path) {
@@ -159,19 +195,11 @@
       return _pageLoadPromises[pageName];
     }
 
-    var url = PAGE_PARTIALS[pageName];
-    if (!url) return Promise.resolve();
+    var urls = getPagePartialCandidates(pageName);
+    if (!urls.length) return Promise.resolve();
 
     _pageLoadPromises[pageName] = (function () {
-      var controller = new AbortController();
-      var timeoutId = setTimeout(function () { controller.abort(); }, 8000);
-
-      return fetch(url, { credentials: 'same-origin', signal: controller.signal })
-        .then(function (res) {
-          clearTimeout(timeoutId);
-          if (!res.ok) throw new Error('Page fetch failed (' + res.status + '): ' + url);
-          return res.text();
-        })
+      return loadPagePartial(pageName, urls)
         .then(function (html) {
         var main = document.getElementById('main-content');
         if (main) {
@@ -187,7 +215,6 @@
         delete _pageLoadPromises[pageName];
       })
       .catch(function (err) {
-        clearTimeout(timeoutId);
         console.error('[router] Failed to load page partial:', err);
         delete _pageLoadPromises[pageName];
         throw err;
@@ -381,7 +408,7 @@
     if (_prefetched[pageName]) return;
     if (document.querySelector('[data-page="' + pageName + '"]')) return;
 
-    var url = PAGE_PARTIALS[pageName];
+    var url = getPagePartialCandidates(pageName)[0];
     if (!url) return;
 
     _prefetched[pageName] = true;

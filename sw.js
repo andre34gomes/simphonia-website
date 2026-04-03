@@ -9,7 +9,7 @@
  * Cache versioning: bump CACHE_VERSION when deploying breaking asset changes.
  */
 
-const CACHE_VERSION = 'simphonia-v12';
+const CACHE_VERSION = 'simphonia-v13';
 
 // Core shell assets cached on install.
 // SPA: only index.html is needed — all routes are handled client-side.
@@ -50,15 +50,15 @@ const PRECACHE_URLS = [
   '/assets/logo-mark.svg',
   '/assets/og-image.png',
   '/manifest.json',
-  // Page HTML partials — loaded on demand by the SPA router
-  '/pages/home.html',
-  '/pages/destinations.html',
-  '/pages/how-it-works.html',
-  '/pages/support.html',
-  '/pages/about.html',
-  '/pages/not-found.html',
-  '/pages/privacy.html',
-  '/pages/terms.html',
+  // Page HTML partials — use clean URLs first to avoid cached permanent redirects
+  '/pages/home',
+  '/pages/destinations',
+  '/pages/how-it-works',
+  '/pages/support',
+  '/pages/about',
+  '/pages/not-found',
+  '/pages/privacy',
+  '/pages/terms',
 ];
 
 // Origins that should never be cached (API data, CDN scripts, flag images)
