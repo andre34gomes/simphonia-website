@@ -35,6 +35,7 @@
     }
   ],
   "rewrites": [
+    { "source": "/pages/:path*", "destination": "/pages/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "redirects": [

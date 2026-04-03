@@ -110,6 +110,16 @@ window.resetAnimations = function () {
   if (typeof ScrollTrigger !== 'undefined') {
     ScrollTrigger.getAll().forEach(function (t) { t.kill(); });
   }
+  // Cancel the showcase segment LERP loop (animations-home.js) if it is running.
+  if (typeof _segLerpCancelFn === 'function') {
+    _segLerpCancelFn();
+    _segLerpCancelFn = null;
+  }
+  // Immediately reset showcase segment fill widths so stale inline styles
+  // don't flash when the home page is re-shown before _stickyShowcase() re-runs.
+  document.querySelectorAll('.showcase-segment__fill').forEach(function (el) {
+    el.style.width = '0%';
+  });
 };
 
 /* ───────────────────────────────────────────────────────────
@@ -140,11 +150,20 @@ function initAnimations() {
       _footerReveal();
       _magneticButtons();
 
+      // Determine which page is currently active so we only create
+      // ScrollTriggers on visible elements (hidden elements have zero
+      // dimensions and cause incorrect position calculations).
+      var _activePage = window.currentRoute || 'home';
+
       // ── Home page animations ──
-      if (typeof _initHomeAnimations === 'function') _initHomeAnimations();
+      if (_activePage === 'home' && typeof _initHomeAnimations === 'function') {
+        _initHomeAnimations();
+      }
 
       // ── Sub-page animations ──
-      if (typeof _initSubpageAnimations === 'function') _initSubpageAnimations();
+      if (_activePage !== 'home' && typeof _initSubpageAnimations === 'function') {
+        _initSubpageAnimations();
+      }
 
       // ── Defer the initial measurement until the page layout is stable ──
       _scheduleScrollRefresh({ waitForLoad: true });

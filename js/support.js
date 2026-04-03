@@ -108,7 +108,7 @@ function renderNav(items) {
             + '</span>' : '') +
         '<p>' + item.a + '</p>' +
         '<a href="#contact" class="faq-panel__display-cta">' +
-        (typeof window.t === 'function' ? window.t('support.faq.stillNeedHelp') : 'Still need help? Contact us') +
+        window.t('support.faq.stillNeedHelp') +
         ' <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>'
         +
         '</a>' +
@@ -277,8 +277,7 @@ function showFaqLoading() {
         '<path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>'
         +
         '</svg>' +
-        '<p class="faq-panel__state-desc">' + (typeof window.t === 'function'
-            ? window.t('support.faq.loading') : 'Loading\u2026') + '</p>' +
+        '<p class="faq-panel__state-desc">' + window.t('support.faq.loading') + '</p>' +
         '</div>';
   }
 }
@@ -302,12 +301,9 @@ function showFaqError(lang) {
         '<circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/>'
         +
         '</svg>' +
-        '<h3 class="faq-panel__state-title">' + (typeof window.t === 'function'
-            ? window.t('support.faq.errorTitle') : 'Unable to Load FAQs') + '</h3>'
+        '<h3 class="faq-panel__state-title">' + window.t('support.faq.errorTitle') + '</h3>'
         +
-        '<p class="faq-panel__state-desc">' + (typeof window.t === 'function'
-            ? window.t('support.faq.errorDesc').replace('\n', '<br>')
-            : 'We couldn\u2019t reach our servers right now.<br>Check your connection and try again.')
+        '<p class="faq-panel__state-desc">' + window.t('support.faq.errorDesc').replace('\n', '<br>')
         + '</p>' +
         '<button class="btn btn--outline btn--sm" id="faq-retry">' +
         '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'
@@ -315,8 +311,7 @@ function showFaqError(lang) {
         '<polyline points="23 4 23 10 17 10"/>' +
         '<path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/>' +
         '</svg>' +
-        (typeof window.t === 'function' ? window.t('support.faq.tryAgain')
-            : 'Try Again') +
+        window.t('support.faq.tryAgain') +
         '</button>' +
         '</div>';
     var retryBtn = document.getElementById('faq-retry');
@@ -401,7 +396,7 @@ function initPanel(items) {
         '<h3 class="faq-panel__display-q" id="fpd-q"></h3>' +
         '<div class="faq-panel__display-body" id="fpd-body"></div>' +
         '<a href="#contact" class="faq-panel__display-cta">' +
-        (typeof window.t === 'function' ? window.t('support.faq.stillNeedHelp') : 'Still need help? Contact us') +
+        window.t('support.faq.stillNeedHelp') +
         ' <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>'
         +
         '</a>';
@@ -441,6 +436,9 @@ function initFaqSearch() {
     document.getElementById('hero-faq-search'),
     document.getElementById('faq-search'),
   ].filter(Boolean);
+  var _t = typeof window.t === 'function' ? window.t.bind(window) : function () {
+    return '';
+  };
 
   if (!inputs.length) {
     return;
@@ -456,7 +454,8 @@ function initFaqSearch() {
     var clearBtn = document.createElement('button');
     clearBtn.type = 'button';
     clearBtn.className = 'search-bar__clear';
-    clearBtn.setAttribute('aria-label', 'Clear search');
+    clearBtn.setAttribute('aria-label', _t('accessibility.clearSearch'));
+    clearBtn.setAttribute('data-i18n-aria-label', 'accessibility.clearSearch');
     clearBtn.hidden = true;
     clearBtn.innerHTML =
         '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">'

@@ -49,6 +49,12 @@
 # SPA catch-all — serve index.html for all routes so the client-side
 # router can handle /destinations/, /about/, /support/, etc.
 # force = true ensures this rule applies even if a matching file exists.
+# Exclude /pages/ partials which are fetched by the SPA router directly.
+[[redirects]]
+  from = "/pages/*"
+  to = "/pages/:splat"
+  status = 200
+
 [[redirects]]
   from = "/*"
   to = "/index.html"

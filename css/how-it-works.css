@@ -1,6 +1,5 @@
 /* base.css loaded via <link> in HTML to avoid @import waterfall */
 
-
 /* ============================================================
    SIMPHONIA — How It Works Page Stylesheet
    ============================================================ */
@@ -8,38 +7,12 @@
 /* ─── Step blocks (how-it-works prose sections) ─────────────── */
 
 /* Vertical spacing between the three step blocks */
-.step-block {
-  margin-bottom: var(--space-5xl);
-}
 
 /* Badge above each step heading */
-.step-badge {
-  margin-bottom: var(--space-lg);
-}
 
 /* Body prose paragraphs inside each step */
-.step-prose {
-  margin-top: var(--space-lg);
-  font-size: 1.0625rem;
-  line-height: 1.8;
-}
-
-.step-prose--spaced {
-  margin-top: var(--space-md);
-}
 
 /* Feature list (check-mark items) below each step description */
-.step-features {
-  margin-top: var(--space-lg);
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-sm);
-}
-
-/* Override .price-card__feature font-size for this context */
-.step-features .price-card__feature {
-  font-size: 0.9375rem;
-}
 
 /* ─── Central Timeline ──────────────────────────────────────── */
 .timeline {
@@ -209,7 +182,6 @@
   opacity: 0.4;
   transform: translateY(-50%);
 }
-
 
 .timeline__step--left .timeline__card::after  { right: -2.5rem; }
 .timeline__step--right .timeline__card::after { left:  -2.5rem; }

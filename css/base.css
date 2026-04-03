@@ -29,7 +29,7 @@ html {
      stutter or freeze when changing direction.
      Anchor offset: accounts for fixed nav + announcement banner (if shown). */
   -webkit-text-size-adjust: 100%;
-  scroll-padding-top: calc(var(--nav-height, 72px) + var(--announcement-h, 0px) + 0.5rem);
+  scroll-padding-top: calc(var(--nav-height, 72px) + 0.5rem);
 }
 
 body {
@@ -329,7 +329,6 @@ p {
   background-clip: text;
 }
 
-.text-accent { color: var(--accent); }
 .text-secondary { color: var(--text-secondary); }
 .text-tertiary { color: var(--text-tertiary); }
 
@@ -371,7 +370,6 @@ p {
   contain-intrinsic-size: auto 600px;
 }
 
-
 .section--alt {
   background: var(--bg-secondary);
   position: relative;
@@ -383,7 +381,7 @@ p {
 
 /* Anchor scroll offset — ensures fixed nav + announcement banner don't cover targets */
 section[id] {
-  scroll-margin-top: calc(var(--nav-height) + var(--announcement-h, 0px) + 1rem);
+  scroll-margin-top: calc(var(--nav-height) + 1rem);
 }
 
 .section--gradient {
@@ -396,61 +394,28 @@ section[id] {
 }
 
 .grid--2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.grid--3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.grid--4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 
 .flex { display: flex; }
-.flex-col { flex-direction: column; }
 .flex-center { align-items: center; justify-content: center; }
-.flex-between { justify-content: space-between; }
-.items-center { align-items: center; }
-.gap-sm { gap: var(--space-sm); }
 .gap-md { gap: var(--space-md); }
-.gap-lg { gap: var(--space-lg); }
-.gap-xl { gap: var(--space-xl); }
 
-.text-center { text-align: center; }
-.mx-auto { margin-left: auto; margin-right: auto; }
-
-/* Spacing utilities — mirrors the --space-* token scale */
-.mt-sm  { margin-top: var(--space-sm); }
+/* Margin-top utility classes — used for consistent breathing space above CTA buttons */
 .mt-md  { margin-top: var(--space-md); }
 .mt-lg  { margin-top: var(--space-lg); }
 .mt-xl  { margin-top: var(--space-xl); }
 .mt-2xl { margin-top: var(--space-2xl); }
+.mt-3xl { margin-top: var(--space-3xl); }
+
+.text-center { text-align: center; }
 
 /* Positioning helper — commonly needed to sit above section bg overlays */
 .rel-z1 { position: relative; z-index: 1; }
 
-/* Remove section top padding (used when adjacent content provides spacing) */
-.section--no-top { padding-top: 0; }
-
 /* Section header spacing modifiers */
-.section-header--compact { margin-bottom: var(--space-3xl); }
 .section-header--tight   { margin-bottom: var(--space-2xl); }
-
-/* Margin-bottom utilities — mirrors the --space-* token scale */
-.mb-sm  { margin-bottom: var(--space-sm); }
-.mb-md  { margin-bottom: var(--space-md); }
-.mb-lg  { margin-bottom: var(--space-lg); }
-.mb-xl  { margin-bottom: var(--space-xl); }
-.mb-2xl { margin-bottom: var(--space-2xl); }
-.mb-3xl { margin-bottom: var(--space-3xl); }
 
 /* Inline accent link — colour without layout changes */
 .link-accent { color: var(--accent); }
-
-
-.sr-only {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  border: 0;
-}
 
 /* Flag images — replaces Unicode emoji (broken on Windows) */
 .flag-img {
@@ -536,13 +501,6 @@ section[id] {
   font-size: 0.8125rem;
 }
 
-.btn--icon {
-  width: 44px;
-  height: 44px;
-  padding: 0;
-  border-radius: var(--radius-md);
-}
-
 .btn--block {
   display: flex;
   width: 100%;
@@ -581,19 +539,6 @@ section[id] {
   border: 1px solid var(--border-accent);
   border-radius: var(--radius-full);
   max-width: 100%;
-}
-
-.badge--sm {
-  padding: 0.25rem 0.75rem;
-  font-size: 0.75rem;
-}
-
-.badge__dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: var(--accent);
-  animation: badge-pulse 2s ease-in-out infinite;
 }
 
 /* --- Divider --- */
@@ -767,7 +712,6 @@ body.theme-transition .cookie-banner__content,
 body.theme-transition .faq-item,
 body.theme-transition .faq-panel__display,
 body.theme-transition .legal-toc,
-body.theme-transition .origin-block__img-tag,
 body.theme-transition .search-bar__input,
 body.theme-transition input,
 body.theme-transition textarea,
@@ -785,17 +729,6 @@ body.theme-transition .btn {
 
 /* Hide stars canvas in light mode (looks odd on bright background) */
 [data-theme="light"] #stars-canvas { opacity: 0.35; }
-
-.bg-gradient-radial {
-  position: absolute;
-  width: 600px;
-  height: 600px;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.15;
-  pointer-events: none;
-  z-index: 0;
-}
 
 #stars-canvas {
   position: fixed;
@@ -969,13 +902,6 @@ body.theme-transition .btn {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23D4AF37' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
 }
 
-.faq-item__answer {
-  padding: 1.25rem 1.5rem 1.5rem;
-  color: var(--text-secondary);
-  font-size: 0.9375rem;
-  line-height: 1.75;
-}
-
 /* --- CTA Section (shared across inner pages) --- */
 .cta-section {
   text-align: center;
@@ -988,7 +914,6 @@ body.theme-transition .btn {
   align-items: center;
   justify-content: center;
 }
-
 
 .cta-section__bg {
   position: absolute;
@@ -1034,8 +959,7 @@ body.theme-transition .btn {
 .cta-section .container { position: relative; z-index: 1; }
 
 /* --- Checklist item (shared) --- */
-.check-item,
-.price-card__feature {
+.check-item {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -1043,8 +967,7 @@ body.theme-transition .btn {
   color: var(--text-secondary);
 }
 
-.check-item svg,
-.price-card__feature svg {
+.check-item svg {
   width: 16px;
   height: 16px;
   color: var(--accent);
@@ -1160,7 +1083,6 @@ body.theme-transition .btn {
     height: 20px;
   }
 }
-
 
 /* ==============================================
    6. NAVIGATION
@@ -1886,8 +1808,7 @@ html.gsap-ready .cta-section .reveal {
 }
 
 @media (max-width: 1024px) {
-  .grid--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .footer__grid { grid-template-columns: 1fr 1fr; gap: var(--space-2xl); }
+    .footer__grid { grid-template-columns: 1fr 1fr; gap: var(--space-2xl); }
   .about-story { gap: var(--space-2xl); }
 }
 
@@ -1911,9 +1832,7 @@ html.gsap-ready .cta-section .reveal {
   .theme-toggle { width: 34px; height: 34px; }
   .theme-toggle .icon-sun, .theme-toggle .icon-moon { width: 16px; height: 16px; }
   .grid--2,
-  .grid--3 { grid-template-columns: 1fr; }
-  .grid--4 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-
+    
   /* Adjust clip-path origin to match new nav height (64px → center at 32px) */
   .nav__mobile         { clip-path: circle(0px at calc(100% - 44px) 32px); }
   .nav__mobile--open   { clip-path: circle(200vmax at calc(100% - 44px) 32px); }
@@ -2036,11 +1955,6 @@ html.gsap-ready .cta-section .reveal {
     font-size: 0.875rem;
   }
 
-  .faq-item__answer {
-    padding: 0.875rem 1.125rem 1.125rem;
-    font-size: 0.875rem;
-  }
-
   /* Search bar — smaller on phones but at least 16px to prevent iOS auto-zoom */
   .search-bar__input {
     font-size: 1rem;
@@ -2073,8 +1987,7 @@ html.gsap-ready .cta-section .reveal {
   .nav__hamburger span:nth-child(1) { width: 20px; }
   .nav__hamburger span:nth-child(2) { width: 13px; }
   .nav__hamburger span:nth-child(3) { width: 20px; }
-  .grid--4 { grid-template-columns: 1fr; }
-
+  
   /* CTA section — compact on small phones */
   .cta-section {
     padding: var(--space-2xl) 0;
@@ -2392,8 +2305,6 @@ html.gsap-ready .feature-grid--new {
   animation: float-slow 10s ease-in-out infinite;
 }
 
-
-
 /* ==============================================
    MOBILE STICKY CTA BAR
    ============================================== */
@@ -2677,103 +2588,6 @@ html.gsap-ready .feature-grid--new {
   will-change: transform; /* continuously animated during scroll */
 }
 
-/* ==============================================
-   ANNOUNCEMENT BANNER
-   ============================================== */
-:root {
-  --announcement-h: 0px;
-}
-
-.announcement-banner {
-  position: fixed;
-  top: var(--nav-height);
-  left: 0;
-  right: 0;
-  z-index: 990;
-  background: linear-gradient(90deg,
-    rgba(212,175,55,0.12) 0%,
-    rgba(212,175,55,0.08) 50%,
-    rgba(212,175,55,0.12) 100%);
-  border-bottom: 1px solid var(--border-accent);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  animation: banner-slide-down 0.4s var(--ease-out);
-}
-
-@keyframes banner-slide-down {
-  from { transform: translateY(-100%); opacity: 0; }
-  to   { transform: translateY(0);     opacity: 1; }
-}
-
-.announcement-banner--closing {
-  animation: banner-slide-up 0.35s var(--ease-out) forwards;
-}
-
-@keyframes banner-slide-up {
-  to { transform: translateY(-100%); opacity: 0; }
-}
-
-.announcement-banner__inner {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: var(--space-sm);
-  padding: 0.625rem var(--space-xl);
-  max-width: var(--container-wide);
-  margin: 0 auto;
-  position: relative;
-}
-
-.announcement-banner__icon {
-  font-size: 1rem;
-  flex-shrink: 0;
-}
-
-.announcement-banner__text {
-  font-size: 0.875rem;
-  color: var(--text-secondary);
-  text-align: center;
-}
-
-.announcement-banner__link {
-  color: var(--accent);
-  font-weight: 600;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-  transition: opacity var(--duration-fast);
-}
-
-.announcement-banner__link:hover { opacity: 0.8; }
-
-.announcement-banner__close {
-  position: absolute;
-  right: var(--space-sm);
-  top: 50%;
-  transform: translateY(-50%);
-  width: 44px;
-  height: 44px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: var(--radius-sm);
-  color: var(--text-tertiary);
-  transition: color var(--duration-fast), background var(--duration-fast);
-  flex-shrink: 0;
-}
-
-.announcement-banner__close svg { width: 14px; height: 14px; }
-
-.announcement-banner__close:hover {
-  color: var(--text-primary);
-  background: var(--glass-hover);
-}
-
-@media (max-width: 480px) {
-
-  .announcement-banner__inner { padding: 0.5rem var(--space-xl) 0.5rem var(--space-md); }
-  .announcement-banner__text  { font-size: 0.8125rem; }
-}
-
 /* ══════════════════════════════════════════════════════════
    LANGUAGE PICKER — Single-Column Searchable Dropdown
    ══════════════════════════════════════════════════════════ */
@@ -2839,11 +2653,6 @@ html.gsap-ready .feature-grid--new {
 
 .lang-picker__btn:hover svg {
   transform: rotate(18deg);
-}
-
-/* lang-picker__code removed — icon-only button */
-.lang-picker__code {
-  display: none;
 }
 
 /* ── Dropdown menu — single-column glass card ── */
@@ -3126,7 +2935,6 @@ html.gsap-ready .feature-grid--new {
   #stars-canvas,
   .cursor,
   .hero__scroll,
-  .announcement-banner,
   .skip-link,
   .theme-toggle,
   .lang-picker,

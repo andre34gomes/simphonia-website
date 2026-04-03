@@ -19,8 +19,8 @@
       <div class="search-controls">
         <div class="search-bar reveal">
           <svg class="search-bar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
-          <input type="search" class="search-bar__input" id="dest-search" placeholder="Search countries…" data-i18n-placeholder="destinations.grid.searchPlaceholder" aria-label="Search countries" autocomplete="off" spellcheck="false" inputmode="search" enterkeyhint="search">
-          <button class="search-bar__clear" id="dest-search-clear" aria-label="Clear search" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+          <input type="search" class="search-bar__input" id="dest-search" placeholder="Search countries…" data-i18n-placeholder="destinations.grid.searchPlaceholder" aria-label="Search countries" data-i18n-aria-label="accessibility.searchCountries" autocomplete="off" spellcheck="false" inputmode="search" enterkeyhint="search">
+          <button class="search-bar__clear" id="dest-search-clear" aria-label="Clear search" data-i18n-aria-label="accessibility.clearSearch" hidden><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" width="16" height="16"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
         </div>
         <div class="filter-tabs reveal" id="region-tabs">
           <button class="filter-tab filter-tab--active" data-region="all" data-i18n="destinations.grid.allTab">All</button>
@@ -30,7 +30,7 @@
       <div class="dest-grid" id="dest-grid"></div>
       <div id="no-results" class="dest-no-results" style="display:none;" role="alert">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="48" height="48" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/><path d="M8 11h6"/></svg>
-        <p>No countries found for <strong id="no-results-query"></strong></p>
+        <p><span data-i18n="destinations.noResults.noCountriesFor">No countries found for</span> <strong id="no-results-query"></strong></p>
         <button class="btn btn--ghost btn--sm" id="no-results-clear" data-i18n="destinations.grid.clearSearch">Clear search</button>
       </div>
     </div>
@@ -41,7 +41,7 @@
     <div class="container"><div class="reveal">
       <h2 data-i18n="destinations.cta.heading">Can't Find Your Destination?</h2>
       <p data-i18n="destinations.cta.desc">We're adding new countries every week. Check back soon for more destinations.</p>
-      <div class="flex flex-center gap-md mt-xl"><a href="/support/" class="btn btn--primary btn--lg" data-i18n="destinations.cta.contactSupport">Contact Support</a></div>
+      <div class="flex flex-center gap-md mt-2xl"><a href="/support/" class="btn btn--primary btn--lg" data-i18n="destinations.cta.contactSupport">💬 Contact Support</a></div>
     </div></div>
   </section>
 

@@ -75,44 +75,34 @@ function ensureLayoutBootstrap() {
 function revealGsapFallbacks() {
   if (document.documentElement.classList.contains('gsap-ready')) return;
 
-  // Generic reveal classes — clear clip-path and any residual transforms
-  document.querySelectorAll('.reveal,.reveal--left,.reveal--right,.reveal--scale')
-    .forEach(function (el) {
+  // Helper — apply visibility styles to all elements matching a selector string.
+  // Avoids repeating the same 4 property assignments dozens of times.
+  function revealAll(selector) {
+    document.querySelectorAll(selector).forEach(function (el) {
       el.style.opacity = '1';
       el.style.visibility = 'visible';
       el.style.transform = 'none';
       el.style.clipPath = 'none';
     });
+  }
 
-  // Hero-specific elements set to autoAlpha:0 by _hero()
-  [
-    '.iphone-mockup',
-    // Hero-postcard elements
-    '.hero-postcard__copy', '.hero-postcard__phone-area',
-    // Sub-page hero elements
-    '.about-hero h1', '.about-hero p', '.about-hero .label',
-    '.destinations-hero h1', '.destinations-hero p', '.destinations-hero .label',
-    '.support-hero h1', '.support-hero p', '.support-hero .label',
-    '.legal-hero h1', '.legal-hero p', '.legal-hero .label',
-    // Story block children
-    '.about-story__img', '.about-story > div',
-    // Section-specific elements hidden by GSAP batch
-    '.value-card', '.team-card', '.feat-card', '.step-card',
-    '.dest-card', '.faq-item',
-    // Section header children
-    '.section-header .label', '.section-header h2', '.section-header p',
-  ].forEach(function (sel) {
-    document.querySelectorAll(sel).forEach(function (el) {
-      el.style.opacity = '1';
-      el.style.visibility = 'visible';
-      el.style.transform = 'none';
-      el.style.clipPath = 'none';
-    });
-  });
+  // All elements that use clip-path / autoAlpha reveal patterns — single query.
+  revealAll(
+    '.reveal, .reveal--left, .reveal--right, .reveal--scale, ' +
+    '.iphone-mockup, .hero-postcard__copy, .hero-postcard__phone-area, ' +
+    '.about-hero h1, .about-hero p, .about-hero .label, ' +
+    '.destinations-hero h1, .destinations-hero p, .destinations-hero .label, ' +
+    '.support-hero h1, .support-hero p, .support-hero .label, ' +
+    '.legal-hero h1, .legal-hero p, .legal-hero .label, ' +
+    '.about-story__img, .about-story > div, ' +
+    '.value-card, .team-card, .feat-card, .step-card, .dest-card, .faq-item, ' +
+    '.section-header .label, .section-header h2, .section-header p, ' +
+    '.cta-section .btn, ' +
+    '.footer__brand, .footer__col, .footer__bottom'
+  );
 
   // Showcase section: reveal only the first panel and first screen so content
-  // is visible if GSAP (or ScrollTrigger) never initialises. Revealing all
-  // panels simultaneously would be confusing.
+  // is visible if GSAP (or ScrollTrigger) never initialises.
   document.querySelectorAll('.showcase-sticky__panel[data-panel="0"]').forEach(function (el) {
     el.style.opacity = '1';
     el.style.transform = 'none';
@@ -127,25 +117,9 @@ function revealGsapFallbacks() {
     el.style.display = 'none';
   });
 
-  // CTA section buttons are hidden by _ctaButtonEntrance() via GSAP clipPath.
-  // If the user never scrolls that far, make sure they're always visible.
-  document.querySelectorAll('.cta-section .btn').forEach(function (el) {
-    el.style.opacity = '1';
-    el.style.clipPath = 'none';
-    el.style.transform = 'none';
-  });
-
-  // Footer elements
-  document.querySelectorAll('.footer__brand, .footer__col, .footer__bottom')
-    .forEach(function (el) {
-      el.style.opacity = '1';
-      el.style.visibility = 'visible';
-      el.style.transform = 'none';
-      el.style.clipPath = 'none';
-    });
-
   // Also kick off typing effect if it hasn't started
-  if (document.getElementById('typing-text') && !document.getElementById('typing-text').textContent) {
+  var typingEl = document.getElementById('typing-text');
+  if (typingEl && !typingEl.textContent) {
     initHeroTyping();
   }
 }
@@ -184,18 +158,13 @@ async function bootstrapSite() {
     window.injectBackToTop();
     window.injectCookieBanner();
 
-    // 6. Announcement banner (homepage only, session-dismissible)
-    if (typeof window.injectAnnouncementBanner === 'function') {
-      window.injectAnnouncementBanner();
-    }
-
-    // 7. Custom cursor
+    // 6. Custom cursor
     initCursor();
 
-    // 8. Star background canvas (canvas is injected by injectShell())
+    // 7. Star background canvas (canvas is injected by injectShell())
     if (document.getElementById('stars-canvas')) initStars();
 
-    // 10. Initialise the SPA router — this handles initial page display,
+    // 8. Initialise the SPA router — this handles initial page display,
     //     animation init, and all subsequent in-app navigation.
     if (typeof window.initRouter === 'function') {
       window.initRouter();
@@ -205,13 +174,10 @@ async function bootstrapSite() {
       initLegalToc();
     }
 
-    // 11. Hero typing effect — now initiated lazily by initPage('home') in router.js
-    //     once the home page partial is loaded and rendered.
-
-    // 12. Safety net — if GSAP still hasn't loaded after 5 s, ensure everything visible
+    // 9. Safety net — if GSAP still hasn't loaded after 5 s, ensure everything visible
     setTimeout(revealGsapFallbacks, 5000);
 
-    // 13. Native anchor navigation + focus polish
+    // 10. Native anchor navigation + focus polish
     initSmoothScroll();
 
 
@@ -250,17 +216,17 @@ function populateShowcaseTemplates() {
 
   // ── Stamp bottom nav bar into every [data-sas-nav] placeholder ──
   var NAV_ITEMS = [
-    { icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>', label: 'Home', idx: 0 },
-    { icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>', label: 'Browse', idx: 1 },
-    { icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="17" r="1" fill="currentColor"/></svg>', label: 'My eSIMs', idx: 2 },
-    { icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>', label: 'Profile', idx: 3 },
+    { icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>', i18nKey: 'home.showcase.navHome', label: 'Home', idx: 0 },
+    { icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>', i18nKey: 'home.showcase.navBrowse', label: 'Browse', idx: 1 },
+    { icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="17" r="1" fill="currentColor"/></svg>', i18nKey: 'home.showcase.navMyEsims', label: 'My eSIMs', idx: 2 },
+    { icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>', i18nKey: 'home.showcase.navProfile', label: 'Profile', idx: 3 },
   ];
 
   document.querySelectorAll('[data-sas-nav]').forEach(function (el) {
     var activeIdx = parseInt(el.getAttribute('data-sas-nav'), 10);
     el.innerHTML = NAV_ITEMS.map(function (item) {
       var cls = item.idx === activeIdx ? 'sas-nav-item sas-nav-item--on' : 'sas-nav-item';
-      return '<div class="' + cls + '"><span class="sas-nav-icon">' + item.icon + '</span>' + item.label + '</div>';
+      return '<div class="' + cls + '"><span class="sas-nav-icon">' + item.icon + '</span><span data-i18n="' + item.i18nKey + '">' + item.label + '</span></div>';
     }).join('');
   });
 }
@@ -743,6 +709,13 @@ function initStars() {
     else stopDraw();
   });
 
+  // Pause/resume if the user toggles reduced-motion in OS settings mid-session
+  var reducedMotionMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
+  reducedMotionMQ.addEventListener('change', function (e) {
+    if (e.matches) { stopDraw(); }
+    else if (isCanvasVisible && !document.hidden) { startDraw(); }
+  });
+
   let resizeTimer = null;
   window.addEventListener('resize', function () {
     clearTimeout(resizeTimer);
@@ -804,17 +777,10 @@ function initHeroTyping() {
   let pausedByVisibility = false;
 
   function getTypingPhrases() {
-    if (typeof window.t === 'function') {
-      var translated = window.t('home.hero.typingPhrases');
-      if (Array.isArray(translated)) return translated;
-    }
-    return [
-      'Wherever You Go.',
-      'Without Limits.',
-      'Across the Globe.',
-      'Ready in Seconds.',
-      'Always Online.',
-    ];
+    var translated = window.t('home.hero.typingPhrases');
+    if (Array.isArray(translated)) return translated;
+    // t() returns the key itself if the translation isn't an array (shouldn't happen)
+    return [];
   }
 
   let phrases = getTypingPhrases();

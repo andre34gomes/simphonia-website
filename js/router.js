@@ -16,13 +16,13 @@
   // Trailing-slash variants are intentionally omitted — resolveRoute()
   // normalises any path before lookup, so a single entry per route suffices.
   var ROUTES = {
-    '/':             { page: 'home',         title: 'Simphonia — Stay Connected, Wherever You Go.' },
-    '/destinations': { page: 'destinations', title: 'Destinations — Simphonia eSIM' },
-    '/how-it-works': { page: 'how-it-works', title: 'How It Works — Simphonia eSIM' },
-    '/support':      { page: 'support',      title: 'Support & FAQ — Simphonia eSIM' },
-    '/about':        { page: 'about',        title: 'About — Simphonia eSIM' },
-    '/privacy':      { page: 'privacy',      title: 'Privacy Policy — Simphonia eSIM' },
-    '/terms':        { page: 'terms',        title: 'Terms of Service — Simphonia eSIM' },
+    '/':             { page: 'home',         titleKey: 'page.titles.home',         descriptionKey: 'page.descriptions.home' },
+    '/destinations': { page: 'destinations', titleKey: 'page.titles.destinations', descriptionKey: 'page.descriptions.destinations' },
+    '/how-it-works': { page: 'how-it-works', titleKey: 'page.titles.howItWorks',   descriptionKey: 'page.descriptions.howItWorks' },
+    '/support':      { page: 'support',      titleKey: 'page.titles.support',      descriptionKey: 'page.descriptions.support' },
+    '/about':        { page: 'about',        titleKey: 'page.titles.about',        descriptionKey: 'page.descriptions.about' },
+    '/privacy':      { page: 'privacy',      titleKey: 'page.titles.privacy',      descriptionKey: 'page.descriptions.privacy' },
+    '/terms':        { page: 'terms',        titleKey: 'page.titles.terms',        descriptionKey: 'page.descriptions.terms' },
   };
 
   /* Page slug → HTML partial path */
@@ -60,6 +60,35 @@
 
   function getAllPages() {
     return document.querySelectorAll('[data-page]');
+  }
+
+  function translateText(key) {
+    if (typeof window.t !== 'function') return '';
+    var value = window.t(key);
+    return typeof value === 'string' ? value : '';
+  }
+
+  function updateSeo(route) {
+    if (!route) return;
+    var title = translateText(route.titleKey);
+    var description = translateText(route.descriptionKey);
+
+    if (title) {
+      document.title = title;
+    }
+
+    [
+      'meta-description',
+      'og-title',
+      'twitter-title',
+      'og-description',
+      'twitter-description'
+    ].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (!el) return;
+      var next = /title/.test(id) ? title : description;
+      if (next) el.setAttribute('content', next);
+    });
   }
 
   function setActiveNav(pageName) {
@@ -102,12 +131,17 @@
     var url = PAGE_PARTIALS[pageName];
     if (!url) return Promise.resolve();
 
-    _pageLoadPromises[pageName] = fetch(url, { credentials: 'same-origin' })
-      .then(function (res) {
-        if (!res.ok) throw new Error('Page fetch failed (' + res.status + '): ' + url);
-        return res.text();
-      })
-      .then(function (html) {
+    _pageLoadPromises[pageName] = (function () {
+      var controller = new AbortController();
+      var timeoutId = setTimeout(function () { controller.abort(); }, 8000);
+
+      return fetch(url, { credentials: 'same-origin', signal: controller.signal })
+        .then(function (res) {
+          clearTimeout(timeoutId);
+          if (!res.ok) throw new Error('Page fetch failed (' + res.status + '): ' + url);
+          return res.text();
+        })
+        .then(function (html) {
         var main = document.getElementById('main-content');
         if (main) {
           var tmp = document.createElement('div');
@@ -115,26 +149,19 @@
           while (tmp.firstChild) {
             main.appendChild(tmp.firstChild);
           }
-          // Re-apply active i18n translations to the newly injected content
-          if (typeof window.t === 'function' && typeof window.SIMPHONIA_LANG === 'string') {
-            // Trigger a re-render of data-i18n attributes in the new fragment
-            main.querySelectorAll('[data-i18n]').forEach(function (el) {
-              var v = window.t(el.getAttribute('data-i18n'));
-              if (v !== el.getAttribute('data-i18n')) el.textContent = v;
-            });
-            main.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) {
-              var v = window.t(el.getAttribute('data-i18n-placeholder'));
-              if (v !== el.getAttribute('data-i18n-placeholder')) el.placeholder = v;
-            });
+          if (typeof window.applyTranslations === 'function') {
+            window.applyTranslations();
           }
         }
         delete _pageLoadPromises[pageName];
       })
       .catch(function (err) {
+        clearTimeout(timeoutId);
         console.error('[router] Failed to load page partial:', err);
         delete _pageLoadPromises[pageName];
         throw err;
       });
+    })();
 
     return _pageLoadPromises[pageName];
   }
@@ -193,9 +220,10 @@
     if (pageName === currentPage) return;
 
     // Update URL and title eagerly (better perceived performance)
-    document.title = route.title;
+    var resolvedTitle = translateText(route.titleKey);
+    updateSeo(route);
     if (pushState && window.location.pathname !== path) {
-      history.pushState({ page: pageName }, route.title, path);
+      history.pushState({ page: pageName }, resolvedTitle, path);
     }
 
     // Kill all existing ScrollTrigger instances and reset animations
@@ -292,6 +320,37 @@
     if (hamburger) hamburger.click();
   }
 
+  /* ── Link prefetch on hover ──────────────────────────────── */
+  // Prefetch the page partial when the user hovers a nav link so the
+  // subsequent click navigates instantly from cache.
+  var _prefetched = {};
+
+  function handlePrefetch(e) {
+    var link = e.target.closest('a[href]');
+    if (!link) return;
+    var href = link.getAttribute('href');
+    if (!href || href.startsWith('http') || href.startsWith('#')) return;
+
+    var route = resolveRoute(href);
+    if (!route) return;
+
+    var pageName = route.page;
+    // Already loaded or prefetched
+    if (_prefetched[pageName]) return;
+    if (document.querySelector('[data-page="' + pageName + '"]')) return;
+
+    var url = PAGE_PARTIALS[pageName];
+    if (!url) return;
+
+    _prefetched[pageName] = true;
+    // Use low-priority fetch to avoid competing with user-initiated requests
+    var link_el = document.createElement('link');
+    link_el.rel = 'prefetch';
+    link_el.as = 'fetch';
+    link_el.href = url;
+    document.head.appendChild(link_el);
+  }
+
   /* ── Popstate (back/forward) ───────────────────────────────── */
   function handlePopState() {
     navigateTo(window.location.pathname, false);
@@ -302,8 +361,19 @@
     // Intercept all internal link clicks
     document.addEventListener('click', handleClick);
 
+    // Prefetch page partials on hover for near-instant navigation
+    document.addEventListener('pointerover', handlePrefetch, { passive: true });
+
     // Handle back/forward navigation
     window.addEventListener('popstate', handlePopState);
+
+    // Keep document.title translated when language changes
+    document.addEventListener('simphonia:langchange', function () {
+      if (!currentPage) return;
+      var currentPath = window.location.pathname.split('#')[0].replace(/\/+$/, '') || '/';
+      var route = ROUTES[currentPath] || ROUTES['/'];
+      updateSeo(route);
+    });
 
     // Navigate to the current URL (initial page load)
     var initialPath = window.location.pathname || '/';

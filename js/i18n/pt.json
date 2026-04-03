@@ -23,13 +23,16 @@
       "cs": "Čeština",
       "hu": "Magyar",
       "fa": "فارسی"
-    }
+    },
+    "searchPlaceholder": "Procurar…",
+    "noResults": "Nenhum resultado"
   },
   "nav": {
     "destinations": "Destinos",
     "howItWorks": "Como Funciona",
     "support": "Suporte",
     "about": "Sobre",
+    "homeAriaLabel": "Casa Simfonia",
     "downloadApp": "Descarregar App",
     "skipToMain": "Saltar para o conteúdo principal",
     "toggleTheme": "Alternar modo claro/escuro",
@@ -40,7 +43,7 @@
     "tagline": "Mantém-te ligado, onde quer que vás. Cobertura eSIM global para viajantes modernos.",
     "product": "Produto",
     "company": "Empresa",
-    "legal": "Legal",
+    "legal": "Jurídico",
     "aboutUs": "Sobre Nós",
     "contact": "Contacto",
     "privacyPolicy": "Política de Privacidade",
@@ -54,8 +57,8 @@
     "accept": "Aceitar Tudo"
   },
   "mobileCta": {
-    "browsePlans": "Ver Planos",
-    "howItWorks": "Como Funciona"
+    "browsePlans": "🌍 Ver Planos",
+    "howItWorks": "⚙️ Como Funciona"
   },
   "backToTop": "Voltar ao topo",
   "scroll": "Rolar",
@@ -68,20 +71,31 @@
   "home": {
     "hero": {
       "headline": "Fica Ligado,",
-      "typingPhrases": ["Onde Quer Que Vás.", "Sem Limites.", "Por Todo o Mundo.", "Pronto em Segundos.", "Sempre Online."],
+      "typingPhrases": [
+        "Onde Quer Que Vás.",
+        "Sem Limites.",
+        "Por Todo o Mundo.",
+        "Pronto em Segundos.",
+        "Sempre Online."
+      ],
       "desc": "Descarrega a Simphonia, escolhe o teu destino e fica online assim que aterras — sem cartões SIM, sem tarifas de roaming, sem stress.",
       "trustFreeDownload": "Download gratuito",
       "trust200Countries": "200+ países",
       "trustInstantActivation": "Ativação instantânea",
       "downloadOnThe": "Descarregar na",
-      "appStore": "App Store",
-      "googlePlay": "Google Play"
+      "appStore": "Loja de aplicativos",
+      "googlePlay": "Google Play",
+      "downloadOnAppStore": "Baixe na App Store",
+      "downloadOnGooglePlay": "Baixe no Google Play",
+      "iconSearch": "Procurar",
+      "iconLightning": "Relâmpago",
+      "iconGlobe": "Globo"
     },
     "howItWorks": {
       "label": "Como Funciona",
       "heading": "Ligado em Menos de 2 Minutos",
       "subheading": "Sem visitas a lojas, sem espera, sem SIM físico. Três passos para conetividade global.",
-      "learnMore": "Saber Mais",
+      "learnMore": "📖 Saber Mais",
       "step1Label": "Passo 1",
       "step1Title": "Escolhe o Teu Plano",
       "step1Desc": "Pesquisa 200+ países e regiões. Compara planos por dados, duração e preço. Filtra por destino ou navega pelas sugestões curadas para os destinos mais populares.",
@@ -125,14 +139,48 @@
       "panel4Step": "Suporte",
       "panel4Title1": "Ajuda sempre que",
       "panel4Title2": "precisares.",
-      "panel4Desc": "Suporte IA 24/7 em qualquer idioma, onde quer que estejas no mundo."
+      "panel4Desc": "Suporte IA 24/7 em qualquer idioma, onde quer que estejas no mundo.",
+      "appBrowseHeading": "Explorar",
+      "appSearchPlaceholder": "Pesquisar 200+ destinos…",
+      "appFilterAll": "Todos",
+      "appFilterAsia": "🌏 Ásia",
+      "appFilterEurope": "🌍 Europa",
+      "appFilterAmericas": "🌎 Américas",
+      "appPopularNow": "Popular Agora",
+      "appCheckoutHeading": "Confira",
+      "appInstantDelivery": "⚡ Entrega instantânea",
+      "appPayApplePay": "Pagar com Apple Pay",
+      "appPayOr": "— ou —",
+      "appPayCard": "Pagar com cartão",
+      "appSecurePayment": "Pagamento seguro · SSL encriptado",
+      "appMyEsims": "Os Meus eSIMs",
+      "appActivePlans": "Planos Ativos",
+      "appActiveStatus": "Ativo",
+      "appDataUsage": "Utilização de Dados",
+      "appDataUsed": "1,6 GB utilizados",
+      "appDataLeft": "3,4 GB restantes",
+      "appDaysLeft": "Dias Restantes",
+      "appNetwork": "Rede",
+      "appPlanPrice": "Preço do Plano",
+      "appTotalData": "Total de Dados",
+      "appAiName": "Simfonia IA",
+      "appAiOnline": "Online · responde instantaneamente",
+      "appChatMsg1User": "Como ativo o meu eSIM?",
+      "appChatMsg1Ai": "Abre as <b>Definições → Celular → Adicionar eSIM</b>, lê o código QR na app. Feito em segundos! 🚀",
+      "appChatMsg2User": "Quantos dados me restam?",
+      "appChatMsg2Ai": "Tens <b>3,4 GB</b> restantes em Portugal · 7 dias restantes.",
+      "appChatPlaceholder": "Pergunta qualquer coisa…",
+      "navHome": "Início",
+      "navBrowse": "Explorar",
+      "navMyEsims": "Os Meus eSIMs",
+      "navProfile": "Perfil"
     },
     "cta": {
       "heading1": "Fica Ligado,",
       "heading2": "Onde Quer Que Vás.",
       "desc": "Explora os nossos destinos e encontra o plano eSIM perfeito para a tua próxima aventura.",
-      "browseDestinations": "Ver Destinos",
-      "howItWorks": "Como Funciona"
+      "browseDestinations": "🌍 Ver Destinos",
+      "howItWorks": "⚙️ Como Funciona"
     }
   },
   "destinations": {
@@ -167,7 +215,18 @@
     "cta": {
       "heading": "Não Encontras o Teu Destino?",
       "desc": "Estamos a adicionar novos países todas as semanas. Volta em breve para mais destinos.",
-      "contactSupport": "Contactar Suporte"
+      "contactSupport": "💬 Contactar Suporte"
+    },
+    "regions": {
+      "AFRICA": "África",
+      "ASIA": "Ásia",
+      "CARIBBEAN": "Caribe",
+      "EUROPE": "Europa",
+      "EU_UK": "UE e Reino Unido",
+      "LATIN_AMERICA": "América latina",
+      "MENA": "Oriente Médio e África",
+      "NORTH_AMERICA": "América do Norte",
+      "OCEANIA": "Oceânia"
     }
   },
   "support": {
@@ -196,7 +255,7 @@
       "desc": "A nossa equipa de suporte está disponível 24/7. Envia-nos uma mensagem e responderemos brevemente.",
       "nameLabel": "Nome",
       "namePlaceholder": "O teu nome",
-      "emailLabel": "Email",
+      "emailLabel": "E-mail",
       "emailPlaceholder": "tu@exemplo.com",
       "subjectLabel": "Assunto",
       "subjectDefault": "Seleciona um tema…",
@@ -208,7 +267,7 @@
       "subjectOther": "Outro",
       "messageLabel": "Mensagem",
       "messagePlaceholder": "Descreve o teu problema ou questão…",
-      "sendMessage": "Enviar Mensagem",
+      "sendMessage": "✉️ Enviar Mensagem",
       "sending": "A enviar…",
       "successMessage": "Mensagem enviada! Responderemos dentro de 24 horas.",
       "errorRequired": "Este campo é obrigatório.",
@@ -227,7 +286,7 @@
       "desc": "Escolhe o canal que melhor te convém.",
       "chat": "Chat na App",
       "chatDesc": "Obtém respostas instantâneas do nosso assistente de IA diretamente dentro da app Simphonia — disponível 24/7.",
-      "email": "Email",
+      "email": "E-mail",
       "emailDesc": "Envia-nos um email a qualquer hora — respondemos normalmente dentro de algumas horas.",
       "social": "Redes Sociais",
       "socialDesc": "Segue-nos para destaques de destinos, dicas de viagem e atualizações de produto."
@@ -271,7 +330,7 @@
     "cta": {
       "heading": "Faz Parte da Jornada",
       "desc": "Explora os nossos destinos e fica ligado onde quer que viajes.",
-      "browseDestinations": "Ver Destinos"
+      "browseDestinations": "🌍 Ver Destinos"
     }
   },
   "howItWorks": {
@@ -307,9 +366,235 @@
     "cta": {
       "heading": "Pronto para Começar?",
       "desc": "Explora os nossos destinos e encontra o plano eSIM perfeito para a tua próxima viagem.",
-      "browseDestinations": "Ver Destinos",
-      "backToHome": "Voltar ao Início"
+      "browseDestinations": "🌍 Ver Destinos",
+      "backToHome": "🏠 Voltar ao Início"
     }
+  },
+  "error404": {
+    "title": "Perdido em Trânsito",
+    "desc": "Parece que este destino ainda não está na nossa rede eSIM. Vamos levar-te de volta a algum lugar familiar.",
+    "codeAriaLabel": "Erro 404",
+    "goHome": "🏠 Ir para o Início",
+    "browseDestinations": "🌍 Ver Destinos",
+    "copyLink": "Copiar Link",
+    "copied": "Copiado!",
+    "copyLinkAriaLabel": "Copiar o URL desta página para a área de transferência",
+    "copyFailed": "Falhou",
+    "quickLinks": "Links Rápidos",
+    "boardingPass": "Cartão de Embarque",
+    "homeShort": "LAR",
+    "gate404": "PORTÃO 404",
+    "origin": "Origem",
+    "destination": "Destino",
+    "statusNotFound": "Estado: Destino Não Encontrado"
+  },
+  "privacy": {
+    "hero": {
+      "label": "Jurídico",
+      "heading1": "Privacidade",
+      "heading2": "Política",
+      "lastUpdated": "Última atualização: 22 de março de 2026"
+    },
+    "toc": {
+      "title": "Conteúdo",
+      "s1": "1. Informações que coletamos",
+      "s2": "2. Como usamos suas informações",
+      "s3": "3. Compartilhamento de dados",
+      "s4": "4. Segurança de dados",
+      "s5": "5. Retenção de dados",
+      "s6": "6. Seus direitos",
+      "s7": "7. Cookies e rastreamento",
+      "s8": "8. Privacidade das Crianças",
+      "s9": "9. Transferências Internacionais",
+      "s10": "10. Mudanças nas políticas",
+      "s11": "11. Contate-nos"
+    },
+    "content": {
+      "intro": "Na Simphonia (“nós”, “nos”, “nosso”), estamos comprometidos em proteger a sua privacidade. Esta Política de Privacidade explica como coletamos, usamos, divulgamos e protegemos suas informações quando você usa nosso aplicativo móvel e site (coletivamente, o “Serviço”).",
+      "s1Title": "1. Informações que coletamos",
+      "s1_1Title": "1.1 Informações Pessoais",
+      "s1_1Intro": "Quando você cria uma conta ou faz uma compra, podemos coletar:",
+      "s1_1Item1": "Nome e endereço de e-mail",
+      "s1_1Item2": "Informações de pagamento (processadas de forma segura pelo nosso provedor de pagamento)",
+      "s1_1Item3": "Informações do dispositivo (modelo, sistema operacional, compatibilidade com eSIM)",
+      "s1_1Item4": "Preferências e configurações da conta",
+      "s1_2Title": "1.2 Dados de uso",
+      "s1_2Intro": "Coletamos automaticamente certas informações quando você usa o Serviço:",
+      "s1_2Item1": "Padrões de uso de aplicativos e interações de recursos",
+      "s1_2Item2": "Identificadores de dispositivo e endereço IP",
+      "s1_2Item3": "Relatórios de falhas e dados de desempenho",
+      "s1_2Item4": "Dados gerais de localização (nível de país/região, GPS não preciso)",
+      "s1_3Title": "1.3 Interações de Suporte",
+      "s1_3Text": "Quando você entra em contato com nossa equipe de suporte ou usa o recurso de chat de IA, coletamos o conteúdo de suas mensagens para fornecer assistência e melhorar nosso serviço.",
+      "s2Title": "2. Como usamos suas informações",
+      "s2Intro": "Utilizamos as informações coletadas para os seguintes fins:",
+      "s2Item1": "Para fornecer, manter e melhorar o Serviço",
+      "s2Item2": "Para processar transações e entregar perfis eSIM",
+      "s2Item3": "Para enviar comunicações transacionais (confirmações de pedidos, recibos)",
+      "s2Item4": "Para fornecer suporte ao cliente e responder a perguntas",
+      "s2Item5": "Para detectar, prevenir e resolver problemas técnicos e fraudes",
+      "s2Item6": "Para analisar tendências de uso e melhorar a experiência do usuário",
+      "s2Item7": "Para cumprir as obrigações legais",
+      "s3Title": "3. Compartilhamento de dados e terceiros",
+      "s3Intro": "Não vendemos suas informações pessoais. Podemos compartilhar dados com:",
+      "s3Item1": "<strong>provedores eSIM:</strong> Para ativar e gerenciar seus perfis eSIM",
+      "s3Item2": "<strong>Processadores de pagamento:</strong> Para processar transações com segurança",
+      "s3Item3": "<strong>Serviços de análise:</strong> Para entender o uso do aplicativo (dados anonimizados)",
+      "s3Item4": "<strong>Autoridades legais:</strong> Quando exigido por lei ou para proteger nossos direitos",
+      "s4Title": "4. Segurança de dados",
+      "s4Text": "Implementamos medidas de segurança padrão do setor para proteger suas informações, incluindo criptografia em trânsito (TLS) e em repouso, mecanismos de autenticação seguros e auditorias de segurança regulares.",
+      "s5Title": "5. Retenção de dados",
+      "s5Text": "Retemos suas informações pessoais enquanto sua conta estiver ativa ou conforme necessário para fornecer serviços. Você pode solicitar a exclusão de sua conta e dos dados associados a qualquer momento, entrando em contato conosco.",
+      "s6Title": "6. Seus direitos",
+      "s6Intro": "Dependendo da sua jurisdição, você pode ter o direito de:",
+      "s6Item1": "Acesse os dados pessoais que mantemos sobre você",
+      "s6Item2": "Solicitar correção de dados imprecisos",
+      "s6Item3": "Solicite a exclusão dos seus dados",
+      "s6Item4": "Opor-se ou restringir o processamento dos seus dados",
+      "s6Item5": "Portabilidade de dados",
+      "s6Item6": "Retirar o consentimento a qualquer momento",
+      "s7Title": "7. Cookies e rastreamento",
+      "s7Text": "Nosso site usa cookies mínimos e essenciais para funcionalidade. Não utilizamos cookies de publicidade de terceiros. Os cookies analíticos são utilizados apenas com o seu consentimento quando exigido por lei.",
+      "s8Title": "8. Privacidade das Crianças",
+      "s8Text": "Nosso serviço não é direcionado a crianças menores de 16 anos. Não coletamos intencionalmente informações pessoais de crianças.",
+      "s9Title": "9. Transferências Internacionais de Dados",
+      "s9Text": "Suas informações podem ser transferidas e processadas em países fora do seu país de residência. Garantimos que sejam implementadas salvaguardas adequadas de acordo com as leis de proteção de dados aplicáveis.",
+      "s10Title": "10. Mudanças nesta Política",
+      "s10Text": "Poderemos atualizar esta Política de Privacidade de tempos em tempos. Iremos notificá-lo sobre quaisquer alterações materiais publicando a política atualizada nesta página e atualizando a data da “Última atualização”.",
+      "s11Title": "11. Contate-nos",
+      "s11Text": "Se tiver dúvidas sobre esta Política de Privacidade ou desejar exercer os seus direitos, contacte-nos em:",
+      "s11ContactLabel": "E-mail:"
+    },
+    "cta": {
+      "heading": "Tem alguma dúvida sobre seus dados?",
+      "desc": "Nossa equipe de suporte terá prazer em ajudar com qualquer dúvida relacionada à privacidade.",
+      "button": "💬 Entre em contato com o suporte"
+    }
+  },
+  "terms": {
+    "hero": {
+      "label": "Jurídico",
+      "heading1": "Termos de",
+      "heading2": "Serviço",
+      "lastUpdated": "Última atualização: 22 de março de 2026"
+    },
+    "toc": {
+      "title": "Conteúdo",
+      "s1": "1. Aceitação dos Termos",
+      "s2": "2. Descrição do Serviço",
+      "s3": "3. Registro de conta",
+      "s4": "4. Compras e Pagamentos",
+      "s5": "5. Termos de serviço eSIM",
+      "s6": "6. Propriedade Intelectual",
+      "s7": "7. Usos Proibidos",
+      "s8": "8. Limitação de Responsabilidade",
+      "s9": "9. Isenção de responsabilidade de garantias",
+      "s10": "10. Modificações",
+      "s11": "11. Rescisão",
+      "s12": "12. Lei Aplicável",
+      "s13": "13. Contato"
+    },
+    "content": {
+      "intro": "Estes Termos de Serviço (“Termos”) regem o uso do aplicativo móvel e site do Simphonia (o “Serviço”) operado pelo Simphonia (“nós”, “nos”, “nosso”). Ao acessar ou usar o Serviço, você concorda em ficar vinculado a estes Termos.",
+      "s1Title": "1. Aceitação dos Termos",
+      "s1Text": "Ao criar uma conta, fazer uma compra ou usar o Serviço de outra forma, você reconhece que leu, compreendeu e concorda em ficar vinculado a estes Termos e à nossa<a href=\"/privacy/\" class=\"link-accent\">Política de Privacidade</a>. Se você não concordar, não use o Serviço.",
+      "s2Title": "2. Descrição do Serviço",
+      "s2Intro": "Simphonia fornece uma plataforma para compra e gerenciamento de planos de dados eSIM (SIM incorporado) para uso em viagens internacionais. O Serviço inclui:",
+      "s2Item1": "Navegar e comprar planos de dados eSIM",
+      "s2Item2": "Instalação e gerenciamento de perfil eSIM",
+      "s2Item3": "Gerenciamento de contas e histórico de pedidos",
+      "s2Item4": "Suporte ao cliente via chat de IA e agentes humanos",
+      "s3Title": "3. Registro de conta",
+      "s3Intro": "Para utilizar determinados recursos do Serviço, você deve criar uma conta. Você concorda em:",
+      "s3Item1": "Forneça informações de registro precisas e completas",
+      "s3Item2": "Mantenha a segurança das credenciais da sua conta",
+      "s3Item3": "Notifique-nos imediatamente sobre qualquer acesso não autorizado",
+      "s3Item4": "Aceite a responsabilidade por todas as atividades em sua conta",
+      "s4Title": "4. Compras e Pagamentos",
+      "s4_1Title": "4.1 Preços",
+      "s4_1Text": "Todos os preços são exibidos na moeda indicada no momento da compra. Os preços podem variar de acordo com o destino, quantidade de dados e período de validade.",
+      "s4_2Title": "4.2 Processamento de Pagamento",
+      "s4_2Text": "Os pagamentos são processados ​​através de provedores de pagamento terceirizados seguros. Não armazenamos os dados completos do seu cartão de pagamento em nossos servidores.",
+      "s4_3Title": "4.3 Política de Reembolso",
+      "s4_3Intro": "Os reembolsos estão disponíveis nas seguintes condições:",
+      "s4_3Item1": "<strong>ESIM não utilizado:</strong> Reembolso total no prazo de 30 dias após a compra se o eSIM não tiver sido ativado",
+      "s4_3Item2": "<strong>Problemas técnicos:</strong> Se não conseguirmos entregar um perfil eSIM funcional, você terá direito a um reembolso total ou substituição",
+      "s4_3Item3": "<strong>ESIM usado:</strong> Depois que os dados são consumidos, os reembolsos são avaliados caso a caso",
+      "s5Title": "5. Termos de serviço eSIM",
+      "s5_1Title": "5.1 Compatibilidade de Dispositivos",
+      "s5_1Text": "É sua responsabilidade garantir que seu dispositivo seja compatível com eSIM e desbloqueado pela operadora antes de comprar.",
+      "s5_2Title": "5.2 Disponibilidade do Serviço",
+      "s5_2Text": "Embora nos esforcemos por uma cobertura confiável, o serviço de dados móveis depende das operadoras de rede locais e pode ser afetado por congestionamento da rede, manutenção, clima ou fatores geográficos.",
+      "s5_3Title": "5.3 Uso Justo",
+      "s5_3Text": "Todos os planos estão sujeitos a políticas de uso justo. Os planos são apenas para uso pessoal e não podem ser revendidos ou explorados comercialmente.",
+      "s6Title": "6. Propriedade Intelectual",
+      "s6Text": "O Serviço, incluindo seu design, logotipos, texto, gráficos e software, é de propriedade da Simphonia e protegido por leis de propriedade intelectual. Você não pode reproduzir, modificar, distribuir ou criar trabalhos derivados sem o nosso consentimento por escrito.",
+      "s7Title": "7. Usos Proibidos",
+      "s7Intro": "Você concorda em não:",
+      "s7Item1": "Usar o Serviço para qualquer finalidade ilegal",
+      "s7Item2": "Tentar interferir ou interromper o Serviço",
+      "s7Item3": "Faça engenharia reversa ou descompile qualquer parte do Serviço",
+      "s7Item4": "Use sistemas automatizados para acessar o Serviço sem permissão",
+      "s7Item5": "Personificar outra pessoa ou entidade",
+      "s7Item6": "Revender ou redistribuir comercialmente planos eSIM",
+      "s8Title": "8. Limitação de Responsabilidade",
+      "s8Text": "Na extensão máxima permitida por lei, a Simphonia não será responsável por quaisquer danos indiretos, incidentais, especiais, consequenciais ou punitivos decorrentes do uso do Serviço.",
+      "s9Title": "9. Isenção de responsabilidade de garantias",
+      "s9Text": "O Serviço é fornecido “como está” e “conforme disponível” sem garantias de qualquer tipo, expressas ou implícitas.",
+      "s10Title": "10. Modificações nos Termos",
+      "s10Text": "Poderemos atualizar estes Termos de tempos em tempos. O uso continuado do Serviço após as alterações constitui aceitação dos Termos revisados.",
+      "s11Title": "11. Rescisão",
+      "s11Text": "Poderemos suspender ou encerrar sua conta a nosso critério se você violar estes Termos. Você pode excluir sua conta a qualquer momento através das configurações do aplicativo ou entrando em contato com o suporte.",
+      "s12Title": "12. Lei Aplicável",
+      "s12Text": "Estes Termos são regidos e interpretados de acordo com as leis de Portugal. Quaisquer litígios serão resolvidos nos tribunais de Lisboa, Portugal.",
+      "s13Title": "13. Contato",
+      "s13Text": "Para dúvidas sobre estes Termos, entre em contato conosco em:",
+      "s13ContactLabel": "E-mail:"
+    },
+    "cta": {
+      "heading": "Dúvidas sobre nossos termos?",
+      "desc": "Teremos prazer em esclarecer qualquer coisa – entre em contato com nossa equipe.",
+      "button": "💬 Entre em contato com o suporte"
+    }
+  },
+  "page": {
+    "titles": {
+      "home": "Simphonia — Fica Ligado, Onde Quer Que Vás.",
+      "destinations": "Destinos — Simphonia eSIM",
+      "howItWorks": "Como Funciona — Simphonia eSIM",
+      "support": "Suporte e FAQ — Simphonia eSIM",
+      "about": "Sobre — Simphonia eSIM",
+      "privacy": "Política de Privacidade — Simphonia eSIM",
+      "terms": "Termos de Serviço — Simphonia eSIM",
+      "notFound": "Página não encontrada – Simphonia eSIM"
+    },
+    "descriptions": {
+      "home": "Ativação instantânea de eSIM para mais de 200 países. Sem taxas de roaming, sem trocas de SIM, sem contratos. Fique conectado onde quer que você vá com o Simphonia.",
+      "destinations": "Navegue por mais de 200 destinos eSIM e encontre o plano de dados certo para sua próxima viagem com o Simphonia.",
+      "howItWorks": "Veja como o Simphonia conecta você em minutos com compra instantânea de eSIM, ativação e dados prontos para viagem.",
+      "support": "Encontre respostas, navegue nas perguntas frequentes e entre em contato com a equipe de suporte do Simphonia sempre que precisar de ajuda.",
+      "about": "Saiba como o Simphonia torna a conectividade global do eSIM simples, acessível e desenvolvida para viajantes modernos.",
+      "privacy": "Leia como o Simphonia coleta, usa e protege seus dados no site e no aplicativo móvel.",
+      "terms": "Revise os termos de serviço do Simphonia para compras, uso de eSIM, reembolsos e responsabilidades de conta.",
+      "notFound": "A página que você procura não existe. Vamos colocar você de volta nos trilhos."
+    }
+  },
+  "accessibility": {
+    "scrollProgress": "Progresso de rolagem da página",
+    "cookieConsent": "Consentimento de cookies",
+    "mainNavigation": "Navegação principal",
+    "mobileMenu": "Menu móvel",
+    "faqNav": "Perguntas frequentes",
+    "tableOfContents": "Índice",
+    "searchCountries": "Pesquisar países",
+    "clearSearch": "Limpar pesquisa",
+    "searchFaq": "Pesquisar FAQ",
+    "quickLinks": "Links rápidos"
+  },
+  "imgAlt": {
+    "travelerDeparture": "Viajante a olhar para um painel de partidas",
+    "browsingPlans": "A procurar planos de destino",
+    "secureCheckout": "Checkout seguro no telemóvel",
+    "travelerAbroad": "Viajante ligado no estrangeiro"
   }
 }
-

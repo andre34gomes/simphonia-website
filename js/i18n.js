@@ -57,19 +57,25 @@
 
   // ── Translation lookup ──────────────────────────────────────────────────
 
-  /**
-   * Resolve a dotted key path against the loaded translation data.
-   * Returns the key itself if no translation is found.
-   * Supports a simple placeholder syntax: t('key', { count: 5 })
-   */
-  function t(key, vars) {
+  function lookup(key) {
     var parts = key.split('.');
     var cur = _data;
     for (var i = 0; i < parts.length; i++) {
-      if (cur == null || typeof cur !== 'object') return key;
+      if (cur == null || typeof cur !== 'object') return undefined;
       cur = cur[parts[i]];
     }
-    if (cur == null) return key;
+    return cur;
+  }
+
+  /**
+   * Resolve a dotted key path against the loaded translation data.
+   * Supports a simple placeholder syntax: t('key', { count: 5 })
+   * Returns undefined when no translation exists.
+   */
+  function t(key, vars) {
+    var cur = lookup(key);
+    if (cur == null) return undefined;
+    if (typeof cur !== 'string') return cur;
     var str = String(cur);
     if (vars) {
       Object.keys(vars).forEach(function (k) {
@@ -83,39 +89,64 @@
 
   var RTL_LANGS = ['ar', 'fa'];
 
+  function textValue(key) {
+    var value = t(key);
+    return typeof value === 'string' ? value : '';
+  }
+
+  function applyTranslatedAttribute(selector, attributeName) {
+    document.querySelectorAll(selector).forEach(function (el) {
+      var key = el.getAttribute(selector.slice(1, -1));
+      var value = textValue(key);
+      if (attributeName === 'textContent') {
+        el.textContent = value;
+        return;
+      }
+      if (attributeName === 'innerHTML') {
+        el.innerHTML = value;
+        return;
+      }
+      if (attributeName === 'value') {
+        el.value = value;
+        return;
+      }
+      el.setAttribute(attributeName, value);
+    });
+  }
+
   function applyAll() {
     // Update <html lang> and direction
     document.documentElement.lang = _lang;
     document.documentElement.dir = RTL_LANGS.indexOf(_lang) !== -1 ? 'rtl' : 'ltr';
 
     // [data-i18n]             → textContent
-    document.querySelectorAll('[data-i18n]').forEach(function (el) {
-      var v = t(el.getAttribute('data-i18n'));
-      if (v !== el.getAttribute('data-i18n')) el.textContent = v;
-    });
+    applyTranslatedAttribute('[data-i18n]', 'textContent');
 
     // [data-i18n-html]        → innerHTML (use sparingly, only safe HTML)
-    document.querySelectorAll('[data-i18n-html]').forEach(function (el) {
-      var v = t(el.getAttribute('data-i18n-html'));
-      if (v !== el.getAttribute('data-i18n-html')) el.innerHTML = v;
-    });
+    applyTranslatedAttribute('[data-i18n-html]', 'innerHTML');
 
     // [data-i18n-placeholder] → placeholder attribute
-    document.querySelectorAll('[data-i18n-placeholder]').forEach(function (el) {
-      var v = t(el.getAttribute('data-i18n-placeholder'));
-      if (v !== el.getAttribute('data-i18n-placeholder')) el.placeholder = v;
-    });
+    applyTranslatedAttribute('[data-i18n-placeholder]', 'placeholder');
 
     // [data-i18n-aria-label]  → aria-label attribute
-    document.querySelectorAll('[data-i18n-aria-label]').forEach(function (el) {
-      var v = t(el.getAttribute('data-i18n-aria-label'));
-      if (v !== el.getAttribute('data-i18n-aria-label')) el.setAttribute('aria-label', v);
-    });
+    applyTranslatedAttribute('[data-i18n-aria-label]', 'aria-label');
+
+    // [data-i18n-alt]         → alt attribute (images)
+    applyTranslatedAttribute('[data-i18n-alt]', 'alt');
+
+    // [data-i18n-title]       → title attribute
+    applyTranslatedAttribute('[data-i18n-title]', 'title');
+
+    // [data-i18n-content]     → content attribute (e.g. meta tags)
+    applyTranslatedAttribute('[data-i18n-content]', 'content');
+
+    // [data-i18n-value]       → value attribute (e.g. <option>)
+    applyTranslatedAttribute('[data-i18n-value]', 'value');
 
     // Update language switcher state (if already in DOM)
     var picker = document.getElementById('lang-picker-btn');
     if (picker) {
-      picker.setAttribute('aria-label', t('lang.select') + ': ' + _lang.toUpperCase());
+        picker.setAttribute('aria-label', textValue('lang.select') + ': ' + _lang.toUpperCase());
     }
     var menu = document.getElementById('lang-picker-menu');
     if (menu) {
@@ -143,18 +174,19 @@
   // ── Base-path detection ─────────────────────────────────────────────────
 
   function basePath() {
-    // Reuse the layout.js helper if available (avoids duplicating logic)
-    if (typeof window.getBasePath === 'function') return window.getBasePath();
+    // SPA mode: always use absolute root path
+    if (window.__SPA_MODE || typeof window.getBasePath === 'function') return '/';
+    // Fallback for standalone pages (e.g. 404.html)
     var p = window.location.pathname;
     if (p === '/' || p === '/index.html') return './';
-    var inner = /\/(destinations|how-it-works|support|about|privacy|terms)(\/|\/index\.html)?$/.test(p);
-    return inner ? '../' : './';
+    return /\/(destinations|how-it-works|support|about|privacy|terms)(\/|\/index\.html)?$/.test(p)
+      ? '../' : './';
   }
 
   // ── Fetch + apply translations ──────────────────────────────────────────
 
-  function load(lang, isRetry) {
-    var url = basePath() + 'js/i18n/' + lang + '.json?v=20260402';
+  function load(lang) {
+    var url = basePath() + 'js/i18n/' + lang + '.json?v=20260403';
     return fetch(url)
       .then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -169,12 +201,8 @@
         if (_resolveReady) { _resolveReady(lang); _resolveReady = null; }
       })
       .catch(function (err) {
-        if (!isRetry && lang !== DEFAULT) {
-          console.warn('[i18n] Failed to load "' + lang + '", falling back to "' + DEFAULT + '":', err.message);
-          return load(DEFAULT, true);
-        }
-        console.error('[i18n] Could not load default translations:', err);
-        if (_resolveReady) { _resolveReady(DEFAULT); _resolveReady = null; }
+        console.error('[i18n] Failed to load translations for "' + lang + '":', err);
+        if (_resolveReady) { _resolveReady(lang); _resolveReady = null; }
       });
   }
 
@@ -182,7 +210,7 @@
 
   function setLang(code) {
     if (SUPPORTED.indexOf(code) === -1) return;
-    load(code, false);
+    load(code);
   }
 
   // ── Initialise ──────────────────────────────────────────────────────────
@@ -191,8 +219,10 @@
   window.SIMPHONIA_LANG = _lang;
 
   // Export public surface immediately so layout.js and others can call t()
-  // even before the async fetch completes (returns the key as fallback).
+  // once translations are ready without any key/default fallback behavior.
   Object.assign(window, {
+    applyTranslations: applyAll,
+    i18nLookup: lookup,
     t: t,
     setLang: setLang,
     i18nReady: i18nReady,
@@ -201,7 +231,7 @@
   });
 
   // Start loading translations (async — fires in background)
-  load(_lang, false);
+  load(_lang);
 
 }());
 

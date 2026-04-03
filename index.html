@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Simphonia — Stay Connected, Wherever You Go.</title>
-  <meta name="description" content="Instant eSIM activation for 200+ countries. No roaming fees, no SIM swaps, no contracts. Stay connected wherever you go with Simphonia.">
+  <title data-i18n="page.titles.home">Simphonia — Stay Connected, Wherever You Go.</title>
+  <meta id="meta-description" name="description" content="Instant eSIM activation for 200+ countries. No roaming fees, no SIM swaps, no contracts. Stay connected wherever you go with Simphonia." data-i18n-content="page.descriptions.home">
   <meta name="theme-color" content="#121212">
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
@@ -28,22 +28,22 @@
   <meta name="apple-mobile-web-app-title" content="Simphonia">
 
   <!-- Open Graph -->
-  <meta property="og:title" content="Simphonia — Stay Connected, Wherever You Go">
-  <meta property="og:description" content="Instant eSIM. 200+ countries. No roaming fees. Stay connected with Simphonia.">
+  <meta id="og-title" property="og:title" content="Simphonia — Stay Connected, Wherever You Go" data-i18n-content="page.titles.home">
+  <meta id="og-description" property="og:description" content="Instant eSIM activation for 200+ countries. No roaming fees, no SIM swaps, no contracts. Stay connected wherever you go with Simphonia." data-i18n-content="page.descriptions.home">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://simphonia.pt/">
   <meta property="og:image" content="https://simphonia.pt/assets/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Simphonia — Stay Connected, Wherever You Go">
-  <meta name="twitter:description" content="Instant eSIM. 200+ countries. No roaming fees. Stay connected with Simphonia.">
+  <meta id="twitter-title" name="twitter:title" content="Simphonia — Stay Connected, Wherever You Go" data-i18n-content="page.titles.home">
+  <meta id="twitter-description" name="twitter:description" content="Instant eSIM activation for 200+ countries. No roaming fees, no SIM swaps, no contracts. Stay connected wherever you go with Simphonia." data-i18n-content="page.descriptions.home">
   <meta name="twitter:image" content="https://simphonia.pt/assets/og-image.png">
 
   <!-- Preconnects & DNS hints -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://api.simphonia.pt" crossorigin>
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="dns-prefetch" href="https://flagcdn.com">
-  <link rel="dns-prefetch" href="https://api.simphonia.pt">
   <link rel="preload" href="/assets/logo-mark.svg" as="image" type="image/svg+xml">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Pacifico&display=swap">
 
@@ -63,13 +63,13 @@
   </style>
 
   <!-- All page stylesheets loaded upfront for instant SPA transitions -->
-  <link rel="stylesheet" href="/css/base.css">
-  <link rel="stylesheet" href="/css/home.css">
-  <link rel="stylesheet" href="/css/about.css">
-  <link rel="stylesheet" href="/css/destinations.css">
-  <link rel="stylesheet" href="/css/how-it-works.css">
-  <link rel="stylesheet" href="/css/support.css">
-  <link rel="stylesheet" href="/css/legal.css">
+  <link rel="stylesheet" href="/css/base.css?v=20260403b">
+  <link rel="stylesheet" href="/css/home.css?v=20260403b">
+  <link rel="stylesheet" href="/css/about.css?v=20260403">
+  <link rel="stylesheet" href="/css/destinations.css?v=20260403">
+  <link rel="stylesheet" href="/css/how-it-works.css?v=20260403">
+  <link rel="stylesheet" href="/css/support.css?v=20260403">
+  <link rel="stylesheet" href="/css/legal.css?v=20260403">
 
   <!-- Structured Data -->
   <script type="application/ld+json">
@@ -104,42 +104,43 @@
       link.rel  = 'preload';
       link.as   = 'fetch';
       link.href = url;
+      link.crossOrigin = 'same-origin';
       document.head.appendChild(link);
     }());
   </script>
 </head>
 <body>
   <!-- Skip-link -->
-  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <a href="#main-content" class="skip-link" data-i18n="nav.skipToMain">Skip to main content</a>
 
   <!-- Static nav placeholder — enhanced by layout.js -->
-  <nav class="nav" id="navbar" role="navigation" aria-label="Main navigation">
+  <nav class="nav" id="navbar" role="navigation" aria-label="Main navigation" data-i18n-aria-label="accessibility.mainNavigation">
     <div class="nav__inner">
-      <a href="/" class="nav__logo" aria-label="Simphonia Home">
+      <a href="/" class="nav__logo" aria-label="Simphonia Home" data-i18n-aria-label="nav.homeAriaLabel">
         <span class="nav__logo-icon" aria-hidden="true"><img src="/assets/logo-mark.svg" class="nav__logo-icon-image" alt="" width="40" height="40" fetchpriority="high" decoding="sync"></span>
         <span class="nav__logo-wordmark">Simphonia</span>
       </a>
       <div class="nav__links">
-        <a href="/destinations/" class="nav__link">Destinations</a>
-        <a href="/how-it-works/" class="nav__link">How It Works</a>
-        <a href="/support/" class="nav__link">Support</a>
-        <a href="/about/" class="nav__link">About</a>
+        <a href="/destinations/" class="nav__link" data-i18n="nav.destinations">Destinations</a>
+        <a href="/how-it-works/" class="nav__link" data-i18n="nav.howItWorks">How It Works</a>
+        <a href="/support/" class="nav__link" data-i18n="nav.support">Support</a>
+        <a href="/about/" class="nav__link" data-i18n="nav.about">About</a>
       </div>
       <div class="nav__actions">
         <a href="/#download" class="btn btn--primary btn--sm nav__download-btn">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          <span>Download App</span>
+          <span data-i18n="nav.downloadApp">Download App</span>
         </a>
         <div class="lang-picker">
-          <button class="lang-picker__btn" type="button" aria-label="Language" aria-expanded="false">
+          <button class="lang-picker__btn" type="button" aria-label="Language" data-i18n-aria-label="lang.select" aria-expanded="false">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
           </button>
         </div>
-        <button class="theme-toggle" aria-label="Toggle theme">
+        <button class="theme-toggle" aria-label="Toggle theme" data-i18n-aria-label="nav.toggleTheme">
           <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="2" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="22"/><line x1="2" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="22" y2="12"/><line x1="5.05" y1="5.05" x2="6.82" y2="6.82"/><line x1="17.18" y1="17.18" x2="18.95" y2="18.95"/><line x1="5.05" y1="18.95" x2="6.82" y2="17.18"/><line x1="17.18" y1="6.82" x2="18.95" y2="5.05"/></svg>
           <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
         </button>
-        <button class="nav__hamburger" aria-label="Open menu" aria-expanded="false">
+        <button class="nav__hamburger" aria-label="Open menu" data-i18n-aria-label="nav.openMenu" aria-expanded="false">
           <span></span><span></span><span></span>
         </button>
       </div>

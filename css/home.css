@@ -69,7 +69,6 @@
   pointer-events: none;
 }
 
-
 /* ==============================================
    HERO — POSTCARD (cinematic travel bg + two-column layout)
    ============================================== */
@@ -221,41 +220,11 @@
   z-index: 1;
 }
 
-
 /* Label pill with animated live dot */
-.hero-postcard__label {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.375rem 1rem 0.375rem 0.65rem;
-  background: rgba(212,175,55,0.08);
-  border: 1px solid rgba(212,175,55,0.22);
-  border-radius: var(--radius-full);
-  font-size: 0.7rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: var(--accent);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-}
-
-.hero-postcard__label-dot {
-  width: 6px;
-  height: 6px;
-  border-radius: 50%;
-  background: #4ade80;
-  box-shadow: 0 0 6px #4ade80;
-  animation: dot-pulse 2s ease-in-out infinite;
-}
 
 @keyframes dot-pulse {
   0%, 100% { opacity: 1; }
   50%      { opacity: 0.4; }
-}
-
-.hero-postcard__label svg {
-  opacity: 0.7;
 }
 
 /* Title */
@@ -453,7 +422,6 @@
   max-width: calc(13rem * 2 + 0.75rem);
   width: 100%;
 }
-
 
 .hero-postcard__trust-pill {
   display: inline-flex;
@@ -1122,13 +1090,9 @@
   }
 }
 
-
 /* ==============================================
    SHOWCASE CSS APP SCREEN
    ============================================== */
-/* (Legacy .feature-grid, .feature-card, .phone-3d blocks removed — confirmed unused in HTML/JS) */
-
-/* .showcase-app__header / __time / __status — removed: not referenced in HTML (dead code) */
 
 .showcase-app__title {
   font-size: 1rem;
@@ -1251,28 +1215,6 @@
   margin-top: 2px;
 }
 
-.showcase-app__nav {
-  display: flex;
-  justify-content: space-around;
-  padding: 10px 0 0;
-  border-top: 1px solid rgba(255,255,255,0.06);
-  margin-top: auto;
-}
-
-.showcase-app__nav-item {
-  display: flex; flex-direction: column; align-items: center;
-  gap: 3px;
-  font-size: 0.4375rem;
-  color: rgba(255,255,255,0.3);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-
-.showcase-app__nav-item--active { color: var(--accent); }
-
-.showcase-app__nav-icon { font-size: 1rem; }
-
 /* Phone screen mockups always render in dark mode regardless of site theme */
 [data-theme="light"] .iphone-mockup__screen {
   background: linear-gradient(160deg, #0C1829 0%, #080D1A 45%, #0D0818 100%);
@@ -1302,9 +1244,6 @@
 }
 
 /* Decorative background — cloned from the hero by JS at runtime */
-.showcase-sticky__bg {
-  /* retained for reference; .hero-postcard__bg is used instead */
-}
 
 /* ── Showcase background overrides ──
    The hero's base class has contain:layout paint + a left-biased gradient
@@ -1366,8 +1305,6 @@
   min-width: 0;
   padding: 3rem 0;
 }
-
-.showcase-sticky__header { padding-top: 0; }
 
 /* ─────────────────────────────────────────
    Segment progress bar  (Apple-style thin lines)
@@ -1952,76 +1889,17 @@
 
 .dest-grid-card:hover img { transform: scale(1.08); }
 
-.dest-grid-card__overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.15) 55%, transparent 100%);
-  padding: var(--space-xl);
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  transition: transform 0.4s var(--ease-out);
-}
-
-.dest-grid-card:hover .dest-grid-card__overlay {
-  transform: translateY(-6px);
-}
-
-.dest-grid-card__overlay h3 {
-  font-size: clamp(1.25rem, 2vw, 1.5rem);
-  font-weight: 800;
-  margin-bottom: 0.25rem;
-  color: #fff;
-}
-
-.dest-grid-card__overlay p {
-  color: rgba(255,255,255,0.65);
-  font-size: 0.9375rem;
-  font-weight: 500;
-}
-
-.dest-grid-card__badge {
-  position: absolute;
-  top: var(--space-lg); right: var(--space-lg);
-  background: var(--accent);
-  color: var(--text-inverse);
-  padding: 0.3rem 0.75rem;
-  border-radius: var(--radius-full);
-  font-size: 0.6875rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-}
-
-.dest-cta {
-  text-align: center;
-  margin-top: var(--space-3xl);
-}
-
-.dest-cta a {
-  color: var(--accent);
-  font-size: 1.0625rem;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: gap 0.2s var(--ease-out);
-}
-
-.dest-cta a:hover { gap: 0.875rem; }
+.dest-grid-card:hover 
 
 /* Reusable section bottom CTA/action row */
 .section-action {
-  text-align: center;
-  margin-top: var(--space-3xl);
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  margin-top: var(--space-2xl);
 }
 
 /* Metric unit label (e.g. "min") */
-.metric-unit {
-  color: var(--accent-dark);
-  font-size: 2rem;
-  font-weight: 600;
-}
 
 /* scroll-margin-top for section[id] — defined once in base.css (includes --announcement-h) */
 
@@ -2165,7 +2043,6 @@
   transform: translateX(clamp(0.2rem, 0.8vw, 0.7rem));
 }
 
-
 @media (min-width: 961px) and (max-height: 860px) {
   .hero__scroll {
     font-size: 0.625rem;
@@ -2209,39 +2086,9 @@
   }
 }
 
-
 /* ==============================================
    MARQUEE COUNTRIES STRIP
    ============================================== */
-.marquee-strip {
-  background: var(--bg-secondary);
-  border-top: 1px solid var(--border-subtle);
-  border-bottom: 1px solid var(--border-subtle);
-  padding: 0.875rem 0;
-  overflow: hidden;
-  position: relative;
-  z-index: 2;
-  user-select: none;
-  max-width: 100%; /* 100vw includes scrollbar width and causes 1px horizontal overflow */
-}
-
-.marquee-strip::before,
-.marquee-strip::after {
-  content: '';
-  position: absolute; top: 0;
-  width: 120px; height: 100%;
-  z-index: 2; pointer-events: none;
-}
-
-.marquee-strip::before {
-  left: 0;
-  background: linear-gradient(to right, var(--bg-secondary) 0%, transparent 100%);
-}
-
-.marquee-strip::after {
-  right: 0;
-  background: linear-gradient(to left, var(--bg-secondary) 0%, transparent 100%);
-}
 
 .marquee-track {
   display: flex; gap: 0;
@@ -2321,85 +2168,6 @@
 /* ==============================================
    DESTINATIONS SCROLLER SECTION
    ============================================== */
-.dest-scroller-section {
-  padding: var(--space-5xl) 0;
-  background: var(--bg-secondary);
-  border-top: 1px solid var(--border-subtle);
-  border-bottom: 1px solid var(--border-subtle);
-  overflow: hidden;
-}
-
-.dest-scroller {
-  position: relative;
-  overflow: hidden;
-  margin-bottom: var(--space-md);
-  user-select: none;
-}
-
-.dest-scroller::before,
-.dest-scroller::after {
-  content: '';
-  position: absolute; top: 0;
-  width: 140px; height: 100%;
-  z-index: 2; pointer-events: none;
-}
-
-.dest-scroller::before {
-  left: 0;
-  background: linear-gradient(to right, var(--bg-secondary) 0%, transparent 100%);
-}
-
-.dest-scroller::after {
-  right: 0;
-  background: linear-gradient(to left, var(--bg-secondary) 0%, transparent 100%);
-}
-
-.dest-scroller__track {
-  display: flex;
-  width: max-content;
-  animation: marquee-scroll 60s linear infinite;
-}
-
-.dest-scroller__track--reverse {
-  animation: marquee-scroll-reverse 55s linear infinite;
-}
-
-.dest-scroller:hover .dest-scroller__track { animation-play-state: paused; }
-
-.dest-scroller__list {
-  display: flex;
-  gap: 0;
-  flex-shrink: 0;
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.dest-scroller__item {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.625rem;
-  padding: 0.625rem 1.5rem;
-  font-size: 0.9375rem;
-  font-weight: 500;
-  color: var(--text-secondary);
-  white-space: nowrap;
-  border-right: 1px solid var(--border-subtle);
-  transition: color 0.2s, background 0.2s;
-  cursor: default;
-}
-
-.dest-scroller__item span {
-  font-size: 1.25rem;
-  line-height: 1;
-}
-
-.dest-scroller__item:hover {
-  color: var(--text-primary);
-  background: var(--accent-subtle);
-}
-
-
 
 /* Register the custom property for animation */
 @property --gradient-angle {
@@ -2524,35 +2292,8 @@
 }
 
 /* Wide card — spans 2 columns for visual hierarchy */
-.feat-card--wide {
-  grid-column: span 2;
-  background: linear-gradient(135deg, var(--glass-bg) 0%, rgba(212,175,55,0.04) 100%);
-  border-color: rgba(212,175,55,0.12);
-}
-
-.feat-card--wide .feat-card__icon {
-  width: 58px;
-  height: 58px;
-}
-
-.feat-card--wide .feat-card__title {
-  font-size: 1.25rem;
-}
 
 /* Tag badge on featured cards */
-.feat-card__tag {
-  display: inline-block;
-  margin-top: var(--space-md);
-  padding: 0.25rem 0.75rem;
-  font-size: 0.6875rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--accent);
-  background: rgba(212,175,55,0.1);
-  border: 1px solid rgba(212,175,55,0.2);
-  border-radius: var(--radius-full);
-}
 
 .feat-card::after {
   content: '';
@@ -2650,8 +2391,8 @@
 
 /* ── Tablets — single-column layout (matches hero + nav collapse at 960px) ── */
 @media (max-width: 960px) {
-  .feat-card--wide { grid-column: span 2; }
-  .metrics-strip__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-md); }
+  
+  
 
   /* ── Showcase — vertical layout (phone top, panels bottom), animations preserved ── */
 
@@ -2769,12 +2510,11 @@
 
   .hero__scroll { display: none; }
   .marquee-item { padding: 0 1.25rem; font-size: 0.8125rem; }
-  .marquee-strip::before, .marquee-strip::after { width: 60px; }
-  .dest-scroller__item { padding: 0.5rem 1rem; font-size: 0.8125rem; }
-  .dest-scroller-section { padding: var(--space-3xl) 0; }
+  
+  
   .steps--cards { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
   .feature-grid--new { grid-template-columns: 1fr; max-width: 480px; margin: 0 auto; }
-  .feat-card--wide { grid-column: span 1; }
+  
 
   /* Disable perspective on mobile — prevents text from looking skewed during animations */
   .steps--cards,
@@ -2805,9 +2545,6 @@
     aspect-ratio: 16 / 10;
     max-height: 220px;
   }
-  .dest-grid-card__overlay h3 {
-    font-size: 1.0625rem;
-  }
 
   /* Steps — even tighter on small phones */
   .steps--cards { max-width: 100%; }
@@ -2833,7 +2570,7 @@
   }
   .feat-card__title { font-size: 1rem; }
   .feat-card__desc { font-size: 0.8125rem; }
-  .feat-card__tag { font-size: 0.6rem; padding: 0.2rem 0.55rem; }
+  
 
   /* Showcase — phone-sized improvements */
   .showcase-panel__title { font-size: clamp(1.5rem, 6vw, 1.875rem); }
@@ -2873,14 +2610,9 @@
 
   /* Section spacing — tighter */
   .section-action {
-    margin-top: var(--space-xl);
-  }
-  .dest-cta {
     margin-top: var(--space-2xl);
   }
-  .dest-cta a {
-    font-size: 0.9375rem;
-  }
+  
 }
 
 /* ── Swipe hint — shown on mobile showcase, fades after first interaction ── */
@@ -2988,7 +2720,6 @@
   }
 }
 
-
 /* ==============================================
    ENHANCED ANIMATIONS
    ============================================== */
@@ -3031,7 +2762,6 @@
   animation: icon-bounce 0.55s ease-out;
 }
 
-
 /* ── Feat card reveal pulse — fired by GSAP onComplete ── */
 @keyframes card-reveal-pulse {
   0%   { box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.0); }
@@ -3042,7 +2772,6 @@
 .feat-card.pulse-reveal {
   animation: card-reveal-pulse 0.7s ease-out;
 }
-
 
 /* ── Stat counter highlight flash ── */
 @keyframes stat-flash {

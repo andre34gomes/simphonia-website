@@ -9,7 +9,7 @@
  * Cache versioning: bump CACHE_VERSION when deploying breaking asset changes.
  */
 
-const CACHE_VERSION = 'simphonia-v8';
+const CACHE_VERSION = 'simphonia-v11';
 
 // Core shell assets cached on install.
 // SPA: only index.html is needed — all routes are handled client-side.
@@ -19,13 +19,13 @@ const PRECACHE_URLS = [
   '/',
   '/index.html',
   '/404.html',
-  '/css/about.css',
-  '/css/base.css',
-  '/css/destinations.css',
-  '/css/home.css',
-  '/css/how-it-works.css',
-  '/css/legal.css',
-  '/css/support.css',
+  '/css/base.css?v=20260403b',
+  '/css/home.css?v=20260403b',
+  '/css/destinations.css?v=20260403',
+  '/css/home.css?v=20260403',
+  '/css/how-it-works.css?v=20260403',
+  '/css/legal.css?v=20260403',
+  '/css/support.css?v=20260403',
   '/js/animations-core.js',
   '/js/animations-home.js',
   '/js/animations-subpages.js',

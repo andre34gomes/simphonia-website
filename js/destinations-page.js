@@ -27,20 +27,13 @@ function getLang() {
 
 // Translation helper
 function _t(key) {
-  return typeof window.t === 'function' ? window.t(key) : key;
+  return typeof window.t === 'function' ? window.t(key) : undefined;
 }
 
-const REGION_LABELS = {
-  AFRICA: 'Africa',
-  ASIA: 'Asia',
-  CARIBBEAN: 'Caribbean',
-  EUROPE: 'Europe',
-  EU_UK: 'EU & UK',
-  LATIN_AMERICA: 'Latin America',
-  MENA: 'Middle East & Africa',
-  NORTH_AMERICA: 'North America',
-  OCEANIA: 'Oceania',
-};
+function regionLabel(code) {
+  var label = _t('destinations.regions.' + code);
+  return typeof label === 'string' ? label : code;
+}
 
 const flagEmoji = window.flagEmoji;
 const esc = window.escHTML;
@@ -169,7 +162,7 @@ function renderGrid(items) {
   if (noResults) noResults.style.display = items.length === 0 ? 'flex' : 'none';
   if (noResultsQ) noResultsQ.textContent = query
     ? '\u201C' + query + '\u201D'
-    : (REGION_LABELS[activeRegionCode] || activeRegionCode || _t('destinations.grid.allTab'));
+    : (regionLabel(activeRegionCode) || _t('destinations.grid.allTab'));
 
   if (countEl) countEl.textContent = items.length === 0
     ? ''
@@ -265,7 +258,7 @@ async function buildRegionTabs() {
 
     var regions = await apiFetch('/api/v1/regions?currency=' + CURRENCY);
     regions.forEach(function (r) {
-      var label = REGION_LABELS[r.regionCode] || r.regionCode;
+      var label = regionLabel(r.regionCode);
       var btn = document.createElement('button');
       btn.className = 'filter-tab';
       btn.dataset.region = r.regionCode;

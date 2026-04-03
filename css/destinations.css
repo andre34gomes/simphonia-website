@@ -1,6 +1,5 @@
 /* base.css loaded via <link> in HTML to avoid @import waterfall */
 
-
 /* ============================================================
    SIMPHONIA — Destinations Page Stylesheet
    ============================================================ */
@@ -40,8 +39,6 @@
   margin: 0 auto;
   width: 100%;
 }
-
-
 
 /* Filter Tabs */
 .filter-tabs {
@@ -202,15 +199,6 @@
 }
 
 /* Popular badge inside card name */
-.dest-card__popular-badge {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--accent);
-  margin-left: 0.375rem;
-  vertical-align: middle;
-}
 
 /* #no-results paragraph shown when a search/filter yields nothing */
 #no-results {
@@ -358,11 +346,6 @@
   .dest-state__desc {
     font-size: 0.875rem;
   }
-}
-
-.dest-state__spinner {
-  animation: spin 1s linear infinite;
-  display: inline-block;
 }
 
 /* Loading variant — spinning globe icon */

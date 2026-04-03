@@ -77,7 +77,13 @@ function _featureCards() {
 }
 
 // ── 7. STICKY SHOWCASE ───────────────────────────────────
+// Module-level handle so a re-initialisation can cancel the previous RAF loop.
+var _segLerpCancelFn = null;
+
 function _stickyShowcase() {
+  // Cancel any LERP loop left running by a previous call (SPA re-navigation).
+  if (_segLerpCancelFn) { _segLerpCancelFn(); _segLerpCancelFn = null; }
+
   var section = document.querySelector('.showcase-sticky');
   if (!section) return;
 
@@ -93,6 +99,10 @@ function _stickyShowcase() {
 
   var segFills = [];
   if (segsEl) {
+    // Remove any stale fills left over from a previous initialisation (SPA re-navigation).
+    segsEl.querySelectorAll('.showcase-segment__fill').forEach(function (el) {
+      if (el.parentNode) el.parentNode.removeChild(el);
+    });
     segsEl.querySelectorAll('.showcase-segment').forEach(function (seg) {
       var fill = document.createElement('div');
       fill.className = 'showcase-segment__fill';
@@ -135,6 +145,12 @@ function _stickyShowcase() {
   var _segTarget = 0;
   var _segCurrent = 0;
   var _segRafId = null;
+
+  // Expose a cancel handle so the next _stickyShowcase call (or resetAnimations)
+  // can stop this loop without holding a reference to the full closure.
+  _segLerpCancelFn = function () {
+    if (_segRafId) { cancelAnimationFrame(_segRafId); _segRafId = null; }
+  };
 
   function _segTick() {
     _segCurrent += (_segTarget - _segCurrent) * 0.08;
@@ -338,6 +354,7 @@ function _stickyShowcase() {
 
   function setup() {
     snapTo(0);
+    forceSegs(0); // always start fills at 0 — guards against stale state on SPA re-navigation
 
     ScrollTrigger.create({
       trigger: section,
