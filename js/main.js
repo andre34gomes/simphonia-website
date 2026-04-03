@@ -246,6 +246,8 @@ window.initHeroTyping = initHeroTyping;
 window.initDestinationsMarquee = function initDestinationsMarquee() {
   const strip = document.querySelector('.hero__destinations-strip');
   if (!strip) return;
+  if (strip.dataset.marqueeInitialized === 'true') return;
+  strip.dataset.marqueeInitialized = 'true';
 
   // Clone the marquee list for the seamless infinite scroll loop
   // (previously duplicated in HTML, now created dynamically to reduce payload)
@@ -301,32 +303,47 @@ window.initDestinationsMarquee = function initDestinationsMarquee() {
   }
 
   let animating = false;
+  let rafId = null;
   let stripVisible = false; // tracks IntersectionObserver state
 
-  function startLoop() {
-    if (!animating && !document.hidden) {
-      animating = true;
-      requestAnimationFrame(loop);
+  function stopLoop() {
+    animating = false;
+    if (rafId !== null) {
+      cancelAnimationFrame(rafId);
+      rafId = null;
     }
   }
 
+  function scheduleNextFrame() {
+    if (!animating || document.hidden || !stripVisible) return;
+    rafId = requestAnimationFrame(loop);
+  }
+
+  function startLoop() {
+    if (animating || document.hidden || !stripVisible) return;
+    animating = true;
+    scheduleNextFrame();
+  }
+
   function loop() {
-    if (!animating) return;
-
-    if (!document.hidden) {
-      // Normalization runs every frame — keeps the seamless loop intact
-      // even when the user has manually scrolled past the reset point.
-      const half = strip.scrollWidth / 2;
-      if (half > 0 && strip.scrollLeft >= half) {
-        strip.scrollLeft -= half;
-      }
-
-      if (!paused) {
-        strip.scrollLeft += SPEED;
-      }
+    rafId = null;
+    if (!animating || document.hidden || !stripVisible) {
+      stopLoop();
+      return;
     }
 
-    requestAnimationFrame(loop);
+    // Normalization runs every frame — keeps the seamless loop intact
+    // even when the user has manually scrolled past the reset point.
+    const half = strip.scrollWidth / 2;
+    if (half > 0 && strip.scrollLeft >= half) {
+      strip.scrollLeft -= half;
+    }
+
+    if (!paused) {
+      strip.scrollLeft += SPEED;
+    }
+
+    scheduleNextFrame();
   }
 
   // Only run the animation loop when the strip is visible on screen.
@@ -336,7 +353,7 @@ window.initDestinationsMarquee = function initDestinationsMarquee() {
       if (stripVisible) {
         startLoop();
       } else {
-        animating = false;
+        stopLoop();
       }
     });
     stripObserver.observe(strip);
@@ -349,8 +366,15 @@ window.initDestinationsMarquee = function initDestinationsMarquee() {
   // Pause/resume rAF loop when tab visibility changes
   document.addEventListener('visibilitychange', function () {
     if (document.hidden) {
-      animating = false;
+      stopLoop();
     } else if (stripVisible) {
+      startLoop();
+    }
+  });
+
+  window.addEventListener('pagehide', stopLoop);
+  window.addEventListener('pageshow', function () {
+    if (stripVisible && !document.hidden) {
       startLoop();
     }
   });
