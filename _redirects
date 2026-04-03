@@ -1,17 +1,10 @@
-# Redirects — serve clean URLs
-# Ensure old /pages/*.html links still work.
-
-/pages/destinations.html   /destinations/   301
-/pages/how-it-works.html   /how-it-works/   301
-/pages/support.html        /support/        301
-/pages/about.html          /about/          301
-/pages/privacy.html        /privacy/        301
-/pages/terms.html          /terms/          301
-
-# Cloudflare Pages validates global SPA rewrites here as infinite loops because
-# /index.html is normalized back to /. Keep only explicit redirects in this file.
-# SPA catch-all handling lives in /functions/[[path]].js for Cloudflare and in
-# netlify.toml / vercel.json for the other hosts.
+# Cloudflare Pages routing
+#
+# Do not redirect `/pages/*.html`: those files are fetched directly by
+# `js/router.js` as SPA partials during in-app navigation.
+#
+# SPA catch-all handling lives in `/functions/[[path]].js` for Cloudflare and in
+# `netlify.toml` / `vercel.json` for the other hosts.
 
 
 

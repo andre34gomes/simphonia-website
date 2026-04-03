@@ -16,35 +16,9 @@
     Content-Security-Policy      = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' https://fonts.googleapis.com 'unsafe-inline'; font-src 'self' https://fonts.gstatic.com; img-src 'self' https://images.unsplash.com https://api.simphonia.pt http://localhost:* https://flagcdn.com data: blob:; connect-src 'self' https://api.simphonia.pt http://localhost:*; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;"
 
 # ── Redirects ─────────────────────────────────────────────────
-[[redirects]]
-  from = "/pages/destinations.html"
-  to = "/destinations/"
-  status = 301
-
-[[redirects]]
-  from = "/pages/how-it-works.html"
-  to = "/how-it-works/"
-  status = 301
-
-[[redirects]]
-  from = "/pages/support.html"
-  to = "/support/"
-  status = 301
-
-[[redirects]]
-  from = "/pages/about.html"
-  to = "/about/"
-  status = 301
-
-[[redirects]]
-  from = "/pages/privacy.html"
-  to = "/privacy/"
-  status = 301
-
-[[redirects]]
-  from = "/pages/terms.html"
-  to = "/terms/"
-  status = 301
+# IMPORTANT: keep `/pages/*` fetchable as-is. The SPA router loads those HTML
+# fragments directly, so redirecting `/pages/*.html` to clean URLs breaks
+# in-app navigation and causes the app to fall back to home.
 
 # SPA catch-all — serve index.html for all routes so the client-side
 # router can handle /destinations/, /about/, /support/, etc.

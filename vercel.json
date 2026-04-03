@@ -39,14 +39,6 @@
     { "source": "/pages/:path*", "destination": "/pages/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
-  "redirects": [
-    { "source": "/pages/destinations.html", "destination": "/destinations/", "permanent": true },
-    { "source": "/pages/how-it-works.html", "destination": "/how-it-works/", "permanent": true },
-    { "source": "/pages/support.html",      "destination": "/support/",      "permanent": true },
-    { "source": "/pages/about.html",        "destination": "/about/",        "permanent": true },
-    { "source": "/pages/privacy.html",      "destination": "/privacy/",      "permanent": true },
-    { "source": "/pages/terms.html",        "destination": "/terms/",        "permanent": true }
-  ],
   "cleanUrls": true,
   "trailingSlash": true
 }
