@@ -104,6 +104,28 @@
       });
   }
 
+  function normalizePagePartialHtml(pageName, html) {
+    if (typeof html !== 'string') return '';
+
+    var trimmed = html.trim();
+    var looksLikeFullDocument = /<!doctype|<html\b|<head\b|<body\b/i.test(trimmed);
+    if (!looksLikeFullDocument) return html;
+
+    if (typeof DOMParser !== 'function') {
+      var pageMatch = trimmed.match(new RegExp('<[^>]+data-page=["\']' + pageName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '["\'][^>]*>[\\s\\S]*<\\/[^>]+>\s*$', 'i'));
+      if (pageMatch) return pageMatch[0];
+      throw new Error('Full HTML document returned for page partial: ' + pageName);
+    }
+
+    var doc = new DOMParser().parseFromString(trimmed, 'text/html');
+    var pageRoot = doc.querySelector('[data-page="' + pageName + '"]') || doc.querySelector('[data-page]');
+    if (pageRoot) {
+      return pageRoot.outerHTML;
+    }
+
+    throw new Error('Full HTML document returned without page fragment: ' + pageName);
+  }
+
   function loadPagePartial(pageName, urls, index) {
     index = index || 0;
     var url = urls[index];
@@ -112,6 +134,9 @@
     }
 
     return fetchPagePartial(url)
+      .then(function (html) {
+        return normalizePagePartialHtml(pageName, html);
+      })
       .catch(function (err) {
         if (index + 1 >= urls.length) throw err;
         return loadPagePartial(pageName, urls, index + 1);

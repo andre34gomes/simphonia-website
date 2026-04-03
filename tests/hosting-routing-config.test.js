@@ -9,6 +9,10 @@ function read(relativePath) {
   return fs.readFileSync(path.join(ROOT, relativePath), 'utf8');
 }
 
+function exists(relativePath) {
+  return fs.existsSync(path.join(ROOT, relativePath));
+}
+
 test('Cloudflare redirect rules do not redirect SPA page partials', () => {
   const redirects = read('_redirects');
 
@@ -58,5 +62,27 @@ test('initial preload and service worker precache use clean partial URLs', () =>
   assert.doesNotMatch(sw, /'\/pages\/about\.html',/);
   assert.doesNotMatch(sw, /'\/pages\/destinations\.html',/);
 });
+
+test('mobile home scroll indicator stays visible instead of being hidden', () => {
+  const homeCss = read('css/home.css');
+
+  assert.doesNotMatch(homeCss, /\.hero-postcard \.hero__scroll\s*\{\s*display:\s*none;/);
+  assert.match(homeCss, /@media \(max-width: 768px\)\s*\{[\s\S]*?\.hero-postcard \.hero__scroll\s*\{[\s\S]*?font-size:\s*0\.5625rem;/);
+  assert.match(homeCss, /@media \(max-width: 960px\)\s*\{[\s\S]*?\.hero__scroll\s*\{[\s\S]*?font-size:\s*0\.625rem;[\s\S]*?opacity:\s*0\.72;/);
+});
+
+test('static route shells exist and stay in sync with the SPA shell', () => {
+  const shell = read('index.html');
+  const routes = ['about', 'destinations', 'how-it-works', 'support', 'privacy', 'terms'];
+
+  routes.forEach((route) => {
+    const relativePath = route + '/index.html';
+    assert.equal(exists(relativePath), true, 'expected route shell ' + relativePath);
+    assert.equal(read(relativePath), shell, 'expected route shell ' + relativePath + ' to match index.html');
+  });
+});
+
+
+
 
 
