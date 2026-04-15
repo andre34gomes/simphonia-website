@@ -401,11 +401,8 @@
     // All internal links use absolute paths — resolve directly
     var resolved = href;
 
-    // Check if this is a known route
-    var route = resolveRoute(resolved);
-    if (!route) return;
-
-    // Prevent default and navigate via SPA
+    // Prevent default and navigate via SPA — navigateTo handles unknown
+    // routes by showing the SPA 404 page, avoiding a full page reload.
     e.preventDefault();
     navigateTo(resolved);
 

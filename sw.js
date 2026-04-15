@@ -10,7 +10,7 @@
  * or routing changes that should invalidate cached HTML behavior.
  */
 
-const CACHE_VERSION = 'simphonia-v14';
+const CACHE_VERSION = 'simphonia-v15';
 
 // Core shell assets cached on install.
 // The SPA still powers in-app navigation, but direct loads for known clean URLs
@@ -23,24 +23,24 @@ const PRECACHE_URLS = [
   '/css/404.css?v=20260403',
   '/css/base.css?v=20260403b',
   '/css/home.css?v=20260403b',
+  '/css/about.css?v=20260403',
   '/css/destinations.css?v=20260403',
-  '/css/home.css?v=20260403',
   '/css/how-it-works.css?v=20260403',
   '/css/legal.css?v=20260403',
   '/css/support.css?v=20260403',
-  '/js/animations-core.js',
-  '/js/animations-home.js',
-  '/js/animations-subpages.js',
-  '/js/auth.js',
+  '/js/animations-core.js?v=20260402',
+  '/js/animations-home.js?v=20260402',
+  '/js/animations-subpages.js?v=20260402',
+  '/js/auth.js?v=20260402',
   '/js/cdn-fallback.js',
-  '/js/destinations-page.js',
-  '/js/i18n.js',
-  '/js/main.js',
+  '/js/destinations-page.js?v=20260402',
+  '/js/i18n.js?v=20260402',
+  '/js/main.js?v=20260402',
   '/js/not-found-page.js?v=20260403',
-  '/js/router.js',
-  '/js/support.js',
+  '/js/router.js?v=20260403c',
+  '/js/support.js?v=20260402',
   '/js/theme-init.js',
-  '/js/components/layout.js',
+  '/js/components/layout.js?v=20260402',
   '/assets/apple.svg',
   '/assets/apple-touch-icon.png',
   '/assets/favicon.svg',
