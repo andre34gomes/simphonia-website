@@ -23,6 +23,7 @@
     '/about':        { page: 'about',        titleKey: 'page.titles.about',        descriptionKey: 'page.descriptions.about' },
     '/privacy':      { page: 'privacy',      titleKey: 'page.titles.privacy',      descriptionKey: 'page.descriptions.privacy' },
     '/terms':        { page: 'terms',        titleKey: 'page.titles.terms',        descriptionKey: 'page.descriptions.terms' },
+    '/join':         { page: 'join',         titleKey: 'page.titles.join',         descriptionKey: 'page.descriptions.join', robots: 'noindex, follow' },
   };
 
   var NOT_FOUND_ROUTE = {
@@ -41,6 +42,7 @@
     'about':        ['/pages/about', '/pages/about.html'],
     'privacy':      ['/pages/privacy', '/pages/privacy.html'],
     'terms':        ['/pages/terms', '/pages/terms.html'],
+    'join':         ['/pages/join', '/pages/join.html'],
     'not-found':    ['/pages/not-found', '/pages/not-found.html'],
   };
 
@@ -69,7 +71,8 @@
 
   function normalizePath(path) {
     var clean = (path || '/').split('#')[0].split('?')[0] || '/';
-    return clean || '/';
+    // Strip trailing slashes (except root) — mirrors resolveRoute()
+    return clean === '/' ? '/' : clean.replace(/\/+$/, '');
   }
 
   function getAllPages() {
@@ -249,6 +252,13 @@
     return _pageLoadPromises[pageName];
   }
 
+  function cleanupLegalToc() {
+    if (typeof window.__simphoniaLegalTocCleanup === 'function') {
+      window.__simphoniaLegalTocCleanup();
+      window.__simphoniaLegalTocCleanup = null;
+    }
+  }
+
   /* ── Lazy page initialisers ────────────────────────────────── */
   function initPage(pageName) {
     if (_pageInitialized[pageName]) return;
@@ -332,6 +342,10 @@
           target.style.display = 'block';
         }
 
+        if (pageName !== 'privacy' && pageName !== 'terms') {
+          cleanupLegalToc();
+        }
+
         // Update state
         currentPage = pageName;
         currentPath = path;
@@ -354,6 +368,7 @@
             }
             // Legal TOC needs re-init on privacy/terms navigation
             if ((pageName === 'privacy' || pageName === 'terms') && typeof initLegalToc === 'function') {
+              cleanupLegalToc();
               initLegalToc();
             }
           });
@@ -460,10 +475,14 @@
 
     // Keep document.title translated when language changes
     document.addEventListener('simphonia:langchange', function () {
+      // Reset page-init flags so data-dependent pages re-fetch in the new language
+      _pageInitialized = {};
       if (!currentPage) return;
-      var currentPath = window.location.pathname.split('#')[0].replace(/\/+$/, '') || '/';
-      var route = resolveRoute(currentPath) || NOT_FOUND_ROUTE;
-      updateSeo(route, currentPath);
+      var langPath = window.location.pathname.split('#')[0].replace(/\/+$/, '') || '/';
+      var route = resolveRoute(langPath) || NOT_FOUND_ROUTE;
+      updateSeo(route, langPath);
+      // Re-init the current page with the new language
+      initPage(currentPage);
     });
 
     // Navigate to the current URL (initial page load)

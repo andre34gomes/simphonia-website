@@ -54,6 +54,72 @@ function normaliseFaqResponse(data) {
   return flat;
 }
 
+function escapeHtml(value) {
+  return String(value || '').replace(/[&<>"']/g, function (char) {
+    return {
+      '&': '&amp;',
+      '<': '&lt;',
+      '>': '&gt;',
+      '"': '&quot;',
+      "'": '&#39;'
+    }[char];
+  });
+}
+
+function decodeFaqEntities(text) {
+  return String(text || '')
+      .replace(/&nbsp;/gi, ' ')
+      .replace(/&amp;/gi, '&')
+      .replace(/&lt;/gi, '<')
+      .replace(/&gt;/gi, '>')
+      .replace(/&quot;/gi, '"')
+      .replace(/&#39;/gi, "'")
+      .replace(/&#x27;/gi, "'")
+      .replace(/&#x2F;/gi, '/');
+}
+
+function faqHtmlToText(html) {
+  return decodeFaqEntities(String(html || ''))
+      .replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, ' ')
+      .replace(/<style\b[^<]*(?:(?!<\/style>)<[^<]*)*<\/style>/gi, ' ')
+      .replace(/<br\s*\/?>/gi, '\n')
+      .replace(/<\/p\s*>/gi, '\n\n')
+      .replace(/<\/div\s*>/gi, '\n')
+      .replace(/<li\b[^>]*>/gi, '• ')
+      .replace(/<\/li\s*>/gi, '\n')
+      .replace(/<\/ul\s*>/gi, '\n')
+      .replace(/<\/ol\s*>/gi, '\n')
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\r/g, '')
+      .replace(/\u00A0/g, ' ')
+      .replace(/[ \t]+\n/g, '\n')
+      .replace(/\n[ \t]+/g, '\n')
+      .replace(/[ \t]{2,}/g, ' ')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
+}
+
+function renderFaqAnswerContent(container, answerHtml) {
+  if (!container) {
+    return;
+  }
+
+  container.innerHTML = '';
+
+  var safeText = faqHtmlToText(answerHtml);
+  if (!safeText) {
+    return;
+  }
+
+  safeText.split(/\n+/).map(function (line) {
+    return line.trim();
+  }).filter(Boolean).forEach(function (line) {
+    var paragraph = document.createElement('p');
+    paragraph.textContent = line;
+    container.appendChild(paragraph);
+  });
+}
+
 /* ─────────────────────────────────────────────────────────────
    FAQ Panel — render
    ───────────────────────────────────────────────────────────── */
@@ -82,7 +148,7 @@ function renderNav(items) {
     btn.className = 'faq-panel__q' + (i === 0 ? ' is-active' : '');
     btn.dataset.index = i;
     // Include answer text (HTML-stripped) in search index for better discoverability
-    var plainAnswer = item.a.replace(/<[^>]*>/g, '');
+    var plainAnswer = faqHtmlToText(item.a);
     btn.dataset.searchText = (item.q + ' ' + plainAnswer + ' ' + (item.category
         || '')).toLowerCase();
     btn.setAttribute('aria-expanded', i === 0 ? 'true' : 'false');
@@ -90,7 +156,7 @@ function renderNav(items) {
     btn.innerHTML =
         '<span class="faq-panel__q-num">' + String(i + 1).padStart(2, '0')
         + '</span>' +
-        '<span class="faq-panel__q-text">' + item.q + '</span>' +
+        '<span class="faq-panel__q-text">' + escapeHtml(item.q) + '</span>' +
         '<svg class="faq-panel__q-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>';
     btn.addEventListener('click', function () {
       switchFaq(i);
@@ -102,17 +168,30 @@ function renderNav(items) {
     answer.className = 'faq-panel__inline-answer';
     answer.id = 'faq-inline-' + i;
     answer.setAttribute('aria-hidden', 'true');
-    answer.innerHTML =
-        '<div class="faq-panel__inline-answer-inner">' +
-        (item.category ? '<span class="faq-panel__display-cat">' + item.category
-            + '</span>' : '') +
-        '<p>' + item.a + '</p>' +
-        '<a href="#contact" class="faq-panel__display-cta">' +
-        window.t('support.faq.stillNeedHelp') +
-        ' <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>'
-        +
-        '</a>' +
-        '</div>';
+
+    var answerInner = document.createElement('div');
+    answerInner.className = 'faq-panel__inline-answer-inner';
+
+    if (item.category) {
+      var categoryLabel = document.createElement('span');
+      categoryLabel.className = 'faq-panel__display-cat';
+      categoryLabel.textContent = item.category;
+      answerInner.appendChild(categoryLabel);
+    }
+
+    var answerBody = document.createElement('div');
+    answerBody.className = 'faq-panel__answer-body';
+    renderFaqAnswerContent(answerBody, item.a);
+    answerInner.appendChild(answerBody);
+
+    var cta = document.createElement('a');
+    cta.href = '#contact';
+    cta.className = 'faq-panel__display-cta';
+    cta.innerHTML =
+        escapeHtml(window.t('support.faq.stillNeedHelp')) +
+        ' <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>';
+    answerInner.appendChild(cta);
+    answer.appendChild(answerInner);
     nav.appendChild(answer);
   });
 
@@ -166,7 +245,7 @@ function renderDisplay(index) {
     qEl.textContent = item.q;
   }
   if (bodyEl) {
-    bodyEl.innerHTML = '<p>' + item.a + '</p>';
+    renderFaqAnswerContent(bodyEl, item.a);
   }
   if (catEl) {
     catEl.textContent = item.category || '';

@@ -268,9 +268,16 @@ window.initDestinationsMarquee = function initDestinationsMarquee() {
     const lists = strip.querySelectorAll('.marquee-list');
     if (!lists.length || !countries.length) return;
 
+    // Sanitize text to prevent XSS when injecting API data via innerHTML
+    function escapeHtml(str) {
+      var div = document.createElement('div');
+      div.textContent = str;
+      return div.innerHTML;
+    }
+
     const html = countries.map(function (d) {
       const flag = window.flagEmoji(d.countryCode);
-      const name = d.countryName || d.countryCode;
+      const name = escapeHtml(d.countryName || d.countryCode);
       return '<li class="marquee-item"><span class="marquee-item__flag">' + flag + '</span>' + name + '</li>';
     }).join('');
 
@@ -508,10 +515,15 @@ window.initDestinationsMarquee = function initDestinationsMarquee() {
 // visible at the top of the viewport.
 // ============================================================
 function initLegalToc() {
-  const links = document.querySelectorAll('.legal-toc__link');
+  if (typeof window.__simphoniaLegalTocCleanup === 'function') {
+    window.__simphoniaLegalTocCleanup();
+    window.__simphoniaLegalTocCleanup = null;
+  }
+
+  const links = Array.from(document.querySelectorAll('.legal-toc__link'));
   if (!links.length) return;
 
-  const sections = Array.from(links)
+  const sections = links
     .map(l => document.querySelector(l.getAttribute('href')))
     .filter(Boolean);
 
@@ -549,13 +561,16 @@ function initLegalToc() {
 
   // Click handler: immediately highlight the correct link and, after
   // the browser finishes the anchor scroll, re-sync the scroll spy.
+  const clickHandlers = new Map();
   links.forEach(l => {
-    l.addEventListener('click', () => {
+    const onClick = () => {
       const hash = l.getAttribute('href');
       if (hash) setActive(hash.slice(1));
       // Re-run after the scroll settles to keep the spy in sync
       setTimeout(update, 120);
-    });
+    };
+    clickHandlers.set(l, onClick);
+    l.addEventListener('click', onClick);
   });
 
   let ticking = false;
@@ -570,7 +585,17 @@ function initLegalToc() {
   }
 
   window.addEventListener('scroll', onScroll, { passive: true });
+  window.__simphoniaLegalTocCleanup = function () {
+    window.removeEventListener('scroll', onScroll);
+    links.forEach(function (link) {
+      const onClick = clickHandlers.get(link);
+      if (onClick) {
+        link.removeEventListener('click', onClick);
+      }
+    });
+  };
   update();
+  return window.__simphoniaLegalTocCleanup;
 }
 
 // ============================================================

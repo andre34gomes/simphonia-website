@@ -61,8 +61,10 @@ async function apiFetch(path, _retried) {
     });
 
     if (res.status === 401 && !_retried) {
-      sessionStorage.removeItem('simphonia_guest_token');
-      sessionStorage.removeItem('simphonia_guest_expiry');
+      try {
+        sessionStorage.removeItem('simphonia_guest_token');
+        sessionStorage.removeItem('simphonia_guest_expiry');
+      } catch (_) { /* Private browsing — storage may be unavailable */ }
       return apiFetch(path, true);
     }
 
