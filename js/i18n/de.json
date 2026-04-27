@@ -32,7 +32,7 @@
     "howItWorks": "So Funktioniert's",
     "support": "Unterstützung",
     "about": "Über uns",
-    "homeAriaLabel": "Sinfonia-Haus",
+    "homeAriaLabel": "Simphonia-Startseite",
     "downloadApp": "App Herunterladen",
     "skipToMain": "Zum Hauptinhalt springen",
     "toggleTheme": "Hell/Dunkel-Modus umschalten",
@@ -83,7 +83,7 @@
       "trust200Countries": "200+ Länder",
       "trustInstantActivation": "Sofortige Aktivierung",
       "downloadOnThe": "Herunterladen im",
-      "appStore": "App Store",
+      "appStore": "App-Store",
       "googlePlay": "Google Play",
       "downloadOnAppStore": "Im App Store herunterladen",
       "downloadOnGooglePlay": "Bei Google Play herunterladen",
@@ -163,14 +163,10 @@
       "appNetwork": "Netzwerk",
       "appPlanPrice": "Planpreis",
       "appTotalData": "Gesamtdaten",
-      "appAiName": "Sinfonia KI",
+      "appAiName": "Simphonia AI",
       "appAiOnline": "Online · antwortet sofort",
-      "appChatMsg1User": "Wie aktiviere ich meine eSIM?",
-      "appChatMsg1Ai": "Öffnen Sie<b>Einstellungen → Mobilfunk → eSIM hinzufügen</b>, scannen Sie den QR-Code in der App. In Sekunden erledigt! 🚀",
-      "appChatMsg2User": "Wie viele Daten sind noch übrig?",
-      "appChatMsg2Ai": "Sie haben noch<b>3,4 GB</b> auf Portugal übrig · 7 Tage übrig.",
       "appChatPlaceholder": "Fragen Sie alles ...",
-      "navHome": "Heim",
+      "navHome": "Startseite",
       "navBrowse": "Durchsuchen",
       "navMyEsims": "Meine eSIMs",
       "navProfile": "Profil"
@@ -179,7 +175,7 @@
       "heading1": "Bleib Verbunden,",
       "heading2": "Wo Immer Du Bist.",
       "desc": "Erkunde unsere Reiseziele und finde den perfekten eSIM-Plan für dein nächstes Abenteuer.",
-      "browseDestinations": "🌍 Reiseziele Durchsuchen",
+      "browseDestinations": "🌍 Durchsuchen Sie Ziele",
       "howItWorks": "⚙️ So Funktioniert's"
     }
   },
@@ -330,7 +326,7 @@
     "cta": {
       "heading": "Sei Teil der Reise",
       "desc": "Erkunde unsere Reiseziele und bleib verbunden, wo du auch reist.",
-      "browseDestinations": "🌍 Reiseziele Durchsuchen"
+      "browseDestinations": "🌍 Durchsuchen Sie Ziele"
     }
   },
   "howItWorks": {
@@ -366,7 +362,7 @@
     "cta": {
       "heading": "Bereit Loszulegen?",
       "desc": "Erkunde unsere Reiseziele und finde den perfekten eSIM-Plan.",
-      "browseDestinations": "🌍 Reiseziele Durchsuchen",
+      "browseDestinations": "🌍 Durchsuchen Sie Ziele",
       "backToHome": "🏠 Zurück zur Startseite"
     }
   },
@@ -390,7 +386,7 @@
   },
   "privacy": {
     "hero": {
-      "label": "Legal",
+      "label": "Rechtliches",
       "heading1": "Privatsphäre",
       "heading2": "Politik",
       "lastUpdated": "Letzte Aktualisierung: 22. März 2026"
@@ -473,9 +469,9 @@
   },
   "terms": {
     "hero": {
-      "label": "Legal",
+      "label": "Rechtliches",
       "heading1": "Bedingungen von",
-      "heading2": "Service",
+      "heading2": "Dienst",
       "lastUpdated": "Letzte Aktualisierung: 22. März 2026"
     },
     "toc": {
@@ -528,7 +524,7 @@
       "s5_3Title": "5.3 Faire Nutzung",
       "s5_3Text": "Alle Pläne unterliegen den Richtlinien zur fairen Nutzung. Die Pläne sind nur für den persönlichen Gebrauch bestimmt und dürfen nicht weiterverkauft oder kommerziell genutzt werden.",
       "s6Title": "6. Geistiges Eigentum",
-      "s6Text": "Der Dienst, einschließlich seines Designs, seiner Logos, Texte, Grafiken und Software, ist Eigentum von Sinfonia und durch Gesetze zum Schutz des geistigen Eigentums geschützt. Ohne unsere schriftliche Zustimmung dürfen Sie keine reproduzieren, modifizieren, verbreiten oder abgeleitete Werke erstellen.",
+      "s6Text": "Der Dienst, einschließlich seines Designs, seiner Logos, Texte, Grafiken und Software, ist Eigentum von Simphonia und durch Gesetze zum Schutz des geistigen Eigentums geschützt. Ohne unsere schriftliche Zustimmung dürfen Sie keine reproduzieren, modifizieren, verbreiten oder abgeleitete Werke erstellen.",
       "s7Title": "7. Verbotene Verwendungen",
       "s7Intro": "Sie stimmen zu, Folgendes nicht zu tun:",
       "s7Item1": "Den Dienst für rechtswidrige Zwecke nutzen",
@@ -559,10 +555,10 @@
   },
   "page": {
     "titles": {
-      "home": "Sinfonia – Bleiben Sie in Verbindung, wohin Sie auch gehen.",
+      "home": "Simphonia – Bleiben Sie in Verbindung, wohin Sie auch gehen.",
       "destinations": "Ziele – Simphonia eSIM",
       "howItWorks": "So funktioniert es – Simphonia eSIM",
-      "support": "Support und FAQ – Sinfonia eSIM",
+      "support": "Support und FAQ – Simphonia eSIM",
       "about": "Über – Simphonia eSIM",
       "privacy": "Datenschutzrichtlinie – Simphonia eSIM",
       "terms": "Nutzungsbedingungen – Simphonia eSIM",

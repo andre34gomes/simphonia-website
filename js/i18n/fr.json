@@ -32,7 +32,7 @@
     "howItWorks": "Comment Ça Marche",
     "support": "Assistance",
     "about": "À propos",
-    "homeAriaLabel": "Accueil Symphonie",
+    "homeAriaLabel": "Accueil Simphonia",
     "downloadApp": "Télécharger l'App",
     "skipToMain": "Aller au contenu principal",
     "toggleTheme": "Basculer mode clair/sombre",
@@ -147,7 +147,7 @@
       "appFilterEurope": "🌍Europe",
       "appFilterAmericas": "🌎 Amériques",
       "appPopularNow": "Populaire maintenant",
-      "appCheckoutHeading": "Vérifier",
+      "appCheckoutHeading": "Paiement",
       "appInstantDelivery": "⚡ Livraison instantanée",
       "appPayApplePay": "Payer avec Apple Pay",
       "appPayOr": "- ou -",
@@ -163,14 +163,10 @@
       "appNetwork": "Réseau",
       "appPlanPrice": "Prix ​​du forfait",
       "appTotalData": "Données totales",
-      "appAiName": "Symphonia IA",
+      "appAiName": "Simphonia AI",
       "appAiOnline": "En ligne · répond instantanément",
-      "appChatMsg1User": "Comment activer mon eSIM ?",
-      "appChatMsg1Ai": "Ouvrez<b>Paramètres → Cellulaire → Ajouter eSIM</b>, scannez le code QR dans l'application. C'est fait en quelques secondes ! 🚀",
-      "appChatMsg2User": "Combien de données reste-t-il ?",
-      "appChatMsg2Ai": "Il vous reste<b>3,4 GB</b> au Portugal · 7 jours restants.",
       "appChatPlaceholder": "Demandez n'importe quoi…",
-      "navHome": "Maison",
+      "navHome": "Accueil",
       "navBrowse": "Parcourir",
       "navMyEsims": "Mes eSIM",
       "navProfile": "Profil"
@@ -179,7 +175,7 @@
       "heading1": "Restez Connecté,",
       "heading2": "Où Que Vous Alliez.",
       "desc": "Explorez nos destinations et trouvez le forfait eSIM parfait pour votre prochaine aventure.",
-      "browseDestinations": "🌍 Voir les Destinations",
+      "browseDestinations": "🌍 Parcourir les destinations",
       "howItWorks": "⚙️ Comment Ça Marche"
     }
   },
@@ -330,7 +326,7 @@
     "cta": {
       "heading": "Faites Partie du Voyage",
       "desc": "Explorez nos destinations et restez connecté où que vous voyagiez.",
-      "browseDestinations": "🌍 Voir les Destinations"
+      "browseDestinations": "🌍 Parcourir les destinations"
     }
   },
   "howItWorks": {
@@ -366,7 +362,7 @@
     "cta": {
       "heading": "Prêt à Commencer?",
       "desc": "Explorez nos destinations et trouvez le forfait eSIM parfait.",
-      "browseDestinations": "🌍 Voir les Destinations",
+      "browseDestinations": "🌍 Parcourir les destinations",
       "backToHome": "🏠 Retour à l'Accueil"
     }
   },
@@ -391,8 +387,8 @@
   "privacy": {
     "hero": {
       "label": "Légal",
-      "heading1": "Confidentialité",
-      "heading2": "Politique",
+      "heading1": "Politique de",
+      "heading2": "confidentialité",
       "lastUpdated": "Dernière mise à jour : 22 mars 2026"
     },
     "toc": {
@@ -474,8 +470,8 @@
   "terms": {
     "hero": {
       "label": "Légal",
-      "heading1": "Conditions de",
-      "heading2": "Service",
+      "heading1": "Conditions d'",
+      "heading2": "utilisation",
       "lastUpdated": "Dernière mise à jour : 22 mars 2026"
     },
     "toc": {
@@ -489,13 +485,13 @@
       "s7": "7. Utilisations interdites",
       "s8": "8. Limitation de responsabilité",
       "s9": "9. Exclusion de garanties",
-      "s10": "10. Modifications",
+      "s10": "10. Changements",
       "s11": "11. Résiliation",
       "s12": "12. Loi applicable",
       "s13": "13. Contacter"
     },
     "content": {
-      "intro": "Les présentes conditions d'utilisation (« Conditions ») régissent votre utilisation de l'application mobile et du site Web de Siphonia (le « Service ») exploités par Siphonia (« nous », « notre », « notre »). En accédant ou en utilisant le Service, vous acceptez d'être lié par ces Conditions.",
+      "intro": "Les présentes conditions d'utilisation (« Conditions ») régissent votre utilisation de l'application mobile et du site Web de Simphonia (le « Service ») exploités par Simphonia (« nous », « notre », « nos »). En accédant ou en utilisant le Service, vous acceptez d'être lié par ces Conditions.",
       "s1Title": "1. Acceptation des conditions",
       "s1Text": "En créant un compte, en effectuant un achat ou en utilisant le Service de toute autre manière, vous reconnaissez que vous avez lu, compris et accepté d'être lié par ces Conditions et notre<a href=\"/privacy/\" class=\"link-accent\">Politique de confidentialité</a>. Si vous n'êtes pas d'accord, n'utilisez pas le Service.",
       "s2Title": "2. Description du service",
@@ -559,14 +555,14 @@
   },
   "page": {
     "titles": {
-      "home": "Symphonia — Restez connecté, où que vous alliez.",
-      "destinations": "Destinations — Symphonia eSIM",
-      "howItWorks": "Comment ça marche — Symphonia eSIM",
-      "support": "Assistance et FAQ — Symphonia eSIM",
-      "about": "À propos — Symphonia eSIM",
-      "privacy": "Politique de confidentialité — Symphonia eSIM",
-      "terms": "Conditions d'utilisation — Symphonia eSIM",
-      "notFound": "Page introuvable — Symphonia eSIM"
+      "home": "Simphonia — Restez connecté, où que vous alliez.",
+      "destinations": "Destinations — Simphonia eSIM",
+      "howItWorks": "Comment ça marche — Simphonia eSIM",
+      "support": "Assistance et FAQ — Simphonia eSIM",
+      "about": "À propos — Simphonia eSIM",
+      "privacy": "Politique de confidentialité — Simphonia eSIM",
+      "terms": "Conditions d'utilisation — Simphonia eSIM",
+      "notFound": "Page introuvable — Simphonia eSIM"
     },
     "descriptions": {
       "home": "Activation instantanée de l'eSIM pour plus de 200 pays. Pas de frais d'itinérance, pas d'échange de carte SIM, pas de contrat. Restez connecté où que vous alliez avec Simphonia.",

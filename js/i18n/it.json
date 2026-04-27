@@ -32,7 +32,7 @@
     "howItWorks": "Come Funziona",
     "support": "Supporto",
     "about": "Chi Siamo",
-    "homeAriaLabel": "Casa Sinfonia",
+    "homeAriaLabel": "Home Simphonia",
     "downloadApp": "Scarica l'App",
     "skipToMain": "Salta al contenuto principale",
     "toggleTheme": "Modalità chiara/scura",
@@ -147,7 +147,7 @@
       "appFilterEurope": "🌍Europa",
       "appFilterAmericas": "🌎 Americhe",
       "appPopularNow": "Popolare ora",
-      "appCheckoutHeading": "Guardare",
+      "appCheckoutHeading": "Cassa",
       "appInstantDelivery": "⚡ Consegna immediata",
       "appPayApplePay": "Paga con ApplePay",
       "appPayOr": "- O -",
@@ -163,14 +163,10 @@
       "appNetwork": "Rete",
       "appPlanPrice": "Prezzo del piano",
       "appTotalData": "Dati totali",
-      "appAiName": "Sinfonia AI",
+      "appAiName": "Simphonia AI",
       "appAiOnline": "In linea · risponde immediatamente",
-      "appChatMsg1User": "Come attivo la mia eSIM?",
-      "appChatMsg1Ai": "Apri<b>Impostazioni → Cellulare → Aggiungi eSIM</b>, scansiona il codice QR nell'app. Fatto in pochi secondi! 🚀",
-      "appChatMsg2User": "Quanti dati rimangono?",
-      "appChatMsg2Ai": "Hai<b>3.4 GB</b> rimanenti in Portogallo · 7 giorni rimasti.",
       "appChatPlaceholder": "Chiedi qualsiasi cosa...",
-      "navHome": "Casa",
+      "navHome": "Inizio",
       "navBrowse": "Sfoglia",
       "navMyEsims": "Le mie eSIM",
       "navProfile": "Profilo"
@@ -179,7 +175,7 @@
       "heading1": "Rimani Connesso,",
       "heading2": "Ovunque Tu Vada.",
       "desc": "Esplora le nostre destinazioni e trova il piano eSIM perfetto per la tua prossima avventura.",
-      "browseDestinations": "🌍 Sfoglia Destinazioni",
+      "browseDestinations": "🌍 Sfoglia le destinazioni",
       "howItWorks": "⚙️ Come Funziona"
     }
   },
@@ -330,7 +326,7 @@
     "cta": {
       "heading": "Fai Parte del Viaggio",
       "desc": "Esplora le nostre destinazioni e rimani connesso ovunque tu viaggi.",
-      "browseDestinations": "🌍 Sfoglia Destinazioni"
+      "browseDestinations": "🌍 Sfoglia le destinazioni"
     }
   },
   "howItWorks": {
@@ -366,7 +362,7 @@
     "cta": {
       "heading": "Pronto per Iniziare?",
       "desc": "Esplora le nostre destinazioni e trova il piano eSIM perfetto.",
-      "browseDestinations": "🌍 Sfoglia Destinazioni",
+      "browseDestinations": "🌍 Sfoglia le destinazioni",
       "backToHome": "🏠 Torna alla Home"
     }
   },
@@ -391,8 +387,8 @@
   "privacy": {
     "hero": {
       "label": "Legale",
-      "heading1": "Privacy",
-      "heading2": "Politica",
+      "heading1": "Informativa",
+      "heading2": "sulla privacy",
       "lastUpdated": "Ultimo aggiornamento: 22 marzo 2026"
     },
     "toc": {

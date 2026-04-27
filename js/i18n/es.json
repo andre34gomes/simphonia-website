@@ -32,7 +32,7 @@
     "howItWorks": "Cómo Funciona",
     "support": "Soporte",
     "about": "Nosotros",
-    "homeAriaLabel": "Inicio Sinfonía",
+    "homeAriaLabel": "Inicio de Simphonia",
     "downloadApp": "Descargar App",
     "skipToMain": "Saltar al contenido principal",
     "toggleTheme": "Alternar modo claro/oscuro",
@@ -43,7 +43,7 @@
     "tagline": "Mantente conectado, vayas donde vayas. Cobertura eSIM global para viajeros modernos.",
     "product": "Producto",
     "company": "Empresa",
-    "legal": "Legal",
+    "legal": "Jurídico",
     "aboutUs": "Sobre Nosotros",
     "contact": "Contacto",
     "privacyPolicy": "Política de Privacidad",
@@ -84,7 +84,7 @@
       "trustInstantActivation": "Activación instantánea",
       "downloadOnThe": "Descargar en",
       "appStore": "Tienda de aplicaciones",
-      "googlePlay": "GooglePlay",
+      "googlePlay": "Google Play",
       "downloadOnAppStore": "Descargar en la tienda de aplicaciones",
       "downloadOnGooglePlay": "Descargar en Google Play",
       "iconSearch": "Buscar",
@@ -147,7 +147,7 @@
       "appFilterEurope": "🌍 Europa",
       "appFilterAmericas": "🌎 América",
       "appPopularNow": "Popular ahora",
-      "appCheckoutHeading": "Verificar",
+      "appCheckoutHeading": "Pago",
       "appInstantDelivery": "⚡ Entrega instantánea",
       "appPayApplePay": "Pagar con Apple Pay",
       "appPayOr": "- o -",
@@ -163,14 +163,10 @@
       "appNetwork": "Red",
       "appPlanPrice": "Precio del plan",
       "appTotalData": "Datos totales",
-      "appAiName": "Sinfonía AI",
+      "appAiName": "Simphonia AI",
       "appAiOnline": "En línea · responde al instante",
-      "appChatMsg1User": "¿Cómo activo mi eSIM?",
-      "appChatMsg1Ai": "Abra<b>Configuración → Celular → Agregar eSIM</b>, escanee el código QR en la aplicación. ¡Hecho en segundos! 🚀",
-      "appChatMsg2User": "¿Cuántos datos quedan?",
-      "appChatMsg2Ai": "Te quedan<b>3.4 GB</b> en Portugal · Quedan 7 días.",
       "appChatPlaceholder": "Pregunta cualquier cosa...",
-      "navHome": "Hogar",
+      "navHome": "Inicio",
       "navBrowse": "Navegar",
       "navMyEsims": "Mis eSIM",
       "navProfile": "Perfil"
@@ -179,7 +175,7 @@
       "heading1": "Mantente Conectado,",
       "heading2": "Vayas Donde Vayas.",
       "desc": "Explora nuestros destinos y encuentra el plan eSIM perfecto para tu próxima aventura.",
-      "browseDestinations": "🌍 Ver Destinos",
+      "browseDestinations": "🌍 Explorar destinos",
       "howItWorks": "⚙️ Cómo Funciona"
     }
   },
@@ -330,7 +326,7 @@
     "cta": {
       "heading": "Sé Parte del Viaje",
       "desc": "Explora nuestros destinos y mantente conectado donde viajes.",
-      "browseDestinations": "🌍 Ver Destinos"
+      "browseDestinations": "🌍 Explorar destinos"
     }
   },
   "howItWorks": {
@@ -366,7 +362,7 @@
     "cta": {
       "heading": "¿Listo para Empezar?",
       "desc": "Explora nuestros destinos y encuentra el plan eSIM perfecto.",
-      "browseDestinations": "🌍 Ver Destinos",
+      "browseDestinations": "🌍 Explorar destinos",
       "backToHome": "🏠 Volver al Inicio"
     }
   },
@@ -390,7 +386,7 @@
   },
   "privacy": {
     "hero": {
-      "label": "Legal",
+      "label": "Jurídico",
       "heading1": "Privacidad",
       "heading2": "Política",
       "lastUpdated": "Última actualización: 22 de marzo de 2026"
@@ -473,7 +469,7 @@
   },
   "terms": {
     "hero": {
-      "label": "Legal",
+      "label": "Jurídico",
       "heading1": "Términos de",
       "heading2": "Servicio",
       "lastUpdated": "Última actualización: 22 de marzo de 2026"

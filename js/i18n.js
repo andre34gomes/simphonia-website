@@ -25,6 +25,7 @@
   var DEFAULT = 'en';
 
   var _data = {};
+  var _fallbackData = {};
   var _lang = DEFAULT;
   var _resolveReady;
   var _initialLoadDone = false;
@@ -58,8 +59,12 @@
   // ── Translation lookup ──────────────────────────────────────────────────
 
   function lookup(key) {
+    return lookupFrom(_data, key);
+  }
+
+  function lookupFrom(source, key) {
     var parts = key.split('.');
-    var cur = _data;
+    var cur = source;
     for (var i = 0; i < parts.length; i++) {
       if (cur == null || typeof cur !== 'object') return undefined;
       cur = cur[parts[i]];
@@ -74,6 +79,7 @@
    */
   function t(key, vars) {
     var cur = lookup(key);
+    if (cur === '' || cur == null) cur = lookupFrom(_fallbackData, key);
     if (cur == null) return undefined;
     if (typeof cur !== 'string') return cur;
     var str = String(cur);
@@ -187,13 +193,28 @@
 
   function load(lang) {
     var url = basePath() + 'js/i18n/' + lang + '.json?v=20260403';
-    return fetch(url)
-      .then(function (res) {
+    var fetchJson = function (targetUrl) {
+      return fetch(targetUrl)
+        .then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
         return res.json();
-      })
-      .then(function (data) {
+        });
+    };
+
+    var fallbackPromise = lang === DEFAULT
+      ? Promise.resolve(null)
+      : fetchJson(basePath() + 'js/i18n/' + DEFAULT + '.json?v=20260403')
+        .catch(function (err) {
+          console.warn('[i18n] Failed to load English fallback translations:', err);
+          return null;
+        });
+
+    return Promise.all([fetchJson(url), fallbackPromise])
+      .then(function (results) {
+        var data = results[0];
+        var fallbackData = results[1];
         _data = data;
+        _fallbackData = fallbackData || data;
         _lang = lang;
         window.SIMPHONIA_LANG = lang;
         try { localStorage.setItem(LANG_KEY, lang); } catch (_) {}
