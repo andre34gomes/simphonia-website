@@ -121,7 +121,7 @@ function _stickyShowcase() {
   // Recalculate on resize so slide distances stay correct after orientation changes.
   var isMobileShowcase = window.innerWidth <= 960;
   var _resizeTimer = null;
-  window.addEventListener('resize', function () {
+  function _handleResize() {
     clearTimeout(_resizeTimer);
     _resizeTimer = setTimeout(function () {
       isMobileShowcase = window.innerWidth <= 960;
@@ -129,7 +129,8 @@ function _stickyShowcase() {
         ScrollTrigger.refresh();
       }
     }, 250);
-  }, { passive: true });
+  }
+  window.addEventListener('resize', _handleResize, { passive: true });
 
   var panelChildren = [];
   panels.forEach(function (p) {
@@ -150,6 +151,8 @@ function _stickyShowcase() {
   // can stop this loop without holding a reference to the full closure.
   _segLerpCancelFn = function () {
     if (_segRafId) { cancelAnimationFrame(_segRafId); _segRafId = null; }
+    clearTimeout(_resizeTimer);
+    window.removeEventListener('resize', _handleResize);
   };
 
   function _segTick() {
@@ -545,18 +548,24 @@ function _featCardIconPulse() {
   var icons = document.querySelectorAll('.feat-card__icon');
   if (!icons.length) return;
 
-  icons.forEach(function (icon) {
-    gsap.fromTo(icon,
-      { boxShadow: '0 0 0 0 rgba(212, 175, 55, 0)' },
-      {
-        boxShadow: '0 0 24px 4px rgba(212, 175, 55, 0.2)',
-        duration: 1.2, ease: 'power2.out',
-        scrollTrigger: { trigger: icon, start: 'top 85%', once: true },
-        onComplete: function () {
-          gsap.to(icon, { boxShadow: '0 0 12px 0 rgba(212, 175, 55, 0.08)', duration: 1, ease: 'power2.inOut' });
-        },
-      }
-    );
+  // Use batch instead of individual ScrollTriggers — fewer scroll observers
+  ScrollTrigger.batch(icons, {
+    start: 'top 85%',
+    once: true,
+    onEnter: function (batch) {
+      batch.forEach(function (icon, i) {
+        gsap.fromTo(icon,
+          { boxShadow: '0 0 0 0 rgba(212, 175, 55, 0)' },
+          {
+            boxShadow: '0 0 24px 4px rgba(212, 175, 55, 0.2)',
+            duration: 1.2, delay: i * 0.06, ease: 'power2.out',
+            onComplete: function () {
+              gsap.to(icon, { boxShadow: '0 0 12px 0 rgba(212, 175, 55, 0.08)', duration: 1, ease: 'power2.inOut' });
+            },
+          }
+        );
+      });
+    },
   });
 }
 
@@ -585,16 +594,21 @@ function _stepCardIconHover() {
 
 // ── 35. CTA BUTTON ENTRANCE ──────────────────────────────
 function _ctaButtonEntrance() {
-  document.querySelectorAll('.cta-section .btn').forEach(function (btn, i) {
-    gsap.fromTo(btn,
-      { clipPath: 'inset(0 0 100% 0)', y: 10 },
-      {
+  var btns = document.querySelectorAll('.cta-section .btn');
+  if (!btns.length) return;
+
+  gsap.set(btns, { clipPath: 'inset(0 0 100% 0)', y: 10 });
+
+  ScrollTrigger.batch(btns, {
+    start: 'top 88%',
+    once: true,
+    onEnter: function (batch) {
+      gsap.to(batch, {
         clipPath: 'inset(0 0 0% 0)', y: 0,
-        duration: 0.48, delay: 0.1 + i * 0.1,
+        duration: 0.48, stagger: 0.1,
         ease: 'power2.out', overwrite: 'auto',
-        scrollTrigger: { trigger: btn, start: 'top 88%', once: true },
-      }
-    );
+      });
+    },
   });
 }
 

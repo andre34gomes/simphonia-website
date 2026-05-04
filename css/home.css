@@ -377,7 +377,6 @@
   mask-repeat: no-repeat;
   mask-position: center;
   mask-size: contain;
-  flex-shrink: 0;
 }
 
 .hero-dl-btn__icon--apple {
@@ -903,10 +902,7 @@
   .hero-dl-btn__sub { font-size: 0.5rem; }
   .hero-dl-btn__main { font-size: 0.8125rem; }
 
-  .hero-postcard__orb--2 { display: none; }
-
-  /* Hide all remaining orbs on small phones — filter:blur() is too expensive */
-  .hero-postcard__orb { display: none; }
+  /* All orbs already hidden at ≤960px — no redundant rules needed */
 
   /* Destinations strip — tighter */
   .hero__destinations-strip {
@@ -1332,7 +1328,7 @@
   position: absolute;
   inset-block: 0;
   left: 0;
-  width: 0%;
+  width: 0;
   background: linear-gradient(90deg, var(--accent) 0%, rgba(255,220,100,0.95) 50%, var(--accent) 100%);
   background-size: 200% 100%;
   border-radius: 2px;
@@ -1459,7 +1455,7 @@
   display: flex;
   flex-direction: column;
   color: #fff;
-  font-family: var(--font-body);
+  font-family: var(--font-body), sans-serif;
   overflow: hidden;
   padding: 44px 14px 8px;
   opacity: 0;
@@ -1889,7 +1885,6 @@
 
 .dest-grid-card:hover img { transform: scale(1.08); }
 
-.dest-grid-card:hover 
 
 /* Reusable section bottom CTA/action row */
 .section-action {
@@ -2474,13 +2469,8 @@
 
 /* ── Phones / small tablets ── */
 @media (max-width: 768px) {
-  /* Drop 2 of 4 blur-heavy orbs on phones — filter:blur() is expensive on mobile GPUs */
-  .hero-postcard__orb--3,
-  .hero-postcard__orb--4 { display: none; }
-  .hero-postcard__orb--1,
-  .hero-postcard__orb--2 { filter: blur(40px); }
-
-  /* Replace expensive dual drop-shadow filter with single simpler one on mobile */
+  /* All orbs already hidden at ≤960px — no need to repeat.
+     Replace expensive dual drop-shadow filter with single simpler one on mobile */
   .iphone-mockup {
     filter: drop-shadow(0 12px 32px rgba(0,0,0,0.5));
   }

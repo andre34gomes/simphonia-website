@@ -20,7 +20,7 @@
         <div class="timeline__track" aria-hidden="true"></div>
         <div class="timeline__step timeline__step--left">
           <div class="timeline__card">
-            <div class="timeline__card-img"><img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=800" alt="Browsing destination plans" data-i18n-alt="imgAlt.browsingPlans" width="800" height="533" loading="lazy" decoding="async"></div>
+            <div class="timeline__card-img"><img src="https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80&w=800" alt="Browsing destination plans" data-i18n-alt="imgAlt.browsingPlans" width="800" height="533" loading="eager" decoding="async" fetchpriority="high"></div>
             <div class="timeline__card-body">
               <span class="label" data-i18n="howItWorks.steps.step1Label">Step 1</span>
               <h3 data-i18n="howItWorks.steps.step1Title">Choose Your Destination</h3>
@@ -73,10 +73,10 @@
     </div>
   </section>
 
-  <section class="section cta-section">
+  <section class="section cta-section" aria-labelledby="hiw-cta-heading">
     <div class="cta-section__bg" aria-hidden="true"></div>
     <div class="container rel-z1"><div class="reveal text-center">
-      <h2 data-i18n="howItWorks.cta.heading">Ready to Get Started?</h2>
+      <h2 id="hiw-cta-heading" data-i18n="howItWorks.cta.heading">Ready to Get Started?</h2>
       <p data-i18n="howItWorks.cta.desc">Explore our destinations and find the perfect eSIM plan for your next trip.</p>
       <div class="flex flex-center gap-md mt-2xl">
         <a href="/destinations/" class="btn btn--primary btn--lg" data-i18n="howItWorks.cta.browseDestinations">🌍 Browse Destinations</a>

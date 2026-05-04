@@ -184,11 +184,11 @@ function renderGrid(items) {
     card.setAttribute('role', 'article');
     var safeName = esc(name);
     card.setAttribute('aria-label', name);
-    card.style.animationDelay = Math.min(i, 12) * 40 + 'ms';
+    card.style.setProperty('animation-delay', Math.min(i, 8) * 35 + 'ms');
     card.innerHTML =
       '<div class="dest-card__img-wrap">' +
       (img
-        ? '<img src="' + esc(img) + '" alt="' + safeName + '" class="dest-card__img" width="400" height="180" loading="lazy" decoding="async">'
+        ? '<img src="' + esc(img) + '" alt="' + safeName + '" class="dest-card__img" width="400" height="180"' + (i < 6 ? ' loading="eager" fetchpriority="high"' : ' loading="lazy"') + ' decoding="async">'
         : '<div class="dest-card__img" style="background:linear-gradient(135deg,var(--bg-elevated),var(--border-subtle));" aria-hidden="true"></div>') +
       (d.discount ? '<span class="dest-card__discount">-' + parseInt(d.discount, 10) + '%</span>' : '') +
       '</div>' +
@@ -384,13 +384,25 @@ document.addEventListener('simphonia:langchange', function () {
 var _initialized = false;
 
 window.initDestinationsPage = function () {
-  if (_initialized) return;
+  resolveRefs();
+
+  // If refs point to new DOM (SPA re-navigation), allow re-init
+  if (_initialized && grid && grid.childElementCount > 0) return;
   _initialized = true;
 
-  resolveRefs();
+  // Reset stale state from a previous navigation
+  allCountries = [];
+  displayedCountries = [];
+  activeRegionCode = null;
+
   bindEvents();
   buildRegionTabs();
   loadAllCountries();
+};
+
+// Allow SPA router to tear down state on navigation away
+window.teardownDestinationsPage = function () {
+  _initialized = false;
 };
 
 }()); // end IIFE

@@ -107,6 +107,7 @@
   border: 1px solid var(--border-default);
   border-radius: var(--radius-lg);
   overflow: hidden;
+  contain: content;
   transition: border-color var(--duration-normal) var(--ease-out),
               box-shadow    var(--duration-normal) var(--ease-out);
 }
@@ -239,5 +240,11 @@
 
   .timeline__card-img { aspect-ratio: 16 / 9; }
   .timeline__card-body { padding: 1.25rem 1.375rem 1.375rem; }
+}
+
+/* ── Reduced motion ── */
+@media (prefers-reduced-motion: reduce) {
+  .timeline__node-ring { animation: none; }
+  .timeline__card-img img { transition: none; }
 }
 
