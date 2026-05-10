@@ -41,6 +41,10 @@
       })
       .then(function (doc) {
         renderDocument(doc, container, tocNav, heroDate, heroLabel, heroH1, heroH2);
+        // Initialize TOC scroll-spy after content is rendered
+        if (typeof window.initLegalToc === 'function') {
+          window.initLegalToc();
+        }
       })
       .catch(function (err) {
         console.warn('[legal] Failed to load ' + type + ' from API:', err.message);

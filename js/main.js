@@ -597,6 +597,7 @@ function initLegalToc() {
   update();
   return window.__simphoniaLegalTocCleanup;
 }
+window.initLegalToc = initLegalToc;
 
 // ============================================================
 // Custom Cursor
