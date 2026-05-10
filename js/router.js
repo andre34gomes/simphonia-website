@@ -13,6 +13,9 @@
 
 (function () {
   /* ── Route definitions ─────────────────────────────────────── */
+  /** Timeout (ms) for fetching page partials via the router. */
+  var PAGE_FETCH_TIMEOUT_MS = 8000;
+
   // Trailing-slash variants are intentionally omitted — resolveRoute()
   // normalises any path before lookup, so a single entry per route suffices.
   var ROUTES = {
@@ -85,6 +88,28 @@
     return typeof value === 'string' ? value : '';
   }
 
+  /**
+   * Announces a route change to assistive technology via an aria-live region.
+   * Creates the live region on first use (hidden, polite).
+   */
+  function announceRouteChange(pageTitle) {
+    var liveRegion = document.getElementById('route-announcer');
+    if (!liveRegion) {
+      liveRegion = document.createElement('div');
+      liveRegion.id = 'route-announcer';
+      liveRegion.setAttribute('role', 'status');
+      liveRegion.setAttribute('aria-live', 'polite');
+      liveRegion.setAttribute('aria-atomic', 'true');
+      liveRegion.style.cssText = 'position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;';
+      document.body.appendChild(liveRegion);
+    }
+    // Clear then set to ensure the announcement fires even if text is similar
+    liveRegion.textContent = '';
+    setTimeout(function () {
+      liveRegion.textContent = pageTitle ? 'Navigated to ' + pageTitle : 'Page changed';
+    }, 100);
+  }
+
   function getPagePartialCandidates(pageName) {
     var entry = PAGE_PARTIALS[pageName];
     if (!entry) return [];
@@ -93,7 +118,7 @@
 
   function fetchPagePartial(url) {
     var controller = new AbortController();
-    var timeoutId = setTimeout(function () { controller.abort(); }, 8000);
+    var timeoutId = setTimeout(function () { controller.abort(); }, PAGE_FETCH_TIMEOUT_MS);
 
     return fetch(url, { credentials: 'same-origin', signal: controller.signal })
       .then(function (res) {
@@ -353,6 +378,13 @@
 
         // Update nav active state
         setActiveNav(pageName);
+
+        // Accessibility: move focus to main content for screen readers
+        if (target) {
+          target.setAttribute('tabindex', '-1');
+          target.focus({ preventScroll: true });
+        }
+        announceRouteChange(resolvedTitle || pageName);
 
         // Scroll to top
         window.scrollTo(0, 0);

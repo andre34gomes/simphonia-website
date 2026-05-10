@@ -10,7 +10,7 @@
  * or routing changes that should invalidate cached HTML behavior.
  */
 
-const CACHE_VERSION = 'simphonia-v15';
+const CACHE_VERSION = 'simphonia-v17';
 
 // Core shell assets cached on install.
 // The SPA still powers in-app navigation, but direct loads for known clean URLs
@@ -26,7 +26,7 @@ const PRECACHE_URLS = [
   '/css/about.css?v=20260403',
   '/css/destinations.css?v=20260403',
   '/css/how-it-works.css?v=20260403',
-  '/css/legal.css?v=20260403',
+  '/css/legal.css?v=20260504',
   '/css/support.css?v=20260403',
   '/js/animations-core.js?v=20260402',
   '/js/animations-home.js?v=20260402',
@@ -39,7 +39,12 @@ const PRECACHE_URLS = [
   '/js/not-found-page.js?v=20260403',
   '/js/router.js?v=20260403c',
   '/js/support.js?v=20260402',
+  '/js/legal.js?v=20260504',
   '/js/theme-init.js',
+  '/js/spa-mode.js',
+  '/js/preload-partial.js',
+  '/js/sw-register.js',
+  '/js/404-animations.js',
   '/js/components/layout.js?v=20260402',
   '/assets/apple.svg',
   '/assets/apple-touch-icon.png',
@@ -47,7 +52,6 @@ const PRECACHE_URLS = [
   '/assets/google.svg',
   '/assets/icon-192.png',
   '/assets/icon-512.png',
-  '/assets/iphone-frame.svg',
   '/assets/logo-mark.svg',
   '/assets/og-image.png',
   '/manifest.json',

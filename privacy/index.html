@@ -8,11 +8,11 @@
   <meta name="theme-color" content="#121212">
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
-    script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
+    script-src 'self' https://cdnjs.cloudflare.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     font-src 'self' https://fonts.gstatic.com;
-    img-src 'self' https://images.unsplash.com https://api.simphonia.pt http://localhost:* https://flagcdn.com data: blob:;
-    connect-src 'self' https://api.simphonia.pt http://localhost:*;
+    img-src 'self' https://images.unsplash.com https://api.simphonia.pt https://flagcdn.com data: blob:;
+    connect-src 'self' https://api.simphonia.pt;
     base-uri 'self'; form-action 'self'; upgrade-insecure-requests;
   ">
   <link id="canonical-url" rel="canonical" href="https://simphonia.pt/">
@@ -84,32 +84,11 @@
   </script>
 
   <!-- SPA mode flag: tells layout.js to always use absolute paths -->
-  <script>window.__SPA_MODE = true;</script>
+  <script src="/js/spa-mode.js"></script>
   <!-- Theme init: synchronous to prevent FOUC -->
   <script src="/js/theme-init.js"></script>
   <!-- Preload the page partial for the current URL so it's in-cache when the router runs -->
-  <script>
-    (function () {
-      var map = {
-        '/':             '/pages/home',
-        '/destinations': '/pages/destinations',
-        '/how-it-works': '/pages/how-it-works',
-        '/support':      '/pages/support',
-        '/about':        '/pages/about',
-        '/privacy':      '/pages/privacy',
-        '/terms':        '/pages/terms',
-        '/not-found':    '/pages/not-found',
-      };
-      var path = window.location.pathname.split('#')[0].replace(/\/+$/, '') || '/';
-      var url  = map[path] || '/pages/not-found';
-      var link = document.createElement('link');
-      link.rel  = 'preload';
-      link.as   = 'fetch';
-      link.href = url;
-      link.crossOrigin = 'same-origin';
-      document.head.appendChild(link);
-    }());
-  </script>
+  <script src="/js/preload-partial.js"></script>
 </head>
 <body>
   <!-- Skip-link -->
@@ -174,13 +153,7 @@
   <script defer src="/js/support.js?v=20260402"></script>
   <script defer src="/js/legal.js?v=20260504"></script>
   <!-- PWA Service Worker registration -->
-  <script>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', function () {
-        navigator.serviceWorker.register('/sw.js').catch(function () {});
-      });
-    }
-  </script>
+  <script src="/js/sw-register.js"></script>
 
 </body>
 </html>

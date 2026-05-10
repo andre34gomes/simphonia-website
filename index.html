@@ -11,8 +11,6 @@
     script-src 'self' https://cdnjs.cloudflare.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     font-src 'self' https://fonts.gstatic.com;
-    img-src 'self' https://images.unsplash.com https://api.simphonia.pt http://localhost:* https://flagcdn.com data: blob:;
-    connect-src 'self' https://api.simphonia.pt http://localhost:*;
     frame-ancestors 'none';
     base-uri 'self'; form-action 'self'; upgrade-insecure-requests;
   ">
@@ -60,6 +58,52 @@
   <meta id="twitter-description" name="twitter:description" content="Instant eSIM activation for 200+ countries. No roaming fees, no SIM swaps, no contracts. Stay connected wherever you go with Simphonia." data-i18n-content="page.descriptions.home">
   <meta name="twitter:image" content="https://simphonia.pt/assets/og-image.png">
 
+  <!-- Structured Data (JSON-LD) — Organization + SoftwareApplication for rich results -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Organization",
+        "name": "Simphonia",
+        "url": "https://simphonia.pt",
+        "logo": "https://simphonia.pt/assets/og-image.png",
+        "description": "Instant eSIM activation for 200+ countries. No roaming fees, no SIM swaps, no contracts.",
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "contactType": "customer support",
+          "email": "support@simphonia.pt",
+          "url": "https://simphonia.pt/support/"
+        }
+      },
+      {
+        "@type": "SoftwareApplication",
+        "name": "Simphonia",
+        "operatingSystem": "Android",
+        "applicationCategory": "TravelApplication",
+        "description": "Instant eSIM activation for 200+ countries. No roaming fees, no SIM swaps, no contracts. Stay connected wherever you go.",
+        "url": "https://simphonia.pt",
+        "installUrl": "https://play.google.com/store/apps/details?id=com.simphonia.app",
+        "offers": {
+          "@type": "Offer",
+          "price": "0",
+          "priceCurrency": "USD"
+        }
+      },
+      {
+        "@type": "WebSite",
+        "name": "Simphonia",
+        "url": "https://simphonia.pt",
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": "https://simphonia.pt/destinations/?q={search_term_string}",
+          "query-input": "required name=search_term_string"
+        }
+      }
+    ]
+  }
+  </script>
+
   <!-- Preconnects & DNS hints -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -93,7 +137,7 @@
   <link rel="stylesheet" href="/css/destinations.css?v=20260403">
   <link rel="stylesheet" href="/css/how-it-works.css?v=20260403">
   <link rel="stylesheet" href="/css/support.css?v=20260403">
-  <link rel="stylesheet" href="/css/legal.css?v=20260403">
+  <link rel="stylesheet" href="/css/legal.css?v=20260504">
   <link rel="stylesheet" href="/css/404.css?v=20260403">
 
   <!-- Structured Data -->
@@ -108,11 +152,11 @@
   </script>
 
   <!-- SPA mode flag: tells layout.js to always use absolute paths -->
-  <script src="/js/spa-init.js"></script>
+  <script src="/js/spa-mode.js"></script>
   <!-- Theme init: synchronous to prevent FOUC -->
   <script src="/js/theme-init.js"></script>
   <!-- Preload the page partial for the current URL so it's in-cache when the router runs -->
-  <script src="/js/page-preloader.js"></script>
+  <script src="/js/preload-partial.js"></script>
 </head>
 <body>
   <!-- Skip-link -->
@@ -189,7 +233,7 @@
   <script defer src="/js/main.js?v=20260402"></script>
   <script defer src="/js/destinations-page.js?v=20260402"></script>
   <script defer src="/js/support.js?v=20260402"></script>
-  <script defer src="/js/legal.js?v=20260503"></script>
+  <script defer src="/js/legal.js?v=20260504"></script>
   <!-- PWA Service Worker registration -->
   <script defer src="/js/sw-register.js"></script>
 

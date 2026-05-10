@@ -1,9 +1,5 @@
-/**
- * Simphonia — Page Preloader
- *
- * Inserts a <link rel="preload"> for the current URL's page partial so the
- * HTML is already in the browser cache when the SPA router executes.
- */
+// Preloads the page partial for the current URL so it's in-cache when the router runs.
+// Must be loaded synchronously (no defer/async) for early preload injection.
 (function () {
   var map = {
     '/':             '/pages/home',
