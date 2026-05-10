@@ -8,10 +8,11 @@
   <meta name="theme-color" content="#121212">
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
-    script-src 'self' https://cdnjs.cloudflare.com;
+    script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     font-src 'self' https://fonts.gstatic.com;
-    frame-ancestors 'none';
+    img-src 'self' data:;
+    connect-src 'self' https://api.simphonia.pt;
     base-uri 'self'; form-action 'self'; upgrade-insecure-requests;
   ">
   <link id="canonical-url" rel="canonical" href="https://simphonia.pt/">
@@ -43,7 +44,7 @@
   <link rel="mask-icon" href="/assets/favicon.svg" color="#D4AF37">
   <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
   <link rel="manifest" href="/manifest.json">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Simphonia">
 
