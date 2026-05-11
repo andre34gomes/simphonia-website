@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Join Simphonia — Get a Discount on Your First eSIM</title>
+  <meta name="description" content="A friend invited you to try Simphonia! Download the app and get a discount on your first eSIM purchase.">
+  <meta name="robots" content="noindex, follow">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #121212 0%, #0D0D0D 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+    }
+    .container { text-align: center; padding: 40px 24px; max-width: 440px; }
+    .logo { font-size: 13px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #D4AF37; margin-bottom: 32px; }
+    .icon { font-size: 48px; margin-bottom: 20px; }
+    h1 { font-size: 28px; font-weight: 800; letter-spacing: -0.03em; margin-bottom: 12px; line-height: 1.2; }
+    .subtitle { font-size: 16px; color: rgba(255,255,255,0.7); line-height: 1.7; margin-bottom: 28px; }
+    .code-box {
+      display: none;
+      background: rgba(212,175,55,0.10);
+      border: 1px solid rgba(212,175,55,0.25);
+      border-radius: 12px;
+      padding: 12px 24px;
+      margin-bottom: 28px;
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.06em;
+      color: #D4AF37;
+    }
+    .store-links { display: none; margin-top: 16px; }
+    .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #D4AF37 0%, #C5A028 100%);
+      color: #0D0D0D;
+      padding: 14px 36px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin: 8px;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn-secondary {
+      background: transparent;
+      border: 2px solid rgba(255,255,255,0.2);
+      color: #FFFFFF;
+    }
+    .btn-secondary:hover { border-color: rgba(255,255,255,0.4); }
+    .qr-section {
+      display: none;
+      margin-top: 28px;
+      padding: 24px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+    }
+    .qr-section img { border-radius: 8px; margin-bottom: 12px; }
+    .qr-label { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.5; }
+    .mobile-fallback { display: none; margin-top: 20px; }
+    .mobile-fallback p { color: rgba(255,255,255,0.6); font-size: 14px; margin-bottom: 16px; }
+    .footer-text { margin-top: 40px; font-size: 12px; color: rgba(255,255,255,0.3); }
+  </style>
+  <script>
+    (function() {
+      var params = new URLSearchParams(window.location.search);
+      var code = params.get('code') || '';
+      // Security: validate code format (alphanumeric, max 32 chars)
+      if (!code || code.length > 32 || !/^[a-zA-Z0-9_-]+$/.test(code)) return;
+
+      var ua = navigator.userAgent || '';
+      var isMobile = /android|iphone|ipad|ipod/i.test(ua);
+
+      // On mobile, try to open the app directly via custom scheme
+      if (isMobile) {
+        window.location.href = 'simphonia://app/join?code=' + encodeURIComponent(code);
+      }
+    })();
+  </script>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">Simphonia</div>
+    <div class="icon">🎁</div>
+    <h1>You've Been Invited!</h1>
+    <p class="subtitle">
+      A friend shared their referral code with you. Download the Simphonia app
+      and the discount will be applied automatically at checkout.
+    </p>
+    <div class="code-box" id="referral-code"></div>
+
+    <!-- Mobile fallback: shown when app is not installed -->
+    <div class="mobile-fallback" id="mobile-fallback">
+      <p>Download Simphonia to claim your discount:</p>
+      <a id="store-btn" href="#" class="btn">Download App</a>
+    </div>
+
+    <!-- Desktop: QR code so user can scan with phone -->
+    <div class="qr-section" id="qr-section">
+      <img id="qr-code" alt="Scan to open in app" width="160" height="160">
+      <p class="qr-label">Scan with your phone camera to open in the app</p>
+    </div>
+
+    <!-- Desktop: both store links -->
+    <div class="store-links" id="desktop-stores">
+      <a href="https://play.google.com/store/apps/details?id=com.simphonia.app" class="btn">
+        Google Play
+      </a>
+      <a href="https://apps.apple.com/app/simphonia/id6740088498" class="btn btn-secondary">
+        App Store
+      </a>
+    </div>
+
+    <p class="footer-text">&copy; 2026 Simphonia. All rights reserved.</p>
+  </div>
+
+  <script>
+    (function() {
+      var params = new URLSearchParams(window.location.search);
+      var code = params.get('code') || '';
+
+      // Show referral code if present
+      var codeEl = document.getElementById('referral-code');
+      if (code) {
+        codeEl.textContent = code;
+        codeEl.style.display = 'inline-block';
+      }
+
+      var ua = navigator.userAgent || '';
+      var isMobile = /android|iphone|ipad|ipod/i.test(ua);
+      var isIOS = /iphone|ipad|ipod/i.test(ua);
+
+      if (isMobile) {
+        // After 1.5s, if still on page, app is not installed — show store link
+        setTimeout(function() {
+          var fallback = document.getElementById('mobile-fallback');
+          var storeBtn = document.getElementById('store-btn');
+          fallback.style.display = 'block';
+          if (isIOS) {
+            storeBtn.href = 'https://apps.apple.com/app/simphonia/id6740088498';
+            storeBtn.textContent = 'Download on App Store';
+          } else {
+            storeBtn.href = 'https://play.google.com/store/apps/details?id=com.simphonia.app';
+            storeBtn.textContent = 'Get it on Google Play';
+          }
+        }, 1500);
+      } else if (code) {
+        // Desktop: show QR code and store links
+        var joinUrl = 'https://simphonia.pt/join?code=' + encodeURIComponent(code);
+        var qrImg = document.getElementById('qr-code');
+        qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=160x160&data='
+          + encodeURIComponent(joinUrl) + '&format=png&margin=8';
+        document.getElementById('qr-section').style.display = 'block';
+        document.getElementById('desktop-stores').style.display = 'block';
+      }
+    })();
+  </script>
+</body>
+</html>
