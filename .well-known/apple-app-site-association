@@ -3,7 +3,7 @@
     "apps": [],
     "details": [
       {
-        "appID": "TEAM_ID.com.kawal.travel",
+        "appID": "$(APPLE_TEAM_ID).com.simphonia.app",
         "paths": [
           "/join",
           "/join?*",

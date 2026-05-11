@@ -26,7 +26,10 @@
     '/about':        { page: 'about',        titleKey: 'page.titles.about',        descriptionKey: 'page.descriptions.about' },
     '/privacy':      { page: 'privacy',      titleKey: 'page.titles.privacy',      descriptionKey: 'page.descriptions.privacy' },
     '/terms':        { page: 'terms',        titleKey: 'page.titles.terms',        descriptionKey: 'page.descriptions.terms' },
-    '/join':         { page: 'join',         titleKey: 'page.titles.join',         descriptionKey: 'page.descriptions.join', robots: 'noindex, follow' },
+    '/join':            { page: 'join',            titleKey: 'page.titles.join',           descriptionKey: 'page.descriptions.join', robots: 'noindex, follow' },
+    '/verify-email':    { page: 'verify-email',    titleKey: 'page.titles.verifyEmail',    descriptionKey: 'page.descriptions.verifyEmail', robots: 'noindex, nofollow' },
+    '/reset-password':  { page: 'reset-password',  titleKey: 'page.titles.resetPassword',  descriptionKey: 'page.descriptions.resetPassword', robots: 'noindex, nofollow' },
+    '/open-in-app':     { page: 'open-in-app',     titleKey: 'page.titles.openInApp',      descriptionKey: 'page.descriptions.openInApp', robots: 'noindex, nofollow' },
   };
 
   var NOT_FOUND_ROUTE = {
@@ -45,8 +48,11 @@
     'about':        ['/pages/about', '/pages/about.html'],
     'privacy':      ['/pages/privacy', '/pages/privacy.html'],
     'terms':        ['/pages/terms', '/pages/terms.html'],
-    'join':         ['/pages/join', '/pages/join.html'],
-    'not-found':    ['/pages/not-found', '/pages/not-found.html'],
+    'join':           ['/pages/join', '/pages/join.html'],
+    'verify-email':   ['/pages/verify-email', '/pages/verify-email.html'],
+    'reset-password': ['/pages/reset-password', '/pages/reset-password.html'],
+    'open-in-app':    ['/pages/open-in-app', '/pages/open-in-app.html'],
+    'not-found':      ['/pages/not-found', '/pages/not-found.html'],
   };
 
   /* Nav link mapping: page name → nav href for active state */

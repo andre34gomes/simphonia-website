@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Open in App — Simphonia</title>
+  <meta name="description" content="This link needs to be opened in the Simphonia mobile app.">
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #121212 0%, #0D0D0D 100%);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+    }
+    .container { text-align: center; padding: 40px 24px; max-width: 480px; }
+    .logo { font-size: 13px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #D4AF37; margin-bottom: 32px; }
+    .icon { font-size: 48px; margin-bottom: 20px; }
+    h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; line-height: 1.2; }
+    .subtitle { font-size: 16px; color: rgba(255,255,255,0.65); line-height: 1.7; margin-bottom: 32px; }
+    .action-label {
+      display: inline-block;
+      background: rgba(212,175,55,0.10);
+      border: 1px solid rgba(212,175,55,0.25);
+      border-radius: 10px;
+      padding: 10px 20px;
+      margin-bottom: 28px;
+      font-size: 14px;
+      font-weight: 600;
+      color: #D4AF37;
+      letter-spacing: 0.02em;
+    }
+    .store-links { margin-top: 16px; }
+    .btn {
+      display: inline-block;
+      background: linear-gradient(135deg, #D4AF37 0%, #C5A028 100%);
+      color: #0D0D0D;
+      padding: 14px 36px;
+      border-radius: 50px;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin: 8px;
+      transition: opacity 0.2s;
+    }
+    .btn:hover { opacity: 0.9; }
+    .btn-secondary {
+      background: transparent;
+      border: 2px solid rgba(255,255,255,0.2);
+      color: #FFFFFF;
+    }
+    .btn-secondary:hover { border-color: rgba(255,255,255,0.4); }
+    .qr-section {
+      margin-top: 32px;
+      padding: 24px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 16px;
+    }
+    .qr-section canvas { border-radius: 8px; margin-bottom: 12px; }
+    .qr-label { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.5; }
+    .instructions {
+      margin-top: 28px;
+      padding: 20px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      text-align: left;
+    }
+    .instructions h3 {
+      font-size: 13px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.5);
+      margin-bottom: 12px;
+    }
+    .instructions ol {
+      padding-left: 20px;
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+      line-height: 1.8;
+    }
+    .footer-text { margin-top: 40px; font-size: 12px; color: rgba(255,255,255,0.3); }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo">Simphonia</div>
+    <div class="icon">📱</div>
+    <h1>Open This Link on Your Phone</h1>
+    <p class="subtitle">
+      This action needs to be completed in the Simphonia mobile app.
+      Scan the QR code below with your phone, or download the app from the store.
+    </p>
+    <div class="action-label" id="action-label" style="display:none;"></div>
+    <div class="qr-section">
+      <canvas id="qr-canvas" width="180" height="180"></canvas>
+      <p class="qr-label">Scan with your phone camera to continue</p>
+    </div>
+    <div class="store-links">
+      <a href="https://play.google.com/store/apps/details?id=com.simphonia.app" class="btn">
+        Google Play
+      </a>
+      <a href="https://apps.apple.com/app/simphonia/id6740088498" class="btn btn-secondary">
+        App Store
+      </a>
+    </div>
+    <div class="instructions">
+      <h3>How to continue</h3>
+      <ol>
+        <li>Download Simphonia on your phone</li>
+        <li>Scan the QR code above with your camera</li>
+        <li>The app will handle the action automatically</li>
+      </ol>
+    </div>
+    <p class="footer-text">&copy; 2026 Simphonia. All rights reserved.</p>
+  </div>
+  <script>
+    (function() {
+      var params = new URLSearchParams(window.location.search);
+      var action = params.get('action') || '';
+      var code = params.get('code') || '';
+
+      // Show action label
+      var labelEl = document.getElementById('action-label');
+      var labels = {
+        'verify-email': 'Email Verification',
+        'reset-password': 'Password Reset',
+        'join': 'Referral Invitation'
+      };
+      if (labels[action]) {
+        labelEl.textContent = labels[action];
+        labelEl.style.display = 'inline-block';
+      }
+
+      // Build the deep link URL for the QR code
+      var deepLink = '';
+      if (action === 'join' && code) {
+        deepLink = 'https://simphonia.pt/join?code=' + encodeURIComponent(code);
+      } else if (action === 'verify-email') {
+        deepLink = 'https://simphonia.pt/verify-email';
+      } else if (action === 'reset-password') {
+        deepLink = 'https://simphonia.pt/reset-password';
+      } else {
+        deepLink = 'https://simphonia.pt';
+      }
+
+      // Minimal QR Code generator (QR Code Model 2, alphanumeric/byte mode)
+      // Based on the public domain qr-creator-es6 algorithm
+      generateQR(deepLink);
+
+      function generateQR(text) {
+        var canvas = document.getElementById('qr-canvas');
+        if (!canvas || !canvas.getContext) return;
+        // Use an image from QR code API as fallback-free approach
+        var img = new Image();
+        img.crossOrigin = 'anonymous';
+        img.onload = function() {
+          var ctx = canvas.getContext('2d');
+          ctx.fillStyle = '#FFFFFF';
+          ctx.fillRect(0, 0, 180, 180);
+          ctx.drawImage(img, 0, 0, 180, 180);
+        };
+        // Use qrserver.com free API (no deprecation, no key needed)
+        img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data='
+          + encodeURIComponent(text) + '&format=png&margin=8';
+      }
+    })();
+  </script>
+</body>
+</html>
+
