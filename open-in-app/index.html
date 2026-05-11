@@ -1,179 +1,161 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Open in App — Simphonia</title>
-  <meta name="description" content="This link needs to be opened in the Simphonia mobile app.">
-  <meta name="robots" content="noindex, nofollow">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title data-i18n="page.titles.home">Simphonia — Stay Connected, Wherever You Go.</title>
+  <meta id="meta-description" name="description" content="Instant eSIM activation for 200+ countries. No roaming fees, no SIM swaps, no contracts. Stay connected wherever you go with Simphonia." data-i18n-content="page.descriptions.home">
+  <meta name="theme-color" content="#121212">
+  <meta http-equiv="Content-Security-Policy" content="
+    default-src 'self';
+    script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+    font-src 'self' https://fonts.gstatic.com;
+    img-src 'self' https://images.unsplash.com https://api.simphonia.pt https://flagcdn.com data: blob:;
+    connect-src 'self' https://api.simphonia.pt;
+    base-uri 'self'; form-action 'self'; upgrade-insecure-requests;
+  ">
+  <link id="canonical-url" rel="canonical" href="https://simphonia.pt/">
+  <link rel="alternate" hreflang="en" href="https://simphonia.pt/">
+  <meta id="meta-robots" name="robots" content="index, follow">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="shortcut icon" href="/assets/favicon.svg">
+  <link rel="mask-icon" href="/assets/favicon.svg" color="#D4AF37">
+  <link rel="apple-touch-icon" sizes="180x180" href="/assets/apple-touch-icon.png">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Simphonia">
+
+  <!-- Open Graph -->
+  <meta id="og-title" property="og:title" content="Simphonia — Stay Connected, Wherever You Go" data-i18n-content="page.titles.home">
+  <meta id="og-description" property="og:description" content="Instant eSIM activation for 200+ countries. No roaming fees, no SIM swaps, no contracts. Stay connected wherever you go with Simphonia." data-i18n-content="page.descriptions.home">
+  <meta property="og:type" content="website">
+  <meta id="og-url" property="og:url" content="https://simphonia.pt/">
+  <meta property="og:image" content="https://simphonia.pt/assets/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta id="twitter-title" name="twitter:title" content="Simphonia — Stay Connected, Wherever You Go" data-i18n-content="page.titles.home">
+  <meta id="twitter-description" name="twitter:description" content="Instant eSIM activation for 200+ countries. No roaming fees, no SIM swaps, no contracts. Stay connected wherever you go with Simphonia." data-i18n-content="page.descriptions.home">
+  <meta name="twitter:image" content="https://simphonia.pt/assets/og-image.png">
+
+  <!-- Preconnects & DNS hints -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://api.simphonia.pt" crossorigin>
+  <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
+  <link rel="dns-prefetch" href="https://flagcdn.com">
+  <link rel="preload" href="/assets/logo-mark.svg" as="image" type="image/svg+xml">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Pacifico&display=swap">
+
+  <!-- Critical CSS: above-the-fold rules inlined for fast first paint -->
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
-    body {
-      font-family: Inter, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: linear-gradient(135deg, #121212 0%, #0D0D0D 100%);
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #FFFFFF;
-    }
-    .container { text-align: center; padding: 40px 24px; max-width: 480px; }
-    .logo { font-size: 13px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: #D4AF37; margin-bottom: 32px; }
-    .icon { font-size: 48px; margin-bottom: 20px; }
-    h1 { font-size: 26px; font-weight: 800; letter-spacing: -0.02em; margin-bottom: 12px; line-height: 1.2; }
-    .subtitle { font-size: 16px; color: rgba(255,255,255,0.65); line-height: 1.7; margin-bottom: 32px; }
-    .action-label {
-      display: inline-block;
-      background: rgba(212,175,55,0.10);
-      border: 1px solid rgba(212,175,55,0.25);
-      border-radius: 10px;
-      padding: 10px 20px;
-      margin-bottom: 28px;
-      font-size: 14px;
-      font-weight: 600;
-      color: #D4AF37;
-      letter-spacing: 0.02em;
-    }
-    .store-links { margin-top: 16px; }
-    .btn {
-      display: inline-block;
-      background: linear-gradient(135deg, #D4AF37 0%, #C5A028 100%);
-      color: #0D0D0D;
-      padding: 14px 36px;
-      border-radius: 50px;
-      text-decoration: none;
-      font-weight: 700;
-      font-size: 14px;
-      letter-spacing: 0.04em;
-      text-transform: uppercase;
-      margin: 8px;
-      transition: opacity 0.2s;
-    }
-    .btn:hover { opacity: 0.9; }
-    .btn-secondary {
-      background: transparent;
-      border: 2px solid rgba(255,255,255,0.2);
-      color: #FFFFFF;
-    }
-    .btn-secondary:hover { border-color: rgba(255,255,255,0.4); }
-    .qr-section {
-      margin-top: 32px;
-      padding: 24px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 16px;
-    }
-    .qr-section canvas { border-radius: 8px; margin-bottom: 12px; }
-    .qr-label { font-size: 13px; color: rgba(255,255,255,0.45); line-height: 1.5; }
-    .instructions {
-      margin-top: 28px;
-      padding: 20px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.06);
-      border-radius: 12px;
-      text-align: left;
-    }
-    .instructions h3 {
-      font-size: 13px;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: rgba(255,255,255,0.5);
-      margin-bottom: 12px;
-    }
-    .instructions ol {
-      padding-left: 20px;
-      font-size: 14px;
-      color: rgba(255,255,255,0.7);
-      line-height: 1.8;
-    }
-    .footer-text { margin-top: 40px; font-size: 12px; color: rgba(255,255,255,0.3); }
+    *,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+    :root{--accent:#D4AF37;--bg-primary:#121212;--text-primary:#FFFFFF;--font-body:'Inter',system-ui,-apple-system,sans-serif;--nav-height:72px}
+    [data-theme="light"]{--bg-primary:#FEF9EE;--text-primary:#1C1814}
+    @media(prefers-color-scheme:light){html:not([data-theme]){--bg-primary:#FEF9EE;--text-primary:#1C1814}}
+    html{-webkit-text-size-adjust:100%}
+    body{background-color:var(--bg-primary);color:var(--text-primary);font-family:var(--font-body);font-size:16px;line-height:1.6;overflow-x:clip;-webkit-font-smoothing:antialiased}
+    img{max-width:100%;height:auto;display:block}
+    a{text-decoration:none;color:inherit}
+    .container{max-width:1200px;margin:0 auto;padding:0 clamp(1rem,4vw,2.5rem)}
+    /* SPA: hide all page sections by default; router shows the active one */
+    [data-page]{display:none}
   </style>
+
+  <!-- All page stylesheets loaded upfront for instant SPA transitions -->
+  <link rel="stylesheet" href="/css/base.css?v=20260403b">
+  <link rel="stylesheet" href="/css/home.css?v=20260403b">
+  <link rel="stylesheet" href="/css/about.css?v=20260403">
+  <link rel="stylesheet" href="/css/destinations.css?v=20260403">
+  <link rel="stylesheet" href="/css/how-it-works.css?v=20260403">
+  <link rel="stylesheet" href="/css/support.css?v=20260403">
+  <link rel="stylesheet" href="/css/legal.css?v=20260504">
+  <link rel="stylesheet" href="/css/404.css?v=20260403">
+  <link rel="stylesheet" href="/css/deeplink.css?v=20260511">
+
+  <!-- Structured Data -->
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Organization","name":"Simphonia","url":"https://simphonia.pt","logo":"https://simphonia.pt/assets/icon-512.png","description":"Global eSIM service for travelers in 200+ countries","foundingDate":"2024","founder":{"@type":"Person","name":"André Gomes"},"sameAs":["https://instagram.com/simphonia.pt","https://x.com/simphonia","https://linkedin.com/company/simphonia"]}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"SoftwareApplication","name":"Simphonia eSIM","operatingSystem":"iOS, Android","applicationCategory":"TravelApplication","description":"Instant eSIM activation for 200+ countries. No roaming fees, no SIM swaps, no contracts.","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"installUrl":"https://apps.apple.com/app/simphonia","url":"https://simphonia.pt"}
+  </script>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I get started with Simphonia?","acceptedAnswer":{"@type":"Answer","text":"Download the Simphonia app, choose your destination, and purchase a plan. Your eSIM QR code is generated instantly."}},{"@type":"Question","name":"How do I install my eSIM after purchase?","acceptedAnswer":{"@type":"Answer","text":"After purchase, open Settings, go to Cellular or Mobile Data, tap Add eSIM, and scan the QR code shown in the Simphonia app."}},{"@type":"Question","name":"Do I need to remove my existing SIM card?","acceptedAnswer":{"@type":"Answer","text":"No. Your physical SIM card stays in your phone. The eSIM runs alongside it."}},{"@type":"Question","name":"How many countries does Simphonia cover?","acceptedAnswer":{"@type":"Answer","text":"Simphonia offers eSIM plans for 200+ countries and regions worldwide."}},{"@type":"Question","name":"What payment methods are accepted?","acceptedAnswer":{"@type":"Answer","text":"Simphonia accepts Apple Pay, Google Pay, and all major credit and debit cards."}}]}
+  </script>
+
+  <!-- SPA mode flag: tells layout.js to always use absolute paths -->
+  <script src="/js/spa-mode.js"></script>
+  <!-- Theme init: synchronous to prevent FOUC -->
+  <script src="/js/theme-init.js"></script>
+  <!-- Preload the page partial for the current URL so it's in-cache when the router runs -->
+  <script src="/js/preload-partial.js"></script>
 </head>
 <body>
-  <div class="container">
-    <div class="logo">Simphonia</div>
-    <div class="icon">📱</div>
-    <h1>Open This Link on Your Phone</h1>
-    <p class="subtitle">
-      This action needs to be completed in the Simphonia mobile app.
-      Scan the QR code below with your phone, or download the app from the store.
-    </p>
-    <div class="action-label" id="action-label" style="display:none;"></div>
-    <div class="qr-section">
-      <canvas id="qr-canvas" width="180" height="180"></canvas>
-      <p class="qr-label">Scan with your phone camera to continue</p>
-    </div>
-    <div class="store-links">
-      <a href="https://play.google.com/store/apps/details?id=com.simphonia.app" class="btn">
-        Google Play
+  <!-- Skip-link -->
+  <a href="#main-content" class="skip-link" data-i18n="nav.skipToMain">Skip to main content</a>
+
+  <!-- Static nav placeholder — enhanced by layout.js -->
+  <nav class="nav" id="navbar" role="navigation" aria-label="Main navigation" data-i18n-aria-label="accessibility.mainNavigation">
+    <div class="nav__inner">
+      <a href="/" class="nav__logo" aria-label="Simphonia Home" data-i18n-aria-label="nav.homeAriaLabel">
+        <span class="nav__logo-icon" aria-hidden="true"><img src="/assets/logo-mark.svg" class="nav__logo-icon-image" alt="" width="40" height="40" fetchpriority="high" decoding="sync"></span>
+        <span class="nav__logo-wordmark">Simphonia</span>
       </a>
-      <a href="https://apps.apple.com/app/simphonia/id6740088498" class="btn btn-secondary">
-        App Store
-      </a>
+      <div class="nav__links">
+        <a href="/destinations/" class="nav__link" data-i18n="nav.destinations">Destinations</a>
+        <a href="/how-it-works/" class="nav__link" data-i18n="nav.howItWorks">How It Works</a>
+        <a href="/support/" class="nav__link" data-i18n="nav.support">Support</a>
+        <a href="/about/" class="nav__link" data-i18n="nav.about">About</a>
+      </div>
+      <div class="nav__actions">
+        <a href="/#download" class="btn btn--primary btn--sm nav__download-btn">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span data-i18n="nav.downloadApp">Download App</span>
+        </a>
+        <div class="lang-picker">
+          <button class="lang-picker__btn" type="button" aria-label="Language" data-i18n-aria-label="lang.select" aria-expanded="false">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+          </button>
+        </div>
+        <button class="theme-toggle" aria-label="Toggle theme" data-i18n-aria-label="nav.toggleTheme">
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4.5"/><line x1="12" y1="2" x2="12" y2="4.5"/><line x1="12" y1="19.5" x2="12" y2="22"/><line x1="2" y1="12" x2="4.5" y2="12"/><line x1="19.5" y1="12" x2="22" y2="12"/><line x1="5.05" y1="5.05" x2="6.82" y2="6.82"/><line x1="17.18" y1="17.18" x2="18.95" y2="18.95"/><line x1="5.05" y1="18.95" x2="6.82" y2="17.18"/><line x1="17.18" y1="6.82" x2="18.95" y2="5.05"/></svg>
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3a7 7 0 0 0 9.79 9.79z"/></svg>
+        </button>
+        <button class="nav__hamburger" aria-label="Open menu" data-i18n-aria-label="nav.openMenu" aria-expanded="false">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
     </div>
-    <div class="instructions">
-      <h3>How to continue</h3>
-      <ol>
-        <li>Download Simphonia on your phone</li>
-        <li>Scan the QR code above with your camera</li>
-        <li>The app will handle the action automatically</li>
-      </ol>
-    </div>
-    <p class="footer-text">&copy; 2026 Simphonia. All rights reserved.</p>
-  </div>
-  <script>
-    (function() {
-      var params = new URLSearchParams(window.location.search);
-      var action = params.get('action') || '';
-      var code = params.get('code') || '';
+  </nav>
 
-      // Show action label
-      var labelEl = document.getElementById('action-label');
-      var labels = {
-        'verify-email': 'Email Verification',
-        'reset-password': 'Password Reset',
-        'join': 'Referral Invitation'
-      };
-      if (labels[action]) {
-        labelEl.textContent = labels[action];
-        labelEl.style.display = 'inline-block';
-      }
+  <main id="main-content" tabindex="-1">
+    <!-- Page content injected dynamically by router.js -->
+  </main>
+  <!-- Scripts — GSAP via CDN with local fallback, deferred -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"
+          integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg=="
+          crossorigin="anonymous" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"
+          integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
+          crossorigin="anonymous" defer></script>
+  <script defer src="/js/cdn-fallback.js"></script>
+  <noscript><style>.hero-postcard__orb{display:none}[data-page]{display:block!important}</style></noscript>
+  <script defer src="/js/i18n.js?v=20260402"></script>
+  <script defer src="/js/components/layout.js?v=20260402"></script>
+  <script defer src="/js/auth.js?v=20260402"></script>
+  <script defer src="/js/animations-core.js?v=20260402"></script>
+  <script defer src="/js/animations-home.js?v=20260402"></script>
+  <script defer src="/js/animations-subpages.js?v=20260402"></script>
+  <script defer src="/js/not-found-page.js?v=20260403"></script>
+  <script defer src="/js/router.js?v=20260403c"></script>
+  <script defer src="/js/main.js?v=20260402"></script>
+  <script defer src="/js/destinations-page.js?v=20260402"></script>
+  <script defer src="/js/support.js?v=20260402"></script>
+  <!-- PWA Service Worker registration -->
+  <script src="/js/sw-register.js"></script>
 
-      // Build the deep link URL for the QR code
-      var deepLink = '';
-      if (action === 'join' && code) {
-        deepLink = 'https://simphonia.pt/join?code=' + encodeURIComponent(code);
-      } else if (action === 'verify-email') {
-        deepLink = 'https://simphonia.pt/verify-email';
-      } else if (action === 'reset-password') {
-        deepLink = 'https://simphonia.pt/reset-password';
-      } else {
-        deepLink = 'https://simphonia.pt';
-      }
-
-      // Minimal QR Code generator (QR Code Model 2, alphanumeric/byte mode)
-      // Based on the public domain qr-creator-es6 algorithm
-      generateQR(deepLink);
-
-      function generateQR(text) {
-        var canvas = document.getElementById('qr-canvas');
-        if (!canvas || !canvas.getContext) return;
-        // Use an image from QR code API as fallback-free approach
-        var img = new Image();
-        img.crossOrigin = 'anonymous';
-        img.onload = function() {
-          var ctx = canvas.getContext('2d');
-          ctx.fillStyle = '#FFFFFF';
-          ctx.fillRect(0, 0, 180, 180);
-          ctx.drawImage(img, 0, 0, 180, 180);
-        };
-        // Use qrserver.com free API (no deprecation, no key needed)
-        img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=180x180&data='
-          + encodeURIComponent(text) + '&format=png&margin=8';
-      }
-    })();
-  </script>
 </body>
 </html>
+
 
