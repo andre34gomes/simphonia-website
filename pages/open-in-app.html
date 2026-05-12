@@ -33,8 +33,14 @@
       if (labels[action] && labelEl) { labelEl.textContent = labels[action]; labelEl.style.display = 'inline-block'; }
       var deepLink = '';
       if (action === 'join' && code) deepLink = 'https://simphonia.pt/join?code=' + encodeURIComponent(code);
-      else if (action === 'verify-email') deepLink = 'https://simphonia.pt/verify-email';
-      else if (action === 'reset-password') deepLink = 'https://simphonia.pt/reset-password';
+      else if (action === 'verify-email') {
+        var token = params.get('token') || '';
+        deepLink = token ? 'https://simphonia.pt/verify-email?token=' + encodeURIComponent(token) : 'https://simphonia.pt/verify-email';
+      }
+      else if (action === 'reset-password') {
+        var rpToken = params.get('token') || '';
+        deepLink = rpToken ? 'https://simphonia.pt/reset-password?token=' + encodeURIComponent(rpToken) : 'https://simphonia.pt/reset-password';
+      }
       else deepLink = 'https://simphonia.pt';
       var canvas = document.getElementById('oia-qr-canvas');
       if (canvas && canvas.getContext) {

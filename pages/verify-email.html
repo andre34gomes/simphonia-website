@@ -39,9 +39,12 @@
       var ua = navigator.userAgent || '';
       var isMobile = /android|iphone|ipad|ipod/i.test(ua);
       var isIOS = /iphone|ipad|ipod/i.test(ua);
+      var params = new URLSearchParams(window.location.search);
+      var token = params.get('token') || '';
+      var tokenQuery = token ? '?token=' + encodeURIComponent(token) : '';
 
       if (isMobile) {
-        window.location.href = 'simphonia://app/verify-email';
+        window.location.href = 'simphonia://app/verify-email' + tokenQuery;
         setTimeout(function() {
           var loading = document.getElementById('ve-loading');
           var fallback = document.getElementById('ve-fallback');
@@ -76,7 +79,7 @@
             ctx.fillStyle = '#333'; ctx.font = '12px sans-serif'; ctx.textAlign = 'center';
             ctx.fillText('Open this URL', 80, 70); ctx.fillText('on your phone', 80, 90);
           };
-          var safeUrl = window.location.origin + '/verify-email';
+          var safeUrl = window.location.origin + '/verify-email' + tokenQuery;
           img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=' + encodeURIComponent(safeUrl) + '&format=png&margin=8';
         }
       }
