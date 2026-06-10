@@ -31,7 +31,7 @@ function _t(key) {
 }
 
 function regionLabel(code) {
-  var label = _t('destinations.regions.' + code);
+  const label = _t('destinations.regions.' + code);
   return typeof label === 'string' ? label : code;
 }
 
@@ -142,7 +142,7 @@ function showFetchError() {
     _t('destinations.error.tryAgain') +
     '</button>' +
     '</div>';
-  var retryBtn = document.getElementById('dest-retry');
+  const retryBtn = document.getElementById('dest-retry');
   if (retryBtn) {
     retryBtn.addEventListener('click', function () {
       if (activeRegionCode) {
@@ -158,8 +158,8 @@ function showFetchError() {
 function renderGrid(items) {
   if (!grid) return;
   grid.textContent = '';
-  var total = displayedCountries.length;
-  var query = searchInput ? searchInput.value.trim() : '';
+  const total = displayedCountries.length;
+  const query = searchInput ? searchInput.value.trim() : '';
 
   if (noResults) noResults.style.display = items.length === 0 ? 'flex' : 'none';
   if (noResultsQ) noResultsQ.textContent = query
@@ -172,17 +172,17 @@ function renderGrid(items) {
       ? total + ' ' + _t('destinations.count.countries')
       : items.length + ' ' + _t('destinations.count.of') + ' ' + total + ' ' + _t('destinations.count.countries');
 
-  var frag = document.createDocumentFragment();
+  const frag = document.createDocumentFragment();
   items.forEach(function (d, i) {
-    var code = d.countryCode || '';
-    var name = d.countryName || code;
-    var flag = flagEmoji(code);
-    var img = resolveImage(d.imageUrl);
+    const code = d.countryCode || '';
+    const name = d.countryName || code;
+    const flag = flagEmoji(code);
+    const img = resolveImage(d.imageUrl);
 
-    var card = document.createElement('div');
+    const card = document.createElement('div');
     card.className = 'dest-card';
     card.setAttribute('role', 'article');
-    var safeName = esc(name);
+    const safeName = esc(name);
     card.setAttribute('aria-label', name);
     card.style.setProperty('animation-delay', Math.min(i, 8) * 35 + 'ms');
     card.innerHTML =
@@ -205,12 +205,12 @@ function renderGrid(items) {
 // ── Filter + search ───────────────────────────────────────────────────────
 function applySearch() {
   if (!searchInput) return;
-  var query = searchInput.value.toLowerCase().trim();
+  const query = searchInput.value.toLowerCase().trim();
   if (clearBtn) clearBtn.hidden = !query;
-  var filtered = query
+  const filtered = query
     ? displayedCountries.filter(function (d) {
-      var name = (d.countryName || '').toLowerCase();
-      var code = (d.countryCode || '').toLowerCase();
+      const name = (d.countryName || '').toLowerCase();
+      const code = (d.countryCode || '').toLowerCase();
       return name.includes(query) || code.includes(query);
     })
     : displayedCountries;
@@ -258,10 +258,10 @@ async function buildRegionTabs() {
       tab.remove();
     });
 
-    var regions = await apiFetch('/api/v1/regions?currency=' + CURRENCY);
+    const regions = await apiFetch('/api/v1/regions?currency=' + CURRENCY);
     regions.forEach(function (r) {
-      var label = regionLabel(r.regionCode);
-      var btn = document.createElement('button');
+      const label = regionLabel(r.regionCode);
+      const btn = document.createElement('button');
       btn.className = 'filter-tab';
       btn.dataset.region = r.regionCode;
       btn.textContent = label;
@@ -281,14 +281,14 @@ function bindEvents() {
     regionTabsContainer._destBound = true;
     regionTabsContainer.addEventListener('click', function (e) {
       if (!e.target || typeof e.target.closest !== 'function') return;
-      var tab = e.target.closest('.filter-tab');
+      const tab = e.target.closest('.filter-tab');
       if (!tab) return;
 
       regionTabsContainer.querySelectorAll('.filter-tab')
         .forEach(function (t) { t.classList.remove('filter-tab--active'); });
       tab.classList.add('filter-tab--active');
 
-      var code = tab.dataset.region;
+      const code = tab.dataset.region;
       activeRegionCode = code === 'all' ? null : code;
       if (searchInput) searchInput.value = '';
       if (clearBtn) clearBtn.hidden = true;
@@ -304,7 +304,7 @@ function bindEvents() {
 
   if (searchInput && !searchInput._destBound) {
     searchInput._destBound = true;
-    var searchDebounce = null;
+    let searchDebounce = null;
     searchInput.addEventListener('input', function () {
       clearTimeout(searchDebounce);
       searchDebounce = setTimeout(applySearch, 200);
@@ -350,10 +350,10 @@ function bindEvents() {
 }
 
 // ── Language change handler ───────────────────────────────────────────────
-var _lastFetchedLang = getLang();
+let _lastFetchedLang = getLang();
 
 document.addEventListener('simphonia:langchange', function () {
-  var newLang = getLang();
+  const newLang = getLang();
   if (newLang === _lastFetchedLang) return;
   _lastFetchedLang = newLang;
 
@@ -368,7 +368,7 @@ document.addEventListener('simphonia:langchange', function () {
     regionTabsContainer.querySelectorAll('.filter-tab').forEach(function (t) {
       t.classList.remove('filter-tab--active');
     });
-    var allTab = regionTabsContainer.querySelector('.filter-tab[data-region="all"]');
+    const allTab = regionTabsContainer.querySelector('.filter-tab[data-region="all"]');
     if (allTab) allTab.classList.add('filter-tab--active');
   }
 
@@ -381,7 +381,7 @@ document.addEventListener('simphonia:langchange', function () {
 });
 
 // ── Public init — called lazily by router ─────────────────────────────────
-var _initialized = false;
+let _initialized = false;
 
 window.initDestinationsPage = function () {
   resolveRefs();

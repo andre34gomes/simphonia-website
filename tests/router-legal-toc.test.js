@@ -26,7 +26,8 @@ function createPage(pageName) {
     getAttribute(name) {
       return name === 'data-page' ? pageName : null;
     },
-    setAttribute() {}
+    setAttribute() {},
+    focus() {},
   };
 }
 
@@ -83,6 +84,9 @@ test('router cleans up legal TOC listeners across legal-page navigation and exit
       if (tagName === 'div') {
         const tmp = {
           firstChild: null,
+          querySelectorAll(selector) {
+            return { forEach: function() {} };
+          },
           set innerHTML(value) {
             const match = value.match(/data-page="([^"]+)"/i);
             if (!match) {

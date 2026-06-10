@@ -60,17 +60,26 @@ test('Cloudflare missing-route handler serves the branded 404 document', () => {
 test('router prefers clean /pages/<slug> partial URLs before legacy .html fallbacks', () => {
   const router = read('js/router.js');
 
-  assert.match(router, /'about':\s*\['\/pages\/about', '\/pages\/about\.html'\]/);
-  assert.match(router, /'destinations':\s*\['\/pages\/destinations', '\/pages\/destinations\.html'\]/);
+  // PAGE_PARTIALS is built dynamically from ROUTES — verify the generation
+  // pattern that produces clean-URL-first, .html-fallback arrays.
+  assert.match(router, /PAGE_PARTIALS\[page\] = \['\/pages\/' \+ page, '\/pages\/' \+ page \+ '\.html'\]/);
   assert.match(router, /function loadPagePartial\(/);
+
+  // Verify known route slugs exist in the ROUTES definition
+  assert.match(router, /'\/about':\s*\{/);
+  assert.match(router, /'\/destinations':\s*\{/);
 });
 
 test('initial preload and service worker precache use clean partial URLs', () => {
-  const index = read('index.html');
+  // Preload map lives in preload-partial.js (separate file loaded from <head>)
+  const preload = read('js/preload-partial.js');
   const sw = read('sw.js');
 
-  assert.match(index, /'\/about':\s*'\/pages\/about'/);
-  assert.match(index, /'\/destinations':\s*'\/pages\/destinations'/);
+  // preload-partial.js maps clean route paths to /pages/<slug> (no .html)
+  assert.match(preload, /'\/about':\s*'\/pages\/about'/);
+  assert.match(preload, /'\/destinations':\s*'\/pages\/destinations'/);
+
+  // SW precache uses clean partial URLs, not legacy .html variants
   assert.match(sw, /'\/pages\/about',/);
   assert.match(sw, /'\/pages\/destinations',/);
   assert.doesNotMatch(sw, /'\/pages\/about\.html',/);

@@ -36,19 +36,19 @@
 
   <script>
     (function() {
-      var ua = navigator.userAgent || '';
-      var isMobile = /android|iphone|ipad|ipod/i.test(ua);
-      var isIOS = /iphone|ipad|ipod/i.test(ua);
-      var params = new URLSearchParams(window.location.search);
-      var token = params.get('token') || '';
-      var tokenQuery = token ? '?token=' + encodeURIComponent(token) : '';
+      const ua = navigator.userAgent || '';
+      const isMobile = /android|iphone|ipad|ipod/i.test(ua);
+      const isIOS = /iphone|ipad|ipod/i.test(ua);
+      const params = new URLSearchParams(window.location.search);
+      const token = params.get('token') || '';
+      const tokenQuery = token ? '?token=' + encodeURIComponent(token) : '';
 
       if (isMobile) {
         window.location.href = 'simphonia://app/verify-email' + tokenQuery;
         setTimeout(function() {
-          var loading = document.getElementById('ve-loading');
-          var fallback = document.getElementById('ve-fallback');
-          var storeBtn = document.getElementById('ve-store-btn');
+          const loading = document.getElementById('ve-loading');
+          const fallback = document.getElementById('ve-fallback');
+          const storeBtn = document.getElementById('ve-store-btn');
           if (loading) loading.style.display = 'none';
           if (fallback) fallback.style.display = 'block';
           if (storeBtn) {
@@ -63,15 +63,15 @@
           }
         }, 1500);
       } else {
-        var loading = document.getElementById('ve-loading');
-        var desktop = document.getElementById('ve-desktop');
+        const loading = document.getElementById('ve-loading');
+        const desktop = document.getElementById('ve-desktop');
         if (loading) loading.style.display = 'none';
         if (desktop) desktop.style.display = 'block';
 
-        var canvas = document.getElementById('ve-qr-canvas');
+        const canvas = document.getElementById('ve-qr-canvas');
         if (canvas && canvas.getContext) {
-          var ctx = canvas.getContext('2d');
-          var img = new Image();
+          const ctx = canvas.getContext('2d');
+          const img = new Image();
           img.crossOrigin = 'anonymous';
           img.onload = function() { ctx.drawImage(img, 0, 0, 160, 160); };
           img.onerror = function() {
@@ -79,7 +79,7 @@
             ctx.fillStyle = '#333'; ctx.font = '12px sans-serif'; ctx.textAlign = 'center';
             ctx.fillText('Open this URL', 80, 70); ctx.fillText('on your phone', 80, 90);
           };
-          var safeUrl = window.location.origin + '/verify-email' + tokenQuery;
+          const safeUrl = window.location.origin + '/verify-email' + tokenQuery;
           img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=' + encodeURIComponent(safeUrl) + '&format=png&margin=8';
         }
       }

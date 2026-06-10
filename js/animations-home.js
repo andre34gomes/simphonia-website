@@ -30,7 +30,7 @@ function _hero() {
   // Homepage hero uses CSS `.hero-fade-up` keyframes (no GSAP needed).
   // Generic fallback: animate a bare h1 if no known hero section is found.
   if (!document.querySelector('.hero-postcard')) {
-    var h1 = document.querySelector('h1');
+    const h1 = document.querySelector('h1');
     if (h1) {
       gsap.fromTo(h1,
         { autoAlpha: 0, y: 36 },
@@ -78,33 +78,33 @@ function _featureCards() {
 
 // ── 7. STICKY SHOWCASE ───────────────────────────────────
 // Module-level handle so a re-initialisation can cancel the previous RAF loop.
-var _segLerpCancelFn = null;
+let _segLerpCancelFn = null;
 
 function _stickyShowcase() {
   // Cancel any LERP loop left running by a previous call (SPA re-navigation).
   if (_segLerpCancelFn) { _segLerpCancelFn(); _segLerpCancelFn = null; }
 
-  var section = document.querySelector('.showcase-sticky');
+  const section = document.querySelector('.showcase-sticky');
   if (!section) return;
 
-  var scene = section.querySelector('.showcase-sticky__scene');
-  var stage = document.getElementById('showcasePanelsStage');
-  var segsEl = document.getElementById('showcaseSegments');
+  const scene = section.querySelector('.showcase-sticky__scene');
+  const stage = document.getElementById('showcasePanelsStage');
+  const segsEl = document.getElementById('showcaseSegments');
   if (!scene || !stage) return;
 
-  var panels = stage.querySelectorAll('.showcase-sticky__panel');
-  var panelCount = panels.length;
+  const panels = stage.querySelectorAll('.showcase-sticky__panel');
+  const panelCount = panels.length;
   if (!panelCount) return;
-  var lastIdx = panelCount - 1;
+  const lastIdx = panelCount - 1;
 
-  var segFills = [];
+  const segFills = [];
   if (segsEl) {
     // Remove any stale fills left over from a previous initialisation (SPA re-navigation).
     segsEl.querySelectorAll('.showcase-segment__fill').forEach(function (el) {
       if (el.parentNode) el.parentNode.removeChild(el);
     });
     segsEl.querySelectorAll('.showcase-segment').forEach(function (seg) {
-      var fill = document.createElement('div');
+      const fill = document.createElement('div');
       fill.className = 'showcase-segment__fill';
       seg.appendChild(fill);
       segFills.push(fill);
@@ -115,12 +115,12 @@ function _stickyShowcase() {
     gsap.set(p, { position: 'absolute', opacity: 0, y: 0 });
   });
 
-  var lastActive = -1;
-  var screens = section.querySelectorAll('.sas-screen');
+  let lastActive = -1;
+  const screens = section.querySelectorAll('.sas-screen');
 
   // Recalculate on resize so slide distances stay correct after orientation changes.
-  var isMobileShowcase = window.innerWidth <= 960;
-  var _resizeTimer = null;
+  let isMobileShowcase = window.innerWidth <= 960;
+  let _resizeTimer = null;
   function _handleResize() {
     clearTimeout(_resizeTimer);
     _resizeTimer = setTimeout(function () {
@@ -132,7 +132,7 @@ function _stickyShowcase() {
   }
   window.addEventListener('resize', _handleResize, { passive: true });
 
-  var panelChildren = [];
+  const panelChildren = [];
   panels.forEach(function (p) {
     panelChildren.push({
       ghost: p.querySelector('.showcase-panel__ghost-num'),
@@ -143,9 +143,9 @@ function _stickyShowcase() {
   });
 
   // ── Smooth segment progress via LERP ──
-  var _segTarget = 0;
-  var _segCurrent = 0;
-  var _segRafId = null;
+  let _segTarget = 0;
+  let _segCurrent = 0;
+  let _segRafId = null;
 
   // Expose a cancel handle so the next _stickyShowcase call (or resetAnimations)
   // can stop this loop without holding a reference to the full closure.
@@ -168,10 +168,10 @@ function _stickyShowcase() {
 
   function _renderSegs(p) {
     p = Math.min(Math.max(p, 0), 1);
-    var raw = p * panelCount;
-    var active = Math.min(Math.floor(raw), panelCount - 1);
-    var frac = Math.min(raw - active, 1);
-    for (var i = 0; i < segFills.length; i++) {
+    const raw = p * panelCount;
+    const active = Math.min(Math.floor(raw), panelCount - 1);
+    const frac = Math.min(raw - active, 1);
+    for (let i = 0; i < segFills.length; i++) {
       segFills[i].style.width = i < active ? '100%'
         : i === active ? (frac * 100).toFixed(1) + '%'
           : '0%';
@@ -191,7 +191,7 @@ function _stickyShowcase() {
   }
 
   // ── Active timeline ──
-  var _activeTl = null;
+  let _activeTl = null;
 
   // Hard-reset every panel + screen + child to idle state.
   function resetAll() {
@@ -199,7 +199,7 @@ function _stickyShowcase() {
     panels.forEach(function (p, i) {
       gsap.killTweensOf(p);
       gsap.set(p, { opacity: 0, y: 0 });
-      var ch = panelChildren[i];
+      const ch = panelChildren[i];
       if (ch.ghost) { gsap.killTweensOf(ch.ghost); gsap.set(ch.ghost, { opacity: 0, x: 0 }); }
       if (ch.meta)  { gsap.killTweensOf(ch.meta);  gsap.set(ch.meta,  { opacity: 0, y: 0 }); }
       if (ch.title) { gsap.killTweensOf(ch.title); gsap.set(ch.title, { opacity: 0, y: 0 }); }
@@ -218,7 +218,7 @@ function _stickyShowcase() {
     resetAll();
     lastActive = idx;
     gsap.set(panels[idx], { opacity: 1, y: 0 });
-    var ch = panelChildren[idx];
+    const ch = panelChildren[idx];
     if (ch.ghost) gsap.set(ch.ghost, { opacity: 0.045, x: 0 });
     if (ch.meta)  gsap.set(ch.meta,  { opacity: 1, y: 0 });
     if (ch.title) gsap.set(ch.title, { opacity: 1, y: 0 });
@@ -241,14 +241,14 @@ function _stickyShowcase() {
     // This prevents orphaned intermediate values from killed timelines.
     panels.forEach(function (p, i) {
       gsap.killTweensOf(p);
-      if (i === newIdx) return; // will be set up below
+      if (i === newIdx) return;
       if (i === prevIdx) {
         // Snap outgoing panel to fully-visible so exit animation starts cleanly
         gsap.set(p, { opacity: 1, y: 0 });
         return;
       }
       gsap.set(p, { opacity: 0, y: 0 });
-      var ch = panelChildren[i];
+      const ch = panelChildren[i];
       if (ch.ghost) { gsap.killTweensOf(ch.ghost); gsap.set(ch.ghost, { opacity: 0, x: 0 }); }
       if (ch.meta)  { gsap.killTweensOf(ch.meta);  gsap.set(ch.meta,  { opacity: 0, y: 0 }); }
       if (ch.title) { gsap.killTweensOf(ch.title); gsap.set(ch.title, { opacity: 0, y: 0 }); }
@@ -267,19 +267,19 @@ function _stickyShowcase() {
 
     lastActive = newIdx;
 
-    var forward = newIdx > prevIdx;
-    var isFirst = prevIdx < 0;
+    const forward = newIdx > prevIdx;
+    const isFirst = prevIdx < 0;
 
     // Slide distances — opacity + translateY only, no scale.
     // Subtler values for a smooth Apple-style feel.
-    var slideOut    = isMobileShowcase ? 14 : 28;
-    var slideIn     = isMobileShowcase ? 16 : 32;
-    var firstSlide  = isMobileShowcase ? 8  : 14;
-    var innerMeta   = isMobileShowcase ? 4  : 6;
-    var innerTitle  = isMobileShowcase ? 6  : 10;
-    var innerDesc   = isMobileShowcase ? 5  : 8;
+    const slideOut    = isMobileShowcase ? 14 : 28;
+    const slideIn     = isMobileShowcase ? 16 : 32;
+    const firstSlide  = isMobileShowcase ? 8  : 14;
+    const innerMeta   = isMobileShowcase ? 4  : 6;
+    const innerTitle  = isMobileShowcase ? 6  : 10;
+    const innerDesc   = isMobileShowcase ? 5  : 8;
 
-    var tl = gsap.timeline({
+    const tl = gsap.timeline({
       defaults: { force3D: true, overwrite: 'auto' },
     });
 
@@ -313,10 +313,10 @@ function _stickyShowcase() {
     }
 
     // ── Incoming panel ──
-    var ch = panelChildren[newIdx];
-    var fromY = forward ? slideIn : -slideIn;
+    const ch = panelChildren[newIdx];
+    let fromY = forward ? slideIn : -slideIn;
     if (isFirst) fromY = firstSlide;
-    var panelStart = isFirst ? 0 : 0.06;
+    const panelStart = isFirst ? 0 : 0.06;
 
     gsap.set(panels[newIdx], { y: fromY, opacity: 0 });
     if (ch.ghost) gsap.set(ch.ghost, { opacity: 0, x: forward ? 18 : -18 });
@@ -330,7 +330,7 @@ function _stickyShowcase() {
       ease: 'power3.out',
     }, panelStart);
 
-    var stagger = panelStart + 0.03;
+    const stagger = panelStart + 0.03;
     if (ch.ghost) tl.to(ch.ghost, { opacity: 0.045, x: 0, duration: 0.6, ease: 'power3.out' }, stagger);
     if (ch.meta)  tl.to(ch.meta,  { opacity: 1, y: 0, duration: 0.4, ease: 'power3.out' }, stagger + 0.02);
     if (ch.title) tl.to(ch.title, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, stagger + 0.05);
@@ -370,8 +370,8 @@ function _stickyShowcase() {
       // The pin transition is seamless without it when using transform-based pinning.
 
       onUpdate: function (self) {
-        var p = self.progress;
-        var idx = Math.min(Math.floor(p * panelCount), panelCount - 1);
+        const p = self.progress;
+        const idx = Math.min(Math.floor(p * panelCount), panelCount - 1);
 
         if (idx !== lastActive) {
           transitionTo(idx, lastActive);
@@ -425,8 +425,8 @@ function _stickyShowcase() {
     if (!('ontouchstart' in window)) return;
 
     // Insert the swipe-hint element into the showcase left column
-    var left = section.querySelector('.showcase-sticky__left');
-    var hintEl = null;
+    const left = section.querySelector('.showcase-sticky__left');
+    let hintEl = null;
     if (left) {
       hintEl = document.createElement('div');
       hintEl.className = 'showcase-swipe-hint';
@@ -440,19 +440,19 @@ function _stickyShowcase() {
       left.appendChild(hintEl);
     }
 
-    var swipeTarget = scene; // listen on the full scene area
-    var startX = 0, startY = 0, startTime = 0;
-    var SWIPE_MIN_PX = 45;       // minimum horizontal distance for a swipe
-    var SWIPE_MAX_MS = 450;      // maximum duration for a swipe gesture
-    var hintShown = false;
-    var hintTimer = null;
-    var showcaseST = null;      // filled in by setup() via the resize/scroll watcher
+    const swipeTarget = scene; // listen on the full scene area
+    let startX = 0, startY = 0, startTime = 0;
+    const SWIPE_MIN_PX = 45;
+    const SWIPE_MAX_MS = 450;
+    let hintShown = false;
+    let hintTimer = null;
+    let showcaseST = null;      // filled in by setup() via the resize/scroll watcher
 
     // Retrieve the ST instance once it exists (created inside setup())
     function getShowcaseST() {
       if (showcaseST) return showcaseST;
-      var all = typeof ScrollTrigger !== 'undefined' ? ScrollTrigger.getAll() : [];
-      for (var i = 0; i < all.length; i++) {
+      const all = typeof ScrollTrigger !== 'undefined' ? ScrollTrigger.getAll() : [];
+      for (let i = 0; i < all.length; i++) {
         if (all[i].trigger === section) { showcaseST = all[i]; return showcaseST; }
       }
       return null;
@@ -487,12 +487,12 @@ function _stickyShowcase() {
       // Only active on mobile layout
       if (window.innerWidth > 960) return;
 
-      var st = getShowcaseST();
+      const st = getShowcaseST();
       if (!st || typeof st.start !== 'number') return;
 
-      var dx = e.changedTouches[0].clientX - startX;
-      var dy = Math.abs(e.changedTouches[0].clientY - startY);
-      var dt = Date.now() - startTime;
+      const dx = e.changedTouches[0].clientX - startX;
+      const dy = Math.abs(e.changedTouches[0].clientY - startY);
+      const dt = Date.now() - startTime;
 
       // Require: clear horizontal dominance, minimum swipe distance, fast enough
       if (Math.abs(dx) < SWIPE_MIN_PX) return;
@@ -501,21 +501,20 @@ function _stickyShowcase() {
 
       hideHint();
 
-      var currentPanel = Math.max(0, lastActive < 0 ? 0 : lastActive);
-      var targetPanel = dx < 0
+      const currentPanel = Math.max(0, lastActive < 0 ? 0 : lastActive);
+      const targetPanel = dx < 0
         ? Math.min(currentPanel + 1, panelCount - 1)  // swipe left → next
         : Math.max(currentPanel - 1, 0);               // swipe right → prev
 
       if (targetPanel === currentPanel) return;
 
       // Scroll to the midpoint of the target panel's scroll range
-      var span = st.end - st.start;
-      var targetY = st.start + ((targetPanel + 0.5) / panelCount) * span;
+      const span = st.end - st.start;
+      const targetY = st.start + ((targetPanel + 0.5) / panelCount) * span;
       window.scrollTo({ top: targetY, behavior: 'smooth' });
     }, { passive: true });
 
-    // Show the hint when panel 0 first becomes active after entering showcase
-    var _origTransitionTo = transitionTo;
+    const _origTransitionTo = transitionTo;
     // Wrap transitionTo to detect the first entry into the showcase from outside
     // (panel -1 → 0) and show the swipe hint on mobile
     transitionTo = function (newIdx, prevIdx) {
@@ -529,7 +528,7 @@ function _stickyShowcase() {
 
 // ── 10. FAQ ITEMS ────────────────────────────────────────
 function _faqItems() {
-  var list = document.querySelector('.faq-list');
+  const list = document.querySelector('.faq-list');
   if (!list) return;
 
   gsap.fromTo(
@@ -545,7 +544,7 @@ function _faqItems() {
 
 // ── 27. FEATURE CARD ICON PULSE ──────────────────────────
 function _featCardIconPulse() {
-  var icons = document.querySelectorAll('.feat-card__icon');
+  const icons = document.querySelectorAll('.feat-card__icon');
   if (!icons.length) return;
 
   // Use batch instead of individual ScrollTriggers — fewer scroll observers
@@ -576,9 +575,9 @@ function _stepCardIconHover() {
 
   document.addEventListener('mouseenter', function (e) {
     if (!e.target || typeof e.target.closest !== 'function') return;
-    var card = e.target.closest('.step-card');
+    const card = e.target.closest('.step-card');
     if (!card) return;
-    var icon = card.querySelector('.step-card__icon');
+    const icon = card.querySelector('.step-card__icon');
     if (!icon) return;
     gsap.fromTo(icon,
       { y: 0, scale: 1 },
@@ -594,7 +593,7 @@ function _stepCardIconHover() {
 
 // ── 35. CTA BUTTON ENTRANCE ──────────────────────────────
 function _ctaButtonEntrance() {
-  var btns = document.querySelectorAll('.cta-section .btn');
+  const btns = document.querySelectorAll('.cta-section .btn');
   if (!btns.length) return;
 
   gsap.set(btns, { clipPath: 'inset(0 0 100% 0)', y: 10 });
@@ -622,20 +621,19 @@ function _heroOrbParallax() {
   if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
   if (window.innerWidth <= 960) return;
 
-  var orbs = document.querySelectorAll('.hero-postcard__orb');
+  const orbs = document.querySelectorAll('.hero-postcard__orb');
   if (!orbs.length) return;
 
-  var hero = document.querySelector('.hero-postcard');
+  const hero = document.querySelector('.hero-postcard');
   if (!hero) return;
 
-  // Depth multipliers — different per orb for layered depth effect
-  var depths = [0.025, 0.018, 0.015, 0.012];
+  const depths = [0.025, 0.018, 0.015, 0.012];
 
-  var rafId = null;
-  var targetX = 0;
-  var targetY = 0;
-  var currentX = 0;
-  var currentY = 0;
+  let rafId = null;
+  let targetX = 0;
+  let targetY = 0;
+  let currentX = 0;
+  let currentY = 0;
 
   function lerp(a, b, t) { return a + (b - a) * t; }
 
@@ -644,9 +642,9 @@ function _heroOrbParallax() {
     currentY = lerp(currentY, targetY, 0.06);
 
     orbs.forEach(function (orb, i) {
-      var d = depths[i] || 0.01;
-      var tx = currentX * d * 100;
-      var ty = currentY * d * 100;
+      const d = depths[i] || 0.01;
+      const tx = currentX * d * 100;
+      const ty = currentY * d * 100;
       orb.style.transform = 'translate(' + tx.toFixed(1) + 'px, ' + ty.toFixed(1) + 'px)';
     });
 
@@ -658,9 +656,9 @@ function _heroOrbParallax() {
   }
 
   function onMove(e) {
-    var rect = hero.getBoundingClientRect();
-    var cx = rect.left + rect.width / 2;
-    var cy = rect.top + rect.height / 2;
+    const rect = hero.getBoundingClientRect();
+    const cx = rect.left + rect.width / 2;
+    const cy = rect.top + rect.height / 2;
     targetX = (e.clientX - cx) / (rect.width / 2);
     targetY = (e.clientY - cy) / (rect.height / 2);
 
@@ -687,4 +685,3 @@ function _heroOrbParallax() {
   }
   window.addEventListener('resize', checkWidth, { passive: true });
 }
-

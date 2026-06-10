@@ -3,13 +3,13 @@
  * Respects prefers-reduced-motion: shows final state immediately if enabled.
  */
 document.addEventListener('DOMContentLoaded', function () {
-  var prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
   /* ── 1. Split-flap flip board ── */
-  var CHARS = '0123456789';
+  const CHARS = '0123456789';
   document.querySelectorAll('.flip-cell').forEach(function (cell, i) {
-    var target = cell.dataset.target;
-    var span   = cell.querySelector('span');
+    const target = cell.dataset.target;
+    const span   = cell.querySelector('span');
     if (!span) return;
 
     /* Respect reduced-motion: show final value immediately */
@@ -19,8 +19,8 @@ document.addEventListener('DOMContentLoaded', function () {
       return;
     }
 
-    var totalFlips = 9 + i * 5;
-    var count      = 0;
+    const totalFlips = 9 + i * 5;
+    let count        = 0;
 
     /* Visual flip helper — micro rotateX animation per character change */
     function doFlip(char) {
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     /* Stagger each digit slightly so they don't all land together */
     setTimeout(function () {
-      var ticker = setInterval(function () {
+      const ticker = setInterval(function () {
         count++;
         if (count >= totalFlips) {
           doFlip(target);
@@ -54,15 +54,15 @@ document.addEventListener('DOMContentLoaded', function () {
 
   /* ── 2. Airplane traverses the SVG flight arc ── */
   if (!prefersReduced) {
-    var arc   = document.getElementById('flightArc');
-    var plane = document.getElementById('planeGroup');
+    const arc   = document.getElementById('flightArc');
+    const plane = document.getElementById('planeGroup');
 
     if (arc && plane) {
-      var totalLen = arc.getTotalLength();
-      var DURATION = 8500;    /* ms per loop             */
-      var PAUSE_AT = 0.93;    /* fraction before looping */
-      var startTS  = null;
-      var planeRafId = null;
+      const totalLen = arc.getTotalLength();
+      const DURATION = 8500;    /* ms per loop             */
+      const PAUSE_AT = 0.93;    /* fraction before looping */
+      let startTS    = null;
+      let planeRafId = null;
 
       /* Ease-in-out curve */
       function easeInOut(t) {
@@ -71,14 +71,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
       function tick(ts) {
         if (!startTS) startTS = ts;
-        var elapsed = (ts - startTS) % DURATION;
-        var raw     = elapsed / DURATION;
-        var t       = raw < PAUSE_AT ? raw / PAUSE_AT : 1.0;
-        var dist    = easeInOut(t) * totalLen;
+        const elapsed = (ts - startTS) % DURATION;
+        const raw     = elapsed / DURATION;
+        const t       = raw < PAUSE_AT ? raw / PAUSE_AT : 1.0;
+        const dist    = easeInOut(t) * totalLen;
 
-        var p0    = arc.getPointAtLength(dist);
-        var p1    = arc.getPointAtLength(Math.min(dist + 4, totalLen));
-        var angle = Math.atan2(p1.y - p0.y, p1.x - p0.x) * (180 / Math.PI);
+        const p0    = arc.getPointAtLength(dist);
+        const p1    = arc.getPointAtLength(Math.min(dist + 4, totalLen));
+        const angle = Math.atan2(p1.y - p0.y, p1.x - p0.x) * (180 / Math.PI);
 
         plane.setAttribute('transform',
           'translate(' + p0.x.toFixed(2) + ',' + p0.y.toFixed(2) +
@@ -106,4 +106,3 @@ document.addEventListener('DOMContentLoaded', function () {
     }
   }
 });
-

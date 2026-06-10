@@ -9,17 +9,17 @@
 'use strict';
 
 (function () {
-  var planeRafId = null;
-  var planeStartTimerId = null;
-  var planeStartedAt = null;
-  var globalsBound = false;
+  let planeRafId = null;
+  let planeStartTimerId = null;
+  let planeStartedAt = null;
+  let globalsBound = false;
 
   function getPageRoot() {
     return document.querySelector('[data-page="not-found"]');
   }
 
   function isPageActive() {
-    var root = getPageRoot();
+    const root = getPageRoot();
     return !!root && root.style.display !== 'none';
   }
 
@@ -40,16 +40,16 @@
   }
 
   function startPlane() {
-    var arc = document.getElementById('flightArc');
-    var plane = document.getElementById('planeGroup');
+    const arc = document.getElementById('flightArc');
+    const plane = document.getElementById('planeGroup');
 
     if (!arc || !plane || prefersReducedMotion() || !isPageActive() || planeRafId) {
       return;
     }
 
-    var totalLen = arc.getTotalLength();
-    var DURATION = 8500;
-    var PAUSE_AT = 0.93;
+    const totalLen = arc.getTotalLength();
+    const DURATION = 8500;
+    const PAUSE_AT = 0.93;
 
     function easeInOut(t) {
       return t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
@@ -63,13 +63,13 @@
 
       if (!planeStartedAt) planeStartedAt = ts;
 
-      var elapsed = (ts - planeStartedAt) % DURATION;
-      var raw = elapsed / DURATION;
-      var t = raw < PAUSE_AT ? raw / PAUSE_AT : 1.0;
-      var dist = easeInOut(t) * totalLen;
-      var p0 = arc.getPointAtLength(dist);
-      var p1 = arc.getPointAtLength(Math.min(dist + 4, totalLen));
-      var angle = Math.atan2(p1.y - p0.y, p1.x - p0.x) * (180 / Math.PI);
+      const elapsed = (ts - planeStartedAt) % DURATION;
+      const raw = elapsed / DURATION;
+      const t = raw < PAUSE_AT ? raw / PAUSE_AT : 1.0;
+      const dist = easeInOut(t) * totalLen;
+      const p0 = arc.getPointAtLength(dist);
+      const p1 = arc.getPointAtLength(Math.min(dist + 4, totalLen));
+      const angle = Math.atan2(p1.y - p0.y, p1.x - p0.x) * (180 / Math.PI);
 
       plane.setAttribute(
         'transform',
@@ -96,12 +96,12 @@
     if (!root || root.dataset.notFoundFlipInit === 'true') return;
     root.dataset.notFoundFlipInit = 'true';
 
-    var prefersReduced = prefersReducedMotion();
-    var CHARS = '0123456789';
+    const prefersReduced = prefersReducedMotion();
+    const CHARS = '0123456789';
 
     root.querySelectorAll('.flip-cell').forEach(function (cell, i) {
-      var target = cell.dataset.target;
-      var span = cell.querySelector('span');
+      const target = cell.dataset.target;
+      const span = cell.querySelector('span');
       if (!span) return;
 
       if (prefersReduced) {
@@ -110,8 +110,8 @@
         return;
       }
 
-      var totalFlips = 9 + i * 5;
-      var count = 0;
+      const totalFlips = 9 + i * 5;
+      let count = 0;
 
       function doFlip(char) {
         span.style.transition = 'none';
@@ -128,7 +128,7 @@
       }
 
       setTimeout(function () {
-        var ticker = setInterval(function () {
+        const ticker = setInterval(function () {
           count++;
           if (count >= totalFlips) {
             doFlip(target);
@@ -164,15 +164,15 @@
       schedulePlaneStart(3200);
     });
 
-    var reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const reducedMotionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
     if (typeof reducedMotionQuery.addEventListener === 'function') {
       reducedMotionQuery.addEventListener('change', function (e) {
         if (e.matches) {
           stopPlane();
-          var root = getPageRoot();
+          const root = getPageRoot();
           if (root) {
             root.querySelectorAll('.flip-cell').forEach(function (cell) {
-              var span = cell.querySelector('span');
+              const span = cell.querySelector('span');
               if (!span) return;
               span.textContent = cell.dataset.target || span.textContent;
               cell.classList.add('flip-cell--settled');
@@ -186,7 +186,7 @@
   }
 
   function initNotFoundPage() {
-    var root = getPageRoot();
+    const root = getPageRoot();
     if (!root) return;
 
     bindGlobals();
@@ -202,4 +202,3 @@
 
   window.initNotFoundPage = initNotFoundPage;
 }());
-

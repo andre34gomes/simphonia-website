@@ -14,7 +14,7 @@ const NAV_COLLAPSE_WIDTH = 960;
 // ────────────────────────────────────────
 window.flagEmoji = function(code) {
   if (!code || code.length < 2) return '';
-  var c = code.toLowerCase().slice(0, 2);
+  const c = code.toLowerCase().slice(0, 2);
   return '<img src="https://flagcdn.com/20x15/' + c + '.png"' +
     ' srcset="https://flagcdn.com/40x30/' + c + '.png 2x"' +
     ' width="20" height="15"' +
@@ -28,7 +28,7 @@ window.flagEmoji = function(code) {
 // Shared utility: HTML escape (XSS prevention)
 // Reuses a single cached element to avoid DOM allocation per call.
 // ────────────────────────────────────────
-var _escDiv = document.createElement('div');
+const _escDiv = document.createElement('div');
 window.escHTML = function(str) {
   _escDiv.textContent = str;
   return _escDiv.innerHTML;
@@ -39,7 +39,7 @@ window.escHTML = function(str) {
 // ────────────────────────────────────────
 window.SIMPHONIA_API = Object.freeze({
   base: (function () {
-    var h = location.hostname;
+    const h = location.hostname;
     // Local development: use local backend
     if (h === 'localhost' || h === '127.0.0.1' || h === '0.0.0.0') {
       return 'http://localhost:3000';
@@ -56,8 +56,8 @@ window.SIMPHONIA_API = Object.freeze({
 (function initScrollCoordinator() {
   if (typeof window === 'undefined' || window.scrollCoordinator) return;
 
-  var refreshPending = false;
-  var waitingForLoad = false;
+  let refreshPending = false;
+  let waitingForLoad = false;
 
   function setScrollLocked(isLocked) {
     // Only toggle on body — never touch html, which is the scroll container on WebKit.
@@ -94,13 +94,13 @@ window.SIMPHONIA_API = Object.freeze({
   }
 
   function focusHashTarget(hash) {
-    var rawHash = typeof hash === 'string' ? hash : window.location.hash;
+    const rawHash = typeof hash === 'string' ? hash : window.location.hash;
     if (!rawHash) return null;
 
-    var id = rawHash.charAt(0) === '#' ? rawHash.slice(1) : rawHash;
+    const id = rawHash.charAt(0) === '#' ? rawHash.slice(1) : rawHash;
     if (!id) return null;
 
-    var target = document.getElementById(decodeURIComponent(id));
+    const target = document.getElementById(decodeURIComponent(id));
     if (!target) return null;
 
     requestAnimationFrame(function () {
@@ -450,7 +450,7 @@ function injectNoscript() {
  * Returns the path prefix to reach the site root.
  * Always '/' — the site runs as an SPA with absolute paths everywhere.
  */
-var _cachedBasePath = null;
+let _cachedBasePath = null;
 function getBasePath() {
   if (_cachedBasePath !== null) return _cachedBasePath;
   return (_cachedBasePath = '/');
@@ -466,7 +466,7 @@ function pagePath(slug) {
 
 function translateText(key) {
   if (typeof window.t !== 'function') return '';
-  var value = window.t(key);
+  const value = window.t(key);
   return typeof value === 'string' ? value : '';
 }
 
@@ -564,7 +564,7 @@ function _buildLangPicker() {
   `;
 }
 
-function _initLangPicker() {
+function _initLangPicker(signal) {
   const picker = document.getElementById('lang-picker');
   if (!picker) return;
   const btn = document.getElementById('lang-picker-btn');
@@ -597,11 +597,11 @@ function _initLangPicker() {
   // Search / filter
   function _filterLangs(query) {
     if (!list) return;
-    var q = query.toLowerCase().trim();
-    var anyVisible = false;
+    const q = query.toLowerCase().trim();
+    let anyVisible = false;
     list.querySelectorAll('.lang-picker__option').forEach(function (opt) {
-      var hay = (opt.getAttribute('data-search') || '').toLowerCase();
-      var show = !q || hay.indexOf(q) !== -1;
+      const hay = (opt.getAttribute('data-search') || '').toLowerCase();
+      const show = !q || hay.indexOf(q) !== -1;
       opt.style.display = show ? '' : 'none';
       if (show) anyVisible = true;
     });
@@ -631,7 +631,7 @@ function _initLangPicker() {
 
   document.addEventListener('click', function (e) {
     if (!picker.contains(e.target)) closeMenu();
-  });
+  }, { signal });
 
   document.addEventListener('keydown', function (e) {
     if (e.key === 'Escape') closeMenu();
@@ -640,19 +640,19 @@ function _initLangPicker() {
     if (!picker.classList.contains('lang-picker--open')) return;
     if (e.key !== 'ArrowDown' && e.key !== 'ArrowUp') return;
     e.preventDefault();
-    var options = Array.from(list.querySelectorAll('.lang-picker__option')).filter(function (opt) {
+    const options = Array.from(list.querySelectorAll('.lang-picker__option')).filter(function (opt) {
       return opt.style.display !== 'none';
     });
     if (!options.length) return;
-    var focused = document.activeElement;
-    var idx = options.indexOf(focused);
+    const focused = document.activeElement;
+    let idx = options.indexOf(focused);
     if (e.key === 'ArrowDown') {
       idx = idx < options.length - 1 ? idx + 1 : 0;
     } else {
       idx = idx > 0 ? idx - 1 : options.length - 1;
     }
     options[idx].focus();
-  });
+  }, { signal });
 
   // Re-render picker when language changes
   document.addEventListener('simphonia:langchange', function (e) {
@@ -665,7 +665,7 @@ function _initLangPicker() {
         opt.classList.toggle('lang-picker__option--active', isActive);
         opt.setAttribute('aria-current', isActive ? 'true' : 'false');
         // Update check icon
-        var existingCheck = opt.querySelector('.lang-picker__check');
+        const existingCheck = opt.querySelector('.lang-picker__check');
         if (isActive && !existingCheck) {
           opt.insertAdjacentHTML('beforeend', '<svg class="lang-picker__check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"/></svg>');
         } else if (!isActive && existingCheck) {
@@ -673,7 +673,7 @@ function _initLangPicker() {
         }
       });
     }
-  });
+  }, { signal });
 }
 
 function injectNav() {
@@ -782,18 +782,24 @@ function injectNav() {
     </div>
   `;
 
-  var existingNav = document.getElementById('navbar');
+  const existingNav = document.getElementById('navbar');
   if (existingNav) {
     existingNav.replaceWith(nav);
   } else {
     document.body.prepend(nav);
   }
   document.body.appendChild(mobileMenu);
-  _initLangPicker();
-  initNavBehavior();
+
+  // Abort any previous document/window listeners from a prior injectNav() call
+  // (SPA re-navigation) before wiring up new ones.
+  if (window._navListenerController) window._navListenerController.abort();
+  window._navListenerController = new AbortController();
+
+  _initLangPicker(window._navListenerController.signal);
+  initNavBehavior(window._navListenerController.signal);
 }
 
-function initNavBehavior() {
+function initNavBehavior(signal) {
   const navbar = document.getElementById('navbar');
   const hamburger = document.getElementById('hamburger');
   const mobileMenu = document.getElementById('mobile-menu');
@@ -894,7 +900,7 @@ function initNavBehavior() {
   const onScroll = () => {
     navbar.classList.toggle('nav--scrolled', window.scrollY > 40);
   };
-  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('scroll', onScroll, { passive: true, signal });
   onScroll();
 
   // bfcache / history restore: reset all menu + lock state.
@@ -908,7 +914,7 @@ function initNavBehavior() {
       hamburger.style.opacity = '';
       hamburger.style.pointerEvents = '';
     }
-  });
+  }, { signal });
 
   // Theme toggle
   if (themeBtn) {
@@ -953,11 +959,11 @@ function initNavBehavior() {
           if (document.activeElement === last) { event.preventDefault(); first.focus(); }
         }
       }
-    });
+    }, { signal });
 
     window.addEventListener('resize', () => {
       if (window.innerWidth > NAV_COLLAPSE_WIDTH) closeMenu();
-    }, { passive: true });
+    }, { passive: true, signal });
   }
 }
 

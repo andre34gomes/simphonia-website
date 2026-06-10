@@ -22,11 +22,11 @@ function _initSubpageAnimations() {
 
 // ── 12. SUB-PAGE HERO PARALLAX ───────────────────────────
 function _subpageHeroParallax() {
-  var heroes = document.querySelectorAll('.about-hero, .destinations-hero, .support-hero, .legal-hero');
+  const heroes = document.querySelectorAll('.about-hero, .destinations-hero, .support-hero, .legal-hero');
   heroes.forEach(function (hero) {
-    var h1 = hero.querySelector('h1');
-    var p = hero.querySelector('p');
-    var label = hero.querySelector('.label');
+    const h1 = hero.querySelector('h1');
+    const p = hero.querySelector('p');
+    const label = hero.querySelector('.label');
 
     if (label) {
       gsap.fromTo(label,
@@ -47,14 +47,14 @@ function _subpageHeroParallax() {
       );
     }
 
-    var searchBar = hero.querySelector('.search-bar');
+    const searchBar = hero.querySelector('.search-bar');
     if (searchBar) {
       gsap.fromTo(searchBar,
         { autoAlpha: 0, y: 20 },
         { autoAlpha: 1, y: 0, duration: 0.6, delay: 0.5, ease: 'power3.out' }
       );
     }
-    var filterTabs = hero.querySelector('.filter-tabs');
+    const filterTabs = hero.querySelector('.filter-tabs');
     if (filterTabs) {
       gsap.fromTo(filterTabs,
         { autoAlpha: 0, y: 20 },
@@ -62,7 +62,7 @@ function _subpageHeroParallax() {
       );
     }
 
-    var scrollIndicator = hero.querySelector('.hero__scroll');
+    const scrollIndicator = hero.querySelector('.hero__scroll');
     if (scrollIndicator) {
       gsap.fromTo(scrollIndicator,
         { autoAlpha: 0, y: 12 },
@@ -74,15 +74,15 @@ function _subpageHeroParallax() {
 
 // ── 13. ABOUT STORY SLIDE-IN ─────────────────────────────
 function _aboutStorySlideIn() {
-  var stories = document.querySelectorAll('.about-story');
+  const stories = document.querySelectorAll('.about-story');
   if (!stories.length) return;
 
   stories.forEach(function (story, i) {
     story.classList.remove('reveal');
 
-    var img = story.querySelector('.about-story__img');
-    var textBlock = Array.from(story.children).find(function (c) { return c !== img; });
-    var isEven = i % 2 === 0;
+    const img = story.querySelector('.about-story__img');
+    const textBlock = Array.from(story.children).find(function (c) { return c !== img; });
+    const isEven = i % 2 === 0;
 
     if (img) {
       gsap.fromTo(img,
@@ -116,7 +116,7 @@ function _aboutStorySlideIn() {
 
 // ── 14. VALUE CARDS 3D ───────────────────────────────────
 function _valueCards3D() {
-  var cards = document.querySelectorAll('.value-card');
+  const cards = document.querySelectorAll('.value-card');
   if (!cards.length) return;
 
   cards.forEach(function (card) { card.classList.remove('reveal'); });
@@ -143,12 +143,12 @@ function _valueCards3D() {
   });
 
   // Cache the hovered card's rect to avoid layout thrashing on every mousemove
-  var _hoveredValueCard = null;
-  var _hoveredValueRect = null;
+  let _hoveredValueCard = null;
+  let _hoveredValueRect = null;
 
   document.addEventListener('mouseover', function (e) {
     if (!e.target || typeof e.target.closest !== 'function') return;
-    var card = e.target.closest('.value-card');
+    const card = e.target.closest('.value-card');
     if (!card) return;
     _hoveredValueCard = card;
     _hoveredValueRect = card.getBoundingClientRect();
@@ -157,7 +157,7 @@ function _valueCards3D() {
 
   document.addEventListener('mouseout', function (e) {
     if (!e.target || typeof e.target.closest !== 'function') return;
-    var card = e.target.closest('.value-card');
+    const card = e.target.closest('.value-card');
     if (!card) return;
     if (_hoveredValueCard === card) { _hoveredValueCard = null; _hoveredValueRect = null; }
     gsap.to(card, { scale: 1, rotateX: 0, rotateY: 0, transformPerspective: 800, duration: 0.4, ease: 'power2.out' });
@@ -166,17 +166,17 @@ function _valueCards3D() {
   document.addEventListener('mousemove', function (e) {
     if (!_hoveredValueCard || !_hoveredValueRect) return;
     if (!e.target || typeof e.target.closest !== 'function') return;
-    var card = e.target.closest('.value-card');
+    const card = e.target.closest('.value-card');
     if (card !== _hoveredValueCard) return;
-    var x = (e.clientX - _hoveredValueRect.left) / _hoveredValueRect.width - 0.5;
-    var y = (e.clientY - _hoveredValueRect.top) / _hoveredValueRect.height - 0.5;
+    const x = (e.clientX - _hoveredValueRect.left) / _hoveredValueRect.width - 0.5;
+    const y = (e.clientY - _hoveredValueRect.top) / _hoveredValueRect.height - 0.5;
     gsap.to(_hoveredValueCard, { rotateY: x * 12, rotateX: -y * 12, transformPerspective: 800, duration: 0.3, ease: 'power2.out' });
   }, { passive: true });
 }
 
 // ── 15. TEAM CARDS STAGGER ───────────────────────────────
 function _teamCardsStagger() {
-  var cards = document.querySelectorAll('.team-card');
+  const cards = document.querySelectorAll('.team-card');
   if (!cards.length) return;
 
   cards.forEach(function (card) { card.classList.remove('reveal'); });
@@ -197,21 +197,21 @@ function _teamCardsStagger() {
 
 // ── 16. DESTINATION CARDS HOVER 3D ───────────────────────
 function _destCardsHover3D() {
-  var cards = document.querySelectorAll('.dest-card, .dest-grid-card');
+  const cards = document.querySelectorAll('.dest-card, .dest-grid-card');
   if (!cards.length) return;
 
   cards.forEach(function (card) { card.style.transformStyle = 'preserve-3d'; });
 
-  var SEL = '.dest-card, .dest-grid-card';
+  const SEL = '.dest-card, .dest-grid-card';
 
   // Cache the hovered card's bounding rect so mousemove doesn't force
   // repeated layout reflows via getBoundingClientRect().
-  var _hoveredCard = null;
-  var _hoveredRect = null;
+  let _hoveredCard = null;
+  let _hoveredRect = null;
 
   document.addEventListener('mouseover', function (e) {
     if (!e.target || typeof e.target.closest !== 'function') return;
-    var card = e.target.closest(SEL);
+    const card = e.target.closest(SEL);
     if (!card) return;
     _hoveredCard = card;
     _hoveredRect = card.getBoundingClientRect(); // one reflow on enter, not per-move
@@ -220,7 +220,7 @@ function _destCardsHover3D() {
 
   document.addEventListener('mouseout', function (e) {
     if (!e.target || typeof e.target.closest !== 'function') return;
-    var card = e.target.closest(SEL);
+    const card = e.target.closest(SEL);
     if (!card) return;
     if (_hoveredCard === card) { _hoveredCard = null; _hoveredRect = null; }
     gsap.to(card, { scale: 1, y: 0, rotateX: 0, rotateY: 0, transformPerspective: 800, duration: 0.4, ease: 'power2.out' });
@@ -229,23 +229,23 @@ function _destCardsHover3D() {
   document.addEventListener('mousemove', function (e) {
     if (!e.target || typeof e.target.closest !== 'function') return;
     if (!_hoveredCard || !_hoveredRect) return;
-    var card = e.target.closest(SEL);
+    const card = e.target.closest(SEL);
     if (card !== _hoveredCard) return;
-    var x = (e.clientX - _hoveredRect.left) / _hoveredRect.width - 0.5;
-    var y = (e.clientY - _hoveredRect.top) / _hoveredRect.height - 0.5;
+    const x = (e.clientX - _hoveredRect.left) / _hoveredRect.width - 0.5;
+    const y = (e.clientY - _hoveredRect.top) / _hoveredRect.height - 0.5;
     gsap.to(_hoveredCard, { rotateY: x * 10, rotateX: -y * 8, transformPerspective: 800, duration: 0.3, ease: 'power2.out' });
   }, { passive: true });
 }
 
 // ── 17. CTA SECTION REVEAL ───────────────────────────────
 function _ctaSectionReveal() {
-  var ctas = document.querySelectorAll('.cta-section');
+  const ctas = document.querySelectorAll('.cta-section');
   ctas.forEach(function (cta) {
-    var inner = cta.querySelector('.container');
+    const inner = cta.querySelector('.container');
     if (!inner) return;
 
-    var revealChildren = inner.querySelectorAll('.reveal, .reveal--scale');
-    var triggered = false;
+    const revealChildren = inner.querySelectorAll('.reveal, .reveal--scale');
+    let triggered = false;
 
     function trigger() {
       if (triggered) return;
@@ -283,7 +283,7 @@ function _ctaSectionReveal() {
 
 // ── 19b. HOW-IT-WORKS TIMELINE ───────────────────────────
 function _howItWorksTimeline() {
-  var track = document.querySelector('.timeline__track');
+  const track = document.querySelector('.timeline__track');
   if (!track) return;
 
   gsap.fromTo(track,
@@ -327,20 +327,20 @@ function _howItWorksTimeline() {
 
 // ── 20. NUMBER COUNT-UP ──────────────────────────────────
 function _numberCountUp() {
-  var numEls = document.querySelectorAll('[data-count-up]');
+  const numEls = document.querySelectorAll('[data-count-up]');
   if (!numEls.length) return;
 
   numEls.forEach(function (el) {
-    var target = parseFloat(el.dataset.countUp);
-    var suffix = el.dataset.suffix || '';
-    var decimals = target % 1 !== 0 ? 1 : 0;
+    const target = parseFloat(el.dataset.countUp);
+    const suffix = el.dataset.suffix || '';
+    const decimals = target % 1 !== 0 ? 1 : 0;
 
     ScrollTrigger.create({
       trigger: el,
       start: 'top 85%',
       once: true,
       onEnter: function () {
-        var obj = { val: 0 };
+        const obj = { val: 0 };
         gsap.to(obj, {
           val: target, duration: 2, ease: 'power2.out',
           onUpdate: function () { el.textContent = obj.val.toFixed(decimals) + suffix; },

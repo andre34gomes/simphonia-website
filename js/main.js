@@ -118,7 +118,7 @@ function revealGsapFallbacks() {
   });
 
   // Also kick off typing effect if it hasn't started
-  var typingEl = document.getElementById('typing-text');
+  const typingEl = document.getElementById('typing-text');
   if (typingEl && !typingEl.textContent) {
     initHeroTyping();
   }
@@ -193,8 +193,8 @@ async function bootstrapSite() {
 // ============================================================
 function populateShowcaseTemplates() {
   // ── Clone hero background into showcase section ──
-  var heroBg = document.querySelector('.hero-postcard__bg:not(.hero-postcard__bg--showcase)');
-  var showcaseBg = document.getElementById('showcase-bg');
+  const heroBg = document.querySelector('.hero-postcard__bg:not(.hero-postcard__bg--showcase)');
+  const showcaseBg = document.getElementById('showcase-bg');
   if (heroBg && showcaseBg) {
     Array.from(heroBg.children).forEach(function (child) {
       showcaseBg.appendChild(child.cloneNode(true));
@@ -202,7 +202,7 @@ function populateShowcaseTemplates() {
   }
 
   // ── Stamp iOS status bar into every [data-sas-status] placeholder ──
-  var STATUS_HTML =
+  const STATUS_HTML =
     '<span class="sas-time">9:41</span>' +
     '<div class="sas-icons">' +
     '<svg viewBox="0 0 24 24" fill="#fff"><rect x="1" y="14" width="3" height="6" rx="1"/><rect x="6" y="10" width="3" height="10" rx="1"/><rect x="11" y="6" width="3" height="14" rx="1"/></svg>' +
@@ -215,7 +215,7 @@ function populateShowcaseTemplates() {
   });
 
   // ── Stamp bottom nav bar into every [data-sas-nav] placeholder ──
-  var NAV_ITEMS = [
+  const NAV_ITEMS = [
     { icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>', i18nKey: 'home.showcase.navHome', label: 'Home', idx: 0 },
     { icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>', i18nKey: 'home.showcase.navBrowse', label: 'Browse', idx: 1 },
     { icon: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="5" y="2" width="14" height="20" rx="2"/><circle cx="12" cy="17" r="1" fill="currentColor"/></svg>', i18nKey: 'home.showcase.navMyEsims', label: 'My eSIMs', idx: 2 },
@@ -223,9 +223,9 @@ function populateShowcaseTemplates() {
   ];
 
   document.querySelectorAll('[data-sas-nav]').forEach(function (el) {
-    var activeIdx = parseInt(el.getAttribute('data-sas-nav'), 10);
+    const activeIdx = parseInt(el.getAttribute('data-sas-nav'), 10);
     el.innerHTML = NAV_ITEMS.map(function (item) {
-      var cls = item.idx === activeIdx ? 'sas-nav-item sas-nav-item--on' : 'sas-nav-item';
+      const cls = item.idx === activeIdx ? 'sas-nav-item sas-nav-item--on' : 'sas-nav-item';
       return '<div class="' + cls + '"><span class="sas-nav-icon">' + item.icon + '</span><span data-i18n="' + item.i18nKey + '">' + item.label + '</span></div>';
     }).join('');
   });
@@ -262,7 +262,7 @@ window.initDestinationsMarquee = function initDestinationsMarquee() {
   const API_BASE = (window.SIMPHONIA_API && window.SIMPHONIA_API.base) || 'https://api.simphonia.pt';
 
   // getGuestToken() is provided by js/auth.js (loaded before main.js) via window.getGuestToken
-  var getGuestToken = window.getGuestToken;
+  const getGuestToken = window.getGuestToken;
 
   function populateLists(countries) {
     const lists = strip.querySelectorAll('.marquee-list');
@@ -270,7 +270,7 @@ window.initDestinationsMarquee = function initDestinationsMarquee() {
 
     // Sanitize text to prevent XSS when injecting API data via innerHTML
     function escapeHtml(str) {
-      var div = document.createElement('div');
+      const div = document.createElement('div');
       div.textContent = str;
       return div.innerHTML;
     }
@@ -355,7 +355,7 @@ window.initDestinationsMarquee = function initDestinationsMarquee() {
 
   // Only run the animation loop when the strip is visible on screen.
   if ('IntersectionObserver' in window) {
-    var stripObserver = new IntersectionObserver(function (entries) {
+    const stripObserver = new IntersectionObserver(function (entries) {
       stripVisible = entries[0].isIntersecting;
       if (stripVisible) {
         startLoop();
@@ -450,22 +450,22 @@ window.initDestinationsMarquee = function initDestinationsMarquee() {
 
   // Respect Save-Data / data-saver preference — skip the API call entirely
   // on metered connections to conserve bandwidth.
-  var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
   if (conn && (conn.saveData || conn.effectiveType === 'slow-2g')) {
     // Strip stays hidden — no extra network request on metered connections
     return;
   }
 
-  var RETRY_COUNT = 2;
-  var RETRY_DELAY = 3000; // ms
+  const RETRY_COUNT = 2;
+  const RETRY_DELAY = 3000; // ms
 
   function fetchCountries(attempt) {
     attempt = attempt || 0;
-    var lang = getCurrentLang();
+    const lang = getCurrentLang();
     getGuestToken()
       .then(function (token) {
-        var controller = new AbortController();
-        var tid = setTimeout(function () { controller.abort(); }, 10000);
+        const controller = new AbortController();
+        const tid = setTimeout(function () { controller.abort(); }, 10000);
         return fetch(
           API_BASE + '/api/v1/countries/all?currency=EUR&lang=' + lang,
           { headers: { Authorization: 'Bearer ' + token }, signal: controller.signal }
@@ -492,16 +492,16 @@ window.initDestinationsMarquee = function initDestinationsMarquee() {
   fetchCountries();
 
   // Track the language used for the last marquee fetch
-  var _lastMarqueeLang = getCurrentLang();
+  let _lastMarqueeLang = getCurrentLang();
 
   // Re-fetch marquee countries when the language changes
   document.addEventListener('simphonia:langchange', function () {
-    var newLang = getCurrentLang();
+    const newLang = getCurrentLang();
     if (newLang === _lastMarqueeLang) return;
     _lastMarqueeLang = newLang;
 
     // Clear existing marquee content
-    var lists = strip.querySelectorAll('.marquee-list');
+    const lists = strip.querySelectorAll('.marquee-list');
     lists.forEach(function (ul) { ul.innerHTML = ''; });
     strip.style.display = 'none';
     // Fetch with the new language
@@ -666,7 +666,7 @@ function initStars() {
   if (getComputedStyle(canvas).display === 'none') return;
 
   // Respect data-saver preference on desktop too
-  var conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  const conn = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
   if (conn && conn.saveData) return;
 
   const ctx = canvas.getContext('2d');
@@ -687,12 +687,12 @@ function initStars() {
   );
 
   function resize() {
-    var oldW = w, oldH = h;
+    const oldW = w, oldH = h;
     w = canvas.width = window.innerWidth;
     h = canvas.height = window.innerHeight;
     // Redistribute stars that fall outside new bounds (e.g. window grew)
     if (stars.length && (w > oldW || h > oldH)) {
-      for (var i = 0; i < stars.length; i++) {
+      for (let i = 0; i < stars.length; i++) {
         if (stars[i].x > w) stars[i].x = Math.random() * w;
         if (stars[i].y > h) stars[i].y = Math.random() * h;
       }
@@ -760,7 +760,7 @@ function initStars() {
   });
 
   // Pause/resume if the user toggles reduced-motion in OS settings mid-session
-  var reducedMotionMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
+  const reducedMotionMQ = window.matchMedia('(prefers-reduced-motion: reduce)');
   reducedMotionMQ.addEventListener('change', function (e) {
     if (e.matches) { stopDraw(); }
     else if (isCanvasVisible && !document.hidden) { startDraw(); }
@@ -827,13 +827,14 @@ function initHeroTyping() {
   let pausedByVisibility = false;
 
   function getTypingPhrases() {
-    var translated = window.t('home.hero.typingPhrases');
+    const translated = window.t('home.hero.typingPhrases');
     if (Array.isArray(translated)) return translated;
     // t() returns the key itself if the translation isn't an array (shouldn't happen)
     return [];
   }
 
   let phrases = getTypingPhrases();
+  if (!phrases.length) return; // no phrases available — skip typing effect
 
   const TYPING_SPEED = 100;   // ms per character (typing)
   const DELETING_SPEED = 50;   // ms per character (deleting)
@@ -900,6 +901,7 @@ function initHeroTyping() {
     if (timer) { clearTimeout(timer); timer = null; }
     // Reload phrases with new language
     phrases = getTypingPhrases();
+    if (!phrases.length) return; // no phrases for new language
     // Reset state and restart from the beginning
     phraseIndex = 0;
     charIndex = 0;

@@ -23,7 +23,7 @@
   function loadFallback(globalSymbol, localPath) {
     if (typeof window[globalSymbol] !== 'undefined') return; // CDN loaded fine
 
-    var script = document.createElement('script');
+    const script = document.createElement('script');
     script.src = localPath;
     script.async = false; // preserve execution order
     script.onerror = function () {
@@ -47,4 +47,3 @@
   }
   window.addEventListener('load', runFallbacks, { once: true });
 })();
-

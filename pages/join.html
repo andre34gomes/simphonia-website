@@ -23,21 +23,21 @@
   </section>
   <script>
     (function() {
-      var params = new URLSearchParams(window.location.search);
-      var code = params.get('code') || '';
-      var codeEl = document.getElementById('join-referral-code');
+      const params = new URLSearchParams(window.location.search);
+      const code = params.get('code') || '';
+      const codeEl = document.getElementById('join-referral-code');
       if (code && code.length <= 32 && /^[a-zA-Z0-9_-]+$/.test(code) && codeEl) {
         codeEl.textContent = code;
         codeEl.style.display = 'inline-block';
       }
-      var ua = navigator.userAgent || '';
-      var isMobile = /android|iphone|ipad|ipod/i.test(ua);
-      var isIOS = /iphone|ipad|ipod/i.test(ua);
+      const ua = navigator.userAgent || '';
+      const isMobile = /android|iphone|ipad|ipod/i.test(ua);
+      const isIOS = /iphone|ipad|ipod/i.test(ua);
       if (isMobile && code) {
         window.location.href = 'simphonia://app/join?code=' + encodeURIComponent(code);
         setTimeout(function() {
-          var fallback = document.getElementById('join-fallback');
-          var storeBtn = document.getElementById('join-store-btn');
+          const fallback = document.getElementById('join-fallback');
+          const storeBtn = document.getElementById('join-store-btn');
           if (fallback) fallback.style.display = 'block';
           if (storeBtn) {
             storeBtn.style.display = 'inline-block';
@@ -46,10 +46,10 @@
           }
         }, 1500);
       } else if (code) {
-        var joinUrl = 'https://simphonia.pt/join?code=' + encodeURIComponent(code);
-        var qrImg = document.getElementById('join-qr-code');
+        const joinUrl = 'https://simphonia.pt/join?code=' + encodeURIComponent(code);
+        const qrImg = document.getElementById('join-qr-code');
         if (qrImg) qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=' + encodeURIComponent(joinUrl) + '&format=png&margin=8';
-        var desktop = document.getElementById('join-desktop');
+        const desktop = document.getElementById('join-desktop');
         if (desktop) desktop.style.display = 'block';
       }
     })();

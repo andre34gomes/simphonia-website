@@ -25,7 +25,9 @@ function createPage(pageName) {
     setAttribute() {},
     getAttribute(name) {
       return name === 'data-page' ? pageName : null;
-    }
+    },
+    // Router calls focus() after showing a page for accessibility
+    focus() {},
   };
 }
 
@@ -83,6 +85,11 @@ async function runRouterScenario(options) {
       if (tagName === 'div') {
         const tmp = {
           firstChild: null,
+          // querySelectorAll needed by router to strip <script> tags from injected HTML
+          querySelectorAll(selector) {
+            // In tests, partial HTML never contains <script> tags — return empty list
+            return { forEach: function() {} };
+          },
           set innerHTML(value) {
             if (/<html\b/i.test(value)) {
               this.firstChild = { tagName: 'HTML', style: {} };

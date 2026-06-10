@@ -12,7 +12,7 @@
  * Kept tiny on purpose — no dependencies, no module syntax.
  */
 (function () {
-  var t;
+  let t;
   try { t = localStorage.getItem('simphonia-theme'); } catch (e) {}
   if (t !== 'light' && t !== 'dark') {
     t = (typeof matchMedia === 'function' && matchMedia('(prefers-color-scheme: light)').matches)
@@ -21,8 +21,7 @@
   }
   document.documentElement.dataset.theme = t;
   if (t === 'light') {
-    var m = document.querySelector('meta[name="theme-color"]');
+    const m = document.querySelector('meta[name="theme-color"]');
     if (m) m.content = '#FEF9EE';
   }
 }());
-

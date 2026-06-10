@@ -16,21 +16,21 @@
 (function () {
   'use strict';
 
-  var LANG_KEY = 'simphonia-lang';
-  var SUPPORTED = [
+  const LANG_KEY = 'simphonia-lang';
+  const SUPPORTED = [
     'en', 'pt', 'es', 'fr', 'de', 'it', 'nl',
     'ja', 'zh', 'ko', 'ar', 'ru', 'tr', 'pl',
     'uk', 'hi', 'id', 'vi', 'cs', 'hu', 'fa',
   ];
-  var DEFAULT = 'en';
+  const DEFAULT = 'en';
 
-  var _data = {};
-  var _fallbackData = {};
-  var _lang = DEFAULT;
-  var _resolveReady;
-  var _initialLoadDone = false;
+  let _data = {};
+  let _fallbackData = {};
+  let _lang = DEFAULT;
+  let _resolveReady;
+  let _initialLoadDone = false;
 
-  var i18nReady = new Promise(function (resolve) {
+  const i18nReady = new Promise(function (resolve) {
     _resolveReady = resolve;
   });
 
@@ -39,17 +39,17 @@
   function detect() {
     // 1. Persisted user preference
     try {
-      var stored = localStorage.getItem(LANG_KEY);
+      const stored = localStorage.getItem(LANG_KEY);
       if (stored && SUPPORTED.indexOf(stored) !== -1) return stored;
     } catch (_) {}
 
     // 2. Browser language list
-    var langs = (navigator.languages && navigator.languages.length)
+    const langs = (navigator.languages && navigator.languages.length)
       ? Array.prototype.slice.call(navigator.languages)
       : [navigator.language || DEFAULT];
 
-    for (var i = 0; i < langs.length; i++) {
-      var code = langs[i].split('-')[0].toLowerCase();
+    for (let i = 0; i < langs.length; i++) {
+      const code = langs[i].split('-')[0].toLowerCase();
       if (SUPPORTED.indexOf(code) !== -1) return code;
     }
 
@@ -63,9 +63,9 @@
   }
 
   function lookupFrom(source, key) {
-    var parts = key.split('.');
-    var cur = source;
-    for (var i = 0; i < parts.length; i++) {
+    const parts = key.split('.');
+    let cur = source;
+    for (let i = 0; i < parts.length; i++) {
       if (cur == null || typeof cur !== 'object') return undefined;
       cur = cur[parts[i]];
     }
@@ -78,11 +78,11 @@
    * Returns undefined when no translation exists.
    */
   function t(key, vars) {
-    var cur = lookup(key);
+    let cur = lookup(key);
     if (cur === '' || cur == null) cur = lookupFrom(_fallbackData, key);
     if (cur == null) return undefined;
     if (typeof cur !== 'string') return cur;
-    var str = String(cur);
+    let str = String(cur);
     if (vars) {
       Object.keys(vars).forEach(function (k) {
         str = str.replace(new RegExp('\\{' + k + '\\}', 'g'), vars[k]);
@@ -93,17 +93,17 @@
 
   // ── DOM application ─────────────────────────────────────────────────────
 
-  var RTL_LANGS = ['ar', 'fa'];
+  const RTL_LANGS = ['ar', 'fa'];
 
   function textValue(key) {
-    var value = t(key);
+    const value = t(key);
     return typeof value === 'string' ? value : '';
   }
 
   function applyTranslatedAttribute(selector, attributeName) {
     document.querySelectorAll(selector).forEach(function (el) {
-      var key = el.getAttribute(selector.slice(1, -1));
-      var value = textValue(key);
+      const key = el.getAttribute(selector.slice(1, -1));
+      const value = textValue(key);
       if (attributeName === 'textContent') {
         el.textContent = value;
         return;
@@ -150,11 +150,11 @@
     applyTranslatedAttribute('[data-i18n-value]', 'value');
 
     // Update language switcher state (if already in DOM)
-    var picker = document.getElementById('lang-picker-btn');
+    const picker = document.getElementById('lang-picker-btn');
     if (picker) {
         picker.setAttribute('aria-label', textValue('lang.select') + ': ' + _lang.toUpperCase());
     }
-    var menu = document.getElementById('lang-picker-menu');
+    const menu = document.getElementById('lang-picker-menu');
     if (menu) {
       menu.querySelectorAll('.lang-picker__option').forEach(function (opt) {
         opt.classList.toggle('lang-picker__option--active', opt.dataset.lang === _lang);
@@ -183,7 +183,7 @@
     // SPA mode: always use absolute root path
     if (window.__SPA_MODE || typeof window.getBasePath === 'function') return '/';
     // Fallback for standalone pages (e.g. 404.html)
-    var p = window.location.pathname;
+    const p = window.location.pathname;
     if (p === '/' || p === '/index.html') return './';
     return /\/(destinations|how-it-works|support|about|privacy|terms)(\/|\/index\.html)?$/.test(p)
       ? '../' : './';
@@ -192,8 +192,8 @@
   // ── Fetch + apply translations ──────────────────────────────────────────
 
   function load(lang) {
-    var url = basePath() + 'js/i18n/' + lang + '.json?v=20260403';
-    var fetchJson = function (targetUrl) {
+    const url = basePath() + 'js/i18n/' + lang + '.json?v=20260403';
+    const fetchJson = function (targetUrl) {
       return fetch(targetUrl)
         .then(function (res) {
         if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -201,7 +201,7 @@
         });
     };
 
-    var fallbackPromise = lang === DEFAULT
+    const fallbackPromise = lang === DEFAULT
       ? Promise.resolve(null)
       : fetchJson(basePath() + 'js/i18n/' + DEFAULT + '.json?v=20260403')
         .catch(function (err) {
@@ -211,8 +211,8 @@
 
     return Promise.all([fetchJson(url), fallbackPromise])
       .then(function (results) {
-        var data = results[0];
-        var fallbackData = results[1];
+        const data = results[0];
+        const fallbackData = results[1];
         _data = data;
         _fallbackData = fallbackData || data;
         _lang = lang;

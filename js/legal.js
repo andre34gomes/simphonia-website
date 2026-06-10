@@ -12,22 +12,22 @@
 'use strict';
 
 (function () {
-  var API_BASE = (window.SIMPHONIA_API && window.SIMPHONIA_API.base) || 'https://api.simphonia.pt';
+  const API_BASE = (window.SIMPHONIA_API && window.SIMPHONIA_API.base) || 'https://api.simphonia.pt';
 
   /**
    * Fetch a legal document from the API and render it into the page.
    * @param {'terms'|'privacy'} type
    */
   function loadLegalDocument(type) {
-    var page      = document.querySelector('[data-page="' + type + '"]');
+    const page      = document.querySelector('[data-page="' + type + '"]');
     if (!page) return;
 
-    var container = page.querySelector('.legal-prose');
-    var tocNav    = page.querySelector('.legal-toc__list');
-    var heroDate  = page.querySelector('[data-legal-date]');
-    var heroLabel = page.querySelector('[data-legal-hero-label]');
-    var heroH1    = page.querySelector('[data-legal-hero-h1]');
-    var heroH2    = page.querySelector('[data-legal-hero-h2]');
+    const container = page.querySelector('.legal-prose');
+    const tocNav    = page.querySelector('.legal-toc__list');
+    const heroDate  = page.querySelector('[data-legal-date]');
+    const heroLabel = page.querySelector('[data-legal-hero-label]');
+    const heroH1    = page.querySelector('[data-legal-hero-h1]');
+    const heroH2    = page.querySelector('[data-legal-hero-h2]');
 
     if (!container) return;
 
@@ -75,7 +75,7 @@
         '<button class="btn btn--primary btn--sm" data-legal-retry="' + escapeAttr(type) + '">Retry</button>' +
       '</div>';
 
-    var retryBtn = container.querySelector('[data-legal-retry]');
+    const retryBtn = container.querySelector('[data-legal-retry]');
     if (retryBtn) {
       retryBtn.addEventListener('click', function () {
         loadLegalDocument(type);
@@ -97,7 +97,7 @@
     if (tocNav) {
       tocNav.innerHTML = '';
       doc.sections.forEach(function (section) {
-        var a = document.createElement('a');
+        const a = document.createElement('a');
         a.href = '#' + section.id;
         a.className = 'legal-toc__link';
         a.textContent = section.title;
@@ -106,7 +106,7 @@
     }
 
     // Build content
-    var html = '';
+    let html = '';
 
     // Intro
     html += '<p>' + escapeHtml(doc.intro) + '</p>';
@@ -138,27 +138,77 @@
   function renderBlock(block) {
     switch (block.type) {
       case 'heading':
-        var tag = 'h' + (block.level || 3);
+        const tag = 'h' + (block.level || 3);
         return '<' + tag + '>' + escapeHtml(block.text || '') + '</' + tag + '>';
 
       case 'list':
-        var items = (block.items || []).map(function (item) {
+        const items = (block.items || []).map(function (item) {
           return '<li>' + escapeHtml(item) + '</li>';
         }).join('');
         return '<ul>' + items + '</ul>';
 
       case 'paragraph':
       default:
-        // Use html field if present (may contain links), otherwise use text
+        // Use html field if present (may contain links), otherwise use text.
+        // The html field is sanitized to only allow safe inline markup.
         if (block.html) {
-          return '<p>' + block.html + '</p>';
+          return '<p>' + sanitizeLegalHtml(block.html) + '</p>';
         }
         return '<p>' + escapeHtml(block.text || '') + '</p>';
     }
   }
 
+  /**
+   * Sanitizes a trusted-but-defense-in-depth HTML string to only allow
+   * safe inline tags: <a href>, <strong>, <em>, <code>.
+   * All other elements and attributes are stripped.
+   */
+  function sanitizeLegalHtml(html) {
+    const template = document.createElement('template');
+    template.innerHTML = html;
+    const walker = document.createTreeWalker(
+      template.content,
+      NodeFilter.SHOW_ELEMENT,
+      null
+    );
+    const nodesToRemove = [];
+    let node;
+    while ((node = walker.nextNode())) {
+      const tag = node.tagName.toLowerCase();
+      if (tag === 'a') {
+        // Only allow http/https hrefs; strip all other attributes
+        const href = node.getAttribute('href') || '';
+        const isSafe = /^https?:\/\//i.test(href);
+        // Remove all attributes then restore safe href + rel
+        while (node.attributes.length > 0) {
+          node.removeAttribute(node.attributes[0].name);
+        }
+        if (isSafe) {
+          node.setAttribute('href', href);
+          node.setAttribute('rel', 'noopener noreferrer');
+        } else {
+          nodesToRemove.push(node);
+        }
+      } else if (tag === 'strong' || tag === 'em' || tag === 'code') {
+        // Strip all attributes but keep the element
+        while (node.attributes.length > 0) {
+          node.removeAttribute(node.attributes[0].name);
+        }
+      } else {
+        nodesToRemove.push(node);
+      }
+    }
+    // Replace disallowed elements with their text content
+    nodesToRemove.forEach(function (el) {
+      el.replaceWith(document.createTextNode(el.textContent || ''));
+    });
+    const div = document.createElement('div');
+    div.appendChild(template.content);
+    return div.innerHTML;
+  }
+
   function escapeHtml(str) {
-    var div = document.createElement('div');
+    const div = document.createElement('div');
     div.appendChild(document.createTextNode(str));
     return div.innerHTML;
   }
@@ -174,7 +224,7 @@
 
   /* ── Auto-init: load when router navigates to a legal page ─── */
   document.addEventListener('simphonia:navigate', function (e) {
-    var page = e.detail && e.detail.page;
+    const page = e.detail && e.detail.page;
     if (page === 'terms' || page === 'privacy') {
       // Small delay to ensure DOM partial is inserted
       setTimeout(function () { loadLegalDocument(page); }, 50);

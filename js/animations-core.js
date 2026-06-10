@@ -15,7 +15,7 @@
 /* ───────────────────────────────────────────────────────────
    Constants
    ─────────────────────────────────────────────────────────── */
-var SECTION_SPECIFIC_SEL =
+const SECTION_SPECIFIC_SEL =
   '.feat-card, .step-card, .bento-item, ' +
   '.faq-item, .team-card, .value-card, .dest-card, .dest-grid-card, ' +
   '.feature-card, .section-header';
@@ -47,8 +47,8 @@ function _st(trigger, startPct) {
 
 function _batchReveal(selector, fromVars, tweenVars, batchMax) {
   if (!document.querySelector(selector)) return;
-  var from = Object.assign({ clipPath: 'inset(0 0 100% 0)' }, fromVars);
-  var to = Object.assign({ clipPath: 'inset(0 0 0% 0)', overwrite: 'auto' }, tweenVars);
+  const from = Object.assign({ clipPath: 'inset(0 0 100% 0)' }, fromVars);
+  const to = Object.assign({ clipPath: 'inset(0 0 0% 0)', overwrite: 'auto' }, tweenVars);
   ScrollTrigger.batch(selector, {
     batchMax: batchMax || 4,
     onEnter: function (batch) {
@@ -64,7 +64,7 @@ function _batchReveal(selector, fromVars, tweenVars, batchMax) {
    ─────────────────────────────────────────────────────────── */
 function _waitForLibs() {
   return new Promise(function (resolve, reject) {
-    var start = Date.now();
+    const start = Date.now();
     (function check() {
       if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
         return resolve();
@@ -125,7 +125,7 @@ window.resetAnimations = function () {
 /* ───────────────────────────────────────────────────────────
    PUBLIC: initAnimations()
    ─────────────────────────────────────────────────────────── */
-var _animationsInitialized = false;
+let _animationsInitialized = false;
 
 function initAnimations() {
   if (_animationsInitialized) return;
@@ -153,7 +153,7 @@ function initAnimations() {
       // Determine which page is currently active so we only create
       // ScrollTriggers on visible elements (hidden elements have zero
       // dimensions and cause incorrect position calculations).
-      var _activePage = window.currentRoute || 'home';
+      const _activePage = window.currentRoute || 'home';
 
       // ── Home page animations ──
       if (_activePage === 'home' && typeof _initHomeAnimations === 'function') {
@@ -232,7 +232,7 @@ function _genericReveals() {
 function _insertDividersIn(root) {
   if (!root) return;
 
-  var children = Array.from(root.children).filter(function (el) {
+  const children = Array.from(root.children).filter(function (el) {
     return !el.classList.contains('section-divider');
   });
 
@@ -240,12 +240,12 @@ function _insertDividersIn(root) {
     if (i === 0) return;
     // Skip [data-page] wrapper divs — never insert between page containers
     if (el.hasAttribute('data-page')) return;
-    var tag = el.tagName.toLowerCase();
+    const tag = el.tagName.toLowerCase();
     if (tag !== 'section' && tag !== 'div' && tag !== 'article' && tag !== 'aside') return;
-    var prev = el.previousElementSibling;
+    const prev = el.previousElementSibling;
     if (prev && prev.classList.contains('section-divider')) return;
 
-    var div = document.createElement('div');
+    const div = document.createElement('div');
     div.className = 'section-divider';
     div.setAttribute('aria-hidden', 'true');
     div.innerHTML =
@@ -258,7 +258,7 @@ function _insertDividersIn(root) {
 
 function _sectionDividers() {
   // In SPA mode, insert dividers within each page container independently.
-  var pageContainers = document.querySelectorAll('[data-page]');
+  const pageContainers = document.querySelectorAll('[data-page]');
   if (pageContainers.length) {
     pageContainers.forEach(function (page) {
       _insertDividersIn(page);
@@ -272,17 +272,17 @@ function _sectionDividers() {
 // ── SECTION HEADER SPLIT ─────────────────────────────────
 function _sectionHeaderSplit() {
   document.querySelectorAll('.section-header').forEach(function (header) {
-    var label = header.querySelector('.label');
-    var h2 = header.querySelector('h2');
-    var p = header.querySelector('p');
+    const label = header.querySelector('.label');
+    const h2 = header.querySelector('h2');
+    const p = header.querySelector('p');
 
-    var targets = [label, h2, p].filter(Boolean);
+    const targets = [label, h2, p].filter(Boolean);
     if (!targets.length) return;
 
     header.classList.remove('reveal');
     gsap.set(targets, { clipPath: 'inset(0 0 100% 0)' });
 
-    var tl = gsap.timeline({
+    const tl = gsap.timeline({
       scrollTrigger: { trigger: header, start: 'top 86%', once: true },
       defaults: { ease: 'power2.out', overwrite: 'auto' },
     });
@@ -298,16 +298,16 @@ function _sectionHeaderSplit() {
 
 // ── FOOTER REVEAL ────────────────────────────────────────
 function _footerReveal() {
-  var footer = document.querySelector('.footer');
+  const footer = document.querySelector('.footer');
   if (!footer) return;
 
-  var elements = footer.querySelectorAll('.footer__brand, .footer__col, .footer__bottom');
+  const elements = footer.querySelectorAll('.footer__brand, .footer__col, .footer__bottom');
   if (!elements.length) return;
 
   // Initial state: hidden
   gsap.set(elements, { clipPath: 'inset(0 0 100% 0)' });
 
-  var triggered = false;
+  let triggered = false;
   function trigger() {
     if (triggered) return;
     triggered = true;
@@ -342,12 +342,12 @@ function _footerReveal() {
 function _magneticButtons() {
   if (!window.matchMedia('(hover: hover)').matches) return;
 
-  var SEL = '.btn--primary, .btn--outline';
-  var activeBtn = null; // track which button the mouse is currently inside
+  const SEL = '.btn--primary, .btn--outline';
+  let activeBtn = null; // track which button the mouse is currently inside
 
   document.addEventListener('mousemove', function (e) {
     if (!e.target || typeof e.target.closest !== 'function') return;
-    var btn = e.target.closest(SEL);
+    const btn = e.target.closest(SEL);
     if (!btn) {
       // If the mouse left a magnetic button, spring it back
       if (activeBtn) {
@@ -357,18 +357,17 @@ function _magneticButtons() {
       return;
     }
     activeBtn = btn;
-    var rect = btn.getBoundingClientRect();
-    var x = e.clientX - rect.left - rect.width / 2;
-    var y = e.clientY - rect.top - rect.height / 2;
+    const rect = btn.getBoundingClientRect();
+    const x = e.clientX - rect.left - rect.width / 2;
+    const y = e.clientY - rect.top - rect.height / 2;
     gsap.to(btn, { x: x * 0.15, y: y * 0.15, duration: 0.3, ease: 'power2.out', overwrite: 'auto' });
   }, { passive: true });
 
   document.addEventListener('mouseout', function (e) {
     if (!e.target || typeof e.target.closest !== 'function') return;
-    var btn = e.target.closest(SEL);
+    const btn = e.target.closest(SEL);
     if (!btn) return;
     gsap.to(btn, { x: 0, y: 0, duration: 0.5, ease: 'elastic.out(1, 0.4)' });
     if (activeBtn === btn) activeBtn = null;
   }, { passive: true });
 }
-

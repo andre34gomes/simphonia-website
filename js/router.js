@@ -14,11 +14,11 @@
 (function () {
   /* ── Route definitions ─────────────────────────────────────── */
   /** Timeout (ms) for fetching page partials via the router. */
-  var PAGE_FETCH_TIMEOUT_MS = 8000;
+  const PAGE_FETCH_TIMEOUT_MS = 8000;
 
   // Trailing-slash variants are intentionally omitted — resolveRoute()
   // normalises any path before lookup, so a single entry per route suffices.
-  var ROUTES = {
+  const ROUTES = {
     '/':             { page: 'home',         titleKey: 'page.titles.home',         descriptionKey: 'page.descriptions.home' },
     '/destinations': { page: 'destinations', titleKey: 'page.titles.destinations', descriptionKey: 'page.descriptions.destinations' },
     '/how-it-works': { page: 'how-it-works', titleKey: 'page.titles.howItWorks',   descriptionKey: 'page.descriptions.howItWorks' },
@@ -32,31 +32,23 @@
     '/open-in-app':     { page: 'open-in-app',     titleKey: 'page.titles.openInApp',      descriptionKey: 'page.descriptions.openInApp', robots: 'noindex, nofollow' },
   };
 
-  var NOT_FOUND_ROUTE = {
+  const NOT_FOUND_ROUTE = {
     page: 'not-found',
     titleKey: 'page.titles.notFound',
     descriptionKey: 'page.descriptions.notFound',
     robots: 'noindex, follow'
   };
 
-  /* Page slug → candidate HTML partial paths (preferred first) */
-  var PAGE_PARTIALS = {
-    'home':         ['/pages/home', '/pages/home.html'],
-    'destinations': ['/pages/destinations', '/pages/destinations.html'],
-    'how-it-works': ['/pages/how-it-works', '/pages/how-it-works.html'],
-    'support':      ['/pages/support', '/pages/support.html'],
-    'about':        ['/pages/about', '/pages/about.html'],
-    'privacy':      ['/pages/privacy', '/pages/privacy.html'],
-    'terms':        ['/pages/terms', '/pages/terms.html'],
-    'join':           ['/pages/join', '/pages/join.html'],
-    'verify-email':   ['/pages/verify-email', '/pages/verify-email.html'],
-    'reset-password': ['/pages/reset-password', '/pages/reset-password.html'],
-    'open-in-app':    ['/pages/open-in-app', '/pages/open-in-app.html'],
-    'not-found':      ['/pages/not-found', '/pages/not-found.html'],
-  };
+  /* Page slug → candidate HTML partial paths (derived from ROUTES) */
+  const PAGE_PARTIALS = {};
+  Object.keys(ROUTES).forEach(function (path) {
+    const page = ROUTES[path].page;
+    PAGE_PARTIALS[page] = ['/pages/' + page, '/pages/' + page + '.html'];
+  });
+  PAGE_PARTIALS['not-found'] = ['/pages/not-found', '/pages/not-found.html'];
 
   /* Nav link mapping: page name → nav href for active state */
-  var NAV_LINKS = {
+  const NAV_LINKS = {
     'home':         '/',
     'destinations': '/destinations/',
     'how-it-works': '/how-it-works/',
@@ -65,21 +57,21 @@
   };
 
   /* ── State ─────────────────────────────────────────────────── */
-  var currentPage = null;
-  var currentPath = null;
-  var _pageInitialized = {}; // tracks which page-specific inits have run
-  var _pageLoadPromises = {}; // inflight fetch promises keyed by pageName
+  let currentPage = null;
+  let currentPath = null;
+  let _pageInitialized = {}; // tracks which page-specific inits have run
+  const _pageLoadPromises = {}; // inflight fetch promises keyed by pageName
 
   /* ── Helpers ───────────────────────────────────────────────── */
   function resolveRoute(path) {
     // Strip query/hash fragments first, then trailing slashes (except root)
-    var clean = path.split('#')[0].split('?')[0] || '/';
-    var normalized = clean === '/' ? '/' : clean.replace(/\/+$/, '');
+    const clean = path.split('#')[0].split('?')[0] || '/';
+    const normalized = clean === '/' ? '/' : clean.replace(/\/+$/, '');
     return ROUTES[normalized] || null;
   }
 
   function normalizePath(path) {
-    var clean = (path || '/').split('#')[0].split('?')[0] || '/';
+    const clean = (path || '/').split('#')[0].split('?')[0] || '/';
     // Strip trailing slashes (except root) — mirrors resolveRoute()
     return clean === '/' ? '/' : clean.replace(/\/+$/, '');
   }
@@ -90,7 +82,7 @@
 
   function translateText(key) {
     if (typeof window.t !== 'function') return '';
-    var value = window.t(key);
+    const value = window.t(key);
     return typeof value === 'string' ? value : '';
   }
 
@@ -99,7 +91,7 @@
    * Creates the live region on first use (hidden, polite).
    */
   function announceRouteChange(pageTitle) {
-    var liveRegion = document.getElementById('route-announcer');
+    let liveRegion = document.getElementById('route-announcer');
     if (!liveRegion) {
       liveRegion = document.createElement('div');
       liveRegion.id = 'route-announcer';
@@ -112,19 +104,22 @@
     // Clear then set to ensure the announcement fires even if text is similar
     liveRegion.textContent = '';
     setTimeout(function () {
-      liveRegion.textContent = pageTitle ? 'Navigated to ' + pageTitle : 'Page changed';
+      const navigatedTo = translateText('aria.navigatedTo');
+      liveRegion.textContent = pageTitle
+        ? (navigatedTo || 'Navigated to') + ' ' + pageTitle
+        : translateText('aria.pageChanged') || 'Page changed';
     }, 100);
   }
 
   function getPagePartialCandidates(pageName) {
-    var entry = PAGE_PARTIALS[pageName];
+    const entry = PAGE_PARTIALS[pageName];
     if (!entry) return [];
     return Array.isArray(entry) ? entry.slice() : [entry];
   }
 
   function fetchPagePartial(url) {
-    var controller = new AbortController();
-    var timeoutId = setTimeout(function () { controller.abort(); }, PAGE_FETCH_TIMEOUT_MS);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(function () { controller.abort(); }, PAGE_FETCH_TIMEOUT_MS);
 
     return fetch(url, { credentials: 'same-origin', signal: controller.signal })
       .then(function (res) {
@@ -141,18 +136,18 @@
   function normalizePagePartialHtml(pageName, html) {
     if (typeof html !== 'string') return '';
 
-    var trimmed = html.trim();
-    var looksLikeFullDocument = /<!doctype|<html\b|<head\b|<body\b/i.test(trimmed);
+    const trimmed = html.trim();
+    const looksLikeFullDocument = /<!doctype|<html\b|<head\b|<body\b/i.test(trimmed);
     if (!looksLikeFullDocument) return html;
 
     if (typeof DOMParser !== 'function') {
-      var pageMatch = trimmed.match(new RegExp('<[^>]+data-page=["\']' + pageName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '["\'][^>]*>[\\s\\S]*<\\/[^>]+>\s*$', 'i'));
+      const pageMatch = trimmed.match(new RegExp('<[^>]+data-page=["\']' + pageName.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '["\'][^>]*>[\\s\\S]*<\\/[^>]+>\s*$', 'i'));
       if (pageMatch) return pageMatch[0];
       throw new Error('Full HTML document returned for page partial: ' + pageName);
     }
 
-    var doc = new DOMParser().parseFromString(trimmed, 'text/html');
-    var pageRoot = doc.querySelector('[data-page="' + pageName + '"]') || doc.querySelector('[data-page]');
+    const doc = new DOMParser().parseFromString(trimmed, 'text/html');
+    const pageRoot = doc.querySelector('[data-page="' + pageName + '"]') || doc.querySelector('[data-page]');
     if (pageRoot) {
       return pageRoot.outerHTML;
     }
@@ -162,7 +157,7 @@
 
   function loadPagePartial(pageName, urls, index) {
     index = index || 0;
-    var url = urls[index];
+    const url = urls[index];
     if (!url) {
       return Promise.reject(new Error('No page partial URL configured for: ' + pageName));
     }
@@ -179,10 +174,10 @@
 
   function updateSeo(route, path) {
     if (!route) return;
-    var title = translateText(route.titleKey);
-    var description = translateText(route.descriptionKey);
-    var normalizedPath = normalizePath(path || window.location.pathname);
-    var canonicalUrl = window.location.origin + normalizedPath;
+    const title = translateText(route.titleKey);
+    const description = translateText(route.descriptionKey);
+    const normalizedPath = normalizePath(path || window.location.pathname);
+    const canonicalUrl = window.location.origin + normalizedPath;
 
     if (title) {
       document.title = title;
@@ -195,33 +190,33 @@
       'og-description',
       'twitter-description'
     ].forEach(function (id) {
-      var el = document.getElementById(id);
+      const el = document.getElementById(id);
       if (!el) return;
-      var next = /title/.test(id) ? title : description;
+      const next = /title/.test(id) ? title : description;
       if (next) el.setAttribute('content', next);
     });
 
-    var robots = document.getElementById('meta-robots');
+    const robots = document.getElementById('meta-robots');
     if (robots) {
       robots.setAttribute('content', route.robots || 'index, follow');
     }
 
-    var canonical = document.getElementById('canonical-url');
+    const canonical = document.getElementById('canonical-url');
     if (canonical) {
       canonical.setAttribute('href', canonicalUrl);
     }
 
-    var ogUrl = document.getElementById('og-url');
+    const ogUrl = document.getElementById('og-url');
     if (ogUrl) {
       ogUrl.setAttribute('content', canonicalUrl);
     }
   }
 
   function setActiveNav(pageName) {
-    var navHref = NAV_LINKS[pageName] || null;
+    const navHref = NAV_LINKS[pageName] || null;
     document.querySelectorAll('.nav__link').forEach(function (link) {
-      var href = link.getAttribute('href');
-      var isActive = href === navHref;
+      const href = link.getAttribute('href');
+      const isActive = href === navHref;
       link.classList.toggle('nav__link--active', isActive);
       if (isActive) {
         link.setAttribute('aria-current', 'page');
@@ -231,8 +226,8 @@
     });
     // Also update mobile menu links if present
     document.querySelectorAll('.mobile-nav__link').forEach(function (link) {
-      var href = link.getAttribute('href');
-      var isActive = href === navHref;
+      const href = link.getAttribute('href');
+      const isActive = href === navHref;
       link.classList.toggle('mobile-nav__link--active', isActive);
     });
   }
@@ -254,28 +249,22 @@
       return _pageLoadPromises[pageName];
     }
 
-    var urls = getPagePartialCandidates(pageName);
+    const urls = getPagePartialCandidates(pageName);
     if (!urls.length) return Promise.resolve();
 
     _pageLoadPromises[pageName] = (function () {
       return loadPagePartial(pageName, urls)
         .then(function (html) {
-        var main = document.getElementById('main-content');
+        const main = document.getElementById('main-content');
         if (main) {
-          var tmp = document.createElement('div');
+          const tmp = document.createElement('div');
           tmp.innerHTML = html;
-          // Collect scripts before moving nodes — innerHTML doesn't execute them
-          var inertScripts = tmp.querySelectorAll('script');
+          // Strip script elements — page behaviour is wired via the module
+          // system and router hooks, not via inline scripts in HTML partials.
+          tmp.querySelectorAll('script').forEach(function (el) { el.remove(); });
           while (tmp.firstChild) {
             main.appendChild(tmp.firstChild);
           }
-          // Re-create script elements so the browser executes them
-          inertScripts.forEach(function (old) {
-            var live = document.createElement('script');
-            if (old.src) { live.src = old.src; }
-            else { live.textContent = old.textContent; }
-            old.parentNode.replaceChild(live, old);
-          });
           if (typeof window.applyTranslations === 'function') {
             window.applyTranslations();
           }
@@ -346,19 +335,19 @@
     if (pushState === undefined) pushState = true;
 
     path = normalizePath(path);
-    var route = resolveRoute(path);
+    let route = resolveRoute(path);
     if (!route) {
       // Unknown route — keep the requested URL and show the SPA 404 page
       route = NOT_FOUND_ROUTE;
     }
 
-    var pageName = route.page;
+    const pageName = route.page;
 
     // Already on this page/path
     if (pageName === currentPage && path === currentPath) return;
 
     // Update URL and title eagerly (better perceived performance)
-    var resolvedTitle = translateText(route.titleKey);
+    const resolvedTitle = translateText(route.titleKey);
     updateSeo(route, path);
     if (pushState && window.location.pathname !== path) {
       history.pushState({ page: pageName }, resolvedTitle, path);
@@ -377,7 +366,7 @@
         });
 
         // Show the target page
-        var target = document.querySelector('[data-page="' + pageName + '"]');
+        const target = document.querySelector('[data-page="' + pageName + '"]');
         if (target) {
           target.style.display = 'block';
         }
@@ -446,10 +435,10 @@
     // Only handle left clicks without modifier keys
     if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
 
-    var link = e.target.closest('a[href]');
+    const link = e.target.closest('a[href]');
     if (!link) return;
 
-    var href = link.getAttribute('href');
+    const href = link.getAttribute('href');
     if (!href) return;
 
     // Skip external links, mailto, tel, anchors, etc.
@@ -461,7 +450,7 @@
     }
 
     // All internal links use absolute paths — resolve directly
-    var resolved = href;
+    const resolved = href;
 
     // Prevent default and navigate via SPA — navigateTo handles unknown
     // routes by showing the SPA 404 page, avoiding a full page reload.
@@ -469,40 +458,10 @@
     navigateTo(resolved);
 
     // Close mobile menu if open
-    var hamburger = document.querySelector('.nav__hamburger[aria-expanded="true"]');
+    const hamburger = document.querySelector('.nav__hamburger[aria-expanded="true"]');
     if (hamburger) hamburger.click();
   }
 
-  /* ── Link prefetch on hover ──────────────────────────────── */
-  // Prefetch the page partial when the user hovers a nav link so the
-  // subsequent click navigates instantly from cache.
-  var _prefetched = {};
-
-  function handlePrefetch(e) {
-    var link = e.target.closest('a[href]');
-    if (!link) return;
-    var href = link.getAttribute('href');
-    if (!href || href.startsWith('http') || href.startsWith('#')) return;
-
-    var route = resolveRoute(href);
-    if (!route) return;
-
-    var pageName = route.page;
-    // Already loaded or prefetched
-    if (_prefetched[pageName]) return;
-    if (document.querySelector('[data-page="' + pageName + '"]')) return;
-
-    var url = getPagePartialCandidates(pageName)[0];
-    if (!url) return;
-
-    _prefetched[pageName] = true;
-    // Use low-priority fetch to avoid competing with user-initiated requests
-    var link_el = document.createElement('link');
-    link_el.rel = 'prefetch';
-    link_el.as = 'fetch';
-    link_el.href = url;
-    document.head.appendChild(link_el);
-  }
 
   /* ── Popstate (back/forward) ───────────────────────────────── */
   function handlePopState() {
@@ -514,31 +473,35 @@
     // Intercept all internal link clicks
     document.addEventListener('click', handleClick);
 
-    // Prefetch page partials on hover for near-instant navigation
-    document.addEventListener('pointerover', handlePrefetch, { passive: true });
+    // Prefetch is handled by nav-prefetch.js — no duplicate listener needed here.
 
     // Handle back/forward navigation
     window.addEventListener('popstate', handlePopState);
 
     // Keep document.title translated when language changes
     document.addEventListener('simphonia:langchange', function () {
-      // Reset page-init flags so data-dependent pages re-fetch in the new language
-      _pageInitialized = {};
+      // Reset page-init flags for data-dependent pages so they re-fetch
+      // in the new language. UI-only inits (showcase templates) are excluded
+      // to avoid redundant DOM work.
+      const dataPages = ['destinations', 'support', 'not-found'];
+      dataPages.forEach(function (p) { delete _pageInitialized[p]; });
+      // Home marquee handles langchange internally via its own listener
       if (!currentPage) return;
-      var langPath = window.location.pathname.split('#')[0].replace(/\/+$/, '') || '/';
-      var route = resolveRoute(langPath) || NOT_FOUND_ROUTE;
+      const langPath = window.location.pathname.split('#')[0].replace(/\/+$/, '') || '/';
+      const route = resolveRoute(langPath) || NOT_FOUND_ROUTE;
       updateSeo(route, langPath);
       // Re-init the current page with the new language
       initPage(currentPage);
     });
 
     // Navigate to the current URL (initial page load)
-    var initialPath = window.location.pathname || '/';
+    const initialPath = window.location.pathname || '/';
     navigateTo(initialPath, false);
   }
 
   // Expose
   window.initRouter = initRouter;
   window.navigateTo = navigateTo;
+  window.__simphoniaRoutes = ROUTES;
 }());
 

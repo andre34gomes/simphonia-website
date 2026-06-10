@@ -15,16 +15,16 @@
 'use strict';
 
 (function () {
-  var API_BASE   = (window.SIMPHONIA_API && window.SIMPHONIA_API.base) || 'https://api.simphonia.pt';
-  var TOKEN_KEY  = 'simphonia_guest_token';
-  var EXPIRY_KEY = 'simphonia_guest_expiry';
-  var EXPIRY_MARGIN_MS = 60000; // 60 s safety margin before actual expiry
+  const API_BASE   = (window.SIMPHONIA_API && window.SIMPHONIA_API.base) || 'https://api.simphonia.pt';
+  const TOKEN_KEY  = 'simphonia_guest_token';
+  const EXPIRY_KEY = 'simphonia_guest_expiry';
+  const EXPIRY_MARGIN_MS = 60000; // 60 s safety margin before actual expiry
 
   /**
    * Inflight guard — prevents duplicate simultaneous requests.
    * @type {Promise<string|null>|null}
    */
-  var _pendingFetch = null;
+  let _pendingFetch = null;
 
   /**
    * Returns a valid guest token (from cache or freshly acquired).
@@ -33,7 +33,7 @@
    * @returns {Promise<string>}
    */
   async function getGuestToken() {
-    var stored, expiry;
+    let stored, expiry;
     try {
       stored = sessionStorage.getItem(TOKEN_KEY);
       expiry = Number(sessionStorage.getItem(EXPIRY_KEY) || 0);
@@ -47,16 +47,16 @@
 
     _pendingFetch = (async function () {
       try {
-        var res = await fetch(API_BASE + '/api/v1/auth/guest', { method: 'POST' });
+        const res = await fetch(API_BASE + '/api/v1/auth/guest', { method: 'POST' });
         if (!res.ok) throw new Error('Guest auth responded with ' + res.status);
 
-        var envelope = await res.json();
-        var data = envelope.data || envelope;
-        var token = data.token;
-        var expiresIn = data.expiresIn;
+        const envelope = await res.json();
+        const data = envelope.data || envelope;
+        const token = data.token;
+        const expiresIn = data.expiresIn;
         if (!token) throw new Error('Guest auth returned no token');
 
-        var expiresInNum = Number(expiresIn);
+        const expiresInNum = Number(expiresIn);
         try {
           sessionStorage.setItem(TOKEN_KEY, token);
           sessionStorage.setItem(EXPIRY_KEY, String(
