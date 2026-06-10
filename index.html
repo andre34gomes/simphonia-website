@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#121212">
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
-    script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
+    script-src 'self' https://cdnjs.cloudflare.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     font-src 'self' https://fonts.gstatic.com;
     img-src 'self' https://images.unsplash.com https://api.simphonia.pt https://flagcdn.com data: blob:;
@@ -59,7 +59,7 @@
   <meta id="twitter-description" name="twitter:description" content="Instant eSIM activation for 200+ countries. No roaming fees, no SIM swaps, no contracts. Stay connected wherever you go with Simphonia." data-i18n-content="page.descriptions.home">
   <meta name="twitter:image" content="https://simphonia.pt/assets/og-image.png">
 
-  <!-- Structured Data (JSON-LD) — Organization + SoftwareApplication for rich results -->
+  <!-- Structured Data (JSON-LD) — Organization + SoftwareApplication + WebSite + FAQ for rich results -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
@@ -70,17 +70,24 @@
         "url": "https://simphonia.pt",
         "logo": "https://simphonia.pt/assets/og-image.png",
         "description": "Instant eSIM activation for 200+ countries. No roaming fees, no SIM swaps, no contracts.",
+        "foundingDate": "2024",
+        "founder": {"@type": "Person", "name": "André Gomes"},
         "contactPoint": {
           "@type": "ContactPoint",
           "contactType": "customer support",
           "email": "support@simphonia.pt",
           "url": "https://simphonia.pt/support/"
-        }
+        },
+        "sameAs": [
+          "https://instagram.com/simphonia.pt",
+          "https://x.com/simphonia",
+          "https://linkedin.com/company/simphonia"
+        ]
       },
       {
         "@type": "SoftwareApplication",
         "name": "Simphonia",
-        "operatingSystem": "Android",
+        "operatingSystem": "iOS, Android",
         "applicationCategory": "TravelApplication",
         "description": "Instant eSIM activation for 200+ countries. No roaming fees, no SIM swaps, no contracts. Stay connected wherever you go.",
         "url": "https://simphonia.pt",
@@ -88,7 +95,7 @@
         "offers": {
           "@type": "Offer",
           "price": "0",
-          "priceCurrency": "USD"
+          "priceCurrency": "EUR"
         }
       },
       {
@@ -100,6 +107,16 @@
           "target": "https://simphonia.pt/destinations/?q={search_term_string}",
           "query-input": "required name=search_term_string"
         }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {"@type": "Question", "name": "How do I get started with Simphonia?", "acceptedAnswer": {"@type": "Answer", "text": "Download the Simphonia app, choose your destination, and purchase a plan. Your eSIM QR code is generated instantly."}},
+          {"@type": "Question", "name": "How do I install my eSIM after purchase?", "acceptedAnswer": {"@type": "Answer", "text": "After purchase, open Settings, go to Cellular or Mobile Data, tap Add eSIM, and scan the QR code shown in the Simphonia app."}},
+          {"@type": "Question", "name": "Do I need to remove my existing SIM card?", "acceptedAnswer": {"@type": "Answer", "text": "No. Your physical SIM card stays in your phone. The eSIM runs alongside it."}},
+          {"@type": "Question", "name": "How many countries does Simphonia cover?", "acceptedAnswer": {"@type": "Answer", "text": "Simphonia offers eSIM plans for 200+ countries and regions worldwide."}},
+          {"@type": "Question", "name": "What payment methods are accepted?", "acceptedAnswer": {"@type": "Answer", "text": "Simphonia accepts Apple Pay, Google Pay, and all major credit and debit cards."}}
+        ]
       }
     ]
   }
@@ -142,16 +159,6 @@
   <link rel="stylesheet" href="/css/404.css?v=20260403">
   <link rel="stylesheet" href="/css/deeplink.css?v=20260511">
 
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"Organization","name":"Simphonia","url":"https://simphonia.pt","logo":"https://simphonia.pt/assets/icon-512.png","description":"Global eSIM service for travelers in 200+ countries","foundingDate":"2024","founder":{"@type":"Person","name":"André Gomes"},"sameAs":["https://instagram.com/simphonia.pt","https://x.com/simphonia","https://linkedin.com/company/simphonia"]}
-  </script>
-  <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"SoftwareApplication","name":"Simphonia eSIM","operatingSystem":"iOS, Android","applicationCategory":"TravelApplication","description":"Instant eSIM activation for 200+ countries. No roaming fees, no SIM swaps, no contracts.","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"installUrl":"https://apps.apple.com/app/simphonia","url":"https://simphonia.pt"}
-  </script>
-  <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I get started with Simphonia?","acceptedAnswer":{"@type":"Answer","text":"Download the Simphonia app, choose your destination, and purchase a plan. Your eSIM QR code is generated instantly."}},{"@type":"Question","name":"How do I install my eSIM after purchase?","acceptedAnswer":{"@type":"Answer","text":"After purchase, open Settings, go to Cellular or Mobile Data, tap Add eSIM, and scan the QR code shown in the Simphonia app."}},{"@type":"Question","name":"Do I need to remove my existing SIM card?","acceptedAnswer":{"@type":"Answer","text":"No. Your physical SIM card stays in your phone. The eSIM runs alongside it."}},{"@type":"Question","name":"How many countries does Simphonia cover?","acceptedAnswer":{"@type":"Answer","text":"Simphonia offers eSIM plans for 200+ countries and regions worldwide."}},{"@type":"Question","name":"What payment methods are accepted?","acceptedAnswer":{"@type":"Answer","text":"Simphonia accepts Apple Pay, Google Pay, and all major credit and debit cards."}}]}
-  </script>
 
   <!-- SPA mode flag: tells layout.js to always use absolute paths -->
   <script src="/js/spa-mode.js"></script>
@@ -238,6 +245,16 @@
   <script defer src="/js/legal.js?v=20260504"></script>
   <!-- PWA Service Worker registration -->
   <script defer src="/js/sw-register.js"></script>
+  <!-- Core Web Vitals performance monitoring -->
+  <script defer src="/js/web-vitals.js?v=20260515"></script>
+  <!-- Navigation prefetch on hover/touch -->
+  <script defer src="/js/nav-prefetch.js?v=20260515"></script>
+  <!-- Keyboard navigation shortcuts -->
+  <script defer src="/js/keyboard-shortcuts.js?v=20260515"></script>
+  <!-- Scroll progress indicator -->
+  <script defer src="/js/scroll-progress.js?v=20260515"></script>
+  <!-- External link safety handler -->
+  <script defer src="/js/external-links.js?v=20260515"></script>
 
 </body>
 </html>

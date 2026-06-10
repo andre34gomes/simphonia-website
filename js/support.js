@@ -13,16 +13,16 @@
 /* ─────────────────────────────────────────────────────────────
    API config
    ───────────────────────────────────────────────────────────── */
-var API_BASE = (window.SIMPHONIA_API && window.SIMPHONIA_API.base)
+const API_BASE = (window.SIMPHONIA_API && window.SIMPHONIA_API.base)
     || 'https://api.simphonia.pt';
-var getGuestToken = window.getGuestToken;
+const getGuestToken = window.getGuestToken;
 
 /* ─────────────────────────────────────────────────────────────
    State & Statics
    ───────────────────────────────────────────────────────────── */
-var faqData = [];
-var activeIndex = 0;
-var FAQ_MOBILE_BP = 860;
+let faqData = [];
+let activeIndex = 0;
+const FAQ_MOBILE_BP = 860;
 
 function isMobileLayout() {
   return window.innerWidth <= FAQ_MOBILE_BP;
@@ -36,10 +36,10 @@ function normaliseFaqResponse(data) {
   if (!Array.isArray(data)) {
     return [];
   }
-  var flat = [];
+  const flat = [];
   data.forEach(function (cat) {
-    var catLabel = cat.category || cat.code || '';
-    var items = Array.isArray(cat.items) ? cat.items : [];
+    const catLabel = cat.category || cat.code || '';
+    const items = Array.isArray(cat.items) ? cat.items : [];
     items.forEach(function (item) {
       if (!item.question || !item.answer) {
         return;
@@ -54,15 +54,15 @@ function normaliseFaqResponse(data) {
   return flat;
 }
 
+// Delegates to the shared escHTML helper from layout.js when available (single source of truth).
+// Falls back to inline implementation for test environments where window is not available.
+// Defined as a local alias so all call-sites remain unchanged.
 function escapeHtml(value) {
-  return String(value || '').replace(/[&<>"']/g, function (char) {
-    return {
-      '&': '&amp;',
-      '<': '&lt;',
-      '>': '&gt;',
-      '"': '&quot;',
-      "'": '&#39;'
-    }[char];
+  if (typeof window !== 'undefined' && window && typeof window.escHTML === 'function') {
+    return window.escHTML(String(value || ''));
+  }
+  return String(value || '').replace(/[&<>"']/g, function (c) {
+    return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
   });
 }
 
@@ -106,7 +106,7 @@ function renderFaqAnswerContent(container, answerHtml) {
 
   container.innerHTML = '';
 
-  var safeText = faqHtmlToText(answerHtml);
+  const safeText = faqHtmlToText(answerHtml);
   if (!safeText) {
     return;
   }
@@ -114,7 +114,7 @@ function renderFaqAnswerContent(container, answerHtml) {
   safeText.split(/\n+/).map(function (line) {
     return line.trim();
   }).filter(Boolean).forEach(function (line) {
-    var paragraph = document.createElement('p');
+    const paragraph = document.createElement('p');
     paragraph.textContent = line;
     container.appendChild(paragraph);
   });
@@ -124,31 +124,31 @@ function renderFaqAnswerContent(container, answerHtml) {
    FAQ Panel — render
    ───────────────────────────────────────────────────────────── */
 function renderNav(items) {
-  var nav = document.getElementById('faq-panel-nav');
+  const nav = document.getElementById('faq-panel-nav');
   if (!nav) {
     return;
   }
 
   nav.innerHTML = '';
 
-  var lastCategory = null;
+  let lastCategory = null;
 
   items.forEach(function (item, i) {
     // Insert a category label when the category changes
     if (item.category && item.category !== lastCategory) {
       lastCategory = item.category;
-      var label = document.createElement('div');
+      const label = document.createElement('div');
       label.className = 'faq-panel__category';
       label.textContent = item.category;
       nav.appendChild(label);
     }
 
-    var btn = document.createElement('button');
+    const btn = document.createElement('button');
     btn.type = 'button';
     btn.className = 'faq-panel__q' + (i === 0 ? ' is-active' : '');
     btn.dataset.index = i;
     // Include answer text (HTML-stripped) in search index for better discoverability
-    var plainAnswer = faqHtmlToText(item.a);
+    const plainAnswer = faqHtmlToText(item.a);
     btn.dataset.searchText = (item.q + ' ' + plainAnswer + ' ' + (item.category
         || '')).toLowerCase();
     btn.setAttribute('aria-expanded', i === 0 ? 'true' : 'false');
@@ -164,27 +164,27 @@ function renderNav(items) {
     nav.appendChild(btn);
 
     // Inline answer container for mobile accordion
-    var answer = document.createElement('div');
+    const answer = document.createElement('div');
     answer.className = 'faq-panel__inline-answer';
     answer.id = 'faq-inline-' + i;
     answer.setAttribute('aria-hidden', 'true');
 
-    var answerInner = document.createElement('div');
+    const answerInner = document.createElement('div');
     answerInner.className = 'faq-panel__inline-answer-inner';
 
     if (item.category) {
-      var categoryLabel = document.createElement('span');
+      const categoryLabel = document.createElement('span');
       categoryLabel.className = 'faq-panel__display-cat';
       categoryLabel.textContent = item.category;
       answerInner.appendChild(categoryLabel);
     }
 
-    var answerBody = document.createElement('div');
+    const answerBody = document.createElement('div');
     answerBody.className = 'faq-panel__answer-body';
     renderFaqAnswerContent(answerBody, item.a);
     answerInner.appendChild(answerBody);
 
-    var cta = document.createElement('a');
+    const cta = document.createElement('a');
     cta.href = '#contact';
     cta.className = 'faq-panel__display-cta';
     cta.innerHTML =
@@ -202,15 +202,15 @@ function renderNav(items) {
 }
 
 function handleNavKeydown(e) {
-  var btns = Array.from(
+  const btns = Array.from(
       e.currentTarget.querySelectorAll('.faq-panel__q:not([hidden])'));
-  var focused = document.activeElement;
-  var idx = btns.indexOf(focused);
+  const focused = document.activeElement;
+  const idx = btns.indexOf(focused);
   if (idx === -1) {
     return;
   }
 
-  var next = -1;
+  let next = -1;
   if (e.key === 'ArrowDown') {
     next = (idx + 1) % btns.length;
   } else if (e.key === 'ArrowUp') {
@@ -228,15 +228,15 @@ function handleNavKeydown(e) {
 }
 
 function renderDisplay(index) {
-  var item = faqData[index];
+  const item = faqData[index];
   if (!item) {
     return;
   }
 
-  var numEl = document.getElementById('fpd-num');
-  var qEl = document.getElementById('fpd-q');
-  var bodyEl = document.getElementById('fpd-body');
-  var catEl = document.getElementById('fpd-category');
+  const numEl = document.getElementById('fpd-num');
+  const qEl = document.getElementById('fpd-q');
+  const bodyEl = document.getElementById('fpd-body');
+  const catEl = document.getElementById('fpd-category');
 
   if (numEl) {
     numEl.textContent = String(index + 1).padStart(2, '0');
@@ -254,12 +254,12 @@ function renderDisplay(index) {
 }
 
 function switchFaq(index) {
-  var mobile = isMobileLayout();
+  const mobile = isMobileLayout();
 
   // On mobile, allow toggling the same item to collapse it
   if (mobile && index === activeIndex) {
-    var activeAnswer = document.getElementById('faq-inline-' + index);
-    var activeBtn = document.querySelector(
+    const activeAnswer = document.getElementById('faq-inline-' + index);
+    const activeBtn = document.querySelector(
         '.faq-panel__q[data-index="' + index + '"]');
     if (activeAnswer && activeAnswer.classList.contains('is-open')) {
       activeAnswer.classList.remove('is-open');
@@ -286,7 +286,7 @@ function switchFaq(index) {
 
   // Desktop: animate the display panel
   if (!mobile) {
-    var inner = document.getElementById('faq-display-inner');
+    const inner = document.getElementById('faq-display-inner');
     if (!inner) {
       return;
     }
@@ -298,7 +298,7 @@ function switchFaq(index) {
       renderDisplay(index);
 
       document.querySelectorAll('.faq-panel__q').forEach(function (btn) {
-        var isActive = parseInt(btn.dataset.index, 10) === index;
+        const isActive = parseInt(btn.dataset.index, 10) === index;
         btn.classList.toggle('is-active', isActive);
         btn.setAttribute('aria-expanded', isActive ? 'true' : 'false');
       });
@@ -310,18 +310,18 @@ function switchFaq(index) {
     activeIndex = index;
 
     document.querySelectorAll('.faq-panel__q').forEach(function (btn) {
-      var isActive = parseInt(btn.dataset.index, 10) === index;
+      const isActive = parseInt(btn.dataset.index, 10) === index;
       btn.classList.toggle('is-active', isActive);
       btn.setAttribute('aria-expanded', isActive ? 'true' : 'false');
     });
 
-    var answer = document.getElementById('faq-inline-' + index);
+    const answer = document.getElementById('faq-inline-' + index);
     if (answer) {
       answer.classList.add('is-open');
       answer.setAttribute('aria-hidden', 'false');
 
       // Smooth scroll the opened question into view
-      var btn = document.querySelector(
+      const btn = document.querySelector(
           '.faq-panel__q[data-index="' + index + '"]');
       if (btn) {
         setTimeout(function () {
@@ -336,9 +336,9 @@ function switchFaq(index) {
    FAQ Panel — loading / error states
    ───────────────────────────────────────────────────────────── */
 function showFaqLoading() {
-  var nav = document.getElementById('faq-panel-nav');
-  var display = document.getElementById('faq-display-inner');
-  var panel = document.getElementById('faq-panel');
+  const nav = document.getElementById('faq-panel-nav');
+  const display = document.getElementById('faq-display-inner');
+  const panel = document.getElementById('faq-panel');
   if (panel) {
     panel.classList.add('faq-panel--state');
   }
@@ -362,9 +362,9 @@ function showFaqLoading() {
 }
 
 function showFaqError(lang) {
-  var nav = document.getElementById('faq-panel-nav');
-  var display = document.getElementById('faq-display-inner');
-  var panel = document.getElementById('faq-panel');
+  const nav = document.getElementById('faq-panel-nav');
+  const display = document.getElementById('faq-display-inner');
+  const panel = document.getElementById('faq-panel');
   if (panel) {
     panel.classList.add('faq-panel--state');
   }
@@ -393,7 +393,7 @@ function showFaqError(lang) {
         window.t('support.faq.tryAgain') +
         '</button>' +
         '</div>';
-    var retryBtn = document.getElementById('faq-retry');
+    const retryBtn = document.getElementById('faq-retry');
     if (retryBtn) {
       retryBtn.addEventListener('click', function () {
         loadFaqs(lang);
@@ -408,17 +408,17 @@ function showFaqError(lang) {
    Response: [ { code, category, items: [ { question, answer } ] } ]
    ───────────────────────────────────────────────────────────── */
 function loadFaqs(lang) {
-  var resolvedLang = lang || window.SIMPHONIA_LANG || 'en';
-  var url = API_BASE + '/api/v1/faqs?lang=' + resolvedLang;
-  var headers = {'Accept': 'application/json'};
-  var abortCtrl = new AbortController();
-  var timeoutId = setTimeout(function () {
+  const resolvedLang = lang || window.SIMPHONIA_LANG || 'en';
+  const url = API_BASE + '/api/v1/faqs?lang=' + resolvedLang;
+  const headers = {'Accept': 'application/json'};
+  const abortCtrl = new AbortController();
+  const timeoutId = setTimeout(function () {
     abortCtrl.abort();
   }, 10000);
 
   showFaqLoading();
 
-  var tokenPromise = (typeof getGuestToken === 'function')
+  const tokenPromise = (typeof getGuestToken === 'function')
       ? getGuestToken().catch(function () {
         return null;
       })
@@ -439,7 +439,7 @@ function loadFaqs(lang) {
         return res.json();
       })
       .then(function (data) {
-        var items = normaliseFaqResponse(
+        const items = normaliseFaqResponse(
             Array.isArray(data) ? data : (data && data.data ? data.data : []));
         if (!items.length) {
           throw new Error('Empty FAQ response');
@@ -459,13 +459,13 @@ function initPanel(items) {
   faqData = items;
   activeIndex = 0;
 
-  var panel = document.getElementById('faq-panel');
+  const panel = document.getElementById('faq-panel');
   if (panel) {
     panel.classList.remove('faq-panel--state');
   }
 
   // Restore display inner HTML (showFaqLoading replaces it with a spinner)
-  var display = document.getElementById('faq-display-inner');
+  const display = document.getElementById('faq-display-inner');
   if (display) {
     display.innerHTML =
         '<div class="faq-panel__display-deco" id="fpd-num" aria-hidden="true">01</div>'
@@ -487,7 +487,7 @@ function initPanel(items) {
 
   // On mobile, open the first inline answer
   if (isMobileLayout()) {
-    var firstAnswer = document.getElementById('faq-inline-0');
+    const firstAnswer = document.getElementById('faq-inline-0');
     if (firstAnswer) {
       firstAnswer.classList.add('is-open');
       firstAnswer.setAttribute('aria-hidden', 'false');
@@ -499,11 +499,11 @@ function initPanel(items) {
    FAQ Search (debounced, synced across both search inputs)
    ───────────────────────────────────────────────────────────── */
 function debounce(fn, ms) {
-  var id;
+  let id;
   return function () {
     clearTimeout(id);
-    var ctx = this;
-    var args = arguments;
+    const ctx = this;
+    const args = arguments;
     id = setTimeout(function () {
       fn.apply(ctx, args);
     }, ms);
@@ -511,11 +511,11 @@ function debounce(fn, ms) {
 }
 
 function initFaqSearch() {
-  var inputs = [
+  const inputs = [
     document.getElementById('hero-faq-search'),
     document.getElementById('faq-search'),
   ].filter(Boolean);
-  var _t = typeof window.t === 'function' ? window.t.bind(window) : function () {
+  const _t = typeof window.t === 'function' ? window.t.bind(window) : function () {
     return '';
   };
 
@@ -530,7 +530,7 @@ function initFaqSearch() {
     }
 
     // Inject clear button
-    var clearBtn = document.createElement('button');
+    const clearBtn = document.createElement('button');
     clearBtn.type = 'button';
     clearBtn.className = 'search-bar__clear';
     clearBtn.setAttribute('aria-label', _t('accessibility.clearSearch'));
@@ -547,7 +547,7 @@ function initFaqSearch() {
         inp.value = '';
       });
       inputs.forEach(function (inp) {
-        var cb = inp.parentElement.querySelector('.search-bar__clear');
+        const cb = inp.parentElement.querySelector('.search-bar__clear');
         if (cb) {
           cb.hidden = true;
         }
@@ -557,13 +557,13 @@ function initFaqSearch() {
     });
 
     input.addEventListener('input', debounce(function () {
-      var query = input.value.trim().toLowerCase();
+      const query = input.value.trim().toLowerCase();
       // Sync value to the other input
       inputs.forEach(function (inp) {
         if (inp !== input) {
           inp.value = input.value;
         }
-        var cb = inp.parentElement.querySelector('.search-bar__clear');
+        const cb = inp.parentElement.querySelector('.search-bar__clear');
         if (cb) {
           cb.hidden = inp.value === '';
         }
@@ -574,23 +574,23 @@ function initFaqSearch() {
 }
 
 function filterFaq(query) {
-  var btns = document.querySelectorAll('.faq-panel__q');
-  var panelEl = document.getElementById('faq-panel');
-  var noResults = document.getElementById('faq-no-results');
-  var visible = 0;
+  const btns = document.querySelectorAll('.faq-panel__q');
+  const panelEl = document.getElementById('faq-panel');
+  const noResults = document.getElementById('faq-no-results');
+  let visible = 0;
 
   btns.forEach(function (btn) {
-    var text = btn.dataset.searchText || btn.querySelector(
+    const text = btn.dataset.searchText || btn.querySelector(
         '.faq-panel__q-text').textContent.toLowerCase();
-    var match = !query || text.includes(query);
+    const match = !query || text.includes(query);
     btn.hidden = !match;
     if (match) {
       visible++;
     }
 
     // Also hide/show the inline answer for hidden buttons
-    var idx = btn.dataset.index;
-    var inlineAnswer = document.getElementById('faq-inline-' + idx);
+    const idx = btn.dataset.index;
+    const inlineAnswer = document.getElementById('faq-inline-' + idx);
     if (inlineAnswer && !match) {
       inlineAnswer.classList.remove('is-open');
       inlineAnswer.setAttribute('aria-hidden', 'true');
@@ -598,10 +598,10 @@ function filterFaq(query) {
   });
 
   // Hide category labels whose questions are all hidden
-  var catLabels = document.querySelectorAll('.faq-panel__category');
+  const catLabels = document.querySelectorAll('.faq-panel__category');
   catLabels.forEach(function (label) {
-    var next = label.nextElementSibling;
-    var hasVisibleQ = false;
+    let next = label.nextElementSibling;
+    let hasVisibleQ = false;
     while (next && !next.classList.contains('faq-panel__category')) {
       if (next.classList.contains('faq-panel__q') && !next.hidden) {
         hasVisibleQ = true;
@@ -612,7 +612,7 @@ function filterFaq(query) {
     label.hidden = !hasVisibleQ;
   });
 
-  var isEmpty = visible === 0;
+  const isEmpty = visible === 0;
   if (panelEl) {
     panelEl.style.display = isEmpty ? 'none' : '';
   }
@@ -622,18 +622,18 @@ function filterFaq(query) {
 
   // If the active item is now hidden, switch to the first visible one
   if (!isEmpty) {
-    var visibleBtns = Array.from(btns).filter(function (b) {
+    const visibleBtns = Array.from(btns).filter(function (b) {
       return !b.hidden;
     });
-    var stillActive = visibleBtns.some(function (b) {
+    const stillActive = visibleBtns.some(function (b) {
       return parseInt(b.dataset.index, 10) === activeIndex;
     });
     if (!stillActive && visibleBtns.length) {
-      var newIdx = parseInt(visibleBtns[0].dataset.index, 10);
+      const newIdx = parseInt(visibleBtns[0].dataset.index, 10);
       activeIndex = newIdx;
       renderDisplay(newIdx);
       visibleBtns.forEach(function (b, i) {
-        var isFirst = i === 0;
+        const isFirst = i === 0;
         b.classList.toggle('is-active', isFirst);
         b.setAttribute('aria-expanded', isFirst ? 'true' : 'false');
       });
@@ -644,16 +644,16 @@ function filterFaq(query) {
 /* ─────────────────────────────────────────────────────────────
    Contact Form
    ───────────────────────────────────────────────────────────── */
-var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
 function setFieldError(fieldId, message) {
-  var field = document.getElementById(fieldId);
+  const field = document.getElementById(fieldId);
   if (!field) {
     return;
   }
 
-  var errorId = fieldId + '-error';
-  var errorEl = document.getElementById(errorId);
+  const errorId = fieldId + '-error';
+  let errorEl = document.getElementById(errorId);
 
   if (!errorEl) {
     errorEl = document.createElement('span');
@@ -661,7 +661,7 @@ function setFieldError(fieldId, message) {
     errorEl.className = 'field-error';
     errorEl.setAttribute('aria-live', 'polite');
     field.parentElement.appendChild(errorEl);
-    var existing = field.getAttribute('aria-describedby');
+    const existing = field.getAttribute('aria-describedby');
     field.setAttribute('aria-describedby',
         existing ? existing + ' ' + errorId : errorId);
   }
@@ -673,7 +673,7 @@ function setFieldError(fieldId, message) {
 }
 
 function showFormFeedback(form, type, message) {
-  var el = form.querySelector('.form-feedback');
+  let el = form.querySelector('.form-feedback');
   if (!el) {
     el = document.createElement('div');
     el.className = 'form-feedback';
@@ -699,7 +699,7 @@ function addFieldListeners(form) {
           }
         });
         field.addEventListener('blur', function () {
-          var _t = typeof window.t === 'function' ? window.t.bind(window)
+          const _t = typeof window.t === 'function' ? window.t.bind(window)
               : function (k) {
                 return k;
               };
@@ -717,14 +717,14 @@ function initCharCounter(textareaId, maxLength) {
   if (maxLength === undefined) {
     maxLength = 5000;
   }
-  var textarea = document.getElementById(textareaId);
+  const textarea = document.getElementById(textareaId);
   if (!textarea) {
     return;
   }
 
   textarea.setAttribute('maxlength', maxLength);
 
-  var counter = document.createElement('span');
+  const counter = document.createElement('span');
   counter.id = textareaId + '-counter';
   counter.className = 'char-counter';
   counter.setAttribute('aria-live', 'polite');
@@ -732,26 +732,26 @@ function initCharCounter(textareaId, maxLength) {
   counter.textContent = '0 / ' + maxLength;
   textarea.parentElement.appendChild(counter);
 
-  var existing = textarea.getAttribute('aria-describedby');
+  const existing = textarea.getAttribute('aria-describedby');
   textarea.setAttribute('aria-describedby',
       existing ? existing + ' ' + counter.id : counter.id);
 
   textarea.addEventListener('input', function () {
-    var len = textarea.value.length;
+    const len = textarea.value.length;
     counter.textContent = len + ' / ' + maxLength;
     counter.classList.toggle('char-counter--warn', len > maxLength * 0.9);
   });
 }
 
 function initContactForm() {
-  var form = document.getElementById('contact-form');
+  const form = document.getElementById('contact-form');
   if (!form) {
     return;
   }
 
-  var submitBtn = form.querySelector('button[type="submit"]');
-  var lastSubmitTime = 0;
-  var SUBMIT_COOLDOWN_MS = 30000;
+  const submitBtn = form.querySelector('button[type="submit"]');
+  let lastSubmitTime = 0;
+  const SUBMIT_COOLDOWN_MS = 30000;
 
   addFieldListeners(form);
   initCharCounter('contact-message', 5000);
@@ -759,13 +759,13 @@ function initContactForm() {
   form.addEventListener('submit', function (e) {
     e.preventDefault();
 
-    var now = Date.now();
-    var _t = typeof window.t === 'function' ? window.t.bind(window)
+    const now = Date.now();
+    const _t = typeof window.t === 'function' ? window.t.bind(window)
         : function (k) {
           return k;
         };
     if (now - lastSubmitTime < SUBMIT_COOLDOWN_MS) {
-      var remaining = Math.ceil(
+      const remaining = Math.ceil(
           (SUBMIT_COOLDOWN_MS - (now - lastSubmitTime)) / 1000);
       showFormFeedback(form, 'error',
           _t('support.contact.errorCooldown').replace('{seconds}', remaining));
@@ -773,17 +773,17 @@ function initContactForm() {
     }
 
     // Honeypot
-    var honeypot = document.getElementById('contact-website');
+    const honeypot = document.getElementById('contact-website');
     if (honeypot && honeypot.value) {
       form.reset();
       return;
     }
 
-    var nameEl = document.getElementById('contact-name');
-    var emailEl = document.getElementById('contact-email');
-    var subjectEl = document.getElementById('contact-subject');
-    var msgEl = document.getElementById('contact-message');
-    var valid = true;
+    const nameEl = document.getElementById('contact-name');
+    const emailEl = document.getElementById('contact-email');
+    const subjectEl = document.getElementById('contact-subject');
+    const msgEl = document.getElementById('contact-message');
+    let valid = true;
 
     if (!nameEl || !nameEl.value.trim()) {
       setFieldError('contact-name', _t('support.contact.errorNameRequired'));
@@ -810,12 +810,12 @@ function initContactForm() {
       return;
     }
 
-    var origLabel = submitBtn.textContent;
+    const origLabel = submitBtn.textContent;
     submitBtn.disabled = true;
     submitBtn.innerHTML = '<span class="btn-spinner" aria-hidden="true"></span> '
         + _t('support.contact.sending');
 
-    var tokenPromise = (typeof getGuestToken === 'function')
+    const tokenPromise = (typeof getGuestToken === 'function')
         ? getGuestToken().catch(function () {
           return null;
         })
@@ -828,8 +828,8 @@ function initContactForm() {
             return Promise.reject('no-token');
           }
 
-          var abortCtrl = new AbortController();
-          var timeoutId = setTimeout(function () {
+          const abortCtrl = new AbortController();
+          const timeoutId = setTimeout(function () {
             abortCtrl.abort();
           }, 15000);
 
@@ -857,8 +857,8 @@ function initContactForm() {
                 _t('support.contact.successMessage'));
             form.reset();
             form.querySelectorAll('[id$="-counter"]').forEach(function (el) {
-              var parts = el.textContent.split('/');
-              var max = parts[1] ? parts[1].trim() : '5000';
+              const parts = el.textContent.split('/');
+              const max = parts[1] ? parts[1].trim() : '5000';
               el.textContent = '0 / ' + max;
               el.classList.remove('char-counter--warn');
             });
@@ -889,30 +889,30 @@ function initContactForm() {
 /* ─────────────────────────────────────────────────────────────
    Boot — called lazily by router on first navigation to /support/
    ───────────────────────────────────────────────────────────── */
-var _supportInitialized = false;
+let _supportInitialized = false;
 
 window.initSupportPage = function () {
   if (_supportInitialized) return;
   _supportInitialized = true;
 
-  var lang = window.SIMPHONIA_LANG || (navigator.language || 'en').split('-')[0].toLowerCase();
+  const lang = window.SIMPHONIA_LANG || (navigator.language || 'en').split('-')[0].toLowerCase();
   _currentSupportLang = lang;
   loadFaqs(lang);
   initContactForm();
 };
 
-var _currentSupportLang = window.SIMPHONIA_LANG || (navigator.language || 'en').split('-')[0].toLowerCase();
+let _currentSupportLang = window.SIMPHONIA_LANG || (navigator.language || 'en').split('-')[0].toLowerCase();
 
 // Reload FAQs when language changes
 document.addEventListener('simphonia:langchange', function (e) {
-  var newLang = (e.detail && e.detail.lang) || window.SIMPHONIA_LANG || 'en';
+  const newLang = (e.detail && e.detail.lang) || window.SIMPHONIA_LANG || 'en';
   if (newLang !== _currentSupportLang) {
     _currentSupportLang = newLang;
     // Clear old FAQ data so stale content is removed immediately
     faqData = [];
     activeIndex = 0;
     // Clear search inputs
-    var searchInputs = [
+    const searchInputs = [
       document.getElementById('hero-faq-search'),
       document.getElementById('faq-search'),
     ].filter(Boolean);
@@ -920,11 +920,11 @@ document.addEventListener('simphonia:langchange', function (e) {
       inp.value = '';
     });
     // Hide no-results if visible
-    var noResults = document.getElementById('faq-no-results');
+    const noResults = document.getElementById('faq-no-results');
     if (noResults) {
       noResults.style.display = 'none';
     }
-    var panelEl = document.getElementById('faq-panel');
+    const panelEl = document.getElementById('faq-panel');
     if (panelEl) {
       panelEl.style.display = '';
     }

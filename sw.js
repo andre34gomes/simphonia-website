@@ -28,6 +28,7 @@ const PRECACHE_URLS = [
   '/css/how-it-works.css?v=20260403',
   '/css/legal.css?v=20260504',
   '/css/support.css?v=20260403',
+  '/css/deeplink.css?v=20260511',
   '/js/animations-core.js?v=20260402',
   '/js/animations-home.js?v=20260402',
   '/js/animations-subpages.js?v=20260402',
@@ -45,6 +46,11 @@ const PRECACHE_URLS = [
   '/js/preload-partial.js',
   '/js/sw-register.js',
   '/js/404-animations.js',
+  '/js/web-vitals.js?v=20260515',
+  '/js/nav-prefetch.js?v=20260515',
+  '/js/keyboard-shortcuts.js?v=20260515',
+  '/js/scroll-progress.js?v=20260515',
+  '/js/external-links.js?v=20260515',
   '/js/components/layout.js?v=20260402',
   '/assets/apple.svg',
   '/assets/apple-touch-icon.png',
@@ -64,6 +70,10 @@ const PRECACHE_URLS = [
   '/pages/not-found',
   '/pages/privacy',
   '/pages/terms',
+  '/pages/join',
+  '/pages/verify-email',
+  '/pages/reset-password',
+  '/pages/open-in-app',
 ];
 
 // Origins that should never be cached (API data, CDN scripts, flag images)
