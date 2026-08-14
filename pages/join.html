@@ -21,37 +21,4 @@
       </div>
     </div>
   </section>
-  <script>
-    (function() {
-      const params = new URLSearchParams(window.location.search);
-      const code = params.get('code') || '';
-      const codeEl = document.getElementById('join-referral-code');
-      if (code && code.length <= 32 && /^[a-zA-Z0-9_-]+$/.test(code) && codeEl) {
-        codeEl.textContent = code;
-        codeEl.style.display = 'inline-block';
-      }
-      const ua = navigator.userAgent || '';
-      const isMobile = /android|iphone|ipad|ipod/i.test(ua);
-      const isIOS = /iphone|ipad|ipod/i.test(ua);
-      if (isMobile && code) {
-        window.location.href = 'simphonia://app/join?code=' + encodeURIComponent(code);
-        setTimeout(function() {
-          const fallback = document.getElementById('join-fallback');
-          const storeBtn = document.getElementById('join-store-btn');
-          if (fallback) fallback.style.display = 'block';
-          if (storeBtn) {
-            storeBtn.style.display = 'inline-block';
-            if (isIOS) { storeBtn.href = 'https://apps.apple.com/app/simphonia/id6740088498'; storeBtn.textContent = 'Download on App Store'; }
-            else { storeBtn.href = 'https://play.google.com/store/apps/details?id=com.simphonia.app'; storeBtn.textContent = 'Get it on Google Play'; }
-          }
-        }, 1500);
-      } else if (code) {
-        const joinUrl = 'https://simphonia.pt/join?code=' + encodeURIComponent(code);
-        const qrImg = document.getElementById('join-qr-code');
-        if (qrImg) qrImg.src = 'https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=' + encodeURIComponent(joinUrl) + '&format=png&margin=8';
-        const desktop = document.getElementById('join-desktop');
-        if (desktop) desktop.style.display = 'block';
-      }
-    })();
-  </script>
 </div>

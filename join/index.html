@@ -8,7 +8,7 @@
   <meta name="theme-color" content="#121212">
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
-    script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com;
+    script-src 'self' https://cdnjs.cloudflare.com;
     style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
     font-src 'self' https://fonts.gstatic.com;
     img-src 'self' https://images.unsplash.com https://api.simphonia.pt https://flagcdn.com data: blob:;
@@ -62,16 +62,37 @@
     [data-page]{display:none}
   </style>
 
-  <!-- All page stylesheets loaded upfront for instant SPA transitions -->
+  <!-- base.css is render-blocking: it styles the persistent nav/footer shell,
+       which is visible immediately and is NOT gated behind [data-page]. -->
   <link rel="stylesheet" href="/css/base.css?v=20260403b">
-  <link rel="stylesheet" href="/css/home.css?v=20260403b">
-  <link rel="stylesheet" href="/css/about.css?v=20260403">
-  <link rel="stylesheet" href="/css/destinations.css?v=20260403">
-  <link rel="stylesheet" href="/css/how-it-works.css?v=20260403">
-  <link rel="stylesheet" href="/css/support.css?v=20260403">
-  <link rel="stylesheet" href="/css/legal.css?v=20260504">
-  <link rel="stylesheet" href="/css/404.css?v=20260403">
-  <link rel="stylesheet" href="/css/deeplink.css?v=20260511">
+
+  <!-- Page-content stylesheets: loaded non-render-blocking via preload+swap.
+       Safe because every [data-page] section starts as display:none (see the
+       critical inline CSS above) and is only revealed by router.js — by then
+       these files (fetched at high priority in parallel with everything
+       else) have long since finished loading. css-preload-swap.js (loaded
+       synchronously immediately below) converts each link into an active
+       stylesheet as soon as its bytes arrive, so this never delays first
+       paint of the nav shell or causes a styled/unstyled flash. -->
+  <link rel="preload" as="style" data-swap href="/css/home.css?v=20260403b">
+  <link rel="preload" as="style" data-swap href="/css/about.css?v=20260403">
+  <link rel="preload" as="style" data-swap href="/css/destinations.css?v=20260403">
+  <link rel="preload" as="style" data-swap href="/css/how-it-works.css?v=20260403">
+  <link rel="preload" as="style" data-swap href="/css/support.css?v=20260403">
+  <link rel="preload" as="style" data-swap href="/css/legal.css?v=20260504">
+  <link rel="preload" as="style" data-swap href="/css/404.css?v=20260403">
+  <link rel="preload" as="style" data-swap href="/css/deeplink.css?v=20260511">
+  <script src="/js/css-preload-swap.js"></script>
+  <noscript>
+    <link rel="stylesheet" href="/css/home.css?v=20260403b">
+    <link rel="stylesheet" href="/css/about.css?v=20260403">
+    <link rel="stylesheet" href="/css/destinations.css?v=20260403">
+    <link rel="stylesheet" href="/css/how-it-works.css?v=20260403">
+    <link rel="stylesheet" href="/css/support.css?v=20260403">
+    <link rel="stylesheet" href="/css/legal.css?v=20260504">
+    <link rel="stylesheet" href="/css/404.css?v=20260403">
+    <link rel="stylesheet" href="/css/deeplink.css?v=20260511">
+  </noscript>
 
   <!-- Structured Data -->
   <script type="application/ld+json">
@@ -90,6 +111,7 @@
   <script src="/js/theme-init.js"></script>
   <!-- Preload the page partial for the current URL so it's in-cache when the router runs -->
   <script src="/js/preload-partial.js"></script>
+  <script src="/js/deeplink-page.js"></script>
 </head>
 <body>
   <!-- Skip-link -->
@@ -157,5 +179,3 @@
 
 </body>
 </html>
-
-

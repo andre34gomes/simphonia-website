@@ -10,7 +10,7 @@
  * or routing changes that should invalidate cached HTML behavior.
  */
 
-const CACHE_VERSION = 'simphonia-v17';
+const CACHE_VERSION = 'simphonia-v18';
 
 // Core shell assets cached on install.
 // The SPA still powers in-app navigation, but direct loads for known clean URLs
@@ -35,15 +35,18 @@ const PRECACHE_URLS = [
   '/js/auth.js?v=20260402',
   '/js/cdn-fallback.js',
   '/js/destinations-page.js?v=20260402',
+  '/js/deeplink-page.js',
+  '/js/deeplink-token-page.js',
   '/js/i18n.js?v=20260402',
   '/js/main.js?v=20260402',
   '/js/not-found-page.js?v=20260403',
-  '/js/router.js?v=20260403c',
+  '/js/router.js?v=20260814-security',
   '/js/support.js?v=20260402',
   '/js/legal.js?v=20260504',
   '/js/theme-init.js',
   '/js/spa-mode.js',
   '/js/preload-partial.js',
+  '/js/css-preload-swap.js',
   '/js/sw-register.js',
   '/js/404-animations.js',
   '/js/web-vitals.js?v=20260515',
@@ -71,8 +74,6 @@ const PRECACHE_URLS = [
   '/pages/privacy',
   '/pages/terms',
   '/pages/join',
-  '/pages/verify-email',
-  '/pages/reset-password',
   '/pages/open-in-app',
 ];
 
@@ -139,10 +140,17 @@ self.addEventListener('fetch', function (event) {
 
   // Determine strategy based on destination
   var url = new URL(req.url);
+  var isSensitiveNavigation =
+    (url.pathname === '/reset-password' || url.pathname === '/reset-password/' ||
+      url.pathname === '/verify-email' || url.pathname === '/verify-email/') &&
+    url.searchParams.has('token');
   var isHTML = req.headers.get('Accept') && req.headers.get('Accept').includes('text/html');
   var isAsset = /\.(css|js|woff2?|ttf|svg|png|jpg|jpeg|gif|webp|ico)(\?|$)/.test(url.pathname);
 
-  if (isHTML) {
+  if (isSensitiveNavigation) {
+    // Never allow bearer tokens in navigation URLs to enter Cache Storage.
+    event.respondWith(fetch(req));
+  } else if (isHTML) {
     // HTML: network-first — always try to fetch fresh; serve cache if offline
     event.respondWith(networkFirst(req, event.preloadResponse));
   } else if (isAsset) {
@@ -195,9 +203,5 @@ function staleWhileRevalidate(req) {
     });
   });
 }
-
-
-
-
 
 

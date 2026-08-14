@@ -327,6 +327,15 @@
           window.initNotFoundPage();
         }
         break;
+      case 'reset-password':
+      case 'verify-email':
+        if (typeof window.initDeepLinkPage === 'function') {
+          window.initDeepLinkPage();
+        }
+        if (typeof window.initDeepLinkTokenPage === 'function') {
+          window.initDeepLinkTokenPage();
+        }
+        break;
     }
   }
 
@@ -504,4 +513,3 @@
   window.navigateTo = navigateTo;
   window.__simphoniaRoutes = ROUTES;
 }());
-

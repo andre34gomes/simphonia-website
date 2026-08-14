@@ -129,7 +129,8 @@
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="dns-prefetch" href="https://flagcdn.com">
   <link rel="preload" href="/assets/logo-mark.svg" as="image" type="image/svg+xml">
-  <link rel="preload" href="/js/router.js?v=20260403c" as="script">
+  <link rel="preload" href="/js/router.js?v=20260814-security" as="script">
+  <link rel="preload" href="/js/deeplink-token-page.js" as="script">
   <link rel="preload" href="/js/i18n.js?v=20260402" as="script">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Pacifico&display=swap">
 
@@ -148,16 +149,37 @@
     [data-page]{display:none}
   </style>
 
-  <!-- All page stylesheets loaded upfront for instant SPA transitions -->
+  <!-- base.css is render-blocking: it styles the persistent nav/footer shell,
+       which is visible immediately and is NOT gated behind [data-page]. -->
   <link rel="stylesheet" href="/css/base.css?v=20260403b">
-  <link rel="stylesheet" href="/css/home.css?v=20260403b">
-  <link rel="stylesheet" href="/css/about.css?v=20260403">
-  <link rel="stylesheet" href="/css/destinations.css?v=20260403">
-  <link rel="stylesheet" href="/css/how-it-works.css?v=20260403">
-  <link rel="stylesheet" href="/css/support.css?v=20260403">
-  <link rel="stylesheet" href="/css/legal.css?v=20260504">
-  <link rel="stylesheet" href="/css/404.css?v=20260403">
-  <link rel="stylesheet" href="/css/deeplink.css?v=20260511">
+
+  <!-- Page-content stylesheets: loaded non-render-blocking via preload+swap.
+       Safe because every [data-page] section starts as display:none (see the
+       critical inline CSS above) and is only revealed by router.js — by then
+       these files (fetched at high priority in parallel with everything
+       else) have long since finished loading. css-preload-swap.js (loaded
+       synchronously immediately below) converts each link into an active
+       stylesheet as soon as its bytes arrive, so this never delays first
+       paint of the nav shell or causes a styled/unstyled flash. -->
+  <link rel="preload" as="style" data-swap href="/css/home.css?v=20260403b">
+  <link rel="preload" as="style" data-swap href="/css/about.css?v=20260403">
+  <link rel="preload" as="style" data-swap href="/css/destinations.css?v=20260403">
+  <link rel="preload" as="style" data-swap href="/css/how-it-works.css?v=20260403">
+  <link rel="preload" as="style" data-swap href="/css/support.css?v=20260403">
+  <link rel="preload" as="style" data-swap href="/css/legal.css?v=20260504">
+  <link rel="preload" as="style" data-swap href="/css/404.css?v=20260403">
+  <link rel="preload" as="style" data-swap href="/css/deeplink.css?v=20260511">
+  <script src="/js/css-preload-swap.js"></script>
+  <noscript>
+    <link rel="stylesheet" href="/css/home.css?v=20260403b">
+    <link rel="stylesheet" href="/css/about.css?v=20260403">
+    <link rel="stylesheet" href="/css/destinations.css?v=20260403">
+    <link rel="stylesheet" href="/css/how-it-works.css?v=20260403">
+    <link rel="stylesheet" href="/css/support.css?v=20260403">
+    <link rel="stylesheet" href="/css/legal.css?v=20260504">
+    <link rel="stylesheet" href="/css/404.css?v=20260403">
+    <link rel="stylesheet" href="/css/deeplink.css?v=20260511">
+  </noscript>
 
 
   <!-- SPA mode flag: tells layout.js to always use absolute paths -->
@@ -166,6 +188,8 @@
   <script src="/js/theme-init.js"></script>
   <!-- Preload the page partial for the current URL so it's in-cache when the router runs -->
   <script src="/js/preload-partial.js"></script>
+  <script src="/js/deeplink-page.js"></script>
+  <script src="/js/deeplink-token-page.js"></script>
 </head>
 <body>
   <!-- Skip-link -->
@@ -238,7 +262,7 @@
   <script defer src="/js/animations-home.js?v=20260402"></script>
   <script defer src="/js/animations-subpages.js?v=20260402"></script>
   <script defer src="/js/not-found-page.js?v=20260403"></script>
-  <script defer src="/js/router.js?v=20260403c"></script>
+  <script defer src="/js/router.js?v=20260814-security"></script>
   <script defer src="/js/main.js?v=20260402"></script>
   <script defer src="/js/destinations-page.js?v=20260402"></script>
   <script defer src="/js/support.js?v=20260402"></script>
@@ -258,5 +282,3 @@
 
 </body>
 </html>
-
-
