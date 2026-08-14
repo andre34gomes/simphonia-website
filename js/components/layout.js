@@ -15,10 +15,17 @@ const NAV_COLLAPSE_WIDTH = 960;
 window.flagEmoji = function(code) {
   if (!code || code.length < 2) return '';
   const c = code.toLowerCase().slice(0, 2);
+  // Reject anything that isn't exactly 2 ASCII letters. `code` is sourced
+  // from API data (destination/country lists) and this string is later
+  // concatenated straight into innerHTML by callers — validating here
+  // (rather than just escaping) stops a malformed/unexpected country code
+  // from ever breaking out of the src/alt attributes, matching escHTML()'s
+  // safe-by-construction approach above.
+  if (!/^[a-z]{2}$/.test(c)) return '';
   return '<img src="https://flagcdn.com/20x15/' + c + '.png"' +
     ' srcset="https://flagcdn.com/40x30/' + c + '.png 2x"' +
     ' width="20" height="15"' +
-    ' alt="' + code.toUpperCase() + '"' +
+    ' alt="' + c.toUpperCase() + '"' +
     ' class="flag-img"' +
     ' loading="lazy"' +
     ' decoding="async">';
