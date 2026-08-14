@@ -4,28 +4,20 @@
       <div class="deeplink-page__icon">✉️</div>
       <h1 class="deeplink-page__title" id="verify-email-heading">Email Verification</h1>
 
-      <!-- Mobile: loading state while app opens -->
       <div id="ve-loading">
-        <p class="deeplink-page__subtitle">Opening the Simphonia app to verify your email...</p>
+        <p class="deeplink-page__subtitle">Processing your secure email-verification link...</p>
         <div class="deeplink-page__spinner"></div>
       </div>
 
-      <!-- Mobile fallback: app not installed -->
       <div class="deeplink-page__fallback" id="ve-fallback" style="display:none;">
-        <p>Download Simphonia to complete verification:</p>
-        <a id="ve-store-btn" href="#" class="btn btn--primary">Download App</a>
+        <p>For your security, open a new email-verification link on the mobile device where Simphonia is installed.</p>
+        <a id="ve-store-btn" href="https://play.google.com/store/apps/details?id=com.simphonia.app" class="btn btn--primary">Download Simphonia</a>
       </div>
 
-      <!-- Desktop view -->
       <div id="ve-desktop" style="display:none;">
         <p class="deeplink-page__subtitle">
-          This link needs to be opened on your phone in the Simphonia app.
-          Copy this page's URL and open it on your mobile device, or scan the QR code below.
+          For your security, open a new email-verification link on the mobile device where Simphonia is installed.
         </p>
-        <div class="deeplink-page__qr">
-          <canvas id="ve-qr-canvas" width="160" height="160"></canvas>
-          <p class="deeplink-page__qr-label">Scan with your phone camera</p>
-        </div>
         <div class="deeplink-page__stores">
           <a href="https://play.google.com/store/apps/details?id=com.simphonia.app" class="btn btn--primary" target="_blank" rel="noopener">Google Play</a>
           <a href="https://apps.apple.com/app/simphonia/id6740088498" class="btn btn--outline" target="_blank" rel="noopener">App Store</a>
@@ -34,55 +26,4 @@
     </div>
   </section>
 
-  <script>
-    (function() {
-      const ua = navigator.userAgent || '';
-      const isMobile = /android|iphone|ipad|ipod/i.test(ua);
-      const isIOS = /iphone|ipad|ipod/i.test(ua);
-      const params = new URLSearchParams(window.location.search);
-      const token = params.get('token') || '';
-      const tokenQuery = token ? '?token=' + encodeURIComponent(token) : '';
-
-      if (isMobile) {
-        window.location.href = 'simphonia://app/verify-email' + tokenQuery;
-        setTimeout(function() {
-          const loading = document.getElementById('ve-loading');
-          const fallback = document.getElementById('ve-fallback');
-          const storeBtn = document.getElementById('ve-store-btn');
-          if (loading) loading.style.display = 'none';
-          if (fallback) fallback.style.display = 'block';
-          if (storeBtn) {
-            storeBtn.style.display = 'inline-block';
-            if (isIOS) {
-              storeBtn.href = 'https://apps.apple.com/app/simphonia/id6740088498';
-              storeBtn.textContent = 'Download on App Store';
-            } else {
-              storeBtn.href = 'https://play.google.com/store/apps/details?id=com.simphonia.app';
-              storeBtn.textContent = 'Get it on Google Play';
-            }
-          }
-        }, 1500);
-      } else {
-        const loading = document.getElementById('ve-loading');
-        const desktop = document.getElementById('ve-desktop');
-        if (loading) loading.style.display = 'none';
-        if (desktop) desktop.style.display = 'block';
-
-        const canvas = document.getElementById('ve-qr-canvas');
-        if (canvas && canvas.getContext) {
-          const ctx = canvas.getContext('2d');
-          const img = new Image();
-          img.crossOrigin = 'anonymous';
-          img.onload = function() { ctx.drawImage(img, 0, 0, 160, 160); };
-          img.onerror = function() {
-            ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, 160, 160);
-            ctx.fillStyle = '#333'; ctx.font = '12px sans-serif'; ctx.textAlign = 'center';
-            ctx.fillText('Open this URL', 80, 70); ctx.fillText('on your phone', 80, 90);
-          };
-          const safeUrl = window.location.origin + '/verify-email' + tokenQuery;
-          img.src = 'https://api.qrserver.com/v1/create-qr-code/?size=160x160&data=' + encodeURIComponent(safeUrl) + '&format=png&margin=8';
-        }
-      }
-    })();
-  </script>
 </div>
