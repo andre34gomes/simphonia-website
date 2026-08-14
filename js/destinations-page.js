@@ -194,7 +194,7 @@ function renderGrid(items) {
       '</div>' +
       '<div class="dest-card__body">' +
       '<div class="dest-card__name">' + (flag || '') + safeName + '</div>' +
-      (d.planCount ? '<div class="dest-card__plans">' + d.planCount + ' ' + _t('common.plansAvailable') + '</div>' : '') +
+      (d.planCount ? '<div class="dest-card__plans">' + parseInt(d.planCount, 10) + ' ' + _t('common.plansAvailable') + '</div>' : '') +
       (d.startingPrice ? '<div class="dest-card__price">' + _t('common.from') + ' \u20AC' + Number(d.startingPrice).toFixed(2) + '</div>' : '') +
       '</div>';
     frag.appendChild(card);
