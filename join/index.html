@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title data-i18n="page.titles.home">Simphonia — Stay Connected, Wherever You Go.</title>
-  <meta id="meta-description" name="description" content="Instant eSIM activation for 200+ countries. No roaming fees, no SIM swaps, no contracts. Stay connected wherever you go with Simphonia." data-i18n-content="page.descriptions.home">
+  <title>You’ve Been Invited! — Simphonia</title>
+  <meta id="meta-description" name="description" content="Open the Simphonia app to accept your invitation.">
   <meta name="theme-color" content="#121212">
   <meta http-equiv="Content-Security-Policy" content="
     default-src 'self';
@@ -15,9 +15,8 @@
     connect-src 'self' https://api.simphonia.pt;
     base-uri 'self'; form-action 'self'; upgrade-insecure-requests;
   ">
-  <link id="canonical-url" rel="canonical" href="https://simphonia.pt/">
-  <link rel="alternate" hreflang="en" href="https://simphonia.pt/">
-  <meta id="meta-robots" name="robots" content="index, follow">
+  <link id="canonical-url" rel="canonical" href="https://simphonia.pt/join/">
+  <meta id="meta-robots" name="robots" content="noindex, follow">
   <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
   <link rel="shortcut icon" href="/assets/favicon.svg">
   <link rel="mask-icon" href="/assets/favicon.svg" color="#D4AF37">
@@ -28,15 +27,16 @@
   <meta name="apple-mobile-web-app-title" content="Simphonia">
 
   <!-- Open Graph -->
-  <meta id="og-title" property="og:title" content="Simphonia — Stay Connected, Wherever You Go" data-i18n-content="page.titles.home">
-  <meta id="og-description" property="og:description" content="Instant eSIM activation for 200+ countries. No roaming fees, no SIM swaps, no contracts. Stay connected wherever you go with Simphonia." data-i18n-content="page.descriptions.home">
+  <meta id="og-title" property="og:title" content="You’ve Been Invited! — Simphonia">
+  <meta id="og-description" property="og:description" content="Open the Simphonia app to accept your invitation.">
   <meta property="og:type" content="website">
-  <meta id="og-url" property="og:url" content="https://simphonia.pt/">
+  <meta id="og-url" property="og:url" content="https://simphonia.pt/join/">
   <meta property="og:image" content="https://simphonia.pt/assets/og-image.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta id="twitter-title" name="twitter:title" content="Simphonia — Stay Connected, Wherever You Go" data-i18n-content="page.titles.home">
-  <meta id="twitter-description" name="twitter:description" content="Instant eSIM activation for 200+ countries. No roaming fees, no SIM swaps, no contracts. Stay connected wherever you go with Simphonia." data-i18n-content="page.descriptions.home">
+  <meta id="twitter-title" name="twitter:title" content="You’ve Been Invited! — Simphonia">
+  <meta id="twitter-description" name="twitter:description" content="Open the Simphonia app to accept your invitation.">
   <meta name="twitter:image" content="https://simphonia.pt/assets/og-image.png">
+
 
   <!-- Preconnects & DNS hints -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -45,6 +45,9 @@
   <link rel="dns-prefetch" href="https://cdnjs.cloudflare.com">
   <link rel="dns-prefetch" href="https://flagcdn.com">
   <link rel="preload" href="/assets/logo-mark.svg" as="image" type="image/svg+xml">
+  <link rel="preload" href="/js/router.js?v=20260814-security" as="script">
+  <link rel="preload" href="/js/deeplink-token-page.js" as="script">
+  <link rel="preload" href="/js/i18n.js?v=20260402" as="script">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Pacifico&display=swap">
 
   <!-- Critical CSS: above-the-fold rules inlined for fast first paint -->
@@ -94,16 +97,6 @@
     <link rel="stylesheet" href="/css/deeplink.css?v=20260511">
   </noscript>
 
-  <!-- Structured Data -->
-  <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"Organization","name":"Simphonia","url":"https://simphonia.pt","logo":"https://simphonia.pt/assets/icon-512.png","description":"Global eSIM service for travelers in 200+ countries","foundingDate":"2024","founder":{"@type":"Person","name":"André Gomes"},"sameAs":["https://instagram.com/simphonia.pt","https://x.com/simphonia","https://linkedin.com/company/simphonia"]}
-  </script>
-  <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"SoftwareApplication","name":"Simphonia eSIM","operatingSystem":"iOS, Android","applicationCategory":"TravelApplication","description":"Instant eSIM activation for 200+ countries. No roaming fees, no SIM swaps, no contracts.","offers":{"@type":"Offer","price":"0","priceCurrency":"EUR"},"installUrl":"https://apps.apple.com/app/simphonia","url":"https://simphonia.pt"}
-  </script>
-  <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I get started with Simphonia?","acceptedAnswer":{"@type":"Answer","text":"Download the Simphonia app, choose your destination, and purchase a plan. Your eSIM QR code is generated instantly."}},{"@type":"Question","name":"How do I install my eSIM after purchase?","acceptedAnswer":{"@type":"Answer","text":"After purchase, open Settings, go to Cellular or Mobile Data, tap Add eSIM, and scan the QR code shown in the Simphonia app."}},{"@type":"Question","name":"Do I need to remove my existing SIM card?","acceptedAnswer":{"@type":"Answer","text":"No. Your physical SIM card stays in your phone. The eSIM runs alongside it."}},{"@type":"Question","name":"How many countries does Simphonia cover?","acceptedAnswer":{"@type":"Answer","text":"Simphonia offers eSIM plans for 200+ countries and regions worldwide."}},{"@type":"Question","name":"What payment methods are accepted?","acceptedAnswer":{"@type":"Answer","text":"Simphonia accepts Apple Pay, Google Pay, and all major credit and debit cards."}}]}
-  </script>
 
   <!-- SPA mode flag: tells layout.js to always use absolute paths -->
   <script src="/js/spa-mode.js"></script>
@@ -112,6 +105,7 @@
   <!-- Preload the page partial for the current URL so it's in-cache when the router runs -->
   <script src="/js/preload-partial.js"></script>
   <script src="/js/deeplink-page.js"></script>
+  <script src="/js/deeplink-token-page.js"></script>
 </head>
 <body>
   <!-- Skip-link -->
@@ -162,7 +156,10 @@
           integrity="sha512-onMTRKJBKz8M1TnqqDuGBlowlH0ohFzMXYRNebz+yOcc5TQr/zAKsthzhuv0hiyUKEiQEQXEynnXCvNTOk50dg=="
           crossorigin="anonymous" defer></script>
   <script defer src="/js/cdn-fallback.js"></script>
-  <noscript><style>.hero-postcard__orb{display:none}[data-page]{display:block!important}</style></noscript>
+  <noscript>
+    <style>.hero-postcard__orb{display:none}[data-page]{display:block!important}</style>
+    <div data-page="join"><section class="deeplink-page"><div class="deeplink-page__card"><h1>You’ve Been Invited!</h1><p>Open this invitation in the Simphonia app to continue.</p><p><a href="https://apps.apple.com/app/simphonia" class="btn btn--primary">Download Simphonia</a></p></div></section></div>
+  </noscript>
   <script defer src="/js/i18n.js?v=20260402"></script>
   <script defer src="/js/components/layout.js?v=20260402"></script>
   <script defer src="/js/auth.js?v=20260402"></script>
@@ -170,12 +167,23 @@
   <script defer src="/js/animations-home.js?v=20260402"></script>
   <script defer src="/js/animations-subpages.js?v=20260402"></script>
   <script defer src="/js/not-found-page.js?v=20260403"></script>
-  <script defer src="/js/router.js?v=20260403c"></script>
+  <script defer src="/js/router.js?v=20260814-security"></script>
   <script defer src="/js/main.js?v=20260402"></script>
   <script defer src="/js/destinations-page.js?v=20260402"></script>
   <script defer src="/js/support.js?v=20260402"></script>
+  <script defer src="/js/legal.js?v=20260504"></script>
   <!-- PWA Service Worker registration -->
-  <script src="/js/sw-register.js"></script>
+  <script defer src="/js/sw-register.js"></script>
+  <!-- Core Web Vitals performance monitoring -->
+  <script defer src="/js/web-vitals.js?v=20260515"></script>
+  <!-- Navigation prefetch on hover/touch -->
+  <script defer src="/js/nav-prefetch.js?v=20260515"></script>
+  <!-- Keyboard navigation shortcuts -->
+  <script defer src="/js/keyboard-shortcuts.js?v=20260515"></script>
+  <!-- Scroll progress indicator -->
+  <script defer src="/js/scroll-progress.js?v=20260515"></script>
+  <!-- External link safety handler -->
+  <script defer src="/js/external-links.js?v=20260515"></script>
 
 </body>
 </html>

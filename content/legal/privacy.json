@@ -1,0 +1,249 @@
+{
+  "type": "privacy",
+  "language": "en",
+  "lastUpdated": "2026-05-04",
+  "title": "Privacy Policy",
+  "heroLabel": "Legal",
+  "heroHeading1": "Privacy",
+  "heroHeading2": "Policy",
+  "intro": "At Simphonia (\"we\", \"us\", \"our\"), we are committed to protecting your privacy in accordance with the General Data Protection Regulation (GDPR), the Portuguese Data Protection Law, and other applicable data protection legislation. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you use our mobile application and website (collectively, the \"Service\").",
+  "sections": [
+    {
+      "id": "info-collect",
+      "title": "1. Information We Collect",
+      "content": [
+        { "type": "heading", "level": 3, "text": "1.1 Account Information" },
+        { "type": "paragraph", "text": "When you create an account or make a purchase, we collect:" },
+        { "type": "list", "items": [
+          "Full name and email address",
+          "Password (stored in securely hashed form — we never store or have access to your plain-text password)",
+          "Profile photo (if provided via social login)",
+          "Account preferences: language, currency, and theme settings"
+        ]},
+        { "type": "heading", "level": 3, "text": "1.2 Social Login Data" },
+        { "type": "paragraph", "text": "If you sign in or register using a third-party provider (Google, Facebook, or Apple), we receive the following information from that provider:" },
+        { "type": "list", "items": [
+          "Name and email address associated with your social account",
+          "Profile photo URL",
+          "A unique provider identifier to link your social account"
+        ]},
+        { "type": "paragraph", "text": "We do not receive or store your social media passwords. Authentication tokens from social providers are used only during the login process and for identity verification." },
+        { "type": "heading", "level": 3, "text": "1.3 Purchase & Billing Information" },
+        { "type": "paragraph", "text": "When you make a purchase, we collect:" },
+        { "type": "list", "items": [
+          "Email address for order confirmation and eSIM delivery",
+          "Billing country (for tax and compliance purposes)",
+          "Phone number (optional, if provided at checkout)",
+          "Order details: plans purchased, quantities, prices, currency, and discount codes applied"
+        ]},
+        { "type": "paragraph", "text": "Payment card details (card number, expiry, CVC) are collected and processed exclusively by our payment processor, Stripe. We never receive or store your full payment card information on our servers." },
+        { "type": "heading", "level": 3, "text": "1.4 Usage Data" },
+        { "type": "paragraph", "text": "We automatically collect certain information when you use the Service:" },
+        { "type": "list", "items": [
+          "Device information: model, operating system, screen size, and eSIM compatibility",
+          "App version and build number",
+          "Feature interactions and navigation patterns",
+          "IP address",
+          "General location data at country/region level (derived from IP address — we do not use GPS or precise location tracking)",
+          "Timestamp of actions (e.g. login, purchase, chat)"
+        ]},
+        { "type": "heading", "level": 3, "text": "1.5 Crash Reports & Performance Data" },
+        { "type": "paragraph", "text": "We use Sentry, a third-party error monitoring service, to collect crash reports and performance diagnostics in production. This data includes stack traces, device metadata, and app state at the time of the error. Personal identifiers (PII) are automatically scrubbed before transmission. Crash reporting is disabled in development environments." },
+        { "type": "heading", "level": 3, "text": "1.6 Support & Chat Interactions" },
+        { "type": "paragraph", "text": "When you use the AI chat assistant or submit a support ticket, we collect:" },
+        { "type": "list", "items": [
+          "The content of your chat messages and support requests",
+          "Feedback you provide on AI responses (thumbs up/down)",
+          "Support ticket subject, message body, and status updates"
+        ]},
+        { "type": "paragraph", "text": "Chat messages are sent to third-party AI providers (OpenAI and/or Google Gemini) for response generation. We do not send your password, payment details, or other sensitive account data to AI providers. The following information is shared with AI providers to generate relevant, personalized responses: conversation text, your preferred language and currency, your first name, authentication status, and — when you request account-related assistance — data retrieved on your behalf such as order details, eSIM status, and referral information." },
+        { "type": "heading", "level": 3, "text": "1.7 Referral Program Data" },
+        { "type": "paragraph", "text": "If you participate in our referral program, we collect and process your referral code, the number of successful referrals, and earned reward codes. This information is linked to your account email address." },
+        { "type": "heading", "level": 3, "text": "1.8 On-Device Storage" },
+        { "type": "paragraph", "text": "The app stores certain data locally on your device for functionality and convenience:" },
+        { "type": "list", "items": [
+          "Authentication tokens stored in secure device storage (iOS Keychain / Android Keystore)",
+          "App preferences (theme, language, currency) stored in local storage",
+          "Shopping cart contents stored locally",
+          "Favorite destinations stored locally and synced to our servers when you are logged in"
+        ]},
+        { "type": "paragraph", "text": "This data remains on your device and is not transmitted to our servers unless required for functionality (e.g., syncing favorites to your account when logged in)." }
+      ]
+    },
+    {
+      "id": "legal-basis",
+      "title": "2. Legal Basis for Processing (GDPR)",
+      "content": [
+        { "type": "paragraph", "text": "Under the GDPR, we process your personal data based on the following legal grounds:" },
+        { "type": "list", "items": [
+          "Contract performance (Art. 6(1)(b)): Processing necessary to provide the Service, fulfill eSIM orders, manage your account, and process payments",
+          "Legitimate interests (Art. 6(1)(f)): Fraud prevention, security monitoring, service improvement, analytics, and customer support",
+          "Consent (Art. 6(1)(a)): Marketing communications (you can withdraw consent at any time), and where AI chat messages are processed by third-party providers",
+          "Legal obligation (Art. 6(1)(c)): Tax compliance, financial record-keeping, and responding to lawful requests from authorities"
+        ]}
+      ]
+    },
+    {
+      "id": "how-we-use",
+      "title": "3. How We Use Your Information",
+      "content": [
+        { "type": "paragraph", "text": "We use the collected information for the following purposes:" },
+        { "type": "list", "items": [
+          "To provide, maintain, and improve the Service",
+          "To create and manage your user account",
+          "To process transactions, deliver eSIM profiles, and send order confirmations",
+          "To verify your email address during registration",
+          "To enable password reset and account recovery",
+          "To provide customer support through AI chat and human agents",
+          "To process and respond to support tickets",
+          "To operate the referral program and deliver earned rewards",
+          "To send transactional communications (welcome emails, order confirmations, receipts, ticket updates, referral rewards)",
+          "To send marketing emails (only with your explicit opt-in consent)",
+          "To detect, prevent, and address fraud, abuse, and security issues",
+          "To monitor application performance and fix errors (via Sentry)",
+          "To analyze usage trends and improve user experience",
+          "To comply with legal obligations and enforce our Terms of Service"
+        ]}
+      ]
+    },
+    {
+      "id": "data-sharing",
+      "title": "4. Data Sharing & Third Parties",
+      "content": [
+        { "type": "paragraph", "text": "We do not sell, rent, or trade your personal information. We share data with third parties only as necessary to provide the Service:" },
+        { "type": "list", "items": [
+          "Airalo (eSIM provider): We share your email address and order details to provision and activate eSIM profiles. Airalo processes this data as a data processor on our behalf",
+          "Stripe (payment processor): Collects and processes your payment card details, billing email, and billing country. Stripe is PCI-DSS Level 1 certified. See Stripe's Privacy Policy at https://stripe.com/privacy",
+          "OpenAI and Google (AI providers): Chat conversation text, language preference, and currency are sent to generate AI responses. We do not send identifying personal data unless you include it in your messages. See OpenAI's Privacy Policy at https://openai.com/privacy and Google's Privacy Policy at https://policies.google.com/privacy",
+          "Sentry (error monitoring): Receives anonymized crash reports and performance data. PII is automatically scrubbed. See Sentry's Privacy Policy at https://sentry.io/privacy",
+          "Google, Facebook, Apple (social login providers): When you use social login, authentication data flows through these providers. We receive only name, email, and profile photo",
+          "Email delivery services: Transactional and marketing emails are sent through our email infrastructure",
+          "Legal authorities: We may disclose data when required by law, court order, or to protect our rights, safety, or property"
+        ]}
+      ]
+    },
+    {
+      "id": "data-security",
+      "title": "5. Data Security",
+      "content": [
+        { "type": "paragraph", "text": "We implement comprehensive security measures to protect your information:" },
+        { "type": "list", "items": [
+          "All data in transit is encrypted using TLS (Transport Layer Security)",
+          "Passwords are hashed using industry-standard algorithms (bcrypt) — we never store plain-text passwords",
+          "Authentication tokens are stored in secure device storage (iOS Keychain / Android Keystore)",
+          "JWT-based authentication with automatic token rotation and expiration",
+          "API rate limiting and input sanitization to prevent abuse",
+          "Sensitive data fields are automatically scrubbed from error reports",
+          "Regular security audits and dependency vulnerability scanning"
+        ]},
+        { "type": "paragraph", "text": "While we strive to protect your data, no method of electronic transmission or storage is 100% secure. We cannot guarantee absolute security but are committed to continuous improvement of our security practices." }
+      ]
+    },
+    {
+      "id": "data-retention",
+      "title": "6. Data Retention",
+      "content": [
+        { "type": "paragraph", "text": "We retain your personal information as follows:" },
+        { "type": "list", "items": [
+          "Account data: Retained while your account is active. Deleted upon account deletion request, subject to legal retention obligations",
+          "Order and transaction records: Retained for a minimum of 7 years after the transaction date for tax and financial compliance purposes",
+          "Chat conversations: Retained for up to 12 months for service quality and support purposes",
+          "Support tickets: Retained for up to 24 months after resolution",
+          "Crash reports and performance data: Retained for up to 90 days",
+          "Marketing consent records: Retained for as long as the consent is valid, plus 3 years after withdrawal for compliance documentation"
+        ]},
+        { "type": "paragraph", "text": "You may request deletion of your account and associated data at any time through the Profile Settings page in the app or by contacting support@simphonia.pt. Upon deletion, your data will be removed from active systems within 30 days, except where retention is required by law." }
+      ]
+    },
+    {
+      "id": "your-rights",
+      "title": "7. Your Rights (GDPR & EU Law)",
+      "content": [
+        { "type": "paragraph", "text": "Under the GDPR and applicable data protection laws, you have the following rights regarding your personal data:" },
+        { "type": "list", "items": [
+          "Right of access (Art. 15): Request a copy of the personal data we hold about you",
+          "Right to rectification (Art. 16): Request correction of inaccurate or incomplete data. You can update your name directly in the app",
+          "Right to erasure / right to be forgotten (Art. 17): Request deletion of your data. You can delete your account directly through the app's Profile Settings",
+          "Right to restriction of processing (Art. 18): Request that we limit how we use your data while a concern is being resolved",
+          "Right to data portability (Art. 20): Request a machine-readable copy of the data you have provided to us",
+          "Right to object (Art. 21): Object to processing based on legitimate interests, including for direct marketing purposes",
+          "Right to withdraw consent (Art. 7): You may withdraw consent for marketing emails at any time through the app or the unsubscribe link. Withdrawal does not affect the lawfulness of processing based on consent before its withdrawal"
+        ]},
+        { "type": "paragraph", "text": "To exercise any of these rights, contact us at support@simphonia.pt. We will respond to your request within 30 days, as required by the GDPR." },
+        { "type": "paragraph", "html": "If you believe your data protection rights have been violated, you have the right to lodge a complaint with your national supervisory authority. In Portugal, the supervisory authority is the Comissão Nacional de Proteção de Dados (CNPD) at <a href=\"https://www.cnpd.pt\">www.cnpd.pt</a>." }
+      ]
+    },
+    {
+      "id": "cookies",
+      "title": "8. Cookies & Local Storage",
+      "content": [
+        { "type": "paragraph", "text": "Our website uses minimal, essential cookies and local storage for functionality, including:" },
+        { "type": "list", "items": [
+          "Theme preference (light/dark mode)",
+          "Language selection",
+          "Session management"
+        ]},
+        { "type": "paragraph", "text": "We do not use third-party advertising or tracking cookies. The mobile app uses on-device storage (SharedPreferences and secure storage) for preferences and authentication tokens as described in Section 1.8." }
+      ]
+    },
+    {
+      "id": "children",
+      "title": "9. Children's Privacy",
+      "content": [
+        { "type": "paragraph", "text": "The Service is not directed to children under 16 years of age. We do not knowingly collect personal information from children under 16. If we become aware that we have inadvertently collected data from a child under 16, we will take steps to delete that data as soon as possible. If you believe a child under 16 has provided us with personal data, please contact us at support@simphonia.pt." }
+      ]
+    },
+    {
+      "id": "transfers",
+      "title": "10. International Data Transfers",
+      "content": [
+        { "type": "paragraph", "text": "Your personal data is primarily processed within the European Economic Area (EEA). However, some of our third-party service providers may process data outside the EEA:" },
+        { "type": "list", "items": [
+          "Stripe (United States) — Payment processing, covered by Standard Contractual Clauses (SCCs) and Stripe's Data Processing Agreement",
+          "OpenAI (United States) — AI chat response generation, covered by SCCs and OpenAI's Data Processing Addendum",
+          "Google / Gemini (United States) — AI chat response generation and social login, covered by SCCs and Google's Data Processing Terms",
+          "Sentry (United States) — Error monitoring, covered by SCCs and Sentry's Data Processing Addendum",
+          "Airalo (varies) — eSIM provisioning and activation"
+        ]},
+        { "type": "paragraph", "text": "Where data is transferred outside the EEA, we ensure appropriate safeguards are in place as required by Article 46 of the GDPR, including Standard Contractual Clauses approved by the European Commission." }
+      ]
+    },
+    {
+      "id": "changes",
+      "title": "11. Changes to This Policy",
+      "content": [
+        { "type": "paragraph", "text": "We may update this Privacy Policy from time to time to reflect changes in our data practices, the Service, or applicable law. We will notify you of material changes by:" },
+        { "type": "list", "items": [
+          "Updating the \"Last updated\" date at the top of this page",
+          "Posting a notice on the website or in the app",
+          "Sending an email notification for significant changes (if you have an account)"
+        ]},
+        { "type": "paragraph", "text": "We encourage you to review this Privacy Policy periodically. Your continued use of the Service after changes take effect constitutes acceptance of the updated policy." }
+      ]
+    },
+    {
+      "id": "data-controller",
+      "title": "12. Data Controller",
+      "content": [
+        { "type": "paragraph", "text": "The data controller responsible for your personal data is:" },
+        { "type": "list", "items": [
+          "Simphonia",
+          "Lisbon, Portugal",
+          "Email: support@simphonia.pt"
+        ]},
+        { "type": "paragraph", "text": "For any data protection inquiries, you may contact us at the email address above." }
+      ]
+    },
+    {
+      "id": "privacy-contact",
+      "title": "13. Contact Us",
+      "content": [
+        { "type": "paragraph", "text": "If you have questions about this Privacy Policy, wish to exercise your data protection rights, or have concerns about how we handle your data, contact us at:" },
+        { "type": "list", "items": [
+          "Email: support@simphonia.pt",
+          "Website: https://simphonia.pt/support/"
+        ]}
+      ]
+    }
+  ]
+}

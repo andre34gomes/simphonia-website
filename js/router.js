@@ -15,6 +15,7 @@
   /* ── Route definitions ─────────────────────────────────────── */
   /** Timeout (ms) for fetching page partials via the router. */
   const PAGE_FETCH_TIMEOUT_MS = 8000;
+  const SITE_ORIGIN = 'https://simphonia.pt';
 
   // Trailing-slash variants are intentionally omitted — resolveRoute()
   // normalises any path before lookup, so a single entry per route suffices.
@@ -26,10 +27,10 @@
     '/about':        { page: 'about',        titleKey: 'page.titles.about',        descriptionKey: 'page.descriptions.about' },
     '/privacy':      { page: 'privacy',      titleKey: 'page.titles.privacy',      descriptionKey: 'page.descriptions.privacy' },
     '/terms':        { page: 'terms',        titleKey: 'page.titles.terms',        descriptionKey: 'page.descriptions.terms' },
-    '/join':            { page: 'join',            titleKey: 'page.titles.join',           descriptionKey: 'page.descriptions.join', robots: 'noindex, follow' },
-    '/verify-email':    { page: 'verify-email',    titleKey: 'page.titles.verifyEmail',    descriptionKey: 'page.descriptions.verifyEmail', robots: 'noindex, nofollow' },
-    '/reset-password':  { page: 'reset-password',  titleKey: 'page.titles.resetPassword',  descriptionKey: 'page.descriptions.resetPassword', robots: 'noindex, nofollow' },
-    '/open-in-app':     { page: 'open-in-app',     titleKey: 'page.titles.openInApp',      descriptionKey: 'page.descriptions.openInApp', robots: 'noindex, nofollow' },
+    '/join':            { page: 'join',            titleKey: 'page.titles.join',           descriptionKey: 'page.descriptions.join', title: 'You\u2019ve Been Invited! — Simphonia', description: 'Open the Simphonia app to accept your invitation.', robots: 'noindex, follow' },
+    '/verify-email':    { page: 'verify-email',    titleKey: 'page.titles.verifyEmail',    descriptionKey: 'page.descriptions.verifyEmail', title: 'Verify Email — Simphonia', description: 'Verify your Simphonia email address in the app.', robots: 'noindex, nofollow' },
+    '/reset-password':  { page: 'reset-password',  titleKey: 'page.titles.resetPassword',  descriptionKey: 'page.descriptions.resetPassword', title: 'Reset Password — Simphonia', description: 'Reset your Simphonia password securely in the app.', robots: 'noindex, nofollow' },
+    '/open-in-app':     { page: 'open-in-app',     titleKey: 'page.titles.openInApp',      descriptionKey: 'page.descriptions.openInApp', title: 'Open Simphonia on Your Phone', description: 'Open this Simphonia link on your phone to continue.', robots: 'noindex, nofollow' },
   };
 
   const NOT_FOUND_ROUTE = {
@@ -174,10 +175,13 @@
 
   function updateSeo(route, path) {
     if (!route) return;
-    const title = translateText(route.titleKey);
-    const description = translateText(route.descriptionKey);
+    const title = translateText(route.titleKey) || route.title || '';
+    const description = translateText(route.descriptionKey) || route.description || '';
     const normalizedPath = normalizePath(path || window.location.pathname);
-    const canonicalUrl = window.location.origin + normalizedPath;
+    const canonicalPath = route === NOT_FOUND_ROUTE || normalizedPath === '/'
+      ? normalizedPath
+      : normalizedPath + '/';
+    const canonicalUrl = SITE_ORIGIN + canonicalPath;
 
     if (title) {
       document.title = title;

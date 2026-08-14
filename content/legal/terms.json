@@ -1,0 +1,229 @@
+{
+  "type": "terms",
+  "language": "en",
+  "lastUpdated": "2026-05-04",
+  "title": "Terms of Service",
+  "heroLabel": "Legal",
+  "heroHeading1": "Terms of",
+  "heroHeading2": "Service",
+  "intro": "These Terms of Service (\"Terms\") govern your use of the Simphonia mobile application, website, and related services (collectively, the \"Service\") operated by Simphonia, a company registered in Portugal (\"we\", \"us\", \"our\"). By accessing or using the Service, you agree to be bound by these Terms. If you are a consumer in the European Union, these Terms do not affect your statutory rights under applicable EU consumer protection law.",
+  "sections": [
+    {
+      "id": "acceptance",
+      "title": "1. Acceptance of Terms",
+      "content": [
+        { "type": "paragraph", "html": "By creating an account, making a purchase, or otherwise using the Service, you acknowledge that you have read, understood, and agree to be bound by these Terms and our <a href=\"/privacy/\">Privacy Policy</a>. If you do not agree, do not use the Service." },
+        { "type": "paragraph", "text": "You must be at least 16 years of age to use the Service. By using the Service, you represent and warrant that you meet this age requirement." }
+      ]
+    },
+    {
+      "id": "description",
+      "title": "2. Description of Service",
+      "content": [
+        { "type": "paragraph", "text": "Simphonia provides a platform for purchasing and managing eSIM (embedded SIM) data plans for use while traveling internationally. The Service includes:" },
+        { "type": "list", "items": [
+          "Browsing and purchasing eSIM data plans for 200+ countries and regions",
+          "eSIM profile installation, management, and usage monitoring",
+          "Top-up of eligible active eSIM plans",
+          "Account management, profile settings, and order history",
+          "Shopping cart with multi-plan checkout",
+          "Saving favorite destinations for quick access",
+          "Customer support via AI-powered chat assistant and human support agents",
+          "Support ticket system for issue tracking and resolution",
+          "Referral program with discount rewards for inviting friends",
+          "Discount and promotional codes during checkout"
+        ]}
+      ]
+    },
+    {
+      "id": "registration",
+      "title": "3. Account Registration & Authentication",
+      "content": [
+        { "type": "paragraph", "text": "To access certain features of the Service (such as purchasing plans, viewing order history, and using the referral program), you must create an account. You may register using:" },
+        { "type": "list", "items": [
+          "Email address and password",
+          "Google Sign-In",
+          "Facebook Login",
+          "Sign in with Apple"
+        ]},
+        { "type": "paragraph", "text": "When using social login, we receive limited profile information (name, email address, and profile photo) from the provider as described in our Privacy Policy." },
+        { "type": "paragraph", "text": "You agree to:" },
+        { "type": "list", "items": [
+          "Provide accurate and complete registration information",
+          "Verify your email address when requested",
+          "Maintain the security of your account credentials",
+          "Notify us immediately of any unauthorized access to your account",
+          "Accept responsibility for all activities that occur under your account"
+        ]},
+        { "type": "heading", "level": 3, "text": "3.1 Guest Access" },
+        { "type": "paragraph", "text": "You may browse eSIM plans and interact with the AI chat assistant without creating an account. However, purchasing plans, viewing order history, accessing the referral program, and using other authenticated features requires a registered account." }
+      ]
+    },
+    {
+      "id": "purchases",
+      "title": "4. Purchases & Payments",
+      "content": [
+        { "type": "heading", "level": 3, "text": "4.1 Pricing & Currency" },
+        { "type": "paragraph", "text": "All prices are displayed in the currency you select within the app. Simphonia supports multiple currencies including USD, EUR, GBP, JPY, AUD, CAD, CHF, CNY, SEK, NZD, and BRL. Prices may vary based on destination, data amount, validity period, and the selected currency. The final price is confirmed at checkout before payment." },
+        { "type": "heading", "level": 3, "text": "4.2 Payment Processing" },
+        { "type": "paragraph", "text": "Payments are processed securely through Stripe, a PCI-DSS Level 1 certified payment processor. We accept all major credit and debit cards, as well as Apple Pay and Google Pay where available. We do not store your full payment card details on our servers — all payment data is handled directly by Stripe." },
+        { "type": "heading", "level": 3, "text": "4.3 Discount & Promotional Codes" },
+        { "type": "paragraph", "text": "Discount codes and promotional offers may be applied at checkout. Discount codes are subject to availability, validity periods, and usage limits. We reserve the right to modify or withdraw promotional offers at any time. Discount codes cannot be combined unless explicitly stated." },
+        { "type": "heading", "level": 3, "text": "4.4 Referral Program" },
+        { "type": "paragraph", "text": "Registered users may participate in our referral program by sharing their unique referral code. When a referred user makes their first purchase, both the referrer and the referred user may receive a discount reward, subject to the current referral program terms. Referral rewards are issued as discount codes and cannot be exchanged for cash. We reserve the right to modify, suspend, or terminate the referral program at any time." },
+        { "type": "heading", "level": 3, "text": "4.5 Refund Policy" },
+        { "type": "paragraph", "text": "Refunds are available under the following conditions:" },
+        { "type": "list", "items": [
+          "Unused eSIM: Full refund within 30 days of purchase if the eSIM has not been installed or activated",
+          "Technical issues: If we are unable to deliver a working eSIM profile, you are entitled to a full refund or replacement at no additional cost",
+          "Used eSIM: Once data has been consumed, refunds are evaluated on a case-by-case basis",
+          "EU consumers: If you are a consumer in the European Union, you have the right to withdraw from a purchase within 14 days. However, by purchasing and using a digital eSIM that is delivered immediately, you acknowledge and agree that you lose the right of withdrawal once the eSIM profile has been delivered and provisioned"
+        ]},
+        { "type": "paragraph", "text": "To request a refund, contact our support team through the app or at support@simphonia.pt." },
+        { "type": "heading", "level": 3, "text": "4.6 Order Confirmation" },
+        { "type": "paragraph", "text": "After a successful purchase, you will receive an order confirmation via email. Your eSIM profile(s) will be available in the app under your purchase history and eSIM management section." }
+      ]
+    },
+    {
+      "id": "esim-terms",
+      "title": "5. eSIM Service Terms",
+      "content": [
+        { "type": "heading", "level": 3, "text": "5.1 Device Compatibility" },
+        { "type": "paragraph", "text": "It is your responsibility to ensure your device is eSIM-compatible and carrier-unlocked before purchasing. Simphonia is not liable for purchases made for incompatible devices. You can check device compatibility information in our FAQ section or by contacting support." },
+        { "type": "heading", "level": 3, "text": "5.2 eSIM Delivery & Installation" },
+        { "type": "paragraph", "text": "eSIM profiles are delivered digitally and are typically available within minutes of a successful purchase. Installation is performed via a QR code or manual activation code provided in the app. Each eSIM profile can only be installed on one device and cannot be transferred to another device once installed." },
+        { "type": "heading", "level": 3, "text": "5.3 Activation & Validity" },
+        { "type": "paragraph", "text": "Depending on the plan, an eSIM may activate upon first data use or upon installation. The validity period begins at the time of activation. Once expired, any remaining unused data is forfeited and cannot be recovered or refunded." },
+        { "type": "heading", "level": 3, "text": "5.4 Top-Up" },
+        { "type": "paragraph", "text": "Certain active eSIM plans may be eligible for top-up, allowing you to purchase additional data. Top-up availability depends on the plan and the eSIM provider. Top-up purchases are non-refundable once the additional data has been applied." },
+        { "type": "heading", "level": 3, "text": "5.5 Service Availability & Coverage" },
+        { "type": "paragraph", "text": "While we strive for reliable coverage, mobile data service is dependent on local network operators and may be affected by network congestion, maintenance, weather, geographic factors, or other circumstances outside our control. Coverage and speeds are not guaranteed." },
+        { "type": "heading", "level": 3, "text": "5.6 Fair Usage" },
+        { "type": "paragraph", "text": "All plans are subject to fair usage policies. Plans are intended for personal, non-commercial use and may not be resold, redistributed, or used for commercial purposes. We reserve the right to suspend service for accounts that violate fair usage policies." }
+      ]
+    },
+    {
+      "id": "ai-chat",
+      "title": "6. AI Chat Assistant",
+      "content": [
+        { "type": "paragraph", "text": "The Service includes an AI-powered chat assistant designed to help you find suitable eSIM plans, answer frequently asked questions, and provide general support. The AI assistant is powered by third-party large language model providers (currently OpenAI and Google Gemini)." },
+        { "type": "paragraph", "text": "Please be aware that:" },
+        { "type": "list", "items": [
+          "AI responses are generated automatically and may not always be accurate or complete",
+          "The AI assistant should not be relied upon for critical decisions — for complex issues, please contact our human support team",
+          "Chat conversations may be reviewed to improve service quality",
+          "Do not share sensitive personal information (such as passwords or full payment details) in the chat",
+          "The AI assistant can perform certain actions on your behalf (such as adding items to your cart) when you explicitly request it"
+        ]}
+      ]
+    },
+    {
+      "id": "communications",
+      "title": "7. Communications & Marketing",
+      "content": [
+        { "type": "paragraph", "text": "By using the Service, you agree to receive transactional communications related to your account and purchases, including:" },
+        { "type": "list", "items": [
+          "Welcome email upon registration",
+          "Email verification upon registration",
+          "Order confirmation emails",
+          "Password reset emails",
+          "Support ticket reply notifications",
+          "Referral reward notifications"
+        ]},
+        { "type": "paragraph", "text": "You may also opt in to receive marketing emails about promotions, new features, and travel tips. Marketing emails are optional and you can opt out at any time through your profile settings in the app or by using the unsubscribe link in any marketing email. Opting out of marketing emails does not affect transactional communications." }
+      ]
+    },
+    {
+      "id": "ip",
+      "title": "8. Intellectual Property",
+      "content": [
+        { "type": "paragraph", "text": "The Service, including its design, logos, brand name, text, graphics, user interface, software, and underlying technology, is owned by Simphonia and protected by Portuguese, European Union, and international intellectual property laws. You may not reproduce, modify, distribute, reverse engineer, or create derivative works based on any part of the Service without our prior written consent." }
+      ]
+    },
+    {
+      "id": "prohibited",
+      "title": "9. Prohibited Uses",
+      "content": [
+        { "type": "paragraph", "text": "You agree not to:" },
+        { "type": "list", "items": [
+          "Use the Service for any unlawful purpose or in violation of any applicable local, national, or international law",
+          "Attempt to interfere with, disrupt, or compromise the security or integrity of the Service",
+          "Reverse engineer, decompile, disassemble, or otherwise attempt to derive the source code of the Service",
+          "Use automated systems, bots, scrapers, or similar tools to access the Service without our express permission",
+          "Impersonate another person, entity, or misrepresent your affiliation with any person or entity",
+          "Resell, commercially redistribute, or sublicense eSIM plans or any part of the Service",
+          "Abuse the referral program or discount system (e.g., self-referrals, creating multiple accounts to obtain additional rewards)",
+          "Share, transfer, or sell your account credentials to any third party",
+          "Circumvent or attempt to circumvent any security measures, rate limits, or access controls"
+        ]}
+      ]
+    },
+    {
+      "id": "liability",
+      "title": "10. Limitation of Liability",
+      "content": [
+        { "type": "paragraph", "text": "To the maximum extent permitted by applicable law, Simphonia shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising from or related to your use of the Service, including but not limited to loss of data, loss of profits, or service interruptions." },
+        { "type": "paragraph", "text": "Our total aggregate liability for any claims arising from the Service shall not exceed the amount you have paid to Simphonia in the twelve (12) months preceding the event giving rise to the claim." },
+        { "type": "paragraph", "text": "Nothing in these Terms excludes or limits our liability for death or personal injury caused by negligence, fraud or fraudulent misrepresentation, or any other liability that cannot be excluded or limited under applicable law." }
+      ]
+    },
+    {
+      "id": "warranties",
+      "title": "11. Disclaimer of Warranties",
+      "content": [
+        { "type": "paragraph", "text": "The Service is provided \"as is\" and \"as available\" without warranties of any kind, whether express or implied, including but not limited to implied warranties of merchantability, fitness for a particular purpose, and non-infringement." },
+        { "type": "paragraph", "text": "We do not warrant that the Service will be uninterrupted, error-free, secure, or free of harmful components. We do not warrant the accuracy, reliability, or completeness of any content provided through the Service, including AI-generated responses." }
+      ]
+    },
+    {
+      "id": "modifications",
+      "title": "12. Modifications to Terms",
+      "content": [
+        { "type": "paragraph", "text": "We may update these Terms from time to time to reflect changes in our Service, legal requirements, or business practices. We will notify you of material changes by updating the \"Last updated\" date and, where appropriate, by sending you an email notification. Continued use of the Service after changes take effect constitutes acceptance of the revised Terms. If you do not agree with the updated Terms, you should stop using the Service and delete your account." }
+      ]
+    },
+    {
+      "id": "termination",
+      "title": "13. Termination & Account Deletion",
+      "content": [
+        { "type": "paragraph", "text": "We may suspend or terminate your account at our discretion if you violate these Terms or engage in prohibited activities. In the event of termination for cause, any unused eSIM plans may be forfeited." },
+        { "type": "paragraph", "text": "You may delete your account at any time through the Profile Settings page in the app. Account deletion is permanent and will result in:" },
+        { "type": "list", "items": [
+          "Removal of your personal data from our active systems (subject to legal retention obligations)",
+          "Loss of access to any purchased but unused eSIM plans",
+          "Cancellation of any unredeemed referral rewards",
+          "Deletion of your order history, favorites, and preferences"
+        ]},
+        { "type": "paragraph", "text": "You may also request account deletion by contacting support@simphonia.pt." }
+      ]
+    },
+    {
+      "id": "governing-law",
+      "title": "14. Governing Law & Dispute Resolution",
+      "content": [
+        { "type": "paragraph", "text": "These Terms are governed by and construed in accordance with the laws of Portugal, without regard to conflict of law provisions." },
+        { "type": "paragraph", "text": "If you are a consumer residing in the European Union, you also benefit from any mandatory provisions of the consumer protection law of your country of residence. Nothing in these Terms affects your rights as a consumer under applicable EU law." },
+        { "type": "paragraph", "html": "For EU consumers, you may also submit disputes to the European Commission's Online Dispute Resolution platform at <a href=\"https://ec.europa.eu/consumers/odr\">https://ec.europa.eu/consumers/odr</a>." },
+        { "type": "paragraph", "text": "Any disputes not resolved amicably shall be submitted to the exclusive jurisdiction of the courts of Lisbon, Portugal, subject to any mandatory consumer protection jurisdiction rules applicable to you." }
+      ]
+    },
+    {
+      "id": "severability",
+      "title": "15. Severability",
+      "content": [
+        { "type": "paragraph", "text": "If any provision of these Terms is found to be invalid, illegal, or unenforceable by a court of competent jurisdiction, that provision shall be modified to the minimum extent necessary to make it enforceable, or if modification is not possible, severed. The remaining provisions shall continue in full force and effect." }
+      ]
+    },
+    {
+      "id": "terms-contact",
+      "title": "16. Contact",
+      "content": [
+        { "type": "paragraph", "text": "For questions about these Terms, contact us at:" },
+        { "type": "list", "items": [
+          "Email: support@simphonia.pt",
+          "Website: https://simphonia.pt/support/"
+        ]}
+      ]
+    }
+  ]
+}

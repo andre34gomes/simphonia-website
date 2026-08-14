@@ -98,17 +98,22 @@ test('home page no longer renders a scroll cue, while subpages keep the shared o
   assert.doesNotMatch(homeCss, /\.hero-postcard \.hero__scroll/);
 });
 
-test('static route shells exist and stay in sync with the SPA shell', () => {
-  const shell = read('index.html');
+test('static route shells match the deterministic route-shell generator', () => {
   const routes = ['about', 'destinations', 'how-it-works', 'support', 'privacy', 'terms'];
 
   routes.forEach((route) => {
     const relativePath = route + '/index.html';
     assert.equal(exists(relativePath), true, 'expected route shell ' + relativePath);
-    assert.equal(read(relativePath), shell, 'expected route shell ' + relativePath + ' to match index.html');
   });
-});
 
+  const { execFileSync } = require('node:child_process');
+  assert.doesNotThrow(() => {
+    execFileSync(process.execPath, ['scripts/sync-shells.js', '--check'], {
+      cwd: ROOT,
+      stdio: 'pipe'
+    });
+  }, 'expected all route shells to match their generated output');
+});
 
 
 
