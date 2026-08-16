@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Search, CreditCard, QrCode, Wifi, ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 
 const steps = [
   {
@@ -28,7 +29,7 @@ const steps = [
 export function HowItWorksPreview() {
   return (
     <section className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
-      <div className="mx-auto max-w-2xl text-center">
+      <Reveal className="mx-auto max-w-2xl text-center">
         <h2 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
           From checkout to connected in minutes
         </h2>
@@ -36,11 +37,11 @@ export function HowItWorksPreview() {
           No store visits, no waiting for shipping, no cutting your physical
           SIM in half.
         </p>
-      </div>
+      </Reveal>
 
-      <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
+      <RevealGroup className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map((step, index) => (
-          <div key={step.title} className="relative">
+          <RevealItem key={step.title} className="relative">
             <div className="flex size-12 items-center justify-center rounded-2xl border border-primary/30 bg-primary/10 text-primary">
               <step.icon className="size-5" />
             </div>
@@ -53,11 +54,11 @@ export function HowItWorksPreview() {
             <p className="mt-2 text-sm text-muted-foreground">
               {step.description}
             </p>
-          </div>
+          </RevealItem>
         ))}
-      </div>
+      </RevealGroup>
 
-      <div className="mt-14 flex justify-center">
+      <Reveal className="mt-14 flex justify-center" delay={0.15}>
         <Button
           variant="outline"
           size="lg"
@@ -67,7 +68,7 @@ export function HowItWorksPreview() {
           See the full walkthrough
           <ArrowRight data-icon="inline-end" />
         </Button>
-      </div>
+      </Reveal>
     </section>
   );
 }

@@ -1,5 +1,6 @@
 import { PhoneMockup } from "@/components/shared/phone-mockup";
 import { Badge } from "@/components/ui/badge";
+import { Reveal } from "@/components/motion/reveal";
 import { Languages } from "lucide-react";
 
 const languages = [
@@ -30,15 +31,15 @@ export function LanguageSection() {
   return (
     <section className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
       <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
-        <div className="order-2 flex justify-center lg:order-1">
+        <Reveal className="order-2 flex justify-center lg:order-1">
           <PhoneMockup
             src="/screenshots/language-selector.webp"
             alt="Simphonia language selector screen"
             className="max-w-[260px]"
           />
-        </div>
+        </Reveal>
 
-        <div className="order-1 lg:order-2">
+        <Reveal delay={0.1} className="order-1 lg:order-2">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
             <Languages className="size-3.5" />
             21 Languages
@@ -59,7 +60,7 @@ export function LanguageSection() {
               </Badge>
             ))}
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );

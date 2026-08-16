@@ -1,4 +1,5 @@
 import { StoreBadges } from "@/components/shared/store-badges";
+import { Reveal } from "@/components/motion/reveal";
 
 export function DownloadCta() {
   return (
@@ -10,7 +11,7 @@ export function DownloadCta() {
             "radial-gradient(ellipse 60% 50% at 50% 50%, color-mix(in oklch, var(--primary) 12%, transparent), transparent)",
         }}
       />
-      <div className="mx-auto max-w-3xl px-6 text-center lg:px-8">
+      <Reveal className="mx-auto max-w-3xl px-6 text-center lg:px-8">
         <h2 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
           Ready to travel connected?
         </h2>
@@ -21,7 +22,7 @@ export function DownloadCta() {
         <div className="mt-10 flex justify-center">
           <StoreBadges />
         </div>
-      </div>
+      </Reveal>
     </section>
   );
 }

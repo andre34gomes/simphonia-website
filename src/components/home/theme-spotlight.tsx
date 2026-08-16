@@ -1,11 +1,12 @@
 import { PhoneMockup } from "@/components/shared/phone-mockup";
+import { Reveal } from "@/components/motion/reveal";
 import { Moon, Sun } from "lucide-react";
 
 export function ThemeSpotlight() {
   return (
     <section className="border-y border-border/60 bg-card/30 py-24">
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 px-6 lg:grid-cols-2 lg:px-8">
-        <div>
+        <Reveal>
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
             <Sun className="size-3.5" />
             <Moon className="size-3.5" />
@@ -34,9 +35,12 @@ export function ThemeSpotlight() {
               Consistent contrast &amp; accessibility across both
             </li>
           </ul>
-        </div>
+        </Reveal>
 
-        <div className="relative mx-auto flex w-full max-w-md items-center justify-center gap-4">
+        <Reveal
+          delay={0.1}
+          className="relative mx-auto flex w-full max-w-md items-center justify-center gap-4"
+        >
           <PhoneMockup
             src="/screenshots/home-light.webp"
             alt="Simphonia home screen in light mode"
@@ -47,7 +51,7 @@ export function ThemeSpotlight() {
             alt="Simphonia home screen in dark mode"
             className="max-w-[200px] -translate-y-6 sm:max-w-[220px]"
           />
-        </div>
+        </Reveal>
       </div>
     </section>
   );

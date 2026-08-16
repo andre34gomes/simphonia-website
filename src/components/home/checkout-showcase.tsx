@@ -1,4 +1,5 @@
 import { PhoneMockup } from "@/components/shared/phone-mockup";
+import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 
 const items = [
   {
@@ -21,18 +22,18 @@ const items = [
 export function CheckoutShowcase() {
   return (
     <section className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
-      <div className="mx-auto max-w-2xl text-center">
+      <Reveal className="mx-auto max-w-2xl text-center">
         <h2 className="text-3xl font-semibold tracking-tight text-foreground sm:text-4xl">
           Shop with confidence
         </h2>
         <p className="mt-4 text-lg text-muted-foreground">
           A checkout experience that feels as premium as the app around it.
         </p>
-      </div>
+      </Reveal>
 
-      <div className="mt-16 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-3">
+      <RevealGroup className="mt-16 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-3">
         {items.map((item) => (
-          <div key={item.title} className="flex flex-col items-center text-center">
+          <RevealItem key={item.title} className="flex flex-col items-center text-center">
             <PhoneMockup
               src={item.src}
               alt={item.title}
@@ -44,9 +45,9 @@ export function CheckoutShowcase() {
             <p className="mt-2 max-w-xs text-sm text-muted-foreground">
               {item.description}
             </p>
-          </div>
+          </RevealItem>
         ))}
-      </div>
+      </RevealGroup>
     </section>
   );
 }
