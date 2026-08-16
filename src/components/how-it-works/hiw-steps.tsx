@@ -14,7 +14,7 @@ const steps = [
       "Local plans for every destination",
       "Smart search & filters",
     ],
-    screenshot: "/screenshots/local-tab.png",
+    screenshot: "/screenshots/local-tab.webp",
   },
   {
     icon: CreditCard,
@@ -27,7 +27,7 @@ const steps = [
       "Instant QR code generation",
       "Discount codes supported",
     ],
-    screenshot: "/screenshots/plan-selected.png",
+    screenshot: "/screenshots/plan-selected.webp",
   },
   {
     icon: Wifi,
@@ -40,7 +40,7 @@ const steps = [
       "Auto-connect on arrival",
       "Keep your primary number active",
     ],
-    screenshot: "/screenshots/profile-dark.png",
+    screenshot: "/screenshots/profile-dark.webp",
   },
 ];
 

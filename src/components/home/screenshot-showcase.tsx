@@ -7,7 +7,7 @@ const plans = [
   {
     value: "local",
     label: "Local",
-    src: "/screenshots/local-tab.png",
+    src: "/screenshots/local-tab.webp",
     title: "Local plans for single-country trips",
     description:
       "Landing in one country? Pick a local data plan sized exactly to your trip length and data needs — no overpaying for coverage you won't use.",
@@ -15,7 +15,7 @@ const plans = [
   {
     value: "regional",
     label: "Regional",
-    src: "/screenshots/regional-tab.png",
+    src: "/screenshots/regional-tab.webp",
     title: "Regional plans for multi-country journeys",
     description:
       "Hopping between neighboring countries? One regional eSIM keeps you online across an entire region without swapping plans at every border.",
@@ -23,7 +23,7 @@ const plans = [
   {
     value: "global",
     label: "Global",
-    src: "/screenshots/global-tab.png",
+    src: "/screenshots/global-tab.webp",
     title: "Global plans for round-the-world travel",
     description:
       "For trips that span continents, a single global plan keeps you connected in 200+ destinations — one purchase, worldwide coverage.",

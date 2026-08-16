@@ -1,6 +1,3 @@
-"use client";
-
-import { motion } from "motion/react";
 import { Download as DownloadIcon } from "lucide-react";
 import { PhoneMockup } from "@/components/shared/phone-mockup";
 import { StoreBadges } from "@/components/shared/store-badges";
@@ -20,11 +17,7 @@ export function DownloadHero() {
       />
 
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 px-6 py-20 lg:grid-cols-2 lg:gap-12 lg:px-8 lg:py-28">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
+        <div className="animate-in slide-in-from-bottom-3 duration-700 ease-out-expo">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-medium text-primary">
             <DownloadIcon className="size-3.5" />
             Available on iOS and Android
@@ -57,35 +50,32 @@ export function DownloadHero() {
               </div>
             ))}
           </dl>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.94 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, ease: "easeOut", delay: 0.15 }}
-          className="relative mx-auto flex w-full max-w-md items-center justify-center"
-        >
+        <div className="relative mx-auto flex w-full max-w-md items-center justify-center animate-in zoom-in-95 duration-700 ease-out-expo">
           <div className="absolute -right-6 top-6 hidden w-[42%] rotate-6 opacity-70 blur-[1px] sm:block lg:-right-2">
             <PhoneMockup
-              src="/screenshots/cart-populated.png"
+              src="/screenshots/cart-populated.webp"
               alt="Simphonia checkout screen"
+              priority
               className="max-w-none"
             />
           </div>
           <div className="absolute -left-8 bottom-8 hidden w-[40%] -rotate-6 opacity-60 blur-[1px] sm:block lg:-left-4">
             <PhoneMockup
-              src="/screenshots/country-detail.png"
+              src="/screenshots/country-detail.webp"
               alt="Simphonia country plan details"
+              priority
               className="max-w-none"
             />
           </div>
           <PhoneMockup
-            src="/screenshots/home-light.png"
+            src="/screenshots/home-light.webp"
             alt="Simphonia home screen"
             priority
             className="relative z-10 max-w-[280px] drop-shadow-2xl"
           />
-        </motion.div>
+        </div>
       </div>
     </section>
   );

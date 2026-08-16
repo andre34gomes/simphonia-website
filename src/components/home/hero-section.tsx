@@ -1,7 +1,4 @@
-"use client";
-
 import Link from "next/link";
-import { motion } from "motion/react";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { PhoneMockup } from "@/components/shared/phone-mockup";
@@ -23,11 +20,9 @@ export function HeroSection() {
       />
 
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 px-6 py-20 lg:grid-cols-2 lg:gap-12 lg:px-8 lg:py-28">
-        <motion.div
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
-        >
+        {/* Transform-only entrance (no opacity animation) so this above-the-fold
+         * content never gets excluded from LCP candidacy — see Stage 1 perf notes. */}
+        <div className="animate-in slide-in-from-bottom-3 duration-700 ease-out-expo">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-medium text-primary">
             <Sparkles className="size-3.5" />
             Now live across 200+ destinations
@@ -81,35 +76,34 @@ export function HeroSection() {
               </div>
             ))}
           </dl>
-        </motion.div>
+        </div>
 
-        <motion.div
-          initial={{ opacity: 0, scale: 0.94 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.7, ease: "easeOut", delay: 0.15 }}
-          className="relative mx-auto flex w-full max-w-md items-center justify-center"
-        >
+        {/* Transform-only entrance here too: this group contains the LCP image
+         * (home-dark.png), so it must render at full opacity from frame one. */}
+        <div className="relative mx-auto flex w-full max-w-md items-center justify-center animate-in zoom-in-95 duration-700 ease-out-expo">
           <div className="absolute -right-6 top-10 hidden w-[42%] rotate-6 opacity-70 blur-[1px] sm:block lg:-right-2">
             <PhoneMockup
-              src="/screenshots/global-tab.png"
+              src="/screenshots/global-tab.webp"
               alt="Simphonia global data plans"
+              priority
               className="max-w-none"
             />
           </div>
           <div className="absolute -left-8 bottom-4 hidden w-[40%] -rotate-6 opacity-60 blur-[1px] sm:block lg:-left-4">
             <PhoneMockup
-              src="/screenshots/profile-light.png"
+              src="/screenshots/profile-light.webp"
               alt="Simphonia profile screen"
+              priority
               className="max-w-none"
             />
           </div>
           <PhoneMockup
-            src="/screenshots/home-dark.png"
+            src="/screenshots/home-dark.webp"
             alt="Simphonia home screen showing the world at night"
             priority
             className="relative z-10 max-w-[280px] drop-shadow-2xl"
           />
-        </motion.div>
+        </div>
       </div>
     </section>
   );

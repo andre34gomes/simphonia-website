@@ -11,8 +11,10 @@ interface PhoneMockupProps {
 
 /**
  * Realistic device frame used to present raw app screenshots consistently
- * across the site. Screenshots are 1280x2763-2856 (9:19.5-ish) captures
- * from the actual running app, not stock imagery.
+ * across the site. Screenshots are real (9:19.5-ish) captures from the
+ * actual running app, not stock imagery — pre-optimized to right-sized
+ * WebP via scripts/optimize-screenshots.mjs (see next.config.ts for why
+ * runtime optimization isn't used on this deployment target).
  */
 export function PhoneMockup({ src, alt, className, priority, sizes }: PhoneMockupProps) {
   return (

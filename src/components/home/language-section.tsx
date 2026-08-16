@@ -32,7 +32,7 @@ export function LanguageSection() {
       <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
         <div className="order-2 flex justify-center lg:order-1">
           <PhoneMockup
-            src="/screenshots/language-selector.png"
+            src="/screenshots/language-selector.webp"
             alt="Simphonia language selector screen"
             className="max-w-[260px]"
           />

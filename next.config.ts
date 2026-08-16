@@ -39,6 +39,15 @@ const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(__dirname),
   },
+  images: {
+    // No Cloudflare Images binding is configured (see open-next.config.ts),
+    // and next/image's built-in optimizer needs sharp, which cannot run in
+    // the Workers/workerd runtime this site deploys to. Without this flag
+    // every /_next/image request would fail in production. All screenshot
+    // assets are pre-sized and pre-compressed to WebP at build/design time
+    // instead — see scripts/optimize-screenshots.mjs.
+    unoptimized: true,
+  },
   async headers() {
     return [
       {

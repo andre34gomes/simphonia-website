@@ -2,17 +2,17 @@ import { PhoneMockup } from "@/components/shared/phone-mockup";
 
 const items = [
   {
-    src: "/screenshots/plan-selected.png",
+    src: "/screenshots/plan-selected.webp",
     title: "Clear plan details",
     description: "Data allowance, validity, and price up front — no surprises at checkout.",
   },
   {
-    src: "/screenshots/cart-populated.png",
+    src: "/screenshots/cart-populated.webp",
     title: "Fast, secure checkout",
     description: "Stripe-powered payments with support for major cards and wallets.",
   },
   {
-    src: "/screenshots/favorites.png",
+    src: "/screenshots/favorites.webp",
     title: "Save your go-to destinations",
     description: "Favorite countries and plans for one-tap reordering on your next trip.",
   },

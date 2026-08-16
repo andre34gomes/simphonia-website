@@ -17,7 +17,7 @@ export function AboutStory() {
           />
           <div className="overflow-hidden rounded-2xl border border-border/60 shadow-2xl shadow-black/40">
             <Image
-              src="/screenshots/country-detail.png"
+              src="/screenshots/country-detail.webp"
               alt="Simphonia app showing a country's available eSIM data plans"
               width={640}
               height={1380}

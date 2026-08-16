@@ -38,12 +38,12 @@ export function ThemeSpotlight() {
 
         <div className="relative mx-auto flex w-full max-w-md items-center justify-center gap-4">
           <PhoneMockup
-            src="/screenshots/home-light.png"
+            src="/screenshots/home-light.webp"
             alt="Simphonia home screen in light mode"
             className="max-w-[200px] translate-y-6 opacity-90 sm:max-w-[220px]"
           />
           <PhoneMockup
-            src="/screenshots/home-dark.png"
+            src="/screenshots/home-dark.webp"
             alt="Simphonia home screen in dark mode"
             className="max-w-[200px] -translate-y-6 sm:max-w-[220px]"
           />
