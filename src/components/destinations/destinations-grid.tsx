@@ -94,7 +94,7 @@ export function DestinationsGrid() {
           {filtered.map((destination) => (
             <div
               key={destination.code}
-              className="group flex items-center gap-3 rounded-xl border border-border/60 bg-card/60 px-4 py-3 transition-colors hover:border-primary/40"
+              className="group flex items-center gap-3 rounded-xl border border-border/60 bg-card/60 px-4 py-3 transition-[transform,border-color,box-shadow] duration-(--duration-micro) ease-standard hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[0_8px_20px_rgba(0,0,0,0.25)]"
             >
               <CountryFlag
                 code={destination.code}

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -13,9 +14,11 @@ import {
 } from "@/components/ui/sheet";
 import { Logo } from "@/components/shared/logo";
 import { mainNav } from "@/data/nav";
+import { cn } from "@/lib/utils";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
+  const pathname = usePathname();
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-lg">
@@ -28,15 +31,31 @@ export function SiteHeader() {
         </Link>
 
         <nav className="hidden items-center gap-8 md:flex">
-          {mainNav.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className="text-sm font-medium text-muted-foreground transition-colors duration-(--duration-micro) ease-standard hover:text-foreground"
-            >
-              {item.label}
-            </Link>
-          ))}
+          {mainNav.map((item) => {
+            const isActive = pathname === item.href;
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                aria-current={isActive ? "page" : undefined}
+                className={cn(
+                  "group relative py-1 text-sm font-medium transition-colors duration-(--duration-micro) ease-standard",
+                  isActive
+                    ? "text-foreground"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                {item.label}
+                <span
+                  aria-hidden="true"
+                  className={cn(
+                    "absolute inset-x-0 -bottom-0.5 h-px origin-left scale-x-0 bg-foreground transition-transform duration-(--duration-micro) ease-standard group-hover:scale-x-100",
+                    isActive && "scale-x-100",
+                  )}
+                />
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="hidden md:block">
@@ -60,16 +79,25 @@ export function SiteHeader() {
               </SheetTitle>
             </SheetHeader>
             <nav className="flex flex-col gap-1 px-4">
-              {mainNav.map((item) => (
-                <Link
-                  key={item.href}
-                  href={item.href}
-                  onClick={() => setOpen(false)}
-                  className="rounded-lg px-3 py-2.5 text-sm font-medium text-muted-foreground transition-colors duration-(--duration-micro) ease-standard hover:bg-accent hover:text-foreground"
-                >
-                  {item.label}
-                </Link>
-              ))}
+              {mainNav.map((item) => {
+                const isActive = pathname === item.href;
+                return (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    onClick={() => setOpen(false)}
+                    aria-current={isActive ? "page" : undefined}
+                    className={cn(
+                      "rounded-lg px-3 py-2.5 text-sm font-medium transition-colors duration-(--duration-micro) ease-standard hover:bg-accent hover:text-foreground",
+                      isActive
+                        ? "bg-accent/60 text-foreground"
+                        : "text-muted-foreground",
+                    )}
+                  >
+                    {item.label}
+                  </Link>
+                );
+              })}
               <Button
                 render={<Link href="/download" onClick={() => setOpen(false)} />}
                 nativeButton={false}

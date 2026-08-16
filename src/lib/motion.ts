@@ -52,3 +52,16 @@ export const staggerContainerVariants: Variants = {
     transition: { staggerChildren: 0.08, delayChildren: 0.04 },
   },
 };
+
+/** Route-level enter transition for `app/template.tsx`. Deliberately
+ * subtler and snappier than `fadeUpVariants` (small 8px offset, base
+ * duration) since it fires on every navigation rather than once on
+ * scroll — should read as a quick settle, not a scroll reveal. */
+export const pageEnterVariants: Variants = {
+  hidden: { opacity: 0, y: 8 },
+  visible: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: DURATION.base, ease: EASE.inOutSmooth },
+  },
+};
