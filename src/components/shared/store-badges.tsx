@@ -13,7 +13,7 @@ export function StoreBadges({ className }: { className?: string }) {
         href={APP_STORE_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="group flex items-center gap-3 rounded-xl border border-border bg-card px-4 py-2.5 transition-colors hover:border-primary/50 hover:bg-accent"
+        className="group flex items-center gap-3 rounded-xl border border-border bg-card px-4 py-2.5 outline-none transition-[color,background-color,border-color,box-shadow,transform] duration-(--duration-micro) ease-standard hover:border-primary/50 hover:bg-accent focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px active:duration-(--duration-instant)"
       >
         <Image src="/apple.svg" alt="" width={20} height={20} className="opacity-90" />
         <span className="flex flex-col leading-tight">
@@ -25,7 +25,7 @@ export function StoreBadges({ className }: { className?: string }) {
         href={PLAY_STORE_URL}
         target="_blank"
         rel="noopener noreferrer"
-        className="group flex items-center gap-3 rounded-xl border border-border bg-card px-4 py-2.5 transition-colors hover:border-primary/50 hover:bg-accent"
+        className="group flex items-center gap-3 rounded-xl border border-border bg-card px-4 py-2.5 outline-none transition-[color,background-color,border-color,box-shadow,transform] duration-(--duration-micro) ease-standard hover:border-primary/50 hover:bg-accent focus-visible:border-ring focus-visible:ring-3 focus-visible:ring-ring/50 active:translate-y-px active:duration-(--duration-instant)"
       >
         <Image src="/google.svg" alt="" width={20} height={20} className="opacity-90" />
         <span className="flex flex-col leading-tight">

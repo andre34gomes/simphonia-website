@@ -88,7 +88,7 @@ export function LegalPage({ doc }: { doc: LegalDocument }) {
                 <li key={section.id}>
                   <a
                     href={`#${section.id}`}
-                    className="block -ml-px border-l border-transparent py-1.5 pl-4 text-sm text-muted-foreground transition-colors hover:border-primary/60 hover:text-foreground"
+                    className="block -ml-px border-l border-transparent py-1.5 pl-4 text-sm text-muted-foreground transition-colors duration-(--duration-micro) ease-standard hover:border-primary/60 hover:text-foreground"
                   >
                     {section.title}
                   </a>
