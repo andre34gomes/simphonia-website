@@ -48,6 +48,39 @@
   --radius-4xl: calc(var(--radius) * 2.6);
 }
 
+/*
+ * Motion system — shared timing/easing vocabulary for the whole site.
+ * Keep this the single source of truth: components should reference these
+ * tokens (e.g. `duration-micro ease-out-expo`) instead of hardcoding values.
+ *
+ * Curves:
+ *   --ease-standard     general-purpose UI transitions (hover, color, border)
+ *   --ease-out-expo     premium "decelerate" curve for reveals/entrances
+ *   --ease-in-out-smooth symmetric curve for page/route transitions
+ *   --ease-spring       subtle overshoot for press/pop feedback (use sparingly)
+ *
+ * Durations (aligned to the 150–400ms micro-interaction range requested):
+ *   --duration-instant  100ms  instant feedback (press state)
+ *   --duration-micro    180ms  hover/focus/small state changes
+ *   --duration-base     250ms  standard transitions (menus, accordions)
+ *   --duration-slow     400ms  larger surface changes (page transitions)
+ *   --duration-reveal   600ms  scroll-triggered content reveals (off-screen,
+ *                              does not affect LCP/INP, so a touch slower reads
+ *                              as more premium without costing perceived speed)
+ */
+@theme {
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-smooth: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --duration-instant: 100ms;
+  --duration-micro: 180ms;
+  --duration-base: 250ms;
+  --duration-slow: 400ms;
+  --duration-reveal: 600ms;
+}
+
 :root {
   /* Simphonia brand — premium near-black + gold, always-dark marketing site */
   --background: #0a0a0b;
@@ -127,5 +160,19 @@
   }
   html {
     @apply font-sans;
+  }
+}
+
+/* Global reduced-motion kill switch — belt-and-suspenders alongside the
+ * JS-level useReducedMotion() handling in src/lib/motion.ts. Anything that
+ * slips through with a raw CSS transition/animation still gets neutralized. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }
