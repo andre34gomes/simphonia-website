@@ -2,7 +2,12 @@
 
 import type { ReactNode } from "react";
 import { motion } from "motion/react";
-import { fadeUpVariants, staggerContainerVariants, REVEAL_VIEWPORT } from "@/lib/motion";
+import {
+  fadeUpVariants,
+  scaleInVariants,
+  staggerContainerVariants,
+  REVEAL_VIEWPORT,
+} from "@/lib/motion";
 
 interface RevealProps {
   children: ReactNode;
@@ -64,6 +69,31 @@ interface RevealItemProps {
 export function RevealItem({ children, className }: RevealItemProps) {
   return (
     <motion.div className={className} variants={fadeUpVariants}>
+      {children}
+    </motion.div>
+  );
+}
+
+interface ScaleRevealProps {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+}
+
+/** Heavier materialize reveal (bigger scale + y travel) for hero-weight
+ * visuals — phone mockup clusters, spotlight imagery — so the most
+ * important asset on a section settles in with more presence than the
+ * surrounding copy. See `scaleInVariants` in `@/lib/motion`. */
+export function ScaleReveal({ children, className, delay = 0 }: ScaleRevealProps) {
+  return (
+    <motion.div
+      className={className}
+      initial="hidden"
+      whileInView="visible"
+      viewport={REVEAL_VIEWPORT}
+      variants={scaleInVariants}
+      transition={delay ? { delay } : undefined}
+    >
       {children}
     </motion.div>
   );

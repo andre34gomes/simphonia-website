@@ -1,8 +1,13 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
+import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { PhoneMockup } from "@/components/shared/phone-mockup";
 import { StoreBadges } from "@/components/shared/store-badges";
+import { Parallax } from "@/components/motion/parallax";
+import { SPRING, hoverLift } from "@/lib/motion";
 
 const stats = [
   { value: "200+", label: "Countries & regions" },
@@ -21,8 +26,15 @@ export function HeroSection() {
 
       <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 px-6 py-20 lg:grid-cols-2 lg:gap-12 lg:px-8 lg:py-28">
         {/* Transform-only entrance (no opacity animation) so this above-the-fold
-         * content never gets excluded from LCP candidacy — see Stage 1 perf notes. */}
-        <div className="animate-in slide-in-from-bottom-3 duration-700 ease-out-expo">
+         * content never gets excluded from LCP candidacy — see Stage 1 perf notes.
+         * Spring-driven (critically damped) rather than a CSS keyframe so the
+         * settle reads as organic, matching the rest of the site's motion
+         * vocabulary in `@/lib/motion`. */}
+        <motion.div
+          initial={{ y: 24, scale: 0.99 }}
+          animate={{ y: 0, scale: 1 }}
+          transition={SPRING.critical}
+        >
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-medium text-primary">
             <Sparkles className="size-3.5" />
             Now live across 200+ destinations
@@ -42,24 +54,28 @@ export function HeroSection() {
           </p>
 
           <div className="mt-10 flex flex-wrap items-center gap-4">
-            <Button
-              size="lg"
-              className="h-12 px-6 text-base"
-              render={<Link href="/download" />}
-              nativeButton={false}
-            >
-              Get the App
-              <ArrowRight data-icon="inline-end" />
-            </Button>
-            <Button
-              variant="outline"
-              size="lg"
-              className="h-12 px-6 text-base"
-              render={<Link href="/how-it-works" />}
-              nativeButton={false}
-            >
-              See how it works
-            </Button>
+            <motion.div {...hoverLift}>
+              <Button
+                size="lg"
+                className="h-12 px-6 text-base"
+                render={<Link href="/download" />}
+                nativeButton={false}
+              >
+                Get the App
+                <ArrowRight data-icon="inline-end" />
+              </Button>
+            </motion.div>
+            <motion.div {...hoverLift}>
+              <Button
+                variant="outline"
+                size="lg"
+                className="h-12 px-6 text-base"
+                render={<Link href="/how-it-works" />}
+                nativeButton={false}
+              >
+                See how it works
+              </Button>
+            </motion.div>
           </div>
 
           <StoreBadges className="mt-8" />
@@ -76,26 +92,37 @@ export function HeroSection() {
               </div>
             ))}
           </dl>
-        </div>
+        </motion.div>
 
         {/* Transform-only entrance here too: this group contains the LCP image
-         * (home-dark.png), so it must render at full opacity from frame one. */}
-        <div className="relative mx-auto flex w-full max-w-md items-center justify-center animate-in zoom-in-95 duration-700 ease-out-expo">
+         * (home-dark.webp), so it must render at full opacity from frame one.
+         * The two side mockups additionally drift with scroll via `Parallax`
+         * for a sense of depth — the hero PhoneMockup itself stays static. */}
+        <motion.div
+          className="relative mx-auto flex w-full max-w-md items-center justify-center"
+          initial={{ y: 32, scale: 0.96 }}
+          animate={{ y: 0, scale: 1 }}
+          transition={{ ...SPRING.critical, delay: 0.08 }}
+        >
           <div className="absolute -right-6 top-10 hidden w-[42%] rotate-6 opacity-70 blur-[1px] sm:block lg:-right-2">
-            <PhoneMockup
-              src="/screenshots/favorites.webp"
-              alt="Simphonia saved destinations"
-              priority
-              className="max-w-none"
-            />
+            <Parallax distance={22}>
+              <PhoneMockup
+                src="/screenshots/favorites.webp"
+                alt="Simphonia saved destinations"
+                priority
+                className="max-w-none"
+              />
+            </Parallax>
           </div>
           <div className="absolute -left-8 bottom-4 hidden w-[40%] -rotate-6 opacity-60 blur-[1px] sm:block lg:-left-4">
-            <PhoneMockup
-              src="/screenshots/profile-light.webp"
-              alt="Simphonia profile screen"
-              priority
-              className="max-w-none"
-            />
+            <Parallax distance={-18}>
+              <PhoneMockup
+                src="/screenshots/profile-light.webp"
+                alt="Simphonia profile screen"
+                priority
+                className="max-w-none"
+              />
+            </Parallax>
           </div>
           <PhoneMockup
             src="/screenshots/home-dark.webp"
@@ -103,7 +130,7 @@ export function HeroSection() {
             priority
             className="relative z-10 max-w-[280px] drop-shadow-2xl"
           />
-        </div>
+        </motion.div>
       </div>
     </section>
   );

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu } from "lucide-react";
+import { motion, useScroll, useTransform } from "motion/react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -15,14 +16,27 @@ import {
 import { Logo } from "@/components/shared/logo";
 import { mainNav } from "@/data/nav";
 import { cn } from "@/lib/utils";
+import { hoverLift } from "@/lib/motion";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
+  // Scroll-linked glass material: the header starts fully transparent with
+  // no dividing line, then gains blur/opacity/hairline as content scrolls
+  // beneath it — a scroll edge effect (apple-design §12) instead of a hard
+  // 1px border baked in from frame one.
+  const { scrollY } = useScroll();
+  const materialOpacity = useTransform(scrollY, [0, 80], [0, 1]);
+
   return (
-    <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-lg">
-      <div className="mx-auto flex h-18 max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
+    <header className="sticky top-0 z-50">
+      <motion.div
+        className="absolute inset-0 border-b border-border/60 bg-background/80 backdrop-blur-lg"
+        style={{ opacity: materialOpacity }}
+        aria-hidden="true"
+      />
+      <div className="relative mx-auto flex h-18 max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
         <Link href="/" className="flex items-center gap-2.5">
           <Logo className="size-9" />
           <span className="text-lg font-semibold tracking-tight text-foreground">
@@ -58,11 +72,11 @@ export function SiteHeader() {
           })}
         </nav>
 
-        <div className="hidden md:block">
+        <motion.div className="hidden md:block" {...hoverLift}>
           <Button render={<Link href="/download" />} nativeButton={false}>
             Get the App
           </Button>
-        </div>
+        </motion.div>
 
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger
