@@ -1,5 +1,6 @@
 import { HeroSection } from "@/components/home/hero-section";
 import { FeaturesGrid } from "@/components/home/features-grid";
+import { AppPreviewShowcase } from "@/components/home/app-preview-showcase";
 import { ScreenshotShowcase } from "@/components/home/screenshot-showcase";
 import { HowItWorksPreview } from "@/components/home/how-it-works-preview";
 import { ThemeSpotlight } from "@/components/home/theme-spotlight";
@@ -12,6 +13,7 @@ export default function Home() {
     <>
       <HeroSection />
       <FeaturesGrid />
+      <AppPreviewShowcase />
       <ScreenshotShowcase />
       <HowItWorksPreview />
       <ThemeSpotlight />
