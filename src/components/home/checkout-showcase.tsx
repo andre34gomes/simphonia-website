@@ -38,7 +38,7 @@ export function CheckoutShowcase() {
       <RevealGroup className="mt-16 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-3">
         {items.map((item) => (
           <RevealItem key={item.title} className="flex flex-col items-center text-center">
-            <motion.div {...hoverLift}>
+            <motion.div {...hoverLift} className="w-full max-w-[220px]">
               <PhoneMockup
                 src={item.src}
                 alt={item.title}

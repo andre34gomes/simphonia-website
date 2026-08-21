@@ -33,7 +33,7 @@ export function LanguageSection() {
     <section className="mx-auto max-w-7xl px-6 py-24 lg:px-8">
       <div className="grid grid-cols-1 items-center gap-16 lg:grid-cols-2">
         <ScaleReveal className="order-2 flex justify-center lg:order-1">
-          <Parallax distance={18}>
+          <Parallax distance={18} className="w-full max-w-[260px]">
             <PhoneMockup
               src="/screenshots/language-selector.webp"
               alt="Simphonia language selector screen"

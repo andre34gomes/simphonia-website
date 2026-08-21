@@ -42,14 +42,14 @@ export function ThemeSpotlight() {
           delay={0.1}
           className="relative mx-auto flex w-full max-w-md items-center justify-center gap-4"
         >
-          <Parallax distance={16}>
+          <Parallax distance={16} className="w-[200px] sm:w-[220px]">
             <PhoneMockup
               src="/screenshots/home-light.webp"
               alt="Simphonia home screen in light mode"
               className="max-w-[200px] translate-y-6 opacity-90 sm:max-w-[220px]"
             />
           </Parallax>
-          <Parallax distance={-16}>
+          <Parallax distance={-16} className="w-[200px] sm:w-[220px]">
             <PhoneMockup
               src="/screenshots/home-dark.webp"
               alt="Simphonia home screen in dark mode"
