@@ -1,5 +1,6 @@
 import { PhoneMockup } from "@/components/shared/phone-mockup";
-import { Reveal } from "@/components/motion/reveal";
+import { Reveal, ScaleReveal } from "@/components/motion/reveal";
+import { Parallax } from "@/components/motion/parallax";
 import { Moon, Sun } from "lucide-react";
 
 export function ThemeSpotlight() {
@@ -37,21 +38,25 @@ export function ThemeSpotlight() {
           </ul>
         </Reveal>
 
-        <Reveal
+        <ScaleReveal
           delay={0.1}
           className="relative mx-auto flex w-full max-w-md items-center justify-center gap-4"
         >
-          <PhoneMockup
-            src="/screenshots/home-light.webp"
-            alt="Simphonia home screen in light mode"
-            className="max-w-[200px] translate-y-6 opacity-90 sm:max-w-[220px]"
-          />
-          <PhoneMockup
-            src="/screenshots/home-dark.webp"
-            alt="Simphonia home screen in dark mode"
-            className="max-w-[200px] -translate-y-6 sm:max-w-[220px]"
-          />
-        </Reveal>
+          <Parallax distance={16}>
+            <PhoneMockup
+              src="/screenshots/home-light.webp"
+              alt="Simphonia home screen in light mode"
+              className="max-w-[200px] translate-y-6 opacity-90 sm:max-w-[220px]"
+            />
+          </Parallax>
+          <Parallax distance={-16}>
+            <PhoneMockup
+              src="/screenshots/home-dark.webp"
+              alt="Simphonia home screen in dark mode"
+              className="max-w-[200px] -translate-y-6 sm:max-w-[220px]"
+            />
+          </Parallax>
+        </ScaleReveal>
       </div>
     </section>
   );

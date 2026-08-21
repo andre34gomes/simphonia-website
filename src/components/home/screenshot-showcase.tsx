@@ -2,7 +2,7 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { PhoneMockup } from "@/components/shared/phone-mockup";
-import { Reveal } from "@/components/motion/reveal";
+import { Reveal, ScaleReveal } from "@/components/motion/reveal";
 
 const plans = [
   {
@@ -66,11 +66,13 @@ export function ScreenshotShowcase() {
                 className="mt-12 flex-none"
               >
                 <div className="grid grid-cols-1 items-center gap-12 lg:grid-cols-2">
-                  <PhoneMockup
-                    src={plan.src}
-                    alt={plan.title}
-                    className="max-w-[280px]"
-                  />
+                  <ScaleReveal>
+                    <PhoneMockup
+                      src={plan.src}
+                      alt={plan.title}
+                      className="max-w-[280px]"
+                    />
+                  </ScaleReveal>
                   <div className="text-center lg:text-left">
                     <h3 className="text-2xl font-semibold text-foreground">
                       {plan.title}

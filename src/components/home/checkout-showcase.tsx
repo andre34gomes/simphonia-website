@@ -1,5 +1,9 @@
+"use client";
+
+import { motion } from "motion/react";
 import { PhoneMockup } from "@/components/shared/phone-mockup";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
+import { hoverLift } from "@/lib/motion";
 
 const items = [
   {
@@ -34,11 +38,13 @@ export function CheckoutShowcase() {
       <RevealGroup className="mt-16 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-3">
         {items.map((item) => (
           <RevealItem key={item.title} className="flex flex-col items-center text-center">
-            <PhoneMockup
-              src={item.src}
-              alt={item.title}
-              className="max-w-[220px]"
-            />
+            <motion.div {...hoverLift}>
+              <PhoneMockup
+                src={item.src}
+                alt={item.title}
+                className="max-w-[220px]"
+              />
+            </motion.div>
             <h3 className="mt-6 text-lg font-semibold text-foreground">
               {item.title}
             </h3>

@@ -1,7 +1,11 @@
+"use client";
+
 import Link from "next/link";
 import { Search, CreditCard, QrCode, Wifi, ArrowRight } from "lucide-react";
+import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
+import { hoverLift } from "@/lib/motion";
 
 const steps = [
   {
@@ -42,9 +46,12 @@ export function HowItWorksPreview() {
       <RevealGroup className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-4">
         {steps.map((step, index) => (
           <RevealItem key={step.title} className="relative">
-            <div className="flex size-12 items-center justify-center rounded-2xl border border-primary/30 bg-primary/10 text-primary">
+            <motion.div
+              {...hoverLift}
+              className="flex size-12 items-center justify-center rounded-2xl border border-primary/30 bg-primary/10 text-primary"
+            >
               <step.icon className="size-5" />
-            </div>
+            </motion.div>
             <span className="mt-4 block text-xs font-semibold tracking-wide text-primary/70 uppercase">
               Step {index + 1}
             </span>
@@ -59,15 +66,17 @@ export function HowItWorksPreview() {
       </RevealGroup>
 
       <Reveal className="mt-14 flex justify-center" delay={0.15}>
-        <Button
-          variant="outline"
-          size="lg"
-          render={<Link href="/how-it-works" />}
-          nativeButton={false}
-        >
-          See the full walkthrough
-          <ArrowRight data-icon="inline-end" />
-        </Button>
+        <motion.div {...hoverLift}>
+          <Button
+            variant="outline"
+            size="lg"
+            render={<Link href="/how-it-works" />}
+            nativeButton={false}
+          >
+            See the full walkthrough
+            <ArrowRight data-icon="inline-end" />
+          </Button>
+        </motion.div>
       </Reveal>
     </section>
   );

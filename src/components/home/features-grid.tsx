@@ -1,5 +1,9 @@
+"use client";
+
+import { motion } from "motion/react";
 import { Card, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
+import { hoverLift } from "@/lib/motion";
 import { features } from "@/data/features";
 
 export function FeaturesGrid() {
@@ -19,17 +23,19 @@ export function FeaturesGrid() {
       <RevealGroup className="mt-16 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4">
         {features.map((feature) => (
           <RevealItem key={feature.title}>
-            <Card className="border-border/60 bg-card/60 transition-colors hover:border-primary/40">
-              <CardHeader>
-                <div className="flex size-11 items-center justify-center rounded-xl bg-primary/10">
-                  <feature.icon className="size-5 text-primary" />
-                </div>
-                <CardTitle className="mt-3 text-base">{feature.title}</CardTitle>
-                <CardDescription className="text-sm leading-relaxed">
-                  {feature.description}
-                </CardDescription>
-              </CardHeader>
-            </Card>
+            <motion.div {...hoverLift}>
+              <Card className="border-border/60 bg-card/60 transition-colors hover:border-primary/40">
+                <CardHeader>
+                  <div className="flex size-11 items-center justify-center rounded-xl bg-primary/10">
+                    <feature.icon className="size-5 text-primary" />
+                  </div>
+                  <CardTitle className="mt-3 text-base">{feature.title}</CardTitle>
+                  <CardDescription className="text-sm leading-relaxed">
+                    {feature.description}
+                  </CardDescription>
+                </CardHeader>
+              </Card>
+            </motion.div>
           </RevealItem>
         ))}
       </RevealGroup>
