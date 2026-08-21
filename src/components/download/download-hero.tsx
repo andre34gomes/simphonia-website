@@ -63,15 +63,15 @@ export function DownloadHero() {
           </div>
           <div className="absolute -left-8 bottom-8 hidden w-[40%] -rotate-6 opacity-60 blur-[1px] sm:block lg:-left-4">
             <PhoneMockup
-              src="/screenshots/country-detail.webp"
-              alt="Simphonia country plan details"
+              src="/screenshots/plan-selected.webp"
+              alt="Simphonia plan selection screen"
               priority
               className="max-w-none"
             />
           </div>
           <PhoneMockup
-            src="/screenshots/home-light.webp"
-            alt="Simphonia home screen"
+            src="/screenshots/profile-dark.webp"
+            alt="Simphonia profile screen in dark mode"
             priority
             className="relative z-10 max-w-[280px] drop-shadow-2xl"
           />

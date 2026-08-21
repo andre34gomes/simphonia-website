@@ -27,6 +27,12 @@
   --color-input: var(--input);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
+  --color-success: var(--success);
+  --color-success-foreground: var(--success-foreground);
+  --color-warning: var(--warning);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info: var(--info);
+  --color-info-foreground: var(--info-foreground);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
@@ -67,6 +73,13 @@
  *   --duration-reveal   600ms  scroll-triggered content reveals (off-screen,
  *                              does not affect LCP/INP, so a touch slower reads
  *                              as more premium without costing perceived speed)
+ *
+ * Elevation — replaces Tailwind's default shadow scale so every component
+ * that reaches for `shadow-xs/sm/md/lg` (buttons, cards, popovers, sheets)
+ * shares one tactile depth language instead of ad hoc box-shadow values.
+ * Each step layers a soft dark drop-shadow with a faint inset top highlight
+ * (a "raised surface catching light" cue), scaling in size/opacity with
+ * elevation. Prefer these utilities over inline shadow-[...] arbitrary values.
  */
 @theme {
   --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
@@ -79,6 +92,11 @@
   --duration-base: 250ms;
   --duration-slow: 400ms;
   --duration-reveal: 600ms;
+
+  --shadow-xs: 0 1px 2px 0 rgba(0, 0, 0, 0.3), inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.35), 0 1px 2px -1px rgba(0, 0, 0, 0.3), inset 0 1px 0 0 rgba(255, 255, 255, 0.08);
+  --shadow-md: 0 4px 10px -2px rgba(0, 0, 0, 0.4), 0 2px 4px -2px rgba(0, 0, 0, 0.3), inset 0 1px 0 0 rgba(255, 255, 255, 0.06);
+  --shadow-lg: 0 12px 24px -4px rgba(0, 0, 0, 0.45), 0 4px 8px -4px rgba(0, 0, 0, 0.3);
 }
 
 :root {
@@ -98,6 +116,12 @@
   --accent: #1e1e21;
   --accent-foreground: #e7c85e;
   --destructive: oklch(0.704 0.191 22.216);
+  --success: #34c77b;
+  --success-foreground: #0a0a0b;
+  --warning: #e8a93c;
+  --warning-foreground: #0a0a0b;
+  --info: #5b9bd5;
+  --info-foreground: #0a0a0b;
   --border: rgba(245, 243, 239, 0.08);
   --input: rgba(245, 243, 239, 0.1);
   --ring: #d4af37;
@@ -107,6 +131,9 @@
   --chart-4: #e7c85e;
   --chart-5: #6b7280;
   --radius: 0.75rem;
+  --shadow-primary: 0 1px 2px rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
+  --shadow-primary-hover: 0 2px 6px rgba(0, 0, 0, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.3);
+  --shadow-primary-active: inset 0 1px 3px 0 rgba(0, 0, 0, 0.35);
   --sidebar: #131315;
   --sidebar-foreground: #f5f3ef;
   --sidebar-primary: #d4af37;
@@ -133,6 +160,12 @@
   --accent: #1e1e21;
   --accent-foreground: #e7c85e;
   --destructive: oklch(0.704 0.191 22.216);
+  --success: #34c77b;
+  --success-foreground: #0a0a0b;
+  --warning: #e8a93c;
+  --warning-foreground: #0a0a0b;
+  --info: #5b9bd5;
+  --info-foreground: #0a0a0b;
   --border: rgba(245, 243, 239, 0.08);
   --input: rgba(245, 243, 239, 0.1);
   --ring: #d4af37;
@@ -141,6 +174,9 @@
   --chart-3: #a39d92;
   --chart-4: #e7c85e;
   --chart-5: #6b7280;
+  --shadow-primary: 0 1px 2px rgba(0, 0, 0, 0.4), inset 0 1px 0 0 rgba(255, 255, 255, 0.25);
+  --shadow-primary-hover: 0 2px 6px rgba(0, 0, 0, 0.45), inset 0 1px 0 0 rgba(255, 255, 255, 0.3);
+  --shadow-primary-active: inset 0 1px 3px 0 rgba(0, 0, 0, 0.35);
   --sidebar: #131315;
   --sidebar-foreground: #f5f3ef;
   --sidebar-primary: #d4af37;

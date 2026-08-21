@@ -83,8 +83,8 @@ export function HeroSection() {
         <div className="relative mx-auto flex w-full max-w-md items-center justify-center animate-in zoom-in-95 duration-700 ease-out-expo">
           <div className="absolute -right-6 top-10 hidden w-[42%] rotate-6 opacity-70 blur-[1px] sm:block lg:-right-2">
             <PhoneMockup
-              src="/screenshots/global-tab.webp"
-              alt="Simphonia global data plans"
+              src="/screenshots/favorites.webp"
+              alt="Simphonia saved destinations"
               priority
               className="max-w-none"
             />

@@ -8,7 +8,6 @@ import {
   InputGroupInput,
 } from "@/components/ui/input-group";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
-import { Badge } from "@/components/ui/badge";
 import {
   Empty,
   EmptyHeader,
@@ -90,19 +89,24 @@ export function DestinationsGrid() {
       </p>
 
       {filtered.length > 0 ? (
-        <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+        <div className="mt-6 grid grid-cols-2 gap-3.5 sm:grid-cols-3 md:grid-cols-4 xl:grid-cols-5">
           {filtered.map((destination) => (
             <div
               key={destination.code}
-              className="group flex items-center gap-3 rounded-xl border border-border/60 bg-card/60 px-4 py-3 transition-[transform,border-color,box-shadow] duration-(--duration-micro) ease-standard hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[0_8px_20px_rgba(0,0,0,0.25)]"
+              className="group relative flex items-center gap-3 rounded-xl border border-border/60 bg-card/60 px-4 py-3.5 transition-[transform,border-color,box-shadow] duration-(--duration-micro) ease-standard hover:-translate-y-0.5 hover:border-primary/40 hover:shadow-[0_8px_20px_rgba(0,0,0,0.25)]"
             >
+              {destination.popular ? (
+                <span className="absolute -top-2 right-3 rounded-full bg-primary px-2 py-0.5 text-[10px] font-semibold tracking-wide text-primary-foreground shadow-xs">
+                  Popular
+                </span>
+              ) : null}
               <CountryFlag
                 code={destination.code}
                 name={destination.name}
                 className="h-5 w-7 shrink-0 rounded-[3px] object-cover"
               />
               <span className="min-w-0 flex-1">
-                <span className="block truncate text-sm font-medium text-foreground">
+                <span className="block truncate text-sm font-medium text-foreground" title={destination.name}>
                   {destination.name}
                 </span>
                 {activeContinent === "All" ? (
@@ -111,11 +115,6 @@ export function DestinationsGrid() {
                   </span>
                 ) : null}
               </span>
-              {destination.popular ? (
-                <Badge variant="secondary" className="shrink-0">
-                  Popular
-                </Badge>
-              ) : null}
             </div>
           ))}
         </div>

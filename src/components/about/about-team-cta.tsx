@@ -18,9 +18,9 @@ export function AboutTeamCta() {
         </div>
 
         <div className="mt-12 flex justify-center">
-          <Card className="w-full max-w-xs border-border/60 bg-card/60 text-center">
+          <Card className="w-full max-w-xs border-border/60 bg-card/60 text-center shadow-sm">
             <CardContent className="flex flex-col items-center gap-4 pt-6">
-              <div className="flex size-16 items-center justify-center rounded-full bg-gradient-to-br from-[#f0d060] via-primary to-[#b8941f] text-lg font-semibold text-background">
+              <div className="flex size-20 items-center justify-center rounded-full bg-gradient-to-br from-[#f0d060] via-primary to-[#b8941f] text-xl font-semibold tracking-wide text-background ring-2 ring-primary/25 ring-offset-2 ring-offset-card shadow-(--shadow-primary)">
                 AG
               </div>
               <div>
