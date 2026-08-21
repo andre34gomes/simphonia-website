@@ -5,6 +5,10 @@ import { ArrowRight, Sparkles } from "lucide-react";
 import { motion } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { PhoneMockup } from "@/components/shared/phone-mockup";
+import {
+  PhoneCarousel,
+  type ImageItem,
+} from "@/components/ui/phone-mockups-1-utils/phone-carousel";
 import { StoreBadges } from "@/components/shared/store-badges";
 import { Parallax } from "@/components/motion/parallax";
 import { SPRING, hoverLift } from "@/lib/motion";
@@ -13,6 +17,28 @@ const stats = [
   { value: "200+", label: "Countries & regions" },
   { value: "21", label: "Languages supported" },
   { value: "<60s", label: "To activate" },
+];
+
+// Curated app breadth for the hero's rotating mockup — distinct from the
+// AppPreviewShowcase carousel further down the page (which walks a single
+// booking journey) so the two don't show identical screens back-to-back.
+const heroScreens: ImageItem[] = [
+  {
+    src: "/screenshots/home-dark.webp",
+    alt: "Simphonia home screen showing the world at night",
+  },
+  {
+    src: "/screenshots/global-tab.webp",
+    alt: "Global data plans covering every destination",
+  },
+  {
+    src: "/screenshots/regional-tab.webp",
+    alt: "Regional data plans for multi-country trips",
+  },
+  {
+    src: "/screenshots/language-selector.webp",
+    alt: "Simphonia language selector screen",
+  },
 ];
 
 export function HeroSection() {
@@ -97,7 +123,14 @@ export function HeroSection() {
         {/* Transform-only entrance here too: this group contains the LCP image
          * (home-dark.webp), so it must render at full opacity from frame one.
          * The two side mockups additionally drift with scroll via `Parallax`
-         * for a sense of depth — the hero PhoneMockup itself stays static. */}
+         * for a sense of depth. The center mockup now uses the integrated
+         * `PhoneCarousel` (phone-mockups-1) instead of a static `PhoneMockup`
+         * — `priority` keeps the first frame eager-loaded for LCP, and
+         * `AnimatePresence`'s `initial={false}` means that first frame paints
+         * at full opacity immediately; only the *subsequent* auto-rotation
+         * crossfades. The two side mockups stay static: turning every phone
+         * on the hero into its own auto-rotating carousel would be visually
+         * noisy and they're purely decorative depth cues, not content. */}
         <motion.div
           className="relative mx-auto flex w-full max-w-md items-center justify-center"
           initial={{ y: 32, scale: 0.96 }}
@@ -124,10 +157,10 @@ export function HeroSection() {
               />
             </Parallax>
           </div>
-          <PhoneMockup
-            src="/screenshots/home-dark.webp"
-            alt="Simphonia home screen showing the world at night"
+          <PhoneCarousel
+            images={heroScreens}
             priority
+            interval={5000}
             className="relative z-10 max-w-[280px] drop-shadow-2xl"
           />
         </motion.div>

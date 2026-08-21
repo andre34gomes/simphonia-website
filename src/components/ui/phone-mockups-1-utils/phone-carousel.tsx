@@ -15,10 +15,14 @@ export interface ImageItem {
 
 interface PhoneCarouselProps {
   images: ImageItem[];
+  /** Applied to the device frame itself (sizing/shadow overrides) — mirrors
+   * `PhoneMockup`'s `className` contract so the two are drop-in swappable. */
   className?: string;
   /** Auto-advance interval in ms. Pass 0 to disable autoplay entirely. */
   interval?: number;
   sizes?: string;
+  /** Eagerly load the current image — use for above-the-fold placements. */
+  priority?: boolean;
 }
 
 /**
@@ -29,12 +33,15 @@ interface PhoneCarouselProps {
  * pause controls — unlike `PhoneMockup`, which only ever shows one static
  * image. Respects `prefers-reduced-motion`: autoplay starts paused and the
  * crossfade is skipped in favor of an instant swap (apple-design §14).
+ * `className`/`priority` mirror `PhoneMockup`'s contract (applied to the
+ * frame itself) so either component can be swapped in for the other.
  */
 export function PhoneCarousel({
   images,
   className,
   interval = 4500,
   sizes,
+  priority,
 }: PhoneCarouselProps) {
   const prefersReducedMotion = useReducedMotion();
   const [index, setIndex] = useState(0);
@@ -60,8 +67,8 @@ export function PhoneCarousel({
   const current = images[index];
 
   return (
-    <div className={cn("flex flex-col items-center gap-6", className)}>
-      <div className="relative mx-auto aspect-[9/19.5] w-full max-w-[300px]">
+    <div className="flex flex-col items-center gap-6">
+      <div className={cn("relative mx-auto aspect-[9/19.5] w-full max-w-[300px]", className)}>
         {/* Frame */}
         <div className="absolute inset-0 rounded-[2.6rem] bg-gradient-to-b from-[#3a3a3d] to-[#1a1a1c] p-[3px] shadow-2xl shadow-black/50">
           <div className="h-full w-full rounded-[2.5rem] bg-black p-2">
@@ -71,6 +78,7 @@ export function PhoneCarousel({
                   src={current.src}
                   alt={current.alt}
                   fill
+                  priority={priority}
                   sizes={sizes ?? "(max-width: 768px) 60vw, 300px"}
                   className="object-cover object-top"
                 />
@@ -88,6 +96,7 @@ export function PhoneCarousel({
                       src={current.src}
                       alt={current.alt}
                       fill
+                      priority={priority}
                       sizes={sizes ?? "(max-width: 768px) 60vw, 300px"}
                       className="object-cover object-top"
                     />
