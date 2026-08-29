@@ -1,0 +1,64 @@
+{
+  "name": "Simphonia",
+  "short_name": "Simphonia",
+  "description": "Instant eSIM activation for 200+ countries. No roaming fees, no SIM swaps, no contracts.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "display_override": ["standalone", "minimal-ui"],
+  "background_color": "#0a0a0b",
+  "theme_color": "#d4af37",
+  "orientation": "portrait-primary",
+  "lang": "en",
+  "categories": ["travel", "utilities"],
+  "icons": [
+    {
+      "src": "/favicon.svg",
+      "type": "image/svg+xml",
+      "sizes": "any",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-192.png",
+      "type": "image/png",
+      "sizes": "192x192",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "any"
+    },
+    {
+      "src": "/icon-512-maskable.png",
+      "type": "image/png",
+      "sizes": "512x512",
+      "purpose": "maskable"
+    }
+  ],
+  "related_applications": [
+    {
+      "platform": "play",
+      "url": "https://play.google.com/store/apps/details?id=com.simphonia.app",
+      "id": "com.simphonia.app"
+    },
+    {
+      "platform": "itunes",
+      "url": "https://apps.apple.com/app/simphonia/id6740088498"
+    }
+  ],
+  "prefer_related_applications": true,
+  "shortcuts": [
+    {
+      "name": "Browse Destinations",
+      "url": "/destinations",
+      "description": "Explore eSIM destinations for 200+ countries"
+    },
+    {
+      "name": "How It Works",
+      "url": "/how-it-works",
+      "description": "Learn how Simphonia eSIM works"
+    }
+  ]
+}
