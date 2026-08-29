@@ -1,6 +1,5 @@
-import Link from "next/link";
 import { ArrowRight, Compass, Home } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button";
 
 export function HiwCta() {
   return (
@@ -20,26 +19,23 @@ export function HiwCta() {
           Your next trip is 2 minutes away from being fully connected.
         </p>
         <div className="mt-10 flex flex-wrap justify-center gap-4">
-          <Button
-            size="lg"
-            className="h-12 px-6 text-base"
-            render={<Link href="/destinations" />}
-            nativeButton={false}
+          <ButtonLink
+            variant="cta"
+            size="cta"
+            href="/destinations"
           >
             <Compass data-icon="inline-start" />
             Browse Destinations
             <ArrowRight data-icon="inline-end" />
-          </Button>
-          <Button
-            variant="outline"
-            size="lg"
-            className="h-12 px-6 text-base"
-            render={<Link href="/" />}
-            nativeButton={false}
+          </ButtonLink>
+          <ButtonLink
+            variant="ctaOutline"
+            size="cta"
+            href="/"
           >
             <Home data-icon="inline-start" />
             Back to Home
-          </Button>
+          </ButtonLink>
         </div>
       </div>
     </section>

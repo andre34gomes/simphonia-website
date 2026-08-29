@@ -1,9 +1,8 @@
 "use client";
 
-import Link from "next/link";
 import { Search, CreditCard, QrCode, Wifi, ArrowRight } from "lucide-react";
 import { motion } from "motion/react";
-import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { hoverLift } from "@/lib/motion";
 
@@ -66,17 +65,10 @@ export function HowItWorksPreview() {
       </RevealGroup>
 
       <Reveal className="mt-14 flex justify-center" delay={0.15}>
-        <motion.div {...hoverLift}>
-          <Button
-            variant="outline"
-            size="lg"
-            render={<Link href="/how-it-works" />}
-            nativeButton={false}
-          >
-            See the full walkthrough
-            <ArrowRight data-icon="inline-end" />
-          </Button>
-        </motion.div>
+        <ButtonLink variant="ctaOutline" size="cta" href="/how-it-works">
+          See the full walkthrough
+          <ArrowRight data-icon="inline-end" />
+        </ButtonLink>
       </Reveal>
     </section>
   );

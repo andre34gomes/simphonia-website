@@ -1,6 +1,5 @@
-import Link from "next/link";
 import { ArrowRight, Download, MapPin, Zap } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button";
 
 const steps = [
   {
@@ -50,16 +49,14 @@ export function DownloadSteps() {
         </div>
 
         <div className="mt-12 flex justify-center">
-          <Button
-            variant="outline"
-            size="lg"
-            className="h-12 px-6 text-base"
-            render={<Link href="/how-it-works" />}
-            nativeButton={false}
+          <ButtonLink
+            variant="ctaOutline"
+            size="cta"
+            href="/how-it-works"
           >
             See the full guide
             <ArrowRight data-icon="inline-end" />
-          </Button>
+          </ButtonLink>
         </div>
       </div>
     </section>

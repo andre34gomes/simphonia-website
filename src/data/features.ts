@@ -5,9 +5,9 @@ import {
   MessageCircleHeart,
   ShieldCheck,
   Heart,
-  Languages,
+  Layers,
   Gift,
-  Moon,
+  Gauge,
 } from "lucide-react";
 
 export interface Feature {
@@ -48,16 +48,16 @@ export const features: Feature[] = [
       "Save your go-to destinations and earn discounts by inviting friends to travel connected.",
   },
   {
-    icon: Languages,
-    title: "21 Languages",
+    icon: Layers,
+    title: "Local, Regional & Global Plans",
     description:
-      "A fully localized experience in 21 languages, so every traveler feels at home in the app.",
+      "Pick coverage sized to your actual trip — a single country, a whole region, or the entire globe on one balance.",
   },
   {
-    icon: Moon,
-    title: "Light & Dark Themes",
+    icon: Gauge,
+    title: "Live Data Usage Tracking",
     description:
-      "A beautifully crafted interface that adapts to your preference, day or night.",
+      "Watch your remaining data in real time inside the app, so you never get caught out mid-trip with no way to check.",
   },
   {
     icon: Gift,

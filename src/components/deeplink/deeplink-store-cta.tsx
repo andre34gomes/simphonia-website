@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+import { ButtonAnchor } from "@/components/ui/button";
 import { APP_STORE_URL, PLAY_STORE_URL } from "@/data/nav";
 
 interface DeeplinkStoreCtaProps {
@@ -17,13 +17,15 @@ export function DeeplinkStoreCta({ store, label }: DeeplinkStoreCtaProps) {
   const href = store === "apple" ? APP_STORE_URL : PLAY_STORE_URL;
 
   return (
-    <Button
-      size="lg"
-      className="h-12 px-6 text-base"
-      render={<a href={href} target="_blank" rel="noopener noreferrer" />}
-      nativeButton={false}
+    <ButtonAnchor
+      variant="cta"
+      size="cta"
+      href={href}
+      target="_blank"
+      rel="noopener noreferrer"
     >
       {label}
-    </Button>
+      <span className="sr-only"> (opens in a new tab)</span>
+    </ButtonAnchor>
   );
 }

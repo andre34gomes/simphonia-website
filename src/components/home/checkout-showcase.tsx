@@ -1,23 +1,23 @@
 "use client";
 
+import { CheckCircle2, CreditCard, Heart } from "lucide-react";
 import { motion } from "motion/react";
-import { PhoneMockup } from "@/components/shared/phone-mockup";
 import { Reveal, RevealGroup, RevealItem } from "@/components/motion/reveal";
 import { hoverLift } from "@/lib/motion";
 
 const items = [
   {
-    src: "/screenshots/plan-selected.webp",
+    icon: CheckCircle2,
     title: "Clear plan details",
     description: "Data allowance, validity, and price up front — no surprises at checkout.",
   },
   {
-    src: "/screenshots/cart-populated.webp",
+    icon: CreditCard,
     title: "Fast, secure checkout",
     description: "Stripe-powered payments with support for major cards and wallets.",
   },
   {
-    src: "/screenshots/favorites.webp",
+    icon: Heart,
     title: "Save your go-to destinations",
     description: "Favorite countries and plans for one-tap reordering on your next trip.",
   },
@@ -38,12 +38,11 @@ export function CheckoutShowcase() {
       <RevealGroup className="mt-16 grid grid-cols-1 gap-x-8 gap-y-14 sm:grid-cols-3">
         {items.map((item) => (
           <RevealItem key={item.title} className="flex flex-col items-center text-center">
-            <motion.div {...hoverLift} className="w-full max-w-[220px]">
-              <PhoneMockup
-                src={item.src}
-                alt={item.title}
-                className="max-w-[220px]"
-              />
+            <motion.div
+              {...hoverLift}
+              className="flex size-16 items-center justify-center rounded-2xl bg-primary/10"
+            >
+              <item.icon className="size-7 text-primary" />
             </motion.div>
             <h3 className="mt-6 text-lg font-semibold text-foreground">
               {item.title}

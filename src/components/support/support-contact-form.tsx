@@ -261,7 +261,8 @@ export function SupportContactForm() {
 
             <Button
               type="submit"
-              size="lg"
+              variant="cta"
+              size="cta"
               disabled={isSubmitting}
               className="w-full sm:w-auto"
             >

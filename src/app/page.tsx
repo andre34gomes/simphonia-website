@@ -1,11 +1,10 @@
 import { HeroSection } from "@/components/home/hero-section";
 import { FeaturesGrid } from "@/components/home/features-grid";
-import { AppPreviewShowcase } from "@/components/home/app-preview-showcase";
 import { ScreenshotShowcase } from "@/components/home/screenshot-showcase";
 import { HowItWorksPreview } from "@/components/home/how-it-works-preview";
-import { ThemeSpotlight } from "@/components/home/theme-spotlight";
+import { PlanFlexibilitySpotlight } from "@/components/home/plan-flexibility-spotlight";
 import { CheckoutShowcase } from "@/components/home/checkout-showcase";
-import { LanguageSection } from "@/components/home/language-section";
+import { AiSupportSpotlight } from "@/components/home/ai-support-spotlight";
 import { DownloadCta } from "@/components/home/download-cta";
 
 export default function Home() {
@@ -13,12 +12,11 @@ export default function Home() {
     <>
       <HeroSection />
       <FeaturesGrid />
-      <AppPreviewShowcase />
       <ScreenshotShowcase />
       <HowItWorksPreview />
-      <ThemeSpotlight />
+      <PlanFlexibilitySpotlight />
       <CheckoutShowcase />
-      <LanguageSection />
+      <AiSupportSpotlight />
       <DownloadCta />
     </>
   );

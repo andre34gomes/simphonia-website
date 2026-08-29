@@ -1,6 +1,5 @@
-import Link from "next/link";
 import { ArrowRight, Compass } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 
 export function AboutTeamCta() {
@@ -53,16 +52,15 @@ export function AboutTeamCta() {
             Explore our destinations and stay connected wherever you travel.
           </p>
           <div className="mt-10 flex justify-center">
-            <Button
-              size="lg"
-              className="h-12 px-6 text-base"
-              render={<Link href="/destinations" />}
-              nativeButton={false}
+            <ButtonLink
+              variant="cta"
+              size="cta"
+              href="/destinations"
             >
               <Compass data-icon="inline-start" />
               Browse Destinations
               <ArrowRight data-icon="inline-end" />
-            </Button>
+            </ButtonLink>
           </div>
         </div>
       </section>

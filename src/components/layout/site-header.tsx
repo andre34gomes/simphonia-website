@@ -5,7 +5,7 @@ import { usePathname } from "next/navigation";
 import { useState } from "react";
 import { Menu } from "lucide-react";
 import { motion, useScroll, useTransform } from "motion/react";
-import { Button } from "@/components/ui/button";
+import { Button, ButtonLink } from "@/components/ui/button";
 import {
   Sheet,
   SheetContent,
@@ -16,7 +16,6 @@ import {
 import { Logo } from "@/components/shared/logo";
 import { mainNav } from "@/data/nav";
 import { cn } from "@/lib/utils";
-import { hoverLift } from "@/lib/motion";
 
 export function SiteHeader() {
   const [open, setOpen] = useState(false);
@@ -72,11 +71,11 @@ export function SiteHeader() {
           })}
         </nav>
 
-        <motion.div className="hidden md:block" {...hoverLift}>
-          <Button render={<Link href="/download" />} nativeButton={false}>
+        <div className="hidden md:block">
+          <ButtonLink href="/download">
             Get the App
-          </Button>
-        </motion.div>
+          </ButtonLink>
+        </div>
 
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger
@@ -112,13 +111,13 @@ export function SiteHeader() {
                   </Link>
                 );
               })}
-              <Button
-                render={<Link href="/download" onClick={() => setOpen(false)} />}
-                nativeButton={false}
+              <ButtonLink
+                href="/download"
+                onClick={() => setOpen(false)}
                 className="mt-3"
               >
                 Get the App
-              </Button>
+              </ButtonLink>
             </nav>
           </SheetContent>
         </Sheet>

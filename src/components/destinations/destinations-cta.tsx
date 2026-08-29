@@ -1,6 +1,5 @@
-import Link from "next/link";
 import { MessageCircle } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { ButtonLink } from "@/components/ui/button";
 
 export function DestinationsCta() {
   return (
@@ -21,15 +20,14 @@ export function DestinationsCta() {
           more destinations.
         </p>
         <div className="mt-10 flex flex-wrap justify-center gap-4">
-          <Button
-            size="lg"
-            className="h-12 px-6 text-base"
-            render={<Link href="/support" />}
-            nativeButton={false}
+          <ButtonLink
+            variant="cta"
+            size="cta"
+            href="/support"
           >
             <MessageCircle data-icon="inline-start" />
             Contact Support
-          </Button>
+          </ButtonLink>
         </div>
       </div>
     </section>

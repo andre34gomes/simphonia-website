@@ -1,17 +1,12 @@
 "use client";
 
-import Link from "next/link";
 import { ArrowRight, Sparkles } from "lucide-react";
 import { motion } from "motion/react";
-import { Button } from "@/components/ui/button";
-import { PhoneMockup } from "@/components/shared/phone-mockup";
-import {
-  PhoneCarousel,
-  type ImageItem,
-} from "@/components/ui/phone-mockups-1-utils/phone-carousel";
+import { ButtonLink } from "@/components/ui/button";
 import { StoreBadges } from "@/components/shared/store-badges";
-import { Parallax } from "@/components/motion/parallax";
-import { SPRING, hoverLift } from "@/lib/motion";
+import { PhoneProductPreview } from "@/components/home/phone-product-preview";
+import { SPRING } from "@/lib/motion";
+import { cn } from "@/lib/utils";
 
 const stats = [
   { value: "200+", label: "Countries & regions" },
@@ -19,151 +14,87 @@ const stats = [
   { value: "<60s", label: "To activate" },
 ];
 
-// Curated app breadth for the hero's rotating mockup — distinct from the
-// AppPreviewShowcase carousel further down the page (which walks a single
-// booking journey) so the two don't show identical screens back-to-back.
-const heroScreens: ImageItem[] = [
-  {
-    src: "/screenshots/home-dark.webp",
-    alt: "Simphonia home screen showing the world at night",
-  },
-  {
-    src: "/screenshots/global-tab.webp",
-    alt: "Global data plans covering every destination",
-  },
-  {
-    src: "/screenshots/regional-tab.webp",
-    alt: "Regional data plans for multi-country trips",
-  },
-  {
-    src: "/screenshots/language-selector.webp",
-    alt: "Simphonia language selector screen",
-  },
-];
+function HeroTrust({ className }: { className?: string }) {
+  return (
+    <div className={cn("mt-8", className)}>
+      <StoreBadges className="justify-center lg:justify-start" />
+
+      <dl className="mx-auto mt-12 grid max-w-xl grid-cols-3 gap-4 border-t border-border/60 pt-8 text-left lg:mx-0 sm:gap-6">
+        {stats.map((stat) => (
+          <div key={stat.label}>
+            <dt className="text-2xl font-semibold text-foreground sm:text-3xl">
+              {stat.value}
+            </dt>
+            <dd className="mt-1 text-xs text-muted-foreground sm:text-sm">
+              {stat.label}
+            </dd>
+          </div>
+        ))}
+      </dl>
+    </div>
+  );
+}
 
 export function HeroSection() {
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative isolate overflow-hidden">
       {/* Ambient glow */}
       <div
-        className="pointer-events-none absolute inset-x-0 -top-40 -z-10 h-[560px] bg-[radial-gradient(ellipse_at_top,_var(--primary)_0%,_transparent_60%)] opacity-[0.12]"
+        className="pointer-events-none absolute inset-x-0 -top-40 -z-10 h-[660px] bg-[radial-gradient(ellipse_at_top,_var(--primary)_0%,_transparent_60%)] opacity-[0.12]"
         aria-hidden="true"
       />
 
-      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 px-6 py-20 lg:grid-cols-2 lg:gap-12 lg:px-8 lg:py-28">
-        {/* Transform-only entrance (no opacity animation) so this above-the-fold
-         * content never gets excluded from LCP candidacy — see Stage 1 perf notes.
-         * Spring-driven (critically damped) rather than a CSS keyframe so the
-         * settle reads as organic, matching the rest of the site's motion
-         * vocabulary in `@/lib/motion`. */}
-        <motion.div
-          initial={{ y: 24, scale: 0.99 }}
-          animate={{ y: 0, scale: 1 }}
-          transition={SPRING.critical}
-        >
-          <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-medium text-primary">
-            <Sparkles className="size-3.5" />
-            Now live across 200+ destinations
-          </div>
+      <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8 lg:py-24">
+        <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1fr)_minmax(18rem,0.72fr)]">
+          {/* Transform-only entrance keeps the above-the-fold copy LCP-eligible. */}
+          <motion.div
+            className="text-center lg:text-left"
+            initial={{ y: 24, scale: 0.99 }}
+            animate={{ y: 0, scale: 1 }}
+            transition={SPRING.critical}
+          >
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-medium text-primary">
+              <Sparkles className="size-3.5" aria-hidden="true" />
+              Now live across 200+ destinations
+            </div>
 
-          <h1 className="mt-6 text-4xl font-semibold tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl">
-            Global connectivity,
-            <span className="block bg-gradient-to-r from-[#f0d060] via-primary to-[#b8941f] bg-clip-text text-transparent">
-              activated instantly.
-            </span>
-          </h1>
+            <h1 className="mt-6 max-w-2xl text-4xl font-semibold tracking-tight text-balance text-foreground sm:text-5xl lg:text-6xl">
+              Global connectivity,
+              <span className="block bg-gradient-to-r from-[#f0d060] via-primary to-[#b8941f] bg-clip-text text-transparent">
+                ready before you land.
+              </span>
+            </h1>
 
-          <p className="mt-6 max-w-xl text-lg text-pretty text-muted-foreground">
-            Simphonia gives modern travelers instant eSIM access in over 200
-            countries — transparent pricing, AI-powered support, and secure
-            checkout, all from one beautifully designed app.
-          </p>
+            <p className="mx-auto mt-6 max-w-xl text-lg text-pretty text-muted-foreground lg:mx-0">
+              Simphonia gives modern travelers instant eSIM access in over 200
+              countries — transparent pricing, AI-powered support, and secure
+              checkout, all from one beautifully designed app.
+            </p>
 
-          <div className="mt-10 flex flex-wrap items-center gap-4">
-            <motion.div {...hoverLift}>
-              <Button
-                size="lg"
-                className="h-12 px-6 text-base"
-                render={<Link href="/download" />}
-                nativeButton={false}
-              >
+            <div className="mt-10 flex flex-wrap items-center justify-center gap-4 lg:justify-start">
+              <ButtonLink variant="cta" size="cta" href="/download">
                 Get the App
                 <ArrowRight data-icon="inline-end" />
-              </Button>
-            </motion.div>
-            <motion.div {...hoverLift}>
-              <Button
-                variant="outline"
-                size="lg"
-                className="h-12 px-6 text-base"
-                render={<Link href="/how-it-works" />}
-                nativeButton={false}
-              >
+              </ButtonLink>
+              <ButtonLink variant="ctaOutline" size="cta" href="/how-it-works">
                 See how it works
-              </Button>
-            </motion.div>
-          </div>
+              </ButtonLink>
+            </div>
 
-          <StoreBadges className="mt-8" />
+            <HeroTrust className="hidden lg:block" />
+          </motion.div>
 
-          <dl className="mt-14 grid grid-cols-3 gap-6 border-t border-border/60 pt-8">
-            {stats.map((stat) => (
-              <div key={stat.label}>
-                <dt className="text-2xl font-semibold text-foreground sm:text-3xl">
-                  {stat.value}
-                </dt>
-                <dd className="mt-1 text-xs text-muted-foreground sm:text-sm">
-                  {stat.label}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </motion.div>
+          <motion.div
+            className="flex justify-center lg:justify-end"
+            initial={{ y: 32, scale: 0.96 }}
+            animate={{ y: 0, scale: 1 }}
+            transition={SPRING.critical}
+          >
+            <PhoneProductPreview plan="regional" showMetrics />
+          </motion.div>
 
-        {/* Transform-only entrance here too: this group contains the LCP image
-         * (home-dark.webp), so it must render at full opacity from frame one.
-         * The two side mockups additionally drift with scroll via `Parallax`
-         * for a sense of depth. The center mockup now uses the integrated
-         * `PhoneCarousel` (phone-mockups-1) instead of a static `PhoneMockup`
-         * — `priority` keeps the first frame eager-loaded for LCP, and
-         * `AnimatePresence`'s `initial={false}` means that first frame paints
-         * at full opacity immediately; only the *subsequent* auto-rotation
-         * crossfades. The two side mockups stay static: turning every phone
-         * on the hero into its own auto-rotating carousel would be visually
-         * noisy and they're purely decorative depth cues, not content. */}
-        <motion.div
-          className="relative mx-auto flex w-full max-w-md items-center justify-center"
-          initial={{ y: 32, scale: 0.96 }}
-          animate={{ y: 0, scale: 1 }}
-          transition={{ ...SPRING.critical, delay: 0.08 }}
-        >
-          <div className="absolute -right-6 top-10 hidden w-[42%] rotate-6 opacity-70 blur-[1px] sm:block lg:-right-2">
-            <Parallax distance={22}>
-              <PhoneMockup
-                src="/screenshots/favorites.webp"
-                alt="Simphonia saved destinations"
-                priority
-                className="max-w-none"
-              />
-            </Parallax>
-          </div>
-          <div className="absolute -left-8 bottom-4 hidden w-[40%] -rotate-6 opacity-60 blur-[1px] sm:block lg:-left-4">
-            <Parallax distance={-18}>
-              <PhoneMockup
-                src="/screenshots/profile-light.webp"
-                alt="Simphonia profile screen"
-                priority
-                className="max-w-none"
-              />
-            </Parallax>
-          </div>
-          <PhoneCarousel
-            images={heroScreens}
-            priority
-            interval={5000}
-            className="relative z-10 max-w-[280px] drop-shadow-2xl"
-          />
-        </motion.div>
+          <HeroTrust className="lg:hidden" />
+        </div>
       </div>
     </section>
   );

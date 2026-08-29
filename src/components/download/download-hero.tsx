@@ -1,5 +1,4 @@
 import { Download as DownloadIcon } from "lucide-react";
-import { PhoneMockup } from "@/components/shared/phone-mockup";
 import { StoreBadges } from "@/components/shared/store-badges";
 
 const stats = [
@@ -16,7 +15,7 @@ export function DownloadHero() {
         aria-hidden="true"
       />
 
-      <div className="mx-auto grid max-w-7xl grid-cols-1 items-center gap-16 px-6 py-20 lg:grid-cols-2 lg:gap-12 lg:px-8 lg:py-28">
+      <div className="mx-auto max-w-3xl px-6 py-20 text-center lg:px-8 lg:py-28">
         <div className="animate-in slide-in-from-bottom-3 duration-700 ease-out-expo">
           <div className="inline-flex items-center gap-2 rounded-full border border-primary/30 bg-primary/10 px-4 py-1.5 text-xs font-medium text-primary">
             <DownloadIcon className="size-3.5" />
@@ -30,15 +29,15 @@ export function DownloadHero() {
             </span>
           </h1>
 
-          <p className="mt-6 max-w-xl text-lg text-pretty text-muted-foreground">
+          <p className="mx-auto mt-6 max-w-xl text-lg text-pretty text-muted-foreground">
             Download the app, pick your destination, and activate your eSIM
             in under a minute — no SIM swap, no roaming surprises, no
             waiting in line at the airport kiosk.
           </p>
 
-          <StoreBadges className="mt-10" />
+          <StoreBadges className="mt-10 justify-center" />
 
-          <dl className="mt-14 grid grid-cols-3 gap-6 border-t border-border/60 pt-8">
+          <dl className="mx-auto mt-14 grid max-w-xl grid-cols-3 gap-6 border-t border-border/60 pt-8">
             {stats.map((stat) => (
               <div key={stat.label}>
                 <dt className="text-2xl font-semibold text-foreground sm:text-3xl">
@@ -50,31 +49,6 @@ export function DownloadHero() {
               </div>
             ))}
           </dl>
-        </div>
-
-        <div className="relative mx-auto flex w-full max-w-md items-center justify-center animate-in zoom-in-95 duration-700 ease-out-expo">
-          <div className="absolute -right-6 top-6 hidden w-[42%] rotate-6 opacity-70 blur-[1px] sm:block lg:-right-2">
-            <PhoneMockup
-              src="/screenshots/cart-populated.webp"
-              alt="Simphonia checkout screen"
-              priority
-              className="max-w-none"
-            />
-          </div>
-          <div className="absolute -left-8 bottom-8 hidden w-[40%] -rotate-6 opacity-60 blur-[1px] sm:block lg:-left-4">
-            <PhoneMockup
-              src="/screenshots/plan-selected.webp"
-              alt="Simphonia plan selection screen"
-              priority
-              className="max-w-none"
-            />
-          </div>
-          <PhoneMockup
-            src="/screenshots/profile-dark.webp"
-            alt="Simphonia profile screen in dark mode"
-            priority
-            className="relative z-10 max-w-[280px] drop-shadow-2xl"
-          />
         </div>
       </div>
     </section>
