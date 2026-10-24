@@ -41,7 +41,7 @@
       "content": [
         { "type": "paragraph", "text": "To access certain features of the Service (such as purchasing plans, viewing order history, and using the referral program), you must create an account. You may register using:" },
         { "type": "list", "items": [
-          "Email address and password",
+          "Email address and a single-use verification code sent by email",
           "Google Sign-In",
           "Facebook Login",
           "Sign in with Apple"
@@ -112,7 +112,7 @@
           "AI responses are generated automatically and may not always be accurate or complete",
           "The AI assistant should not be relied upon for critical decisions — for complex issues, please contact our human support team",
           "Chat conversations may be reviewed to improve service quality",
-          "Do not share sensitive personal information (such as passwords or full payment details) in the chat",
+          "Do not share sensitive personal information (such as sign-in codes or full payment details) in the chat",
           "The AI assistant can perform certain actions on your behalf (such as adding items to your cart) when you explicitly request it"
         ]}
       ]
@@ -126,7 +126,7 @@
           "Welcome email upon registration",
           "Email verification upon registration",
           "Order confirmation emails",
-          "Password reset emails",
+          "Sign-in verification emails",
           "Support ticket reply notifications",
           "Referral reward notifications"
         ]},

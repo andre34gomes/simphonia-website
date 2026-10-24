@@ -2,8 +2,7 @@ import type { MetadataRoute } from "next";
 import { SITE_URL } from "@/lib/site";
 
 // Generates /sitemap.xml. Only content pages are listed — the four
-// deep-link/action pages (/join, /open-in-app, /reset-password,
-// /verify-email) are single-use functional redirects marked noindex via
+// deep-link/action pages (/join, /open-in-app) are functional redirects marked noindex via
 // their own metadata, so they're deliberately excluded here too.
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();

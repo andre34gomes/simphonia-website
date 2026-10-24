@@ -18,10 +18,6 @@ export function GET() {
             paths: [
               "/join",
               "/join?*",
-              "/verify-email",
-              "/verify-email?*",
-              "/reset-password",
-              "/reset-password?*",
             ],
           },
         ],

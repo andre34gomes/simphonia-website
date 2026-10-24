@@ -13,8 +13,6 @@ export const metadata: Metadata = {
 };
 
 const ACTION_LABELS: Record<string, string> = {
-  "verify-email": "Email Verification",
-  "reset-password": "Password Reset",
   join: "Referral Invitation",
 };
 
@@ -26,26 +24,15 @@ const CONTINUE_STEPS = [
 
 /**
  * Rebuilds the deep-link URL a mobile visitor should scan to continue,
- * from the `action` (+ optional `code`/`token`) query params. Mirrors
+ * from the `action` (+ optional `code`) query params. Mirrors
  * the previous site's `getOpenInAppDeepLink`.
  */
 function getDeepLink(
   action: string | undefined,
-  code: string | undefined,
-  token: string | undefined
+  code: string | undefined
 ) {
   if (action === "join" && code) {
     return `${SITE_URL}/join?code=${encodeURIComponent(code)}`;
-  }
-  if (action === "verify-email") {
-    return token
-      ? `${SITE_URL}/verify-email?token=${encodeURIComponent(token)}`
-      : `${SITE_URL}/verify-email`;
-  }
-  if (action === "reset-password") {
-    return token
-      ? `${SITE_URL}/reset-password?token=${encodeURIComponent(token)}`
-      : `${SITE_URL}/reset-password`;
   }
   return SITE_URL;
 }
@@ -56,7 +43,6 @@ export default async function OpenInAppPage({
   const params = await searchParams;
   const action = typeof params.action === "string" ? params.action : undefined;
   const code = typeof params.code === "string" ? params.code : undefined;
-  const token = typeof params.token === "string" ? params.token : undefined;
   const actionLabel = action ? ACTION_LABELS[action] : undefined;
 
   return (
@@ -73,7 +59,7 @@ export default async function OpenInAppPage({
       ) : null}
 
       <DeeplinkQrCode
-        data={getDeepLink(action, code, token)}
+        data={getDeepLink(action, code)}
         label="Scan with your phone camera to continue"
         size={180}
       />

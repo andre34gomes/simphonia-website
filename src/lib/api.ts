@@ -2,8 +2,9 @@
 // (guest auth + support ticket submission). Mirrors the working contract
 // used by the Flutter app and the previous marketing site's contact form.
 
-export const API_BASE =
-  process.env.NEXT_PUBLIC_API_BASE ?? "https://api.simphonia.pt";
+import { API_BASE as ENV_API_BASE } from "@/lib/env";
+
+export const API_BASE = ENV_API_BASE;
 
 const GUEST_TOKEN_KEY = "simphonia_guest_token";
 const GUEST_EXPIRY_KEY = "simphonia_guest_expiry";

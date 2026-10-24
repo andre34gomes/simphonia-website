@@ -235,7 +235,7 @@ export function SupportContactForm() {
               />
               <FieldError>{errors.message}</FieldError>
               <FieldDescription>
-                Please avoid sharing sensitive information like passwords or
+                Please avoid sharing sensitive information like sign-in codes or
                 payment details.
               </FieldDescription>
             </Field>

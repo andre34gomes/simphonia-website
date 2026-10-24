@@ -9,8 +9,8 @@ interface DeeplinkShellProps {
 }
 
 /**
- * Shared full-page container for the four deep-link utility routes
- * (join, open-in-app, reset-password, verify-email). Reuses the site's
+ * Shared full-page container for the deep-link utility routes
+ * (join, open-in-app). Reuses the site's
  * standard hero treatment (radial gradient + eyebrow pill) but centers
  * everything in a single narrow column, since these are single-purpose
  * utility pages rather than long-form landing pages.

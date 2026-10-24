@@ -12,9 +12,7 @@ interface JoinMobileRedirectProps {
  * Attempts to open the Simphonia app via its custom URL scheme on
  * mobile, then reveals a store-download fallback if the OS didn't
  * intercept it (e.g. the app isn't installed). A referral code isn't a
- * sensitive credential, so a custom-scheme redirect attempt is safe here
- * — unlike the token-bearing reset-password/verify-email pages, which
- * never use one.
+ * sensitive credential, so a custom-scheme redirect attempt is safe here.
  */
 export function JoinMobileRedirect({ code, isIOS }: JoinMobileRedirectProps) {
   const [showFallback, setShowFallback] = useState(false);

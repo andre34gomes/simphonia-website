@@ -1,5 +1,5 @@
 // Server-side user-agent sniffing for the deep-link pages (join,
-// open-in-app, reset-password, verify-email). Ported from the previous
+// open-in-app). Ported from the previous
 // site's `deeplink-page.js`, but evaluated against the request's
 // `user-agent` header during SSR instead of `navigator.userAgent` in the
 // browser — this removes the loading-spinner flash the old static-JS

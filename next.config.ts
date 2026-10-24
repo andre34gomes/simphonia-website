@@ -1,9 +1,12 @@
 import path from "node:path";
 import type { NextConfig } from "next";
 
+const apiBase = process.env.NEXT_PUBLIC_API_BASE ?? "http://localhost:3000";
+const isProduction = process.env.NEXT_PUBLIC_APP_ENV === "production";
+
 // Content-Security-Policy and other security headers, applied to every
 // response. Scoped to the exact external hosts this app actually calls:
-// api.simphonia.pt (support live-status check) and self-hosted fonts/images
+// the environment's API (support live-status check) and self-hosted fonts/images
 // (next/font self-hosts Google fonts at build time, so no fonts.googleapis
 // .com / fonts.gstatic.com entries are needed, unlike the legacy static site).
 const csp = [
@@ -12,7 +15,7 @@ const csp = [
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data:",
   "font-src 'self' data:",
-  "connect-src 'self' https://api.simphonia.pt",
+  `connect-src 'self' ${apiBase}`,
   "frame-ancestors 'none'",
   "base-uri 'self'",
   "form-action 'self'",
@@ -33,31 +36,21 @@ const securityHeaders = [
   },
   { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
   { key: "Content-Security-Policy", value: csp },
+  // Keep non-production deployments out of search engines.
+  ...(isProduction ? [] : [{ key: "X-Robots-Tag", value: "noindex, nofollow" }]),
 ];
 
 const nextConfig: NextConfig = {
   turbopack: {
     root: path.resolve(__dirname),
   },
-  images: {
-    // No Cloudflare Images binding is configured (see open-next.config.ts),
-    // and next/image's built-in optimizer needs sharp, which cannot run in
-    // the Workers/workerd runtime this site deploys to. Without this flag
-    // every /_next/image request would fail in production.
-    unoptimized: true,
-  },
+  images: {},
   async headers() {
     return [
       {
         // Applied to every route.
         source: "/(.*)",
         headers: securityHeaders,
-      },
-      {
-        // Deep-link pages carry short-lived bearer tokens in the query
-        // string — never let a browser or CDN edge cache these responses.
-        source: "/(reset-password|verify-email)",
-        headers: [{ key: "Cache-Control", value: "no-store" }],
       },
     ];
   },

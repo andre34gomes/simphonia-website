@@ -26,16 +26,14 @@ src/
   app/                 Route segments (App Router) — one folder per page
     join/               Referral deep-link landing page
     open-in-app/        Generic "continue on mobile" deep-link page
-    reset-password/     Password-reset deep-link page (host-gated)
-    verify-email/       Email-verification deep-link page (host-gated)
   components/
     home/ about/ how-it-works/ support/ destinations/ download/
     legal/              Shared renderer for Privacy Policy / Terms of Service
-    deeplink/           Shared components for the 4 deep-link pages above
+    deeplink/           Shared components for the deep-link pages above
     layout/              Header, footer, nav
     ui/                 shadcn/ui primitives
   lib/                  Shared utilities (site config, QR generation, device/UA
-                        sniffing, trusted-host check)
+                        sniffing)
   content/              Structured content (legal JSON, destinations data, etc.)
 public/
   screenshots/          Live app screenshots (captured via ADB from a running
@@ -51,12 +49,13 @@ directly — file names are referenced by path throughout `src/components/`.
 
 ## Deep-link Pages
 
-`/join`, `/open-in-app`, `/reset-password`, and `/verify-email` are server-rendered pages
+`/join` and `/open-in-app` are server-rendered pages
 that back the app's universal/deep links. They read the request's `User-Agent` to decide
-whether to auto-redirect (mobile) or show a QR code + store badges (desktop), and
-`reset-password`/`verify-email` additionally gate rendering behind a trusted-hostname check
-(see `src/lib/trusted-host.ts`) so a sensitive one-time token is only ever acted on on the
-production domain.
+whether to auto-redirect (mobile) or show a QR code + store badges (desktop).
+These routes carry referral data, not authentication tokens.
+
+Account sign-in uses a single-use verification code sent by email, or a linked
+social provider. The code is entered directly in the app.
 
 ## Scripts
 
@@ -69,26 +68,32 @@ npm run lint     # eslint
 
 ## Deployment
 
-This site is configured for **Cloudflare Workers** (via the `@opennextjs/cloudflare` adapter),
-matching the hosting platform already used in production. It's still a standard Next.js app
-otherwise, so it can also be deployed to any Next.js-compatible host (Vercel, Node server, etc.)
-with `npm run build && npm run start` if that ever changes.
+This site deploys to **Vercel** (native Next.js hosting) straight from GitHub; there is no deploy script.
 
-```bash
-npm run build-open   # builds + bundles into .open-next/ (verify locally, no Cloudflare login needed)
-npm run preview      # build-open, then serve it locally via the Workers runtime (wrangler dev)
-npm run deploy       # build-open, then deploy to Cloudflare (requires `wrangler login` first)
-```
+Two Vercel projects (Hobby-plan friendly, full isolation), both linked to this repo:
 
-Config lives in `wrangler.jsonc` (Worker name, compatibility flags, static-assets binding) and
-`open-next.config.ts` (adapter options — currently defaults, no custom incremental cache).
+| Environment | Vercel project | Production Branch | Domain |
+|-------------|----------------|-------------------|--------|
+| Simphonia TEST (mirror of prod) | `simphonia-test` | `develop` | `test.simphonia.pt` |
+| Simphonia PROD | `simphonia-prod` | `main` | `simphonia.pt` (`www` → 308 to apex) |
+
+Each project builds only its own branch (Settings > Git > Ignored Build Step: `[ "$VERCEL_GIT_COMMIT_REF" = "<branch>" ] && exit 1 || exit 0`), and its **Production** environment holds that environment's values. DNS in Cloudflare (DNS only, not proxied): apex `A 216.198.79.1` + `A 64.29.17.1`, `www` and `test` `CNAME <project-specific>.vercel-dns-017.com` (values shown in Vercel > Domains). `simphonia-test` uses Vercel Authentication on all deployments (including `test.simphonia.pt`), so only team members can open it.
+
+Set these variables in Vercel (Settings > Environment Variables), per environment (`NEXT_PUBLIC_*` is inlined at build time):
+
+| Variable | `simphonia-test` | `simphonia-prod` |
+|----------|---------|------------|
+| `NEXT_PUBLIC_APP_ENV` | `staging` | `production` |
+| `NEXT_PUBLIC_API_BASE` | `https://api-test.simphonia.pt` | `https://api.simphonia.pt` |
+| `NEXT_PUBLIC_SITE_URL` | `https://test.simphonia.pt` | `https://simphonia.pt` |
+
+They are read in `src/lib/env.ts`; staging/production builds fail if a URL is missing, so a deployed site can never silently fall back to another backend. Staging serves `X-Robots-Tag: noindex` and a disallow-all `robots.txt`. For local dev copy `.env.example` to `.env.local`.
 
 ### Security headers, robots & sitemap
 
 `next.config.ts` sets a Content-Security-Policy and standard security headers (X-Frame-Options,
-HSTS, Referrer-Policy, Permissions-Policy, COOP) on every route, plus `Cache-Control: no-store`
-on `/reset-password` and `/verify-email` (bearer-token pages). `src/app/robots.ts` and
-`src/app/sitemap.ts` generate `/robots.txt` and `/sitemap.xml` — the 4 deep-link pages are
+HSTS, Referrer-Policy, Permissions-Policy, COOP) on every route. `src/app/robots.ts` and
+`src/app/sitemap.ts` generate `/robots.txt` and `/sitemap.xml` — the deep-link pages are
 excluded from both (they're single-use functional redirects, already `noindex` via page metadata).
 
 ### ⚠️ Universal Links / App Links — needs real values before going live
@@ -102,8 +107,8 @@ was found in the old repo either, so these may never have been live. Replace the
 - **`$(APP_SHA256_FINGERPRINT)`** — your app's SHA-256 signing certificate fingerprint
   (Play Console → Setup → App integrity → App signing key certificate).
 
-Until these are set, iOS Universal Links and Android App Links to `/join`, `/reset-password`,
-and `/verify-email` will not open the app directly (the pages still work standalone as
+Until these are set, iOS Universal Links and Android App Links to `/join`
+will not open the app directly (the pages still work standalone as
 web fallbacks with QR codes / store badges).
 
 ### ⚠️ Known gap: no i18n (previous site had 21 languages)

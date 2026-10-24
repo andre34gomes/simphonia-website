@@ -8,7 +8,7 @@ interface DeeplinkStoreCtaProps {
 
 /**
  * Single OS-matched download button used as the mobile fallback on the
- * join, reset-password, and verify-email pages. The previous site
+ * referral page. The previous site
  * hardcoded this fallback to the Google Play link regardless of the
  * visitor's device; here `store` is chosen server-side from the request's
  * user agent so iOS visitors are correctly sent to the App Store.
