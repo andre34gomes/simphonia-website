@@ -87,7 +87,7 @@ Set these variables in Vercel (Settings > Environment Variables), per environmen
 | `NEXT_PUBLIC_API_BASE` | `https://api-test.simphonia.pt` | `https://api.simphonia.pt` |
 | `NEXT_PUBLIC_SITE_URL` | `https://test.simphonia.pt` | `https://simphonia.pt` |
 
-They are read in `src/lib/env.ts`; staging/production builds fail if a URL is missing, so a deployed site can never silently fall back to another backend. Staging serves `X-Robots-Tag: noindex` and a disallow-all `robots.txt`. For local dev copy `.env.example` to `.env.local`.
+They are read in `src/lib/env.ts`; staging/production builds fail if a URL is missing, so a deployed site can never silently fall back to another backend. Staging serves `X-Robots-Tag: noindex` and a disallow-all `robots.txt`. For local dev copy `.env.example` to `.env` (the only local env file).
 
 ### Security headers, robots & sitemap
 
@@ -95,6 +95,11 @@ They are read in `src/lib/env.ts`; staging/production builds fail if a URL is mi
 HSTS, Referrer-Policy, Permissions-Policy, COOP) on every route. `src/app/robots.ts` and
 `src/app/sitemap.ts` generate `/robots.txt` and `/sitemap.xml` — the deep-link pages are
 excluded from both (they're single-use functional redirects, already `noindex` via page metadata).
+
+### Production readiness and indexing
+
+See [`docs/INDEXING.md`](docs/INDEXING.md) for the verified production host, canonical and
+crawler behavior, and the remaining Google Search Console submission steps.
 
 ### ⚠️ Universal Links / App Links — needs real values before going live
 
