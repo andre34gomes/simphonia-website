@@ -1,0 +1,51 @@
+# =============================================================================
+# Simphonia Website — CI
+# =============================================================================
+# Verifies every push/PR before Vercel deploys it:
+#   develop → Simphonia TEST, main → Simphonia PROD (Vercel git integration).
+# Steps: install (lockfile) → lint → type-check → production build.
+# NEXT_PUBLIC_* variables are optional at build time, so no secrets are needed.
+# =============================================================================
+name: CI
+
+on:
+  push:
+    branches: [develop, main]
+  pull_request:
+    branches: [develop, main]
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    name: Lint, Type-check & Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      NEXT_TELEMETRY_DISABLED: "1"
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type-check
+        run: npm run typecheck
+
+      - name: Build
+        run: npm run build
