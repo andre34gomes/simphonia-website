@@ -4,9 +4,11 @@ import { DownloadQr } from "@/components/download/download-qr";
 import { DownloadRequirements } from "@/components/download/download-requirements";
 import { DownloadSteps } from "@/components/download/download-steps";
 import { DownloadFinalCta } from "@/components/download/download-final-cta";
+import { canonicalUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Download",
+  alternates: { canonical: canonicalUrl("/download") },
   description:
     "Download Simphonia for iOS and Android. Get instant eSIM data in 200+ countries — free to download, activated in under a minute.",
 };

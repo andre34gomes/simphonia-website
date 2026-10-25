@@ -7,9 +7,11 @@ import { JoinMobileRedirect } from "@/components/deeplink/join-mobile-redirect";
 import { StoreBadges } from "@/components/shared/store-badges";
 import { isIOSUserAgent, isMobileUserAgent } from "@/lib/device";
 import { SITE_URL } from "@/lib/site";
+import { canonicalUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Join Simphonia",
+  alternates: { canonical: canonicalUrl("/join") },
   description:
     "A friend shared their referral code with you. Download the Simphonia app and the discount will be applied automatically at checkout.",
   robots: { index: false, follow: true },

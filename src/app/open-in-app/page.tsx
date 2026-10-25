@@ -4,9 +4,11 @@ import { DeeplinkShell } from "@/components/deeplink/deeplink-shell";
 import { DeeplinkQrCode } from "@/components/deeplink/deeplink-qr-code";
 import { StoreBadges } from "@/components/shared/store-badges";
 import { SITE_URL } from "@/lib/site";
+import { canonicalUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
   title: "Open This Link on Your Phone",
+  alternates: { canonical: canonicalUrl("/open-in-app") },
   description:
     "This action needs to be completed in the Simphonia mobile app. Scan the QR code below with your phone, or download the app from the store.",
   robots: { index: false, follow: false },

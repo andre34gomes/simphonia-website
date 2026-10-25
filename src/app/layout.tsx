@@ -4,6 +4,7 @@ import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { MotionProvider } from "@/components/motion/motion-provider";
 import { SITE_URL } from "@/lib/site";
+import { canonicalUrl } from "@/lib/seo";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -18,6 +19,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
+  alternates: { canonical: canonicalUrl("/") },
   title: {
     default: "Simphonia — Global eSIM Connectivity for Modern Travelers",
     template: "%s — Simphonia",
@@ -36,9 +38,8 @@ export const metadata: Metadata = {
     title: "Simphonia — Global eSIM Connectivity for Modern Travelers",
     description:
       "Stay connected in 200+ countries with instant eSIM activation, transparent pricing, and AI-powered support.",
-    url: SITE_URL,
     siteName: "Simphonia",
-    images: [{ url: "/og-image.png", width: 1200, height: 630 }],
+    images: [{ url: "/icon-512.png" }],
     locale: "en_US",
     type: "website",
   },
@@ -47,7 +48,7 @@ export const metadata: Metadata = {
     title: "Simphonia — Global eSIM Connectivity for Modern Travelers",
     description:
       "Stay connected in 200+ countries with instant eSIM activation, transparent pricing, and AI-powered support.",
-    images: ["/og-image.png"],
+    images: ["/icon-512.png"],
   },
   icons: {
     icon: "/favicon.svg",

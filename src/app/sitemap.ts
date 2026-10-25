@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { SITE_URL } from "@/lib/site";
+import { canonicalUrl } from "@/lib/seo";
 
 // Generates /sitemap.xml. Only content pages are listed — the four
 // deep-link/action pages (/join, /open-in-app) are functional redirects marked noindex via
@@ -19,7 +19,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   return routes.map(({ path, changeFrequency, priority }) => ({
-    url: `${SITE_URL}${path ? `/${path}` : ""}`,
+    url: canonicalUrl(path ? `/${path}` : "/"),
     lastModified,
     changeFrequency,
     priority,
