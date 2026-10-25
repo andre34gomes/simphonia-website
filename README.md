@@ -60,11 +60,14 @@ social provider. The code is entered directly in the app.
 ## Scripts
 
 ```bash
-npm run dev      # start the dev server
-npm run build    # production build
-npm run start    # run the production build locally
-npm run lint     # eslint
+npm run dev        # start the dev server
+npm run build      # production build
+npm run start      # run the production build locally
+npm run lint       # eslint
+npm run typecheck  # next typegen + tsc --noEmit
 ```
+
+CI (`.github/workflows/ci.yaml`, Node 22) runs lint, typecheck and build on every push/PR to `develop` and `main`; Dependabot keeps npm packages and Actions up to date.
 
 ## Deployment
 
